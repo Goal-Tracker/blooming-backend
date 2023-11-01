@@ -5,7 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,18 +16,20 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString(of = {"id", "oauthId", "email", "name", "color", "statusMessage"})
-@Table(name = "users")
+@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String oauthId;
 
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String name;
 
     private String color;
