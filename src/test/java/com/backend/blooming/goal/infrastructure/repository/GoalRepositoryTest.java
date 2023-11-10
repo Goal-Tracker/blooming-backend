@@ -1,6 +1,8 @@
 package com.backend.blooming.goal.infrastructure.repository;
 
 import com.backend.blooming.goal.domain.Goal;
+import org.junit.jupiter.api.DisplayNameGeneration;
+import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -8,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
+@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
+@SuppressWarnings("NonAsciiCharacters")
 class GoalRepositoryTest {
 
     @Autowired
@@ -22,7 +26,6 @@ class GoalRepositoryTest {
                 .goalStartDay("2023-11-05")
                 .goalEndDay("2024-01-03")
                 .goalDays(60)
-                .goalAction(true)
                 .build();
 
         // when
@@ -42,7 +45,6 @@ class GoalRepositoryTest {
                 .goalStartDay("2023-11-05")
                 .goalEndDay("2024-01-03")
                 .goalDays(60)
-                .goalAction(true)
                 .build();
 
         // when
@@ -54,5 +56,4 @@ class GoalRepositoryTest {
         assertThat(findResult.getId()).isNotNull();
         assertThat(findResult).usingRecursiveComparison().isEqualTo(goal);
     }
-
 }

@@ -4,11 +4,10 @@ import com.backend.blooming.goal.application.fixture.GoalServiceFixture;
 import com.backend.blooming.goal.domain.Goal;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.text.ParseException;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
+@SpringBootTest
 class GoalServiceTest extends GoalServiceFixture {
 
     @Autowired
@@ -21,7 +20,7 @@ class GoalServiceTest extends GoalServiceFixture {
     private final int goalDays = 60;
 
     @Test
-    public void 골_등록_성공() throws ParseException {
+    public void 골_등록_성공(){
         // when
         final Goal result = goalService.createGoal(유효한_골_생성_dto);
 
@@ -33,5 +32,4 @@ class GoalServiceTest extends GoalServiceFixture {
         assertThat(result.getGoalEndDay()).isEqualTo(goalEndDay);
         assertThat(result.getGoalDays()).isEqualTo(goalDays);
     }
-
 }
