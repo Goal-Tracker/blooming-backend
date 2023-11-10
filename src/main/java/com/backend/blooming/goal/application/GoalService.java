@@ -8,10 +8,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.util.Date;
-
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -19,32 +15,17 @@ public class GoalService extends DateFormat{
 
     private final GoalRepository goalRepository;
 
-    public Goal createGoal(CreateGoalDto createGoalDto) throws ParseException {
-
-        boolean goalAction = isGoalAvailable(createGoalDto.goalStartDay(), createGoalDto.goalEndDay());
-
-        final Goal goal = new Goal(
-                createGoalDto.goalName(),
-                createGoalDto.goalMemo(),
-                createGoalDto.goalStartDay(),
-                createGoalDto.goalEndDay(),
-                createGoalDto.goalDays(),
-                goalAction
-        );
+    public Goal createGoal(CreateGoalDto createGoalDto){
+        final Goal goal = Goal.builder()
+                .goalName(createGoalDto.goalName())
+                .goalMemo(createGoalDto.goalMemo())
+                .goalStartDay(createGoalDto.goalStartDay())
+                .goalEndDay(createGoalDto.goalEndDay())
+                .goalDays(createGoalDto.goalDays())
+                .build();
 
         final Goal persistGoal = goalRepository.save(goal);
 
         return persistGoal;
-    }
-
-    public boolean isGoalAvailable(String goalStartDay, String goalEndDay) throws ParseException {
-        final Date goalStartDate = dateFormatter(goalStartDay);
-        final Date goalEndDate = dateFormatter(goalEndDay);
-        final Date nowDate = dateFormatter(LocalDate.now().toString());
-
-        if (nowDate.compareTo(goalStartDate)>=0 && nowDate.compareTo(goalEndDate)<=0) {
-            return true;
-        }
-        return false;
     }
 }
