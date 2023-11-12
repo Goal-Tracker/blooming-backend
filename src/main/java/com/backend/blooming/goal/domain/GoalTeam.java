@@ -43,15 +43,18 @@ public class GoalTeam {
         this.goal = goal;
     }
 
-    public GoalTeam createGoalTeam(User user, Goal goal){
+    public GoalTeam createGoalTeam(User user){
         validateUserIsNotNull(user);
-        validateGoalIsNotNull(goal);
         final GoalTeam goalTeam = GoalTeam.builder()
                 .user(user)
-                .goal(goal)
                 .build();
 
         return goalTeam;
+    }
+
+    public void updateGoal(Goal goal){
+        validateGoalIsNotNull(goal);
+        this.goal = goal;
     }
 
     private void validateUserIsNotNull(User user){

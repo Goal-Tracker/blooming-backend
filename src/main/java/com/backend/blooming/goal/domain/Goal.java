@@ -63,19 +63,28 @@ public class Goal extends DateFormat {
     @Column(length = 20)
     private LocalDateTime updatedAt;
 
+    public void addGoalTeam(GoalTeam goalTeam){
+        goalTeams.add(goalTeam);
+        goalTeam.updateGoal(this);
+    }
+
     @Builder
     private Goal(
             final String goalName,
             final String goalMemo,
             final String goalStartDay,
             final String goalEndDay,
-            final int goalDays
+            final int goalDays,
+            List<GoalTeam> goalTeams
     ) {
         this.goalName = goalName;
         this.goalMemo = goalMemo;
         this.goalStartDay = goalStartDay;
         this.goalEndDay = goalEndDay;
         this.goalDays = goalDays;
+        for (GoalTeam goalTeam:goalTeams){
+            this.addGoalTeam(goalTeam);
+        }
     }
 
     public boolean isGoalAvailable() throws ParseException {
