@@ -48,6 +48,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 ext {
@@ -70,7 +71,7 @@ asciidoctor.doFirst {
 	delete file('src/main/resources/static/docs')
 }
 
-task copyDocument(type: Copy) {
+tasks.register('copyDocument', Copy) {
 	dependsOn asciidoctor
 	from file("build/docs/asciidoc")
 	into file("src/main/resources/static/docs")

@@ -14,3 +14,8 @@ spring:
         show_sql: true
         use_sql_comments: true
     open-in-view: false
+
+oauth:
+  client:
+    kakao:
+      user-info-uri: https://kapi.kakao.com/v2/user/me
