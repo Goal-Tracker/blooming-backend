@@ -17,6 +17,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.Builder;
 import lombok.AccessLevel;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.text.ParseException;
@@ -31,6 +32,7 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
+@Slf4j
 public class Goal extends DateFormat {
 
     @Id
@@ -77,11 +79,15 @@ public class Goal extends DateFormat {
             final String goalEndDay,
             final int goalDays,
             List<GoalTeam> goalTeams
-    ) {
+    ) throws ParseException {
         this.goalName = goalName;
         this.goalMemo = goalMemo;
+        validStartDay();
+        validEndDay();
+        validGoal();
         this.goalStartDay = goalStartDay;
         this.goalEndDay = goalEndDay;
+        validGoalDays();
         this.goalDays = goalDays;
         for (GoalTeam goalTeam:goalTeams){
             this.addGoalTeam(goalTeam);
@@ -93,17 +99,42 @@ public class Goal extends DateFormat {
         final Date goalEndDate = dateFormatter(goalEndDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
 
-        if (nowDate.compareTo(goalStartDate)<=0 && nowDate.compareTo(goalEndDate)>=0) {
-            return true;
+        if (nowDate.compareTo(goalStartDate)>0 && nowDate.compareTo(goalEndDate)>0) {
+            log.info("이미 종료된 골입니다.");
+            throw new IllegalArgumentException();
         }
 
-        return false;
+        return true;
     }
 
-    // 골 제목과 메모에 글자 수 제한을 둘 것인지 논의 필요
-    // 골 시작일이 오늘 날짜보다 이전일 경우 생성불가
-    // 골 마감일이 오늘 날짜보다 이후일 경우 생성불가
-    // 골 시작일보다 골 마감일이 더 빠를 경우 생성불가
-    // 골 일수가 1보다 작을 경우 생성불가
+    public void validStartDay() throws ParseException {
+        final Date goalStartDate = dateFormatter(goalStartDay);
+        final Date nowDate = dateFormatter(LocalDate.now().toString());
+        if (goalStartDate.compareTo(nowDate)>0){
+            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
+        }
+    }
+
+    public void validEndDay() throws ParseException {
+        final Date goalEndDate = dateFormatter(goalStartDay);
+        final Date nowDate = dateFormatter(LocalDate.now().toString());
+        if (nowDate.compareTo(goalEndDate)>0){
+            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
+        }
+    }
+
+    public void validGoal() throws ParseException {
+        final Date goalStartDate = dateFormatter(goalStartDay);
+        final Date goalEndDate = dateFormatter(goalStartDay);
+        if (goalStartDate.compareTo(goalEndDate)>0){
+            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
+        }
+    }
+
+    public void validGoalDays(){
+        if (goalDays<1){
+            throw new IllegalArgumentException("골 일자는 1 이상이어야합니다.");
+        }
+    }
 
 }
