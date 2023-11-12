@@ -6,6 +6,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @ConfigurationPropertiesScan
-@EnableConfigurationProperties({KakaoClientConfigurationProperties.class})
-public class OAuthPropertiesConfiguration {
+@EnableConfigurationProperties({KakaoClientConfigurationProperties.class, JwtPropertiesConfiguration.class})
+public class AuthenticationPropertiesConfiguration {
 }

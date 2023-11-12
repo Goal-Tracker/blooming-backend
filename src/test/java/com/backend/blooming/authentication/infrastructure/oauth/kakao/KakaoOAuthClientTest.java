@@ -1,6 +1,6 @@
 package com.backend.blooming.authentication.infrastructure.oauth.kakao;
 
-import com.backend.blooming.authentication.configuration.OAuthPropertiesConfiguration;
+import com.backend.blooming.authentication.configuration.AuthenticationPropertiesConfiguration;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 
 @RestClientTest({KakaoOAuthClient.class})
 @AutoConfigureWebClient(registerRestTemplate = true)
-@Import({OAuthPropertiesConfiguration.class})
+@Import({AuthenticationPropertiesConfiguration.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class KakaoOAuthClientTest extends KakaoOAuthClientTestFixture {

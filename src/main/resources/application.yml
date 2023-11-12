@@ -19,3 +19,9 @@ oauth:
   client:
     kakao:
       user-info-uri: https://kapi.kakao.com/v2/user/me
+
+jwt:
+  access-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
+  refresh-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
+  access-token-expire-hour: 12
+  refresh-token-expire-hour: 1440
