@@ -1,6 +1,5 @@
 package com.backend.blooming.goal.domain;
 
-import com.backend.blooming.goal.application.dto.CreateGoalTeamDto;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

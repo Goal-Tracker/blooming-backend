@@ -1,7 +1,6 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.CreateGoalTeamDto;
 import com.backend.blooming.goal.application.util.DateFormat;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
