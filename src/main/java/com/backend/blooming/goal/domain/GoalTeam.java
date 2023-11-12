@@ -50,6 +50,7 @@ public class GoalTeam {
                 .user(user)
                 .goal(goal)
                 .build();
+
         return goalTeam;
     }
 
