@@ -1,5 +1,6 @@
 package com.backend.blooming.goal.domain;
 
+import com.backend.blooming.goal.application.dto.CreateGoalTeamDto;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,4 +36,32 @@ public class GoalTeam {
     @ManyToOne
     @JoinColumn(name = "id")
     private Goal goal;
+
+    @Builder
+    private GoalTeam(final User user, final Goal goal){
+        this.user = user;
+        this.goal = goal;
+    }
+
+    public GoalTeam createGoalTeam(User user, Goal goal){
+        validateUserIsNotNull(user);
+        validateGoalIsNotNull(goal);
+        final GoalTeam goalTeam = GoalTeam.builder()
+                .user(user)
+                .goal(goal)
+                .build();
+        return goalTeam;
+    }
+
+    private void validateUserIsNotNull(User user){
+        if (user==null){
+            throw new IllegalArgumentException("사용자 정보가 없습니다.");
+        }
+    }
+
+    private void validateGoalIsNotNull(Goal goal){
+        if (goal==null) {
+            throw new IllegalArgumentException("골 정보가 없습니다.");
+        }
+    }
 }
