@@ -16,11 +16,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity
+@Entity(name = "goalTeam")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString
+@ToString(exclude = "goal")
 public class GoalTeam {
 
     @Id
@@ -29,11 +29,11 @@ public class GoalTeam {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "goal_id", nullable = false)
     private Goal goal;
 
     @Builder
