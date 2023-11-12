@@ -1,10 +1,14 @@
 package com.backend.blooming.user.domain;
 
+import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -17,14 +21,19 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
+@Table(name = "users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String oauthId;
+    @Column(name = "oauth_id", nullable = false, unique = true)
+    private String oAuthId;
+
+    @Column(name = "oauth_type", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private OAuthType oAuthType;
 
     @Column(nullable = false)
     private String email;
@@ -38,14 +47,16 @@ public class User {
     private String statusMessage;
 
     @Builder
-    public User(
-            final String oauthId,
+    private User(
+            final String oAuthId,
+            final OAuthType oAuthType,
             final String email,
             final String name,
             final String color,
             final String statusMessage
     ) {
-        this.oauthId = oauthId;
+        this.oAuthId = oAuthId;
+        this.oAuthType = oAuthType;
         this.email = email;
         this.name = name;
         this.color = color;
