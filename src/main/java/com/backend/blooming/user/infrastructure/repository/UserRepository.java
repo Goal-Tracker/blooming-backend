@@ -15,5 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
             WHERE u.oAuthId = :oAuthId AND u.oAuthType = :oAuthType
             """)
     Optional<User> findByOAuthIdAndOAuthType(final String oAuthId, final OAuthType oAuthType);
+
+    boolean existsByIdAndDeletedIsFalse(final Long userId);
 }
 

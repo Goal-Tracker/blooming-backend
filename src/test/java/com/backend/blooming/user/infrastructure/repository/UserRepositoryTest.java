@@ -11,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -40,5 +40,32 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
 
         // then
         assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void 존재하는_사용자_아이디_조회시_참을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByIdAndDeletedIsFalse(사용자_아이디);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 삭제된_사용자_아이디_조회시_거짓을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByIdAndDeletedIsFalse(삭제된_사용자_아이디);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 존재하지_않는_사용자_아이디_조회시_거짓을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByIdAndDeletedIsFalse(존재하지_않는_사용자_아이디);
+
+        // then
+        assertThat(actual).isFalse();
     }
 }

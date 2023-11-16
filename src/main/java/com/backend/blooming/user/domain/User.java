@@ -46,6 +46,9 @@ public class User {
     @Column(columnDefinition = "text")
     private String statusMessage;
 
+    @Column(name = "is_deleted")
+    private boolean deleted = false;
+
     @Builder
     private User(
             final String oAuthId,
@@ -61,5 +64,9 @@ public class User {
         this.name = name;
         this.color = color;
         this.statusMessage = statusMessage;
+    }
+
+    public void delete() {
+        this.deleted = true;
     }
 }
