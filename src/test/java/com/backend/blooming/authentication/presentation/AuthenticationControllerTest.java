@@ -3,6 +3,7 @@ package com.backend.blooming.authentication.presentation;
 import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.presentation.fixture.AuthenticationControllerTestFixture;
+import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.exception.GlobalExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,17 +14,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthenticationController.class)
+@Import(RestDocsConfiguration.class)
 @AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -39,11 +51,19 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
+    @Autowired
+    RestDocumentationResultHandler restDocs;
+
+    @Autowired
+    RestDocumentationContextProvider restDocumentation;
+
     @BeforeEach
     void setUp() {
         mockMvc = MockMvcBuilders.standaloneSetup(authenticationController)
                                  .setControllerAdvice(new GlobalExceptionHandler())
+                                 .apply(documentationConfiguration(restDocumentation))
                                  .alwaysDo(print())
+                                 .alwaysDo(restDocs)
                                  .build();
     }
 
@@ -62,7 +82,17 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 jsonPath("$.token.accessToken").value(소셜_로그인_사용자_정보.token().accessToken()),
                 jsonPath("$.token.refreshToken").value(소셜_로그인_사용자_정보.token().refreshToken()),
                 jsonPath("$.isSignUp").value(true)
-        );
+        ).andDo(restDocs.document(
+                pathParameters(parameterWithName("oAuthType").description("소셜 로그인 타입")),
+                requestFields(
+                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("소셜 access token")
+                ),
+                responseFields(
+                        fieldWithPath("token.accessToken").type(JsonFieldType.STRING).description("서비스 access token"),
+                        fieldWithPath("token.refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token"),
+                        fieldWithPath("isSignUp").type(JsonFieldType.BOOLEAN).description("첫 로그인 여부")
+                )
+        ));
     }
 
     @Test

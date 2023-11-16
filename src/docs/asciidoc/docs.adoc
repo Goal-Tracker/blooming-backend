@@ -1,0 +1,35 @@
+= 블루밍 API 문서
+:toc: left
+:source-highlighter: highlightjs
+:sectlinks:
+
+[[overview-http-status-codes]]
+=== HTTP status codes
+
+|===
+| 상태 코드 | 설명
+| `200 OK`
+| 성공
+| `201 Created`
+| 리소스 생성
+| `400 Bad Request`
+| 잘못된 요청
+| `401 Unauthorized`
+| 비인증 상태
+| `403 Forbidden`
+| 권한 거부
+| `404 Not Found`
+| 존재하지 않는 리소스에 대한 요청
+| `500 Internal Server Error`
+| 서버 에러
+|===
+
+== 인증 & 인가
+=== 로그인
+==== 요청
+include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-request.adoc[]
+include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/path-parameters.adoc[]
+include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/request-fields.adoc[]
+==== 응답
+include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-response.adoc[]
+include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/response-fields.adoc[]
