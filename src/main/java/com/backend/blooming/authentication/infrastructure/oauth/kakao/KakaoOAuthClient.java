@@ -46,9 +46,9 @@ public class KakaoOAuthClient implements OAuthClient {
 
             return response.getBody();
         } catch (final HttpClientErrorException exception) {
-            throw new OAuthException("유효하지 않은 토큰입니다.");
+            throw new OAuthException.InvalidAuthorizationTokenException("유효하지 않은 토큰입니다.");
         } catch (final HttpServerErrorException exception) {
-            throw new OAuthException("카카오 서버에 문제가 발생했습니다.");
+            throw new OAuthException.KakaoServerException("카카오 서버에 문제가 발생했습니다.");
         }
     }
 }
