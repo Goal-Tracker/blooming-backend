@@ -44,7 +44,7 @@ public class TokenProvider {
         return new Date(now.getTime() + expireTime);
     }
 
-    public AuthClaims parseToke(final TokenType tokenType, final String token) {
+    public AuthClaims parseToken(final TokenType tokenType, final String token) {
         validateToken(token);
 
         final String pureToken = parsePureToken(token);

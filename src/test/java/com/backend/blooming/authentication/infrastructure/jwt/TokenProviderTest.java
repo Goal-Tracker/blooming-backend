@@ -46,7 +46,7 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
         final String accessToken = 토큰_타입 + tokenProvider.createToken(액세스_토큰_타입, 회원_아이디);
 
         // when
-        final AuthClaims actual = tokenProvider.parseToke(액세스_토큰_타입, accessToken);
+        final AuthClaims actual = tokenProvider.parseToken(액세스_토큰_타입, accessToken);
 
         // then
         assertThat(actual.userId()).isEqualTo(회원_아이디);
@@ -55,7 +55,7 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
     @Test
     void 토큰_타입이_맞지_않는_토큰이라면_예외를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> tokenProvider.parseToke(액세스_토큰_타입, 타입이_맞지_않는_토큰))
+        assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, 타입이_맞지_않는_토큰))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage("Bearer 타입의 토큰이 아닙니다.");
     }
@@ -63,7 +63,7 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
     @Test
     void 유효하지_않는_토큰이라면_예외를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> tokenProvider.parseToke(액세스_토큰_타입, 유효하지_않는_토큰))
+        assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, 유효하지_않는_토큰))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage("유효하지 않은 토큰 정보입니다.");
     }
@@ -75,7 +75,7 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
         final String accessToken = 토큰_타입 + tokenProvider.createToken(액세스_토큰_타입, 회원_아이디);
 
         // when & then
-        assertThatThrownBy(() -> tokenProvider.parseToke(액세스_토큰_타입, accessToken))
+        assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, accessToken))
                 .isInstanceOf(InvalidTokenException.class)
                 .hasMessage("기한이 만료된 토큰입니다.");
     }

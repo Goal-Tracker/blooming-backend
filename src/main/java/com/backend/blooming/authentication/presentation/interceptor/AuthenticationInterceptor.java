@@ -29,7 +29,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     ) {
         final String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
-        final AuthClaims authClaims = tokenProvider.parseToke(TokenType.ACCESS, accessToken);
+        final AuthClaims authClaims = tokenProvider.parseToken(TokenType.ACCESS, accessToken);
         validateExistUser(authClaims.userId());
         authenticatedThreadLocal.set(authClaims);
 

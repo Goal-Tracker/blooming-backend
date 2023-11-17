@@ -1,5 +1,6 @@
 package com.backend.blooming.exception;
 
+import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -41,7 +42,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(OAuthException.InvalidAuthorizationTokenException.class)
-    public ResponseEntity<ExceptionResponse> handleMalformedURLException(
+    public ResponseEntity<ExceptionResponse> handleInvalidAuthorizationTokenExceptionException(
             final OAuthException.InvalidAuthorizationTokenException exception
     ) {
         logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
@@ -51,12 +52,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(OAuthException.KakaoServerException.class)
-    public ResponseEntity<ExceptionResponse> handleMalformedURLException(
+    public ResponseEntity<ExceptionResponse> handleKakaoServerExceptionException(
             final OAuthException.KakaoServerException exception
     ) {
         logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidTokenExceptionException(
+            final InvalidTokenException exception
+    ) {
+        logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }

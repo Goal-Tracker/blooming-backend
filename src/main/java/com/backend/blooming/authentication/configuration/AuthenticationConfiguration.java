@@ -18,7 +18,7 @@ public class AuthenticationConfiguration implements WebMvcConfigurer {
     private final AuthenticationArgumentResolver authenticationArgumentResolver;
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/**")
                 .excludePathPatterns("/auth/**");
