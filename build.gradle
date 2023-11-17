@@ -29,6 +29,8 @@ repositories {
 }
 
 dependencies {
+	testImplementation 'org.projectlombok:lombok:1.18.28'
+
 	// h2
 	runtimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-devtools'
@@ -47,6 +49,8 @@ dependencies {
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
+	testCompileOnly 'org.projectlombok:lombok:1.18.24'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 
 	// rest docs
 	asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
