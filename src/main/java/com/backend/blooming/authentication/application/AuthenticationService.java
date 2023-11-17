@@ -53,7 +53,6 @@ public class AuthenticationService {
         final User savedUser = User.builder()
                                    .oAuthId(userInformationDto.oAuthId())
                                    .oAuthType(oAuthType)
-                                   .name(userInformationDto.nickname())
                                    .email(userInformationDto.email())
                                    .build();
 

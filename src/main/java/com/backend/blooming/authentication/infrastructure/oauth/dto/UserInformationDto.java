@@ -4,7 +4,5 @@ public interface UserInformationDto {
 
     String oAuthId();
 
-    String nickname();
-
     String email();
 }

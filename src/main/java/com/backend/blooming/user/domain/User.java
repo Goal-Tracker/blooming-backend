@@ -38,7 +38,7 @@ public class User {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(unique = true)
     private String name;
 
     private String color;
