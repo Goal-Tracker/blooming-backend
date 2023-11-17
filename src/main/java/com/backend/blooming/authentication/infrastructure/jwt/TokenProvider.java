@@ -50,6 +50,7 @@ public class TokenProvider {
         final String pureToken = parsePureToken(token);
         final Claims claims = parseClaims(tokenType, pureToken);
         final Long userId = claims.get(USER_ID_CLAIM_KEY, Long.class);
+
         return new AuthClaims(userId);
     }
 

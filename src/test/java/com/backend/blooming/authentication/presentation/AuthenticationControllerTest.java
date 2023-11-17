@@ -2,9 +2,12 @@ package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
+import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.authentication.presentation.fixture.AuthenticationControllerTestFixture;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.exception.GlobalExceptionHandler;
+import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -49,7 +52,17 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @MockBean
     AuthenticationService authenticationService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    @MockBean
+    TokenProvider tokenProvider;
+
+    @MockBean
+    UserRepository userRepository;
+
+    @MockBean
+    AuthenticatedThreadLocal authenticatedThreadLocal;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Autowired
     RestDocumentationResultHandler restDocs;
