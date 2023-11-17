@@ -4,12 +4,11 @@ import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
-import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
-import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
+import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
 import com.backend.blooming.authentication.presentation.fixture.AuthenticationControllerTestFixture;
+import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.exception.GlobalExceptionHandler;
-import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -19,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -26,6 +27,7 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -39,7 +41,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(AuthenticationController.class)
+@WebMvcTest(
+        controllers = {AuthenticationController.class},
+        excludeFilters = {
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebMvcConfigurer.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AuthenticationInterceptor.class),
+                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AuthenticationArgumentResolver.class)
+        }
+)
 @Import(RestDocsConfiguration.class)
 @AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -53,15 +62,6 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
     @MockBean
     AuthenticationService authenticationService;
-
-    @MockBean
-    TokenProvider tokenProvider;
-
-    @MockBean
-    UserRepository userRepository;
-
-    @MockBean
-    AuthenticatedThreadLocal authenticatedThreadLocal;
 
     @Autowired
     ObjectMapper objectMapper;
