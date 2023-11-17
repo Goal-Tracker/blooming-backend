@@ -1,6 +1,8 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
+import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
@@ -156,6 +158,65 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
         ).andExpectAll(
                 status().isServiceUnavailable(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void refresh_token을_통해_access_token을_재발행한다() throws Exception {
+        // given
+        given(authenticationService.reissueAccessToken(서비스_refresh_token)).willReturn(서비스_토큰_정보);
+
+        // when & then
+        mockMvc.perform(get("/auth/reissue")
+                .header("X-API-VERSION", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(access_token_재발급_요청))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.accessToken").value(서비스_토큰_정보.accessToken()),
+                jsonPath("$.refreshToken").value(서비스_토큰_정보.refreshToken())
+        ).andDo(restDocs.document(
+                requestFields(
+                        fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token")
+                ),
+                responseFields(
+                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("서비스 access token"),
+                        fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token")
+                )
+        ));
+    }
+
+    @Test
+    void 유효하지_않은_refresh_token을_통해_access_token을_재발행시_404를_반환한다() throws Exception {
+        // given
+        given(authenticationService.reissueAccessToken(서비스_refresh_token))
+                .willThrow(new InvalidTokenException("Bearer 타입의 토큰이 아닙니다."));
+
+        // when & then
+        mockMvc.perform(get("/auth/reissue")
+                .header("X-API-VERSION", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(access_token_재발급_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 존재하지_않는_사용자의_refresh_token을_통해_access_token을_재발행시_401을_반환한다() throws Exception {
+        // given
+        given(authenticationService.reissueAccessToken(서비스_refresh_token))
+                .willThrow(new UnauthorizedAccessException("권한이 없는 사용자입니다."));
+
+        // when & then
+        mockMvc.perform(get("/auth/reissue")
+                .header("X-API-VERSION", 1)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(access_token_재발급_요청))
+        ).andExpectAll(
+                status().isUnauthorized(),
                 jsonPath("$.message").exists()
         );
     }

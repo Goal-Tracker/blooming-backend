@@ -2,9 +2,12 @@ package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
+import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.authentication.presentation.request.ReissueAccessTokenRequest;
 import com.backend.blooming.authentication.presentation.response.LoginInformationResponse;
 import com.backend.blooming.authentication.presentation.response.SocialLoginRequest;
+import com.backend.blooming.authentication.presentation.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -31,5 +34,12 @@ public class AuthenticationController {
         );
 
         return ResponseEntity.ok(LoginInformationResponse.from(loginInformationDto));
+    }
+
+    @GetMapping(value = "/reissue", headers = "X-API-VERSION=1")
+    public ResponseEntity<TokenResponse> ReissueAccessToken(@RequestBody ReissueAccessTokenRequest reissueRequest) {
+        final TokenDto tokenDto = authenticationService.reissueAccessToken(reissueRequest.refreshToken());
+
+        return ResponseEntity.ok(TokenResponse.from(tokenDto));
     }
 }

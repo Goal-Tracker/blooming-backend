@@ -19,11 +19,12 @@ public class TokenProvider {
 
     private static final String USER_ID_CLAIM_KEY = "userId";
     private static final String TOKEN_TYPE = "Bearer ";
+    private static final String CLAIM_USER_SUBJECT = "user";
 
     private final JwtPropertiesConfiguration propertiesConfiguration;
 
     public String createToken(final TokenType tokenType, final Long userId) {
-        final Claims claims = Jwts.claims().setSubject("user");
+        final Claims claims = Jwts.claims().setSubject(CLAIM_USER_SUBJECT);
         claims.put(USER_ID_CLAIM_KEY, userId);
 
         final Date now = new Date();
