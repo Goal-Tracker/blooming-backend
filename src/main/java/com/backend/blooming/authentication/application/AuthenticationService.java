@@ -3,9 +3,11 @@ package com.backend.blooming.authentication.application;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.LoginUserInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
 import com.backend.blooming.authentication.application.util.OAuthClientComposite;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
+import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
@@ -65,5 +67,20 @@ public class AuthenticationService {
         final String refreshToken = tokenProvider.createToken(TokenType.REFRESH, userId);
 
         return new TokenDto(accessToken, refreshToken);
+    }
+
+    public TokenDto reissueAccessToken(final String refreshToken) {
+        final AuthClaims authClaims = tokenProvider.parseToken(TokenType.REFRESH, refreshToken);
+        validateUser(authClaims.userId());
+
+        final String accessToken = tokenProvider.createToken(TokenType.ACCESS, authClaims.userId());
+
+        return new TokenDto(accessToken, refreshToken);
+    }
+
+    private void validateUser(final Long userId) {
+        if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
+            throw new UnauthorizedAccessException("권한이 없는 사용자입니다.");
+        }
     }
 }

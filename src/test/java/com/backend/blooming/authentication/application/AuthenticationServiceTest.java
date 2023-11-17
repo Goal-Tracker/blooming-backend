@@ -1,7 +1,10 @@
 package com.backend.blooming.authentication.application;
 
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
+import com.backend.blooming.authentication.application.dto.TokenDto;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
 import com.backend.blooming.authentication.application.fixture.AuthenticationServiceTestFixture;
+import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.configuration.IsolateDatabase;
@@ -71,5 +74,41 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> authenticationService.login(oauth_타입, 소셜_액세스_토큰))
                 .isInstanceOf(OAuthException.class);
+    }
+
+    @Test
+    void 유효한_refresh_token으로_access_token_재발행시_새로운_access_token을_반환한다() {
+        // when
+        final TokenDto tokenDto = authenticationService.reissueAccessToken(유효한_refresh_token);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(tokenDto.accessToken()).isNotEmpty();
+            softAssertions.assertThat(tokenDto.refreshToken()).isEqualTo(유효한_refresh_token);
+        });
+    }
+
+    @Test
+    void 존재하지_않는_사용자의_refresh_token으로_access_token_재발행시_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.reissueAccessToken(존재하지_않는_사용자의_refresh_token))
+                .isInstanceOf(UnauthorizedAccessException.class)
+                .hasMessage("권한이 없는 사용자입니다.");
+    }
+
+    @Test
+    void 유효하지_않는_refresh_token으로_access_token_재발행시_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.reissueAccessToken(유효하지_않는_refresh_token))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage("유효하지 않은 토큰 정보입니다.");
+    }
+
+    @Test
+    void 유효하지_않는_타입의_refresh_token으로_access_token_재발행시_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.reissueAccessToken(유효하지_않는_타입의_refresh_token))
+                .isInstanceOf(InvalidTokenException.class)
+                .hasMessage("Bearer 타입의 토큰이 아닙니다.");
     }
 }

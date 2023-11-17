@@ -13,6 +13,6 @@ public class KakaoOAuthClientTestFixture {
     protected final String 사용자_요청_헤더 = "Bearer access_token";
     protected final String 사용자_유효하지_않은_요청_헤더 = "Bearer invalid_access_token";
     protected final KakaoUserInformationDto 사용자_정보 =
-            new KakaoUserInformationDto("oauthId", "name", "test@email.com");
+            new KakaoUserInformationDto("oauthId", "test@email.com");
 
 }
