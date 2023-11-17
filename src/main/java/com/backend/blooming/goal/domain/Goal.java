@@ -81,12 +81,12 @@ public class Goal extends DateFormat {
     ) throws ParseException {
         this.goalName = goalName;
         this.goalMemo = goalMemo;
-        validStartDay();
-        validEndDay();
-        validGoal();
+        validStartDay(goalStartDay);
+        validEndDay(goalEndDay);
+        validGoal(goalStartDay, goalEndDay);
         this.goalStartDay = goalStartDay;
         this.goalEndDay = goalEndDay;
-        validGoalDays();
+        validGoalDays(goalDays);
         this.goalDays = goalDays;
         for (GoalTeam goalTeam:goalTeams){
             this.addGoalTeam(goalTeam);
@@ -106,7 +106,7 @@ public class Goal extends DateFormat {
         return true;
     }
 
-    public void validStartDay() throws ParseException {
+    public void validStartDay(String goalStartDay) throws ParseException {
         final Date goalStartDate = dateFormatter(goalStartDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
         if (goalStartDate.compareTo(nowDate)>0){
@@ -114,23 +114,23 @@ public class Goal extends DateFormat {
         }
     }
 
-    public void validEndDay() throws ParseException {
-        final Date goalEndDate = dateFormatter(goalStartDay);
+    public void validEndDay(String goalEndDay) throws ParseException {
+        final Date goalEndDate = dateFormatter(goalEndDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
         if (nowDate.compareTo(goalEndDate)>0){
             throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
         }
     }
 
-    public void validGoal() throws ParseException {
+    public void validGoal(String goalStartDay, String goalEndDay) throws ParseException {
         final Date goalStartDate = dateFormatter(goalStartDay);
-        final Date goalEndDate = dateFormatter(goalStartDay);
+        final Date goalEndDate = dateFormatter(goalEndDay);
         if (goalStartDate.compareTo(goalEndDate)>0){
             throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
         }
     }
 
-    public void validGoalDays(){
+    public void validGoalDays(int goalDays){
         if (goalDays<1){
             throw new IllegalArgumentException("골 일자는 1 이상이어야합니다.");
         }
