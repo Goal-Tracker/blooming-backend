@@ -147,7 +147,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
-                status().isBadRequest(),
+                status().isNotFound(),
                 jsonPath("$.message").exists()
         );
     }
@@ -268,6 +268,28 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.name", is(사용자의_이름만_수정_dto.name())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
+        );
+    }
+
+
+
+    @Test
+    void 존재하지_않는_사용자_정보_수정시_400을_반환한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto))
+                .willThrow(new NotFoundUserException("사용자를 조회할 수 없습니다."));
+
+        // when & then
+        mockMvc.perform(patch("/user")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_모든_정보_수정_dto))
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
         );
     }
 }
