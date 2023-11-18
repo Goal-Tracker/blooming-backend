@@ -1,6 +1,7 @@
 package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,7 +24,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString
 @Table(name = "users")
-public class User {
+public class User extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
