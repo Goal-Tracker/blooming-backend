@@ -6,6 +6,7 @@ import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.application.fixture.UserServiceTestFixture;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,33 +21,99 @@ class UserServiceTest extends UserServiceTestFixture {
     @Autowired
     UserService userService;
 
-    @Test
-    void 존재하는_사용자_아이디를_통해_사용자를_조회한다() {
-        // when
-        final UserDto actual = userService.readById(사용자_아이디);
+    // TODO: 11/19/23 [고민] Nested를 사용하면 아래와 같이 같은 메서드 테스트에 대해 묶을 수 있습니다. 딱 그 장점 하나만인데 이렇게 진행하는 것이 좋을까요?
+    @Nested
+    class 사용자_조회시_ {
+        @Test
+        void 존재하는_사용자_아이디라면_사용자를_조회할_수_있다() {
+            // when
+            final UserDto actual = userService.readById(사용자_아이디);
 
-        // then
-        assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.id()).isPositive();
-            softAssertions.assertThat(actual.oAuthId()).isEqualTo(사용자.getOAuthId());
-            softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
-            softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
-        });
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(actual.id()).isPositive();
+                softAssertions.assertThat(actual.oAuthId()).isEqualTo(사용자.getOAuthId());
+                softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
+                softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
+            });
+        }
+
+        @Test
+        void 삭제한_사용자_아이디라면_빈_optional을_반환한다() {
+            // when & then
+            assertThatThrownBy(() -> userService.readById(삭제한_사용자_아아디))
+                    .isInstanceOf(NotFoundUserException.class)
+                    .hasMessage("사용자를 조회할 수 없습니다.");
+        }
+
+        @Test
+        void 존재하는_않는_사용자_아이디라면_조회시_빈_optional을_반환한다() {
+            // when & then
+            assertThatThrownBy(() -> userService.readById(존재하지_않는_사용자_아아디))
+                    .isInstanceOf(NotFoundUserException.class)
+                    .hasMessage("사용자를 조회할 수 없습니다.");
+        }
     }
 
-    @Test
-    void 삭제한_사용자_아이디를_통해_사용자_조회시_빈_optional을_반환한다() {
-        // when & then
-        assertThatThrownBy(() -> userService.readById(삭제한_사용자_아아디))
-                .isInstanceOf(NotFoundUserException.class)
-                .hasMessage("사용자를 조회할 수 없습니다.");
-    }
+    @Nested
+    class 사용자_정보_수정시_ {
+        @Test
+        void 모든_정보를_수정할_수_있다() {
+            // when
+            final UserDto actual = userService.updateById(사용자_아이디, 모든_사용자_정보를_수정한_dto);
 
-    @Test
-    void 존재하는_않는_사용자_아이디를_통해_사용자_조회시_빈_optional을_반환한다() {
-        // when & then
-        assertThatThrownBy(() -> userService.readById(존재하지_않는_사용자_아아디))
-                .isInstanceOf(NotFoundUserException.class)
-                .hasMessage("사용자를 조회할 수 없습니다.");
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
+                softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상);
+                softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
+            });
+        }
+
+        @Test
+        void 이름만_수정할_수_있다() {
+            // when
+            final UserDto actual = userService.updateById(사용자_아이디, 이름만_수정한_dto);
+
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
+                softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상);
+                softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            });
+        }
+
+        @Test
+        void 테마_색상만_수정할_수_있다() {
+            // when
+            final UserDto actual = userService.updateById(사용자_아이디, 테마_색상만_수정한_dto);
+
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+                softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상);
+                softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            });
+        }
+
+        @Test
+        void 상태_메시지만_수정할_수_있다() {
+            // when
+            final UserDto actual = userService.updateById(사용자_아이디, 상태_메시지만_수정한_dto);
+
+            // then
+            assertSoftly(softAssertions -> {
+                softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+                softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상);
+                softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
+            });
+        }
+
+        @Test
+        void 존재하지_않는_사용자라면_예외를_반환한다() {
+            assertThatThrownBy(() -> userService.updateById(존재하지_않는_사용자_아아디, 모든_사용자_정보를_수정한_dto))
+                    .isInstanceOf(NotFoundUserException.class)
+                    .hasMessage("사용자를 조회할 수 없습니다.");
+        }
     }
 }

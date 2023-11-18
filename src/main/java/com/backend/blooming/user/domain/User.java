@@ -72,4 +72,16 @@ public class User {
     public void delete() {
         this.deleted = true;
     }
+
+    public void updateName(final String name) {
+        this.name = name;
+    }
+
+    public void updateColor(final ThemeColor color) {
+        this.color = color;
+    }
+
+    public void updateStatusMessage(final String statusMessage) {
+        this.statusMessage = statusMessage;
+    }
 }
