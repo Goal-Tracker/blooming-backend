@@ -3,6 +3,7 @@ package com.backend.blooming.exception;
 import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -79,6 +80,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundUserException(
+            final NotFoundUserException exception
+    ) {
+        logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }
