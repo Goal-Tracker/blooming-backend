@@ -29,11 +29,19 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     ) {
         final String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
+        if (isNotExist(accessToken)) {
+            return true;
+        }
+
         final AuthClaims authClaims = tokenProvider.parseToken(TokenType.ACCESS, accessToken);
         validateExistUser(authClaims.userId());
         authenticatedThreadLocal.set(authClaims);
 
         return true;
+    }
+
+    private boolean isNotExist(final String accessToken) {
+        return accessToken == null || accessToken.isEmpty();
     }
 
     private void validateExistUser(final Long userId) {
