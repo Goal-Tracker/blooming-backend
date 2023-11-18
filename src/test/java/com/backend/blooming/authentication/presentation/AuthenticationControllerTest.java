@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
@@ -94,9 +95,9 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.token.accessToken").value(소셜_로그인_사용자_정보.token().accessToken()),
-                jsonPath("$.token.refreshToken").value(소셜_로그인_사용자_정보.token().refreshToken()),
-                jsonPath("$.isSignUp").value(true)
+                jsonPath("$.token.accessToken", is(소셜_로그인_기존_사용자_정보.token().accessToken())),
+                jsonPath("$.token.refreshToken", is(소셜_로그인_기존_사용자_정보.token().refreshToken())),
+                jsonPath("$.isSignUp", is(true), Boolean.class)
         ).andDo(restDocs.document(
                 pathParameters(parameterWithName("oAuthType").description("소셜 로그인 타입")),
                 requestFields(
@@ -122,9 +123,9 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.token.accessToken").value(소셜_로그인_기존_사용자_정보.token().accessToken()),
-                jsonPath("$.token.refreshToken").value(소셜_로그인_기존_사용자_정보.token().refreshToken()),
-                jsonPath("$.isSignUp").value(false)
+                jsonPath("$.token.accessToken", is(소셜_로그인_기존_사용자_정보.token().accessToken())),
+                jsonPath("$.token.refreshToken", is(소셜_로그인_기존_사용자_정보.token().refreshToken())),
+                jsonPath("$.isSignUp", is(false), Boolean.class)
         );
     }
 
@@ -174,8 +175,8 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .content(objectMapper.writeValueAsString(access_token_재발급_요청))
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.accessToken").value(서비스_토큰_정보.accessToken()),
-                jsonPath("$.refreshToken").value(서비스_토큰_정보.refreshToken())
+                jsonPath("$.accessToken", is(서비스_토큰_정보.accessToken())),
+                jsonPath("$.refreshToken", is(서비스_토큰_정보.refreshToken()))
         ).andDo(restDocs.document(
                 requestFields(
                         fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token")
