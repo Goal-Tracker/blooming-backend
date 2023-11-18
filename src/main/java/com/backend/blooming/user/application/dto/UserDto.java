@@ -19,7 +19,7 @@ public record UserDto(
                 user.getOAuthType().name(),
                 user.getEmail(),
                 user.getName(),
-                user.getColor(),
+                user.getColor().name(),
                 user.getStatusMessage()
         );
     }

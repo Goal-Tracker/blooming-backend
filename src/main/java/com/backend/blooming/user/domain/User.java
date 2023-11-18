@@ -1,6 +1,7 @@
 package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.themecolor.domain.ThemeColor;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -41,7 +42,9 @@ public class User {
     @Column(unique = true)
     private String name;
 
-    private String color;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "theme_color")
+    private ThemeColor color;
 
     @Column(columnDefinition = "text")
     private String statusMessage;
@@ -55,7 +58,7 @@ public class User {
             final OAuthType oAuthType,
             final String email,
             final String name,
-            final String color,
+            final ThemeColor color,
             final String statusMessage
     ) {
         this.oAuthId = oAuthId;
