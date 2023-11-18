@@ -69,6 +69,7 @@ public class AuthenticationService {
         return new TokenDto(accessToken, refreshToken);
     }
 
+    @Transactional(readOnly = true)
     public TokenDto reissueAccessToken(final String refreshToken) {
         final AuthClaims authClaims = tokenProvider.parseToken(TokenType.REFRESH, refreshToken);
         validateUser(authClaims.userId());
