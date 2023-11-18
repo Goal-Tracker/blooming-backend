@@ -23,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -36,7 +37,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -146,6 +149,125 @@ class UserControllerTest extends UserControllerTestFixture {
         ).andExpectAll(
                 status().isBadRequest(),
                 jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 사용자의_모든_정보를_수정한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto)).willReturn(모든_정보가_수정된_사용자_정보_dto);
+
+        // when & then
+        mockMvc.perform(patch("/user")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_모든_정보_수정_요청))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.id", is(사용자_아이디), Long.class),
+                jsonPath("$.oAuthId", is(사용자_정보_dto.oAuthId())),
+                jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
+                jsonPath("$.email", is(사용자_정보_dto.email())),
+                jsonPath("$.name", is(사용자의_모든_정보_수정_dto.name())),
+                jsonPath("$.color", is(사용자의_모든_정보_수정_dto.color())),
+                jsonPath("$.statusMessage", is(사용자의_모든_정보_수정_dto.statusMessage()))
+        ).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 이름"),
+                        fieldWithPath("color").type(JsonFieldType.STRING).description("수정할 테마 색상"),
+                        fieldWithPath("statusMessage").type(JsonFieldType.STRING).description("수정할 상태 메시지")
+                ),
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                        fieldWithPath("oAuthId").type(JsonFieldType.STRING).description("소셜 oAuth 아이디"),
+                        fieldWithPath("oAuthType").type(JsonFieldType.STRING).description("소셜 타입"),
+                        fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
+                        fieldWithPath("color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                        fieldWithPath("statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지")
+                )
+        ));
+    }
+
+    @Test
+    void 사용자의_테마_색상만_수정한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_테마_색상만_수정_dto)).willReturn(테마_색상만_수정된_사용자_정보_dto);
+
+        // when & then
+        mockMvc.perform(patch("/user")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_테마_색상만_수정_요청))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.id", is(사용자_아이디), Long.class),
+                jsonPath("$.oAuthId", is(사용자_정보_dto.oAuthId())),
+                jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
+                jsonPath("$.email", is(사용자_정보_dto.email())),
+                jsonPath("$.name", is(사용자_정보_dto.name())),
+                jsonPath("$.color", is(사용자의_테마_색상만_수정_dto.color())),
+                jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
+        );
+    }
+
+    @Test
+    void 사용자의_상태_메시지만_수정한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_상태_메시지만_수정_dto)).willReturn(상태_메시지만_수정된_사용자_정보_dto);
+
+        // when & then
+        mockMvc.perform(patch("/user")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_상태_메시지만_수정_요청))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.id", is(사용자_아이디), Long.class),
+                jsonPath("$.oAuthId", is(사용자_정보_dto.oAuthId())),
+                jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
+                jsonPath("$.email", is(사용자_정보_dto.email())),
+                jsonPath("$.name", is(사용자_정보_dto.name())),
+                jsonPath("$.color", is(사용자_정보_dto.color())),
+                jsonPath("$.statusMessage", is(사용자의_상태_메시지만_수정_dto.statusMessage()))
+        );
+    }
+
+    @Test
+    void 사용자의_이름만_수정한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_이름만_수정_dto)).willReturn(이름만_수정된_사용자_정보_dto);
+
+        // when & then
+        mockMvc.perform(patch("/user")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_이름만_수정_요청))
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.id", is(사용자_아이디), Long.class),
+                jsonPath("$.oAuthId", is(사용자_정보_dto.oAuthId())),
+                jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
+                jsonPath("$.email", is(사용자_정보_dto.email())),
+                jsonPath("$.name", is(사용자의_이름만_수정_dto.name())),
+                jsonPath("$.color", is(사용자_정보_dto.color())),
+                jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
         );
     }
 }
