@@ -12,7 +12,7 @@ import java.util.List;
 
 @Configuration
 @RequiredArgsConstructor
-public class AuthenticationConfiguration implements WebMvcConfigurer {
+public class AuthenticationWebMvcConfiguration implements WebMvcConfigurer {
 
     private final AuthenticationInterceptor authenticationInterceptor;
     private final AuthenticationArgumentResolver authenticationArgumentResolver;
