@@ -31,6 +31,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -99,6 +101,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 jsonPath("$.token.refreshToken", is(소셜_로그인_기존_사용자_정보.token().refreshToken())),
                 jsonPath("$.isSignUp", is(true), Boolean.class)
         ).andDo(restDocs.document(
+                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")),
                 pathParameters(parameterWithName("oAuthType").description("소셜 로그인 타입")),
                 requestFields(
                         fieldWithPath("accessToken").type(JsonFieldType.STRING).description("소셜 access token")
@@ -178,6 +181,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 jsonPath("$.accessToken", is(서비스_토큰_정보.accessToken())),
                 jsonPath("$.refreshToken", is(서비스_토큰_정보.refreshToken()))
         ).andDo(restDocs.document(
+                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")),
                 requestFields(
                         fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token")
                 ),
