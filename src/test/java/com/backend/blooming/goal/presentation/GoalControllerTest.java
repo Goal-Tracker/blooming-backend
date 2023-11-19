@@ -40,7 +40,7 @@ class GoalControllerTest {
     private GoalService goalService;
 
     @Test
-    public void 골_생성_컨트롤러() throws Exception {
+    public void 골_생성_컨트롤러_요청_성공() throws Exception {
         // given
         List<String> goalTeamUserIds = new ArrayList<>(List.of("1","2","3","4"));
 
