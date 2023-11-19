@@ -88,6 +88,7 @@ public class Goal extends DateFormat {
         this.goalEndDay = goalEndDay;
         validGoalDays(goalDays);
         this.goalDays = goalDays;
+        validGoalTeams(goalTeams);
         for (GoalTeam goalTeam:goalTeams){
             this.addGoalTeam(goalTeam);
         }
@@ -136,4 +137,9 @@ public class Goal extends DateFormat {
         }
     }
 
+    public void validGoalTeams(List<GoalTeam> goalTeam) {
+        if (goalTeam == null) {
+            throw new IllegalArgumentException("골 팀이 존재하지 않습니다.");
+        }
+    }
 }
