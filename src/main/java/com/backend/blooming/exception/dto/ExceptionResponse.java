@@ -1,4 +1,4 @@
-package com.backend.blooming.exception;
+package com.backend.blooming.exception.dto;
 
 public record ExceptionResponse(String message) {
 }

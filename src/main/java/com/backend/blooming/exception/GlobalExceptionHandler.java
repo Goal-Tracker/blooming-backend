@@ -3,6 +3,7 @@ package com.backend.blooming.exception;
 import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.exception.dto.ExceptionResponse;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
