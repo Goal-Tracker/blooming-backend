@@ -94,7 +94,7 @@ public class Goal extends DateFormat {
         }
     }
 
-    public boolean isGoalAvailable() throws ParseException {
+    public boolean isGoalAvailable() {
         final Date goalStartDate = dateFormatter(goalStartDay);
         final Date goalEndDate = dateFormatter(goalEndDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
@@ -107,19 +107,19 @@ public class Goal extends DateFormat {
         return true;
     }
 
-    public void validStartDay(String goalStartDay) throws ParseException {
+    public void validStartDay(String goalStartDay) {
         final Date goalStartDate = dateFormatter(goalStartDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
-        if (goalStartDate.compareTo(nowDate)>0){
-            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
+        if (goalStartDate.compareTo(nowDate)<0){
+            throw new IllegalArgumentException("시작 날짜는 현재 날짜 이후여야합니다.");
         }
     }
 
-    public void validEndDay(String goalEndDay) throws ParseException {
+    public void validEndDay(String goalEndDay) {
         final Date goalEndDate = dateFormatter(goalEndDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
         if (nowDate.compareTo(goalEndDate)>0){
-            throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
+            throw new IllegalArgumentException("종료 날짜는 현재 날짜 이후여야합니다.");
         }
     }
 
@@ -138,7 +138,7 @@ public class Goal extends DateFormat {
     }
 
     public void validGoalTeams(List<GoalTeam> goalTeam) {
-        if (goalTeam == null) {
+        if (goalTeam.size()==0) {
             throw new IllegalArgumentException("골 팀이 존재하지 않습니다.");
         }
     }
