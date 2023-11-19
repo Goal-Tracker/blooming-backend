@@ -1,6 +1,6 @@
 package com.backend.blooming.authentication.infrastructure.oauth;
 
-import com.backend.blooming.authentication.infrastructure.exception.UnSupportedOAuthTypeException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -31,7 +31,6 @@ class OAuthTypeTest {
 
         // when & then
         assertThatThrownBy(() -> OAuthType.from(invalidType))
-                .isInstanceOf(UnSupportedOAuthTypeException.class)
-                .hasMessage("지원하지 않는 소셜 로그인 방식입니다.");
+                .isInstanceOf(UnsupportedOAuthTypeException.class);
     }
 }

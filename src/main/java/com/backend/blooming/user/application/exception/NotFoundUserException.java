@@ -1,8 +1,11 @@
 package com.backend.blooming.user.application.exception;
 
-public class NotFoundUserException extends IllegalArgumentException {
+import com.backend.blooming.exception.BloomingException;
+import com.backend.blooming.exception.ExceptionMessage;
 
-    public NotFoundUserException(final String message) {
-        super(message);
+public class NotFoundUserException extends BloomingException {
+
+    public NotFoundUserException() {
+        super(ExceptionMessage.NOT_FOUND_USER);
     }
 }

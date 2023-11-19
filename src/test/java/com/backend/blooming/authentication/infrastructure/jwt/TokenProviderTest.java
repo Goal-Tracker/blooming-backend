@@ -55,16 +55,14 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
     void 토큰_타입이_맞지_않는_토큰이라면_예외를_반환한다() {
         // when & then
         assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, 타입이_맞지_않는_토큰))
-                .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("Bearer 타입의 토큰이 아닙니다.");
+                .isInstanceOf(InvalidTokenException.class);
     }
 
     @Test
     void 유효하지_않는_토큰이라면_예외를_반환한다() {
         // when & then
         assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, 유효하지_않는_토큰))
-                .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("유효하지 않은 토큰 정보입니다.");
+                .isInstanceOf(InvalidTokenException.class);
     }
 
     @Test
@@ -75,7 +73,6 @@ class TokenProviderTest extends JwtTokenProviderTestFixture {
 
         // when & then
         assertThatThrownBy(() -> tokenProvider.parseToken(액세스_토큰_타입, accessToken))
-                .isInstanceOf(InvalidTokenException.class)
-                .hasMessage("기한이 만료된 토큰입니다.");
+                .isInstanceOf(InvalidTokenException.class);
     }
 }

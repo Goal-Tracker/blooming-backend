@@ -1,6 +1,6 @@
 package com.backend.blooming.authentication.infrastructure.oauth;
 
-import com.backend.blooming.authentication.infrastructure.exception.UnSupportedOAuthTypeException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 
 public enum OAuthType {
 
@@ -10,7 +10,7 @@ public enum OAuthType {
         try {
             return OAuthType.valueOf(type.toUpperCase());
         } catch (final IllegalArgumentException exception) {
-            throw new UnSupportedOAuthTypeException("지원하지 않는 소셜 로그인 방식입니다.");
+            throw new UnsupportedOAuthTypeException();
         }
     }
 }

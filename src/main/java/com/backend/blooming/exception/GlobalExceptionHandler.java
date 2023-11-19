@@ -1,9 +1,11 @@
 package com.backend.blooming.exception;
 
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.exception.dto.ExceptionResponse;
+import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -54,9 +56,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
-    @ExceptionHandler(OAuthException.KakaoServerException.class)
+    @ExceptionHandler(OAuthException.KakaoServerUnavailableException.class)
     public ResponseEntity<ExceptionResponse> handleKakaoServerExceptionException(
-            final OAuthException.KakaoServerException exception
+            final OAuthException.KakaoServerUnavailableException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
@@ -74,13 +76,33 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
-    @ExceptionHandler(UnauthorizedAccessException.class)
+    @ExceptionHandler(UnauthorizedAccessTokenException.class)
     public ResponseEntity<ExceptionResponse> handleUnauthorizedAccessException(
-            final UnauthorizedAccessException exception
+            final UnauthorizedAccessTokenException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UnsupportedOAuthTypeException.class)
+    public ResponseEntity<ExceptionResponse> handleUnsupportedOAuthTypeException(
+            final UnsupportedOAuthTypeException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UnsupportedThemeColorException.class)
+    public ResponseEntity<ExceptionResponse> handleUnsupportedThemeColorException(
+            final UnsupportedThemeColorException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 

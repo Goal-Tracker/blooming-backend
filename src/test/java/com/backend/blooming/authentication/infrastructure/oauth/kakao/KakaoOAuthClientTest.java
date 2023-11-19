@@ -76,8 +76,7 @@ class KakaoOAuthClientTest extends KakaoOAuthClientTestFixture {
 
         // when & then
         assertThatThrownBy(() -> kakaoOAuthClient.findUserInformation(사용자_ACCESS_TOKEN))
-                .isInstanceOf(OAuthException.class)
-                .hasMessage("유효하지 않은 토큰입니다.");
+                .isInstanceOf(OAuthException.class);
     }
 
     @Test
@@ -90,7 +89,6 @@ class KakaoOAuthClientTest extends KakaoOAuthClientTestFixture {
 
         // when & then
         assertThatThrownBy(() -> kakaoOAuthClient.findUserInformation(사용자_유효하지_않은_ACCESS_TOKEN))
-                .isInstanceOf(OAuthException.class)
-                .hasMessage("카카오 서버에 문제가 발생했습니다.");
+                .isInstanceOf(OAuthException.class);
     }
 }

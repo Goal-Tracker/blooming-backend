@@ -1,7 +1,7 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
@@ -28,6 +28,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import static com.backend.blooming.exception.ExceptionMessage.UNAUTHORIZED_ACCESS_TOKEN;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -135,7 +136,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     void oauth_access_token을_통해_로그인시_유효하지_않은_토큰이라면_403을_반환한다() throws Exception {
         // given
         given(authenticationService.login(oauth_타입, 유효하지_않은_소셜_액세스_토큰))
-                .willThrow(new OAuthException.InvalidAuthorizationTokenException("유효하지 않은 토큰입니다."));
+                .willThrow(new OAuthException.InvalidAuthorizationTokenException());
 
         // when & then
         mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
@@ -152,7 +153,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     void oauth_access_token을_통해_로그인시_해당_소셜_서버에_문제가_생겼다면_503을_반환한다() throws Exception {
         // given
         given(authenticationService.login(oauth_타입, 소셜_액세스_토큰))
-                .willThrow(new OAuthException.KakaoServerException("카카오 서버에 문제가 발생했습니다."));
+                .willThrow(new OAuthException.KakaoServerUnavailableException());
 
         // when & then
         mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
@@ -195,7 +196,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     void 유효하지_않은_refresh_token을_통해_access_token을_재발행시_404를_반환한다() throws Exception {
         // given
         given(authenticationService.reissueAccessToken(서비스_refresh_token))
-                .willThrow(new InvalidTokenException("Bearer 타입의 토큰이 아닙니다."));
+                .willThrow(new InvalidTokenException());
 
         // when & then
         mockMvc.perform(get("/auth/reissue")
@@ -212,7 +213,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     void 존재하지_않는_사용자의_refresh_token을_통해_access_token을_재발행시_401을_반환한다() throws Exception {
         // given
         given(authenticationService.reissueAccessToken(서비스_refresh_token))
-                .willThrow(new UnauthorizedAccessException("권한이 없는 사용자입니다."));
+                .willThrow(new UnauthorizedAccessTokenException());
 
         // when & then
         mockMvc.perform(get("/auth/reissue")

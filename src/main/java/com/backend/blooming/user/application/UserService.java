@@ -19,14 +19,14 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserDto readById(final Long userId) {
         final User user = userRepository.findByIdAndDeletedIsFalse(userId)
-                                        .orElseThrow(() -> new NotFoundUserException("사용자를 조회할 수 없습니다."));
+                                        .orElseThrow(NotFoundUserException::new);
 
         return UserDto.from(user);
     }
 
     public UserDto updateById(final Long userId, final UpdateUserDto updateUserDto) {
         final User user = userRepository.findById(userId)
-                                        .orElseThrow(() -> new NotFoundUserException("사용자를 조회할 수 없습니다."));
+                                        .orElseThrow(NotFoundUserException::new);
         updateUserByRequest(user, updateUserDto);
         userRepository.flush();
 

@@ -61,7 +61,7 @@ public class TokenProvider {
 
     private void validateToken(final String token) {
         if (!token.startsWith(TOKEN_TYPE)) {
-            throw new InvalidTokenException("Bearer 타입의 토큰이 아닙니다.");
+            throw new InvalidTokenException.WrongTokenTypeException();
         }
     }
 
@@ -75,9 +75,9 @@ public class TokenProvider {
                        .parseClaimsJws(token)
                        .getBody();
         } catch (final ExpiredJwtException exception) {
-            throw new InvalidTokenException("기한이 만료된 토큰입니다.");
+            throw new InvalidTokenException.ExpiredTokenException();
         } catch (final JwtException | IllegalArgumentException exception) {
-            throw new InvalidTokenException("유효하지 않은 토큰 정보입니다.");
+            throw new InvalidTokenException();
         }
     }
 }

@@ -3,7 +3,7 @@ package com.backend.blooming.authentication.application;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.LoginUserInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
+import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.application.util.OAuthClientComposite;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
@@ -81,7 +81,7 @@ public class AuthenticationService {
 
     private void validateUser(final Long userId) {
         if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
-            throw new UnauthorizedAccessException("권한이 없는 사용자입니다.");
+            throw new UnauthorizedAccessTokenException();
         }
     }
 }

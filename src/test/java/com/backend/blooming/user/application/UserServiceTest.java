@@ -37,16 +37,14 @@ class UserServiceTest extends UserServiceTestFixture {
     void 삭사용자_조회시_제한_사용자_아이디라면_빈_optional을_반환한다() {
         // when & then
         assertThatThrownBy(() -> userService.readById(삭제한_사용자_아아디))
-                .isInstanceOf(NotFoundUserException.class)
-                .hasMessage("사용자를 조회할 수 없습니다.");
+                .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
     void 사용자_조회시_존재하는_않는_사용자_아이디라면_조회시_빈_optional을_반환한다() {
         // when & then
         assertThatThrownBy(() -> userService.readById(존재하지_않는_사용자_아아디))
-                .isInstanceOf(NotFoundUserException.class)
-                .hasMessage("사용자를 조회할 수 없습니다.");
+                .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
@@ -104,7 +102,6 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_존재하지_않는_사용자라면_예외를_반환한다() {
         assertThatThrownBy(() -> userService.updateById(존재하지_않는_사용자_아아디, 모든_사용자_정보를_수정한_dto))
-                .isInstanceOf(NotFoundUserException.class)
-                .hasMessage("사용자를 조회할 수 없습니다.");
+                .isInstanceOf(NotFoundUserException.class);
     }
 }

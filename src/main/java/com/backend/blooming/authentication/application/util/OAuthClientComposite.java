@@ -1,6 +1,6 @@
 package com.backend.blooming.authentication.application.util;
 
-import com.backend.blooming.authentication.infrastructure.exception.UnSupportedOAuthTypeException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import org.springframework.stereotype.Component;
@@ -23,7 +23,7 @@ public class OAuthClientComposite {
         final OAuthClient oAuthClient = mapper.get(oAuthType);
 
         if (oAuthClient == null) {
-            throw new UnSupportedOAuthTypeException("지원하지 않는 소셜 로그인 방식입니다.");
+            throw new UnsupportedOAuthTypeException();
         }
 
         return oAuthClient;

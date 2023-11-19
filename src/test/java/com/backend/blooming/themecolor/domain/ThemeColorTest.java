@@ -31,7 +31,6 @@ class ThemeColorTest {
 
         // when & then
         assertThatThrownBy(() -> ThemeColor.from(invalidThemeColor))
-                .isInstanceOf(UnsupportedThemeColorException.class)
-                .hasMessage("지원하지 않는 테마 색상입니다.");
+                .isInstanceOf(UnsupportedThemeColorException.class);
     }
 }

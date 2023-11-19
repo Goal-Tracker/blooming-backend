@@ -46,7 +46,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
 
     private void validateExistUser(final Long userId) {
         if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
-            throw new InvalidTokenException("유효하지 않은 토큰입니다.");
+            throw new InvalidTokenException();
         }
     }
 

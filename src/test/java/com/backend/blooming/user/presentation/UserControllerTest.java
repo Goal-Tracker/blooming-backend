@@ -139,7 +139,7 @@ class UserControllerTest extends UserControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(userService.readById(사용자_아이디)).willThrow(new NotFoundUserException("사용자를 조회할 수 없습니다."));
+        given(userService.readById(사용자_아이디)).willThrow(new NotFoundUserException());
 
         // when & then
         mockMvc.perform(get("/user")
@@ -278,7 +278,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
         given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto))
-                .willThrow(new NotFoundUserException("사용자를 조회할 수 없습니다."));
+                .willThrow(new NotFoundUserException());
 
         // when & then
         mockMvc.perform(patch("/user")

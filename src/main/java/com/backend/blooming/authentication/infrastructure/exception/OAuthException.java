@@ -1,22 +1,25 @@
 package com.backend.blooming.authentication.infrastructure.exception;
 
-public class OAuthException extends IllegalArgumentException {
+import com.backend.blooming.exception.BloomingException;
+import com.backend.blooming.exception.ExceptionMessage;
 
-    public OAuthException(final String message) {
-        super(message);
+public class OAuthException extends BloomingException {
+
+    private OAuthException(final ExceptionMessage exceptionMessage) {
+        super(exceptionMessage);
     }
 
     public static class InvalidAuthorizationTokenException extends OAuthException {
 
-        public InvalidAuthorizationTokenException(final String message) {
-            super(message);
+        public InvalidAuthorizationTokenException() {
+            super(ExceptionMessage.INVALID_AUTHORIZATION_TOKEN);
         }
     }
 
-    public static class KakaoServerException extends OAuthException {
+    public static class KakaoServerUnavailableException extends OAuthException {
 
-        public KakaoServerException(final String message) {
-            super(message);
+        public KakaoServerUnavailableException() {
+            super(ExceptionMessage.KAKAO_SERVER_UNAVAILABLE);
         }
     }
 }

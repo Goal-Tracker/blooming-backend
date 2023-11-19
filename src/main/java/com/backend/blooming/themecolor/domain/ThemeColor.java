@@ -32,7 +32,7 @@ public enum ThemeColor {
         try {
             return ThemeColor.valueOf(themeColor.toUpperCase());
         } catch (final IllegalArgumentException exception) {
-            throw new UnsupportedThemeColorException("지원하지 않는 테마 색상입니다.");
+            throw new UnsupportedThemeColorException();
         }
     }
 
