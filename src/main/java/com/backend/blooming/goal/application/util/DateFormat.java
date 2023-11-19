@@ -8,7 +8,7 @@ import java.util.Date;
 @Slf4j
 public class DateFormat {
 
-    public Date dateFormatter(String date) throws ParseException {
+    public Date dateFormatter(String date){
         SimpleDateFormat formatter;
         Date dateFormatted = new Date();
         
