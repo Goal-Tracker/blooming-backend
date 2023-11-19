@@ -5,6 +5,7 @@ import com.backend.blooming.goal.application.util.DateFormat;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.CreateGoalResponse;
 import com.backend.blooming.user.domain.User;
@@ -25,6 +26,7 @@ public class GoalService extends DateFormat{
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
+    private final GoalTeamRepository goalTeamRepository;
 
     public Goal createGoal(CreateGoalDto createGoalDto) throws ParseException {
         List<GoalTeam> goalTeams = createGoalTeams(createGoalDto);
@@ -51,7 +53,8 @@ public class GoalService extends DateFormat{
             final GoalTeam goalTeam = GoalTeam.builder()
                     .user(user)
                     .build();
-            goalTeams.add(goalTeam);
+            final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
+            goalTeams.add(persistGoalTeam);
         }
 
         return goalTeams;
