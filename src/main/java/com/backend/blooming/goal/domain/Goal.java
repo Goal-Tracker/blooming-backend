@@ -54,7 +54,7 @@ public class Goal extends DateFormat {
     @Column(nullable = false)
     private int goalDays;
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "goal", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GoalTeam> goalTeams = new ArrayList<>();
 
     @CreationTimestamp
