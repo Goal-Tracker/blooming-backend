@@ -86,7 +86,7 @@ class GoalControllerTest {
                                 fieldWithPath("goalStartDay").type(JsonFieldType.STRING).description("골 시작날짜"),
                                 fieldWithPath("goalEndDay").type(JsonFieldType.STRING).description("골 종료날짜"),
                                 fieldWithPath("goalDays").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                                fieldWithPath("goalTeamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
+                                fieldWithPath("goalTeamUserNames").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
                         ),
                         responseFields(
                                 fieldWithPath("goalId").type(JsonFieldType.STRING).description("골 아이디"),
@@ -95,7 +95,7 @@ class GoalControllerTest {
                                 fieldWithPath("goalStartDay").type(JsonFieldType.STRING).description("골 시작날짜"),
                                 fieldWithPath("goalEndDay").type(JsonFieldType.STRING).description("골 종료날짜"),
                                 fieldWithPath("goalDays").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                                fieldWithPath("goalTeamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
+                                fieldWithPath("goalTeamUserNames").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
                         )
                 ));
     }

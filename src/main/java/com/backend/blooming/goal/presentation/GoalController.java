@@ -31,10 +31,8 @@ public class GoalController {
 
             return ResponseEntity.created(URI.create("/goals/"+response.goalId())).body(response);
         } catch (ParseException e){
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         } catch (IllegalArgumentException e){
-
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
