@@ -1,4 +1,4 @@
-package com.backend.blooming.goal.application.fixture;
+package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.domain.GoalTeam;
@@ -11,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("NonAsciiCharacters")
 @SpringBootTest
+@SuppressWarnings("NonAsciiCharacters")
 public class GoalServiceFixture {
 
     @Autowired
@@ -55,5 +55,11 @@ public class GoalServiceFixture {
                 60,
                 goalTeamUserIds
         );
+
+        final GoalTeam goalTeam1 = GoalTeam.builder().user(user).build();
+        final GoalTeam goalTeam2 = GoalTeam.builder().user(user2).build();
+
+        goalTeams.add(goalTeam1);
+        goalTeams.add(goalTeam2);
     }
 }
