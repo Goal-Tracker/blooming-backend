@@ -2,7 +2,6 @@ package com.backend.blooming.authentication.infrastructure.jwt;
 
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
-import com.backend.blooming.authentication.infrastructure.jwt.fixture.JwtTokenProviderTestFixture;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;

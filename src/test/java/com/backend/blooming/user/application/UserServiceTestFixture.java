@@ -1,4 +1,4 @@
-package com.backend.blooming.user.application.fixture;
+package com.backend.blooming.user.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;

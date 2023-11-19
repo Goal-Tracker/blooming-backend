@@ -1,4 +1,4 @@
-package com.backend.blooming.authentication.presentation.fixture;
+package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;

@@ -4,7 +4,6 @@ import com.backend.blooming.authentication.configuration.AuthenticationPropertie
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
-import com.backend.blooming.authentication.infrastructure.oauth.kakao.fixture.KakaoOAuthClientTestFixture;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;

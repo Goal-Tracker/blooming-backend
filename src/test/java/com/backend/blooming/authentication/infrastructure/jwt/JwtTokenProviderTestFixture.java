@@ -1,7 +1,6 @@
-package com.backend.blooming.authentication.infrastructure.jwt.fixture;
+package com.backend.blooming.authentication.infrastructure.jwt;
 
 import com.backend.blooming.authentication.configuration.JwtPropertiesConfiguration;
-import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class JwtTokenProviderTestFixture {

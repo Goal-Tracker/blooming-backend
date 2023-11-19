@@ -1,4 +1,4 @@
-package com.backend.blooming.authentication.infrastructure.oauth.kakao.fixture;
+package com.backend.blooming.authentication.infrastructure.oauth.kakao;
 
 import com.backend.blooming.authentication.infrastructure.oauth.kakao.dto.KakaoUserInformationDto;
 import org.springframework.beans.factory.annotation.Value;

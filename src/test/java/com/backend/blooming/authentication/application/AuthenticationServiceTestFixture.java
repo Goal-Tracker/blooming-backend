@@ -1,4 +1,4 @@
-package com.backend.blooming.authentication.application.fixture;
+package com.backend.blooming.authentication.application;
 
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;

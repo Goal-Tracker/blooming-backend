@@ -3,7 +3,6 @@ package com.backend.blooming.authentication.application;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.application.exception.UnauthorizedAccessException;
-import com.backend.blooming.authentication.application.fixture.AuthenticationServiceTestFixture;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;

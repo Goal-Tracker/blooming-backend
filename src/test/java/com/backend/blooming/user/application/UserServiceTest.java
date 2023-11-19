@@ -3,7 +3,6 @@ package com.backend.blooming.user.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.application.dto.UserDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
-import com.backend.blooming.user.application.fixture.UserServiceTestFixture;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

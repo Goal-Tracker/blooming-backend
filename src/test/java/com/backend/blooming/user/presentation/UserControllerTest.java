@@ -9,7 +9,6 @@ import com.backend.blooming.exception.GlobalExceptionHandler;
 import com.backend.blooming.user.application.UserService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import com.backend.blooming.user.presentation.fixture.UserControllerTestFixture;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;

@@ -1,8 +1,7 @@
-package com.backend.blooming.user.domain.fixture;
+package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
-import com.backend.blooming.user.domain.User;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class UserTestFixture {

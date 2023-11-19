@@ -1,7 +1,6 @@
 package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.user.domain.User;
-import com.backend.blooming.user.infrastructure.repository.fixture.UserRepositoryTestFixture;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

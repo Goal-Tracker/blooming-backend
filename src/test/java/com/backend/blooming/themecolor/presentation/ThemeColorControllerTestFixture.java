@@ -1,4 +1,4 @@
-package com.backend.blooming.themecolor.presentation.fixture;
+package com.backend.blooming.themecolor.presentation;
 
 import com.backend.blooming.themecolor.application.dto.ThemeColorDto;
 

@@ -1,7 +1,6 @@
 package com.backend.blooming.user.domain;
 
 import com.backend.blooming.themecolor.domain.ThemeColor;
-import com.backend.blooming.user.domain.fixture.UserTestFixture;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;

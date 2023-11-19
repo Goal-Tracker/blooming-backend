@@ -1,8 +1,7 @@
-package com.backend.blooming.user.infrastructure.repository.fixture;
+package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.user.domain.User;
-import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;

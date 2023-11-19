@@ -5,7 +5,6 @@ import com.backend.blooming.authentication.application.exception.UnauthorizedAcc
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
-import com.backend.blooming.authentication.presentation.fixture.AuthenticationControllerTestFixture;
 import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.exception.GlobalExceptionHandler;

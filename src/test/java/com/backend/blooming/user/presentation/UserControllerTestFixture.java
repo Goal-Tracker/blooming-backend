@@ -1,4 +1,4 @@
-package com.backend.blooming.user.presentation.fixture;
+package com.backend.blooming.user.presentation;
 
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;

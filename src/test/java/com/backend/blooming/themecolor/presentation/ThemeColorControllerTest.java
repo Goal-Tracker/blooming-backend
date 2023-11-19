@@ -7,7 +7,6 @@ import com.backend.blooming.authentication.presentation.interceptor.Authenticati
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.exception.GlobalExceptionHandler;
 import com.backend.blooming.themecolor.application.ThemeColorService;
-import com.backend.blooming.themecolor.presentation.fixture.ThemeColorControllerTestFixture;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
