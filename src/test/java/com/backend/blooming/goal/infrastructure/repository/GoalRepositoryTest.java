@@ -1,24 +1,22 @@
 package com.backend.blooming.goal.infrastructure.repository;
 
+import com.backend.blooming.goal.application.GoalServiceFixture;
 import com.backend.blooming.goal.domain.Goal;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.text.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@DataJpaTest
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class GoalRepositoryTest {
+class GoalRepositoryTest extends GoalServiceFixture {
 
     @Autowired
     private GoalRepository goalRepository;
 
     @Test
-    void 골_등록(){
+    void 골_등록() throws ParseException {
         // given
         final Goal goal = Goal.builder()
                 .goalName("7시 기상")
@@ -26,6 +24,7 @@ class GoalRepositoryTest {
                 .goalStartDay("2023-11-05")
                 .goalEndDay("2024-01-03")
                 .goalDays(60)
+                .goalTeams(goalTeams)
                 .build();
 
         // when
@@ -37,7 +36,7 @@ class GoalRepositoryTest {
     }
 
     @Test
-    void 골이_존재하는지_테스트() {
+    void 골이_존재하는지_테스트() throws ParseException {
         // given
         final Goal goal = Goal.builder()
                 .goalName("7시 기상")
@@ -45,6 +44,7 @@ class GoalRepositoryTest {
                 .goalStartDay("2023-11-05")
                 .goalEndDay("2024-01-03")
                 .goalDays(60)
+                .goalTeams(goalTeams)
                 .build();
 
         // when
