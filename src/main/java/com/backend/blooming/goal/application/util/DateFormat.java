@@ -9,7 +9,7 @@ import java.util.Date;
 public class DateFormat {
 
     public Date dateFormatter(String date) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter;
         Date dateFormatted = new Date();
         
         try{
@@ -21,6 +21,7 @@ public class DateFormat {
         } catch (ParseException e){
             log.info("날짜 파싱 실패");
         }
+
         return dateFormatted;
     }
 }
