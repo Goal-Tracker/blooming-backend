@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:tcp://localhost/~/test;MODE=MYSQL
+    username: sa
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        use_sql_comments: true
+    open-in-view: false
+
+oauth:
+  client:
+    kakao:
+      user-info-uri: https://kapi.kakao.com/v2/user/me
+
+jwt:
+  access-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
+  refresh-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
+  access-token-expire-hour: 12
+  refresh-token-expire-hour: 1440
