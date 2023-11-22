@@ -4,12 +4,11 @@ import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
-import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
-import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
+import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
+import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.common.RestDocsConfiguration;
-import com.backend.blooming.exception.GlobalExceptionHandler;
+import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,47 +16,35 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import static com.backend.blooming.exception.ExceptionMessage.UNAUTHORIZED_ACCESS_TOKEN;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(
-        controllers = {AuthenticationController.class},
-        excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebMvcConfigurer.class),
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AuthenticationInterceptor.class),
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = AuthenticationArgumentResolver.class)
-        }
-)
-@Import(RestDocsConfiguration.class)
+@WebMvcTest(AuthenticationController.class)
+@Import({RestDocsConfiguration.class, AuthenticatedThreadLocal.class})
+@MockBean({TokenProvider.class, UserRepository.class})
 @AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
+    @Autowired
     MockMvc mockMvc;
 
     @Autowired
@@ -74,16 +61,6 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
     @Autowired
     RestDocumentationContextProvider restDocumentation;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(authenticationController)
-                                 .setControllerAdvice(new GlobalExceptionHandler())
-                                 .apply(documentationConfiguration(restDocumentation))
-                                 .alwaysDo(print())
-                                 .alwaysDo(restDocs)
-                                 .build();
-    }
 
     @Test
     void oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다() throws Exception {

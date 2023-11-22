@@ -5,12 +5,10 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
 import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
 import com.backend.blooming.common.RestDocsConfiguration;
-import com.backend.blooming.exception.GlobalExceptionHandler;
 import com.backend.blooming.user.application.UserService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,35 +23,27 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(
-        controllers = {UserController.class},
-        excludeFilters = {
-                @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, classes = WebMvcConfigurer.class)
-        }
-)
+@WebMvcTest(UserController.class)
 @Import({RestDocsConfiguration.class, AuthenticatedThreadLocal.class})
 @AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class UserControllerTest extends UserControllerTestFixture {
 
+    @Autowired
     MockMvc mockMvc;
 
     @Autowired
@@ -84,18 +72,6 @@ class UserControllerTest extends UserControllerTestFixture {
 
     @Autowired
     RestDocumentationContextProvider restDocumentation;
-
-    @BeforeEach
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController)
-                                 .setControllerAdvice(new GlobalExceptionHandler())
-                                 .setCustomArgumentResolvers(authenticationArgumentResolver)
-                                 .addInterceptors(authenticationInterceptor)
-                                 .apply(documentationConfiguration(restDocumentation))
-                                 .alwaysDo(print())
-                                 .alwaysDo(restDocs)
-                                 .build();
-    }
 
     @Test
     void 사용자_정보를_조회한다() throws Exception {
@@ -269,7 +245,6 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
         );
     }
-
 
 
     @Test
