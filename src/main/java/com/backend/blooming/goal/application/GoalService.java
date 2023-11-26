@@ -1,13 +1,13 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.application.util.DateFormat;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
-import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
-import com.backend.blooming.goal.presentation.dto.response.CreateGoalResponse;
+import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -15,43 +15,51 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class GoalService extends DateFormat{
+public class GoalService extends DateFormat {
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final GoalTeamRepository goalTeamRepository;
 
-    public Goal createGoal(CreateGoalDto createGoalDto) throws ParseException {
-        List<GoalTeam> goalTeams = createGoalTeams(createGoalDto);
+    public GoalDto createGoal(CreateGoalDto createGoalDto) {
+        final Goal goal = persistGoal(createGoalDto);
+        final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.goalTeamUserIds(), goal);
+        goal.updateGoalTeams(goalTeams);
+
+        return GoalDto.from(goal);
+    }
+
+    public Goal persistGoal(CreateGoalDto createGoalDto) {
+        final Date goalStartDay = dateFormatter(createGoalDto.goalStartDay());
+        final Date goalEndDay = dateFormatter(createGoalDto.goalEndDay());
 
         final Goal goal = Goal.builder()
                 .goalName(createGoalDto.goalName())
                 .goalMemo(createGoalDto.goalMemo())
-                .goalStartDay(createGoalDto.goalStartDay())
-                .goalEndDay(createGoalDto.goalEndDay())
+                .goalStartDay(goalStartDay)
+                .goalEndDay(goalEndDay)
                 .goalDays(createGoalDto.goalDays())
-                .goalTeams(goalTeams)
                 .build();
 
-        final Goal persistGoal = goalRepository.save(goal);
-
-        return persistGoal;
+        return goalRepository.save(goal);
     }
 
-    public List<GoalTeam> createGoalTeams(CreateGoalDto createGoalDto){
+    public List<GoalTeam> createGoalTeams(List<Long> goalTeamUserIds, Goal goal) {
         List<GoalTeam> goalTeams = new ArrayList<>();
 
-        for (Long goalTeamUser: createGoalDto.goalTeamUserIds()){
+        for (Long goalTeamUser : goalTeamUserIds) {
             final User user = userRepository.findById(goalTeamUser).orElseThrow(EntityNotFoundException::new);
+            // EntityNotFoundException CustomException으로 저장 후 GlobalExceptionHandler에서 관리 필요
             final GoalTeam goalTeam = GoalTeam.builder()
                     .user(user)
+                    .goal(goal)
                     .build();
             final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
             goalTeams.add(persistGoalTeam);
@@ -60,40 +68,20 @@ public class GoalService extends DateFormat{
         return goalTeams;
     }
 
-    public CreateGoalDto createGoalDto(CreateGoalRequest createGoalRequest){
-        List<Long> goalTeams = new ArrayList<>();
-
-        for(String goalTeamUserName: createGoalRequest.goalTeamUserIds()){
-            User user = userRepository.findByName(goalTeamUserName);
-            goalTeams.add(user.getId());
-        }
-
-        final CreateGoalDto createGoalDto = new CreateGoalDto(
-                createGoalRequest.goalName(),
-                createGoalRequest.goalMemo(),
-                createGoalRequest.goalStartDay(),
-                createGoalRequest.goalEndDay(),
-                createGoalRequest.goalDays(),
-                goalTeams);
-
-        return createGoalDto;
-    }
-
-    public CreateGoalResponse createGoalResponse(CreateGoalDto createGoalDto) throws ParseException {
-        final Goal goal = createGoal(createGoalDto);
-        final List<String> goalTeamUserIds = new ArrayList<>();
-
-        for(GoalTeam goalTeam:goal.getGoalTeams()){
-            goalTeamUserIds.add(goalTeam.getUser().getName());
-        }
-
-        return new CreateGoalResponse(
-                goal.getId().toString(),
-                goal.getGoalName(),
-                goal.getGoalMemo(),
-                goal.getGoalStartDay(),
-                goal.getGoalEndDay(),
-                goal.getGoalDays(),
-                goalTeamUserIds);
+    public void deleteGoal(GoalRequest request) {
+        List<GoalTeam> goalTeams;
+//        final Goal goal = goalRepository.findById(request.id())
+//                .orElseThrow(() -> new NotFoundGoalException("골을 조회할 수 없습니다."));
+//        if (goal.isDeleted() != true) {
+//            goal.updateIsDeleted();
+//        }
+//        if (goal.getGoalTeams().size() != 0) {
+//            goalTeams = goal.getGoalTeams();
+//            for (GoalTeam goalTeam : goalTeams) {
+//                if (goalTeam.isDeleted() != true) {
+//                    goalTeam.updateIsDeleted();
+//                }
+//            }
+//        }
     }
 }
