@@ -24,10 +24,10 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping(value = "/add", headers = "X-API-VERSION=1")
-    public ResponseEntity<CreateGoalResponse> createGoal(@RequestPart(required = false) @Valid CreateGoalRequest request) {
-        try{
-            final CreateGoalDto createGoalDto = goalService.createGoalDto(request);
-            final CreateGoalResponse response = goalService.createGoalResponse(createGoalDto);
+    public ResponseEntity<GoalResponse> createGoal(@RequestPart @Valid GoalRequest request) throws ParseException {
+        final CreateGoalDto createGoalDto = CreateGoalDto.from(request);
+        final GoalDto goalDto = goalService.createGoal(createGoalDto);
+        final GoalResponse goalResponse = GoalResponse.from(goalDto);
 
             return ResponseEntity.created(URI.create("/goals/"+response.goalId())).body(response);
         } catch (ParseException e){
