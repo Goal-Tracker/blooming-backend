@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.text.ParseException;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -18,32 +17,29 @@ class GoalServiceTest extends GoalServiceFixture {
     @Autowired
     private GoalService goalService;
 
-    private final String goalName = "제목";
-    private final String goalMemo = "내용";
-    private final String goalStartDay = "2023-11-05";
-    private final String goalEndDay = "2024-01-03";
-    private final int goalDays = 60;
-
     @Test
-    public void 골_등록_성공() throws ParseException {
+    public void 골을_생성한다(){
         // when
-        final Goal result = goalService.createGoal(유효한_골_생성_dto);
+        final Goal result = goalService.persistGoal(유효한_골_생성_dto);
+        final List<GoalTeam> goalTeamsResult = goalService.createGoalTeams(골_팀에_등록된_사용자_아이디_목록, result);
+        result.updateGoalTeams(goalTeamsResult);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.getGoalName()).isEqualTo(goalName);
-        assertThat(result.getGoalMemo()).isEqualTo(goalMemo);
-        assertThat(result.getGoalStartDay()).isEqualTo(goalStartDay);
-        assertThat(result.getGoalEndDay()).isEqualTo(goalEndDay);
-        assertThat(result.getGoalDays()).isEqualTo(goalDays);
-        assertThat(result.getGoalTeams().get(0).getId()).isEqualTo(userId);
+        assertThat(result.getGoalName()).isEqualTo(골_제목);
+        assertThat(result.getGoalMemo()).isEqualTo(골_메모);
+        assertThat(result.getGoalStartDay()).isEqualTo(골_시작일);
+        assertThat(result.getGoalEndDay()).isEqualTo(골_종료일);
+        assertThat(result.getGoalDays()).isEqualTo(골_날짜수);
+        assertThat(result.getGoalTeamIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
     }
 
     @Test
-    public void 골_팀_등록_성공(){
-        final List<GoalTeam> result = goalService.createGoalTeams(유효한_골_생성_dto);
+    public void 골_팀을_생성한다(){
+        // when
+        final List<GoalTeam> result = goalService.createGoalTeams(골_팀에_등록된_사용자_아이디_목록, 유효한_골);
 
-        assertThat(result.get(0).getUser().getOauthId()).isEqualTo("아이디");
-        assertThat(result.get(1).getUser().getOauthId()).isEqualTo("아이디2");
+        // then
+        assertThat(result.get(0).getUser().getId()).isEqualTo(유효한_사용자_아이디);
     }
 }
