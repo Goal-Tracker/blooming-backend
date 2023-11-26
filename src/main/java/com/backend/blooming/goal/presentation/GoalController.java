@@ -2,12 +2,14 @@ package com.backend.blooming.goal.presentation;
 
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
-import com.backend.blooming.goal.presentation.dto.response.CreateGoalResponse;
+import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
+import com.backend.blooming.goal.presentation.dto.response.GoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
