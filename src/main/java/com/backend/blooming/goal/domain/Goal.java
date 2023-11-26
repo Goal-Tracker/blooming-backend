@@ -58,7 +58,7 @@ public class Goal extends DateFormat {
     private List<GoalTeam> goalTeams = new ArrayList<>();
 
     @Column(nullable = false)
-    private boolean isDeleted;
+    private boolean deleted;
 
     @CreationTimestamp
     @Column(nullable = false, length = 20, updatable = false)
@@ -108,8 +108,8 @@ public class Goal extends DateFormat {
     }
 
     public void updateIsDeleted(){
-        if (!isDeleted){
-            this.isDeleted = true;
+        if (!deleted){
+            this.deleted = true;
         }
     }
 }
