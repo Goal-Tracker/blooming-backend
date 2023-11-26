@@ -2,6 +2,7 @@ package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.application.exception.GoalException;
 import com.backend.blooming.goal.application.util.DateFormat;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
@@ -15,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -40,6 +42,9 @@ public class GoalService extends DateFormat {
         final Date goalStartDay = dateFormatter(createGoalDto.goalStartDay());
         final Date goalEndDay = dateFormatter(createGoalDto.goalEndDay());
 
+        validateGoalDatePeriod(goalStartDay, goalEndDay);
+        validateGoalDays(createGoalDto.goalDays());
+
         final Goal goal = Goal.builder()
                 .goalName(createGoalDto.goalName())
                 .goalMemo(createGoalDto.goalMemo())
@@ -56,7 +61,7 @@ public class GoalService extends DateFormat {
 
         for (Long goalTeamUser : goalTeamUserIds) {
             final User user = userRepository.findById(goalTeamUser).orElseThrow(EntityNotFoundException::new);
-            // EntityNotFoundException CustomException으로 저장 후 GlobalExceptionHandler에서 관리 필요
+
             final GoalTeam goalTeam = GoalTeam.builder()
                     .user(user)
                     .goal(goal)
@@ -66,6 +71,24 @@ public class GoalService extends DateFormat {
         }
 
         return goalTeams;
+    }
+
+    public void validateGoalDatePeriod(Date goalStartDay, Date goalEndDay) {
+        final Date localDate = dateFormatter(String.valueOf(LocalDate.now()));
+
+        if (goalStartDay.compareTo(localDate) < 0) {
+            throw new GoalException.InvalidGoalStartDay();
+        } else if (goalEndDay.compareTo(localDate) < 0) {
+            throw new GoalException.InvalidGoalEndDay();
+        } else if (goalEndDay.compareTo(goalStartDay) < 0) {
+            throw new GoalException.InvalidGoalPeriod();
+        }
+    }
+
+    public void validateGoalDays(int goalDays) {
+        if (goalDays < 1) {
+            throw new GoalException.InvalidGoalDays();
+        }
     }
 
     public void deleteGoal(GoalRequest request) {
