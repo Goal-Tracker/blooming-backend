@@ -32,7 +32,7 @@ public class GoalService extends DateFormat {
 
     public GoalDto createGoal(CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
-        final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.goalTeamUserIds(), goal);
+        final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.goalTeamUserIds(), goal.getId());
         goal.updateGoalTeams(goalTeams);
 
         return GoalDto.from(goal);
@@ -56,17 +56,21 @@ public class GoalService extends DateFormat {
         return goalRepository.save(goal);
     }
 
-    public List<GoalTeam> createGoalTeams(List<Long> goalTeamUserIds, Goal goal) {
+    public List<GoalTeam> createGoalTeams(List<Long> goalTeamUserIds, Long goalId) {
+        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
+                .orElseThrow(GoalException.GoalNotFoundException::new);
+
         List<GoalTeam> goalTeams = new ArrayList<>();
 
         for (Long goalTeamUser : goalTeamUserIds) {
+            // 유저 정보가 존재하는지 검증하는 exception은 pr #6 머지 후 리팩토링하면서 진행하겠습니다.
             final User user = userRepository.findById(goalTeamUser).orElseThrow(EntityNotFoundException::new);
-
             final GoalTeam goalTeam = GoalTeam.builder()
                     .user(user)
                     .goal(goal)
                     .build();
             final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
+
             goalTeams.add(persistGoalTeam);
         }
 

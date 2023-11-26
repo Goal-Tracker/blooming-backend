@@ -39,44 +39,18 @@ public class GoalTeam {
     private Goal goal;
 
     @Column(nullable = false)
-    private boolean isDeleted;
+    private boolean deleted;
 
     @Builder
     private GoalTeam(final User user, final Goal goal){
         this.user = user;
         this.goal = goal;
-        this.isDeleted = false;
+        this.deleted = false;
     }
 
-    public GoalTeam createGoalTeam(User user){
-        validateUserIsNotNull(user);
-        final GoalTeam goalTeam = GoalTeam.builder()
-                .user(user)
-                .build();
-
-        return goalTeam;
-    }
-
-    public void updateGoal(Goal goal){
-        validateGoalIsNotNull(goal);
-        this.goal = goal;
-    }
-
-    public void updateIsDeleted(){
-        if (isDeleted!=true){
-            this.isDeleted = true;
-        }
-    }
-
-    private void validateUserIsNotNull(User user){
-        if (user==null){
-            throw new IllegalArgumentException("사용자 정보가 없습니다.");
-        }
-    }
-
-    private void validateGoalIsNotNull(Goal goal){
-        if (goal==null) {
-            throw new IllegalArgumentException("골 정보가 없습니다.");
+    public void updateDeleted(){
+        if (!deleted){
+            this.deleted = true;
         }
     }
 }
