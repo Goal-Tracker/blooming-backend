@@ -29,11 +29,12 @@ public class GoalController {
         final GoalDto goalDto = goalService.createGoal(createGoalDto);
         final GoalResponse goalResponse = GoalResponse.from(goalDto);
 
-            return ResponseEntity.created(URI.create("/goals/"+response.goalId())).body(response);
-        } catch (ParseException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        } catch (IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+        return ResponseEntity.created(URI.create("/goals/" +goalResponse.goalId())).body(goalResponse);
+    }
+
+    @DeleteMapping(value = "/delete", headers = "X-API-VERSION=1")
+    public ResponseEntity<String> deleteGoal(@RequestPart @Valid GoalRequest request) {
+        goalService.deleteGoal(request);
+        return ResponseEntity.ok("삭제 완료되었습니다.");
     }
 }
