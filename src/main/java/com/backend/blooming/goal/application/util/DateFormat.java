@@ -1,5 +1,6 @@
 package com.backend.blooming.goal.application.util;
 
+import com.backend.blooming.goal.application.exception.DateFormatParseException;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.ParseException;
@@ -9,19 +10,15 @@ import java.util.Date;
 @Slf4j
 public class DateFormat {
 
-    public Date dateFormatter(String date){
-        SimpleDateFormat formatter;
-        Date dateFormatted = new Date();
+    public static Date dateFormatter(final String date) {
+        final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date dateFormatted;
 
-        try{
-            formatter = new SimpleDateFormat("yyyy-MM-dd");
+        try {
             dateFormatted = formatter.parse(date);
-
             return dateFormatted;
-        } catch (ParseException e) {
-            log.info("날짜 파싱 실패");
+        } catch (final ParseException exception) {
+            throw new DateFormatParseException();
         }
-
-        return dateFormatted;
     }
 }
