@@ -1,6 +1,5 @@
 package com.backend.blooming.goal.domain;
 
-
 import com.backend.blooming.goal.application.util.DateFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -10,6 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,10 +27,11 @@ import java.util.Date;
 import java.util.List;
 
 @Entity(name = "goal")
+@Table(name = "goal")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString
+@ToString(exclude = "goalTeams")
 @Slf4j
 public class Goal extends DateFormat {
 
@@ -46,16 +47,19 @@ public class Goal extends DateFormat {
     private String goalMemo;
 
     @Column(nullable = false)
-    private String goalStartDay;
+    private Date goalStartDay;
 
     @Column(nullable = false)
-    private String goalEndDay;
+    private Date goalEndDay;
 
     @Column(nullable = false)
     private int goalDays;
 
     @OneToMany(mappedBy = "goal", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GoalTeam> goalTeams = new ArrayList<>();
+
+    @Column(nullable = false)
+    private boolean isDeleted;
 
     @CreationTimestamp
     @Column(nullable = false, length = 20, updatable = false)
@@ -74,11 +78,10 @@ public class Goal extends DateFormat {
     private Goal(
             final String goalName,
             final String goalMemo,
-            final String goalStartDay,
-            final String goalEndDay,
-            final int goalDays,
-            List<GoalTeam> goalTeams
-    ) throws ParseException {
+            final Date goalStartDay,
+            final Date goalEndDay,
+            final int goalDays
+    ){
         this.goalName = goalName;
         this.goalMemo = goalMemo;
         validStartDay(goalStartDay);
@@ -88,18 +91,13 @@ public class Goal extends DateFormat {
         this.goalEndDay = goalEndDay;
         validGoalDays(goalDays);
         this.goalDays = goalDays;
-        validGoalTeams(goalTeams);
-        for (GoalTeam goalTeam:goalTeams){
-            this.addGoalTeam(goalTeam);
-        }
+        this.goalTeams = new ArrayList<>();
     }
 
     public boolean isGoalAvailable() {
-        final Date goalStartDate = dateFormatter(goalStartDay);
-        final Date goalEndDate = dateFormatter(goalEndDay);
         final Date nowDate = dateFormatter(LocalDate.now().toString());
 
-        if (nowDate.compareTo(goalStartDate)>0 && nowDate.compareTo(goalEndDate)>0) {
+        if (nowDate.compareTo(goalStartDay)>0 && nowDate.compareTo(goalEndDay)>0) {
             log.info("이미 종료된 골입니다.");
             throw new IllegalArgumentException();
         }
@@ -107,26 +105,26 @@ public class Goal extends DateFormat {
         return true;
     }
 
-    public void validStartDay(String goalStartDay) {
-        final Date goalStartDate = dateFormatter(goalStartDay);
+    public void updateGoalTeams(List<GoalTeam> goalTeams){
+        this.goalTeams = goalTeams;
+    }
+
+    public void validStartDay(Date goalStartDay) {
         final Date nowDate = dateFormatter(LocalDate.now().toString());
-        if (goalStartDate.compareTo(nowDate)<0){
+        if (goalStartDay.compareTo(nowDate)<0){
             throw new IllegalArgumentException("시작 날짜는 현재 날짜 이후여야합니다.");
         }
     }
 
-    public void validEndDay(String goalEndDay) {
-        final Date goalEndDate = dateFormatter(goalEndDay);
+    public void validEndDay(Date goalEndDay) {
         final Date nowDate = dateFormatter(LocalDate.now().toString());
-        if (nowDate.compareTo(goalEndDate)>0){
+        if (nowDate.compareTo(goalEndDay)>0){
             throw new IllegalArgumentException("종료 날짜는 현재 날짜 이후여야합니다.");
         }
     }
 
-    public void validGoal(String goalStartDay, String goalEndDay) throws ParseException {
-        final Date goalStartDate = dateFormatter(goalStartDay);
-        final Date goalEndDate = dateFormatter(goalEndDay);
-        if (goalStartDate.compareTo(goalEndDate)>0){
+    public void validGoal(Date goalStartDay, Date goalEndDay){
+        if (goalStartDay.compareTo(goalEndDay)>0){
             throw new IllegalArgumentException("시작 날짜는 종료 날짜보다 이전이어야합니다.");
         }
     }
@@ -137,9 +135,17 @@ public class Goal extends DateFormat {
         }
     }
 
-    public void validGoalTeams(List<GoalTeam> goalTeam) {
-        if (goalTeam.size()==0) {
-            throw new IllegalArgumentException("골 팀이 존재하지 않습니다.");
+    public List<Long> getGoalTeamIds(){
+        List<Long> goalTeamIds = new ArrayList<>();
+        for(GoalTeam goalTeam:goalTeams){
+            goalTeamIds.add(goalTeam.getUser().getId());
+        }
+        return goalTeamIds;
+    }
+
+    public void updateIsDeleted(){
+        if (!isDeleted){
+            this.isDeleted = true;
         }
     }
 }
