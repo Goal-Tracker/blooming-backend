@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.util.List;
 
-public record CreateGoalRequest(
+public record GoalRequest(
+        Long goalId,
+
         @JsonProperty("goalName")
         @NotEmpty(message = "제목을 입력해주세요.")
         String goalName,
@@ -26,6 +28,6 @@ public record CreateGoalRequest(
         int goalDays,
 
         @JsonProperty("goalTeamUserNames")
-        List<String> goalTeamUserIds
+        List<Long> goalTeamUserIds
 ) {
 }
