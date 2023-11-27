@@ -16,7 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class GoalServiceFixture extends DateFormat{
+public class GoalServiceFixture extends DateFormat {
 
     @Autowired
     private UserRepository userRepository;
@@ -50,11 +50,7 @@ public class GoalServiceFixture extends DateFormat{
                 .build();
 
         userRepository.save(유효한_사용자);
-
-        System.out.println(유효한_사용자.getId().toString());
-
         유효한_사용자_아이디 = 유효한_사용자.getId();
-
         골_팀에_등록된_사용자_아이디_목록.add(유효한_사용자_아이디);
 
         유효한_골_생성_dto = new CreateGoalDto(
@@ -86,11 +82,8 @@ public class GoalServiceFixture extends DateFormat{
                 .build();
 
         유효한_골_팀 = GoalTeam.builder().user(유효한_사용자).goal(유효한_골).build();
-
         골에_등록된_골_팀_목록.add(유효한_골_팀);
-
         유효한_골.updateGoalTeams(골에_등록된_골_팀_목록);
-
         골_팀에_등록된_사용자_아이디_목록 = 유효한_골.getGoalTeamIds();
     }
 }
