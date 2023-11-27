@@ -101,7 +101,7 @@ class GoalServiceTest extends GoalServiceFixture {
     }
 
     @Test
-    void 골_날짜가_유효하지_않은_경우_예외처리() {
+    void 골_날짜가_1_미만인_경우_예외를_발생한다() {
         // given
         final CreateGoalDto goalForDaysException = new CreateGoalDto(
                 골_아이디,
