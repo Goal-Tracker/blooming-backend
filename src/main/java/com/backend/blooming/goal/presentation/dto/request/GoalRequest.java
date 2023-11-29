@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public record GoalRequest(
+
+        @JsonProperty("goalId")
         Long goalId,
 
         @JsonProperty("goalName")
@@ -27,7 +29,7 @@ public record GoalRequest(
         @NotEmpty(message = "골 날짜 수를 선택해주세요.")
         int goalDays,
 
-        @JsonProperty("goalTeamUserNames")
+        @JsonProperty("goalTeamUserIds")
         List<Long> goalTeamUserIds
 ) {
 }

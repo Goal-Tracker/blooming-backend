@@ -24,7 +24,7 @@ public record GoalResponse(
         @JsonProperty("goalDays")
         int goalDays,
 
-        @JsonProperty("goalTeamUserNames")
+        @JsonProperty("goalTeamUserIds")
         List<Long> goalTeamUserIds
 ) {
         public static GoalResponse from(final GoalDto goalDto){
