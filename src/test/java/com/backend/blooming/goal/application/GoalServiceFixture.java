@@ -24,13 +24,13 @@ public class GoalServiceFixture extends DateFormat {
     protected String 사용자_oauth_아이디 = "아이디";
     protected String 사용자_이메일 = "test@gmail.com";
     protected String 사용자_이름 = "테스트";
-    protected Long 골_아이디 = 9999L;
+    protected Long 골_아이디 = 1L;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected String 골_시작일 = LocalDate.now().toString();
     protected String 골_종료일 = "2023-12-31";
     protected Date 골_시작일_date = dateFormatter(골_시작일);
-    protected Date 골_종료일_date = new Date(2023, 12, 31);
+    protected Date 골_종료일_date = dateFormatter(골_종료일);
     protected int 골_날짜수 = 40;
     protected User 유효한_사용자;
     protected Long 유효한_사용자_아이디;
