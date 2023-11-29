@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.application.exception.GoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
@@ -23,6 +24,7 @@ class GoalServiceTest extends GoalServiceFixture {
     @Test
     public void 골을_생성한다() {
         // when
+        final GoalDto goalDto = goalService.createGoal(유효한_골_생성_dto);
         final Goal result = goalService.persistGoal(유효한_골_생성_dto);
         final List<GoalTeam> goalTeamsResult = goalService.createGoalTeams(골_팀에_등록된_사용자_아이디_목록, result.getId());
         result.updateGoalTeams(goalTeamsResult);
@@ -35,6 +37,7 @@ class GoalServiceTest extends GoalServiceFixture {
         assertThat(result.getGoalEndDay()).isEqualTo(골_종료일);
         assertThat(result.getGoalDays()).isEqualTo(골_날짜수);
         assertThat(result.getGoalTeamIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
+        assertThat(goalDto).usingRecursiveComparison().isEqualTo(유효한_골_dto);
     }
 
     @Test
