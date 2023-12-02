@@ -34,7 +34,7 @@ class UserServiceTest extends UserServiceTestFixture {
     }
 
     @Test
-    void 삭사용자_조회시_제한_사용자_아이디라면_빈_optional을_반환한다() {
+    void 사용자_조회시_삭제한_사용자_아이디라면_빈_optional을_반환한다() {
         // when & then
         assertThatThrownBy(() -> userService.readById(삭제한_사용자_아아디))
                 .isInstanceOf(NotFoundUserException.class);

@@ -33,7 +33,7 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
     }
 
     @Test
-    void 존재하지_않는_oauth_아이디를_통해_사용자를_찾으면_반_optinal을_반환한다() {
+    void 존재하지_않는_oauth_아이디를_통해_사용자를_찾으면_빈_optinal을_반환한다() {
         // when
         final Optional<User> actual = userRepository.findByOAuthIdAndOAuthType(유효하지_않은_oAuth_아이디, 유효한_oAuth_타입);
 
