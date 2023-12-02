@@ -454,9 +454,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </ul>
 </li>
 <li><a href="#_사용자_정보">사용자 정보</a>
-<ul class="sectlevel3">
-<li><a href="#_요청_3">요청</a></li>
-<li><a href="#_응답_3">응답</a></li>
+<ul class="sectlevel2">
+<li><a href="#_사용자_정보_조회">사용자 정보 조회</a></li>
 <li><a href="#_사용자_정보_수정">사용자 정보 수정</a></li>
 </ul>
 </li>
@@ -521,8 +520,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="_요청"><a class="link" href="#_요청">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /auth/login/oauth/kakao HTTP/1.1
-Content-Type: application/json
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /auth/login/oauth/kakao HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 
 {
@@ -644,8 +643,8 @@ Content-Type: application/json
 <h4 id="_요청_2"><a class="link" href="#_요청_2">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /auth/reissue HTTP/1.1
-Content-Type: application/json
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /auth/reissue HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 
 {
@@ -739,6 +738,8 @@ Content-Type: application/json
 <div class="sect1">
 <h2 id="_사용자_정보"><a class="link" href="#_사용자_정보">사용자 정보</a></h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_사용자_정보_조회"><a class="link" href="#_사용자_정보_조회">사용자 정보 조회</a></h3>
 <div class="sect3">
 <h4 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h4>
 <div class="listingblock">
@@ -841,6 +842,7 @@ Content-Type: application/json
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect2">
 <h3 id="_사용자_정보_수정"><a class="link" href="#_사용자_정보_수정">사용자 정보 수정</a></h3>
 <div class="sect3">
@@ -848,7 +850,7 @@ Content-Type: application/json
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /user HTTP/1.1
-Content-Type: application/json
+Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
 
@@ -1075,7 +1077,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-11-19 04:08:20 +0900
+Last updated 2023-12-02 14:31:46 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
