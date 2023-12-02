@@ -7,8 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public record JwtPropertiesConfiguration(
         String accessTokenKey,
         String refreshTokenKey,
-        Long accessExpireHour,
-        Long refreshExpireHour
+        Long accessTokenExpireHour,
+        Long refreshTokenExpireHour
 ) {
 
     public String findTokenKey(final TokenType tokenType) {
@@ -21,9 +21,9 @@ public record JwtPropertiesConfiguration(
 
     public Long findTokenExpireHour(final TokenType tokenType) {
         if (TokenType.ACCESS.equals(tokenType)) {
-            return accessExpireHour;
+            return accessTokenExpireHour;
         }
 
-        return refreshExpireHour;
+        return refreshTokenExpireHour;
     }
 }
