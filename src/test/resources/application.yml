@@ -23,5 +23,5 @@ oauth:
 jwt:
   access-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
   refresh-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
-  access-expire-hour: 12
-  refresh-expire-hour: 1440
+  access-token-expire-hour: 12
+  refresh-token-expire-hour: 1440

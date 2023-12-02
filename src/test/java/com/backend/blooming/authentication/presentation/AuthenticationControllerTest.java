@@ -27,7 +27,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -68,7 +68,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
         given(authenticationService.login(oauth_타입, 소셜_액세스_토큰)).willReturn(소셜_로그인_사용자_정보);
 
         // when & then
-        mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
+        mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
@@ -97,7 +97,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
         given(authenticationService.login(oauth_타입, 소셜_액세스_토큰)).willReturn(소셜_로그인_기존_사용자_정보);
 
         // when & then
-        mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
+        mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
@@ -116,7 +116,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .willThrow(new OAuthException.InvalidAuthorizationTokenException());
 
         // when & then
-        mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
+        mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(유효하지_않은_소셜_로그인_정보))
@@ -133,7 +133,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .willThrow(new OAuthException.KakaoServerUnavailableException());
 
         // when & then
-        mockMvc.perform(get("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
+        mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(소셜_로그인_정보))
@@ -149,7 +149,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
         given(authenticationService.reissueAccessToken(서비스_refresh_token)).willReturn(서비스_토큰_정보);
 
         // when & then
-        mockMvc.perform(get("/auth/reissue")
+        mockMvc.perform(post("/auth/reissue")
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(access_token_재발급_요청))
@@ -176,7 +176,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .willThrow(new InvalidTokenException());
 
         // when & then
-        mockMvc.perform(get("/auth/reissue")
+        mockMvc.perform(post("/auth/reissue")
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(access_token_재발급_요청))
@@ -193,7 +193,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .willThrow(new UnauthorizedAccessTokenException());
 
         // when & then
-        mockMvc.perform(get("/auth/reissue")
+        mockMvc.perform(post("/auth/reissue")
                 .header("X-API-VERSION", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(access_token_재발급_요청))
