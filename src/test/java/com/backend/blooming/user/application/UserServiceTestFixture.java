@@ -22,14 +22,14 @@ public class UserServiceTestFixture {
     protected Long 존재하지_않는_사용자_아아디 = 9999L;
 
     protected String 수정한_이름 = "수정한 이름";
-    protected String 수정한_테마_색상 = "BLUE";
+    protected ThemeColor 수정한_테마_색상 = ThemeColor.BLUE;
     protected String 수정한_상태_메시지 = "수정한 상태 메시지";
     protected String 기존_이름;
-    protected String 기존_테마_색상;
+    protected ThemeColor 기존_테마_색상;
     protected String 기존_상태_메시지;
-    protected UpdateUserDto 모든_사용자_정보를_수정한_dto = new UpdateUserDto(수정한_이름, 수정한_테마_색상, 수정한_상태_메시지);
+    protected UpdateUserDto 모든_사용자_정보를_수정한_dto = new UpdateUserDto(수정한_이름, 수정한_테마_색상.name(), 수정한_상태_메시지);
     protected UpdateUserDto 이름만_수정한_dto = new UpdateUserDto(수정한_이름, null, null);
-    protected UpdateUserDto 테마_색상만_수정한_dto = new UpdateUserDto(null, 수정한_테마_색상, null);
+    protected UpdateUserDto 테마_색상만_수정한_dto = new UpdateUserDto(null, 수정한_테마_색상.name(), null);
     protected UpdateUserDto 상태_메시지만_수정한_dto = new UpdateUserDto(null, null, 수정한_상태_메시지);
 
     @BeforeEach
@@ -55,7 +55,7 @@ public class UserServiceTestFixture {
         사용자_아이디 = 사용자.getId();
         삭제한_사용자_아아디 = 삭제한_사용자.getId();
         기존_이름 = 사용자.getName();
-        기존_테마_색상 = 사용자.getColor().name();
+        기존_테마_색상 = 사용자.getColor();
         기존_상태_메시지 = 사용자.getStatusMessage();
     }
 }

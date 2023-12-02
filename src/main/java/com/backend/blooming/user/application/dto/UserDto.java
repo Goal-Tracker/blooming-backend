@@ -1,5 +1,6 @@
 package com.backend.blooming.user.application.dto;
 
+import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 
 public record UserDto(
@@ -19,8 +20,16 @@ public record UserDto(
                 user.getOAuthType().name(),
                 user.getEmail(),
                 user.getName(),
-                user.getColor().name(),
+                processColorCode(user.getColor()),
                 user.getStatusMessage()
         );
+    }
+
+    private static String processColorCode(final ThemeColor color) {
+        if (color == null) {
+            return null;
+        }
+
+        return color.getCode();
     }
 }

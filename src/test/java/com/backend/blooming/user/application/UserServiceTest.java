@@ -55,7 +55,7 @@ class UserServiceTest extends UserServiceTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
-            softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상);
+            softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
         });
     }
@@ -68,7 +68,7 @@ class UserServiceTest extends UserServiceTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
-            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
         });
     }
@@ -81,7 +81,7 @@ class UserServiceTest extends UserServiceTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
-            softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상);
+            softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
         });
     }
@@ -94,13 +94,14 @@ class UserServiceTest extends UserServiceTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
-            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
         });
     }
 
     @Test
     void 사용자_정보_수정시_존재하지_않는_사용자라면_예외를_반환한다() {
+        // when & then
         assertThatThrownBy(() -> userService.updateById(존재하지_않는_사용자_아아디, 모든_사용자_정보를_수정한_dto))
                 .isInstanceOf(NotFoundUserException.class);
     }

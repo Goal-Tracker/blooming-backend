@@ -1,7 +1,9 @@
 package com.backend.blooming.themecolor.domain;
 
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
+import lombok.Getter;
 
+@Getter
 public enum ThemeColor {
 
     BEIGE("f5f1f0"),
@@ -34,9 +36,5 @@ public enum ThemeColor {
         } catch (final IllegalArgumentException exception) {
             throw new UnsupportedThemeColorException();
         }
-    }
-
-    public String getCode() {
-        return code;
     }
 }

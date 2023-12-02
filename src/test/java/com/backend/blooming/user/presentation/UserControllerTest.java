@@ -104,7 +104,7 @@ class UserControllerTest extends UserControllerTestFixture {
                         fieldWithPath("oAuthType").type(JsonFieldType.STRING).description("소셜 타입"),
                         fieldWithPath("email").type(JsonFieldType.STRING).description("사용자 이메일"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
-                        fieldWithPath("color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                        fieldWithPath("color").type(JsonFieldType.STRING).description("사용자 테마 색상 코드"),
                         fieldWithPath("statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지")
                 )
         ));
@@ -146,9 +146,9 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.oAuthId", is(사용자_정보_dto.oAuthId())),
                 jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
                 jsonPath("$.email", is(사용자_정보_dto.email())),
-                jsonPath("$.name", is(사용자의_모든_정보_수정_dto.name())),
-                jsonPath("$.color", is(사용자의_모든_정보_수정_dto.color())),
-                jsonPath("$.statusMessage", is(사용자의_모든_정보_수정_dto.statusMessage()))
+                jsonPath("$.name", is(모든_정보가_수정된_사용자_정보_dto.name())),
+                jsonPath("$.color", is(모든_정보가_수정된_사용자_정보_dto.color())),
+                jsonPath("$.statusMessage", is(모든_정보가_수정된_사용자_정보_dto.statusMessage()))
         ).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
@@ -191,7 +191,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.oAuthType", is(사용자_정보_dto.oAuthType())),
                 jsonPath("$.email", is(사용자_정보_dto.email())),
                 jsonPath("$.name", is(사용자_정보_dto.name())),
-                jsonPath("$.color", is(사용자의_테마_색상만_수정_dto.color())),
+                jsonPath("$.color", is(테마_색상만_수정된_사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
         );
     }
