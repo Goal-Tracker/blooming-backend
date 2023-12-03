@@ -22,9 +22,9 @@ public class AuthenticationServiceTestFixture {
     protected OAuthType oauth_타입 = OAuthType.KAKAO;
     protected String 소셜_액세스_토큰 = "social_access_token";
     protected UserInformationDto 첫_로그인_사용자_소셜_정보 =
-            new KakaoUserInformationDto("12345", "test@email.com");
+            new KakaoUserInformationDto("12345", new KakaoUserInformationDto.KakaoAccount("test@email.com"));
     protected UserInformationDto 기존_사용자_소셜_정보 =
-            new KakaoUserInformationDto("12346", "test2@email.com");
+            new KakaoUserInformationDto("12346", new KakaoUserInformationDto.KakaoAccount("test2@email.com"));
     protected String 유효한_refresh_token;
     protected String 존재하지_않는_사용자의_refresh_token;
     protected String 유효하지_않는_refresh_token = "Bearer invalid_refresh_token";

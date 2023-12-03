@@ -37,6 +37,7 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OAuthType oAuthType;
 
+    @Column(nullable = false)
     private String email;
 
     @Column(unique = true)
