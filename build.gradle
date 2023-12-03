@@ -29,6 +29,7 @@ repositories {
 dependencies {
 	// h2
 	runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
