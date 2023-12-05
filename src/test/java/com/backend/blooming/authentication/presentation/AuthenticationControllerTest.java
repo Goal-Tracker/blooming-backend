@@ -18,7 +18,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -47,9 +46,6 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    AuthenticationController authenticationController;
-
     @MockBean
     AuthenticationService authenticationService;
 
@@ -58,9 +54,6 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
     @Autowired
     RestDocumentationResultHandler restDocs;
-
-    @Autowired
-    RestDocumentationContextProvider restDocumentation;
 
     @Test
     void oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다() throws Exception {

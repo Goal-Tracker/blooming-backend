@@ -2,8 +2,6 @@ package com.backend.blooming.themecolor.presentation;
 
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
-import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
-import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.themecolor.application.ThemeColorService;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -16,7 +14,6 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -41,26 +38,14 @@ class ThemeColorControllerTest extends ThemeColorControllerTestFixture {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    ThemeColorController themeColorController;
-
     @MockBean
     ThemeColorService themeColorService;
-
-    @Autowired
-    AuthenticationArgumentResolver authenticationArgumentResolver;
-
-    @Autowired
-    AuthenticationInterceptor authenticationInterceptor;
 
     @Autowired
     ObjectMapper objectMapper;
 
     @Autowired
     RestDocumentationResultHandler restDocs;
-
-    @Autowired
-    RestDocumentationContextProvider restDocumentation;
 
     @Test
     void 전체_테마_색상_목록을_조회한다() throws Exception {

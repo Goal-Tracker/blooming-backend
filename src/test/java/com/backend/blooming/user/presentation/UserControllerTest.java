@@ -2,8 +2,6 @@ package com.backend.blooming.user.presentation;
 
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
-import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticationArgumentResolver;
-import com.backend.blooming.authentication.presentation.interceptor.AuthenticationInterceptor;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.user.application.UserService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -19,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -46,17 +43,8 @@ class UserControllerTest extends UserControllerTestFixture {
     @Autowired
     MockMvc mockMvc;
 
-    @Autowired
-    UserController userController;
-
     @MockBean
     UserService userService;
-
-    @Autowired
-    AuthenticationArgumentResolver authenticationArgumentResolver;
-
-    @Autowired
-    AuthenticationInterceptor authenticationInterceptor;
 
     @MockBean
     UserRepository userRepository;
@@ -69,9 +57,6 @@ class UserControllerTest extends UserControllerTestFixture {
 
     @Autowired
     RestDocumentationResultHandler restDocs;
-
-    @Autowired
-    RestDocumentationContextProvider restDocumentation;
 
     @Test
     void 사용자_정보를_조회한다() throws Exception {
