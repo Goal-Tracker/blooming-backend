@@ -4,8 +4,6 @@ import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -38,8 +36,7 @@ public class Friend extends BaseTimeEntity {
     private User requestedUser;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status = Status.REQUEST;
+    private boolean isFriends = false;
 
     public Friend(final User requestUser, final User requestedUser) {
         this.requestUser = requestUser;
