@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/theme-color")
+@RequestMapping("/theme-colors")
 @RequiredArgsConstructor
 public class ThemeColorController {
 

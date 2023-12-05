@@ -81,7 +81,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.readById(사용자_아이디)).willReturn(사용자_정보_dto);
 
         // when & then
-        mockMvc.perform(get("/user")
+        mockMvc.perform(get("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -118,7 +118,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.readById(사용자_아이디)).willThrow(new NotFoundUserException());
 
         // when & then
-        mockMvc.perform(get("/user")
+        mockMvc.perform(get("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -135,7 +135,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto)).willReturn(모든_정보가_수정된_사용자_정보_dto);
 
         // when & then
-        mockMvc.perform(patch("/user")
+        mockMvc.perform(patch("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -179,7 +179,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.updateById(사용자_아이디, 사용자의_테마_색상만_수정_dto)).willReturn(테마_색상만_수정된_사용자_정보_dto);
 
         // when & then
-        mockMvc.perform(patch("/user")
+        mockMvc.perform(patch("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -204,7 +204,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.updateById(사용자_아이디, 사용자의_상태_메시지만_수정_dto)).willReturn(상태_메시지만_수정된_사용자_정보_dto);
 
         // when & then
-        mockMvc.perform(patch("/user")
+        mockMvc.perform(patch("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -229,7 +229,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(userService.updateById(사용자_아이디, 사용자의_이름만_수정_dto)).willReturn(이름만_수정된_사용자_정보_dto);
 
         // when & then
-        mockMvc.perform(patch("/user")
+        mockMvc.perform(patch("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -256,7 +256,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 .willThrow(new NotFoundUserException());
 
         // when & then
-        mockMvc.perform(patch("/user")
+        mockMvc.perform(patch("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)

@@ -68,7 +68,7 @@ class ThemeColorControllerTest extends ThemeColorControllerTestFixture {
         given(themeColorService.readAll()).willReturn(테마_색상_목록_dto);
 
         // when & then
-        mockMvc.perform(get("/theme-color")
+        mockMvc.perform(get("/theme-colors")
                 .header("X-API-VERSION", 1)
         ).andExpectAll(
                 status().isOk(),
