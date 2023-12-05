@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.exception.InvalidToken
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.exception.dto.ExceptionResponse;
+import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
@@ -102,6 +103,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyRequestedFriendException.class)
+    public ResponseEntity<ExceptionResponse> handleAlreadyRequestedFriendException(
+            final AlreadyRequestedFriendException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }
