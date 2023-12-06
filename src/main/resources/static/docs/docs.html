@@ -744,7 +744,7 @@ Content-Type: application/json
 <h4 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /user HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /users HTTP/1.1
 X-API-VERSION: 1
 Authorization: Bearer access_token</code></pre>
 </div>
@@ -785,7 +785,7 @@ Content-Type: application/json
   "oAuthType" : "KAKAO",
   "email" : "test@email.com",
   "name" : "사용자",
-  "color" : "BEIGE",
+  "color" : "#96b0e5",
   "statusMessage" : "반갑습니다."
 }</code></pre>
 </div>
@@ -832,7 +832,7 @@ Content-Type: application/json
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 테마 색상</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 테마 색상 코드</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>statusMessage</code></p></td>
@@ -849,7 +849,7 @@ Content-Type: application/json
 <h4 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /user HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /users HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
@@ -928,7 +928,7 @@ Content-Type: application/json
   "oAuthType" : "KAKAO",
   "email" : "test@email.com",
   "name" : "수정한 이름",
-  "color" : "BLUE",
+  "color" : "#96b0e5",
   "statusMessage" : "수정한 상태 메시지"
 }</code></pre>
 </div>
@@ -997,7 +997,7 @@ Content-Type: application/json
 <h4 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /theme-color HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /theme-colors HTTP/1.1
 X-API-VERSION: 1</code></pre>
 </div>
 </div>
@@ -1077,7 +1077,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-12-02 14:31:46 +0900
+Last updated 2023-12-06 09:45:16 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
