@@ -42,4 +42,4 @@ jobs:
 
       - name: build and analyze
         run: |
-          ./gradlew build jacocoTestReport sonar
+          ./gradlew build jacocoTestCoverage sonar
