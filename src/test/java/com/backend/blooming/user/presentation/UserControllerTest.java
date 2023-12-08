@@ -96,6 +96,22 @@ class UserControllerTest extends UserControllerTestFixture {
     }
 
     @Test
+    void 사용자_정보_조회시_존재하지_않는_사용자라면_400을_반환한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(false);
+
+        // when & then
+        mockMvc.perform(get("/users")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isUnauthorized(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
     void 사용자_정보_조회시_존재하지_않는_사용자라면_404를_반환한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);

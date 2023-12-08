@@ -2,7 +2,6 @@ package com.backend.blooming.authentication.application;
 
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
@@ -91,7 +90,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     void 존재하지_않는_사용자의_refresh_token으로_access_token_재발행시_예외를_반환한다() {
         // when & then
         assertThatThrownBy(() -> authenticationService.reissueAccessToken(존재하지_않는_사용자의_refresh_token))
-                .isInstanceOf(UnauthorizedAccessTokenException.class);
+                .isInstanceOf(InvalidTokenException.class);
     }
 
     @Test

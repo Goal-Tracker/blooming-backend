@@ -1,7 +1,6 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
@@ -174,7 +173,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(access_token_재발급_요청))
         ).andExpectAll(
-                status().isBadRequest(),
+                status().isUnauthorized(),
                 jsonPath("$.message").exists()
         );
     }
@@ -183,7 +182,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     void 존재하지_않는_사용자의_refresh_token을_통해_access_token을_재발행시_401을_반환한다() throws Exception {
         // given
         given(authenticationService.reissueAccessToken(서비스_refresh_token))
-                .willThrow(new UnauthorizedAccessTokenException());
+                .willThrow(new InvalidTokenException());
 
         // when & then
         mockMvc.perform(post("/auth/reissue")

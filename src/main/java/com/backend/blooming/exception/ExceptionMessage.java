@@ -14,7 +14,6 @@ public enum ExceptionMessage {
     INVALID_TOKEN("유효하지 않은 토큰입니다."),
     WRONG_TOKEN_TYPE("Bearer 타입의 토큰이 아닙니다."),
     EXPIRED_TOKEN("기한이 만료된 토큰입니다."),
-    UNAUTHORIZED_ACCESS_TOKEN("권한이 없는 사용자입니다."),
     UNSUPPORTED_OAUTH_TYPE("지원하지 않는 소셜 로그인 방식입니다."),
 
     // 사용자 정보

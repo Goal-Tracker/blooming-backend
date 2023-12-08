@@ -3,8 +3,8 @@ package com.backend.blooming.authentication.application;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.LoginUserInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
-import com.backend.blooming.authentication.application.exception.UnauthorizedAccessTokenException;
 import com.backend.blooming.authentication.application.util.OAuthClientComposite;
+import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
@@ -81,7 +81,7 @@ public class AuthenticationService {
 
     private void validateUser(final Long userId) {
         if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
-            throw new UnauthorizedAccessTokenException();
+            throw new InvalidTokenException();
         }
     }
 }
