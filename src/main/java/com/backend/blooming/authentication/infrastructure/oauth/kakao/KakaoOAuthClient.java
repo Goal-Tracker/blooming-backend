@@ -44,8 +44,6 @@ public class KakaoOAuthClient implements OAuthClient {
                     KakaoUserInformationDto.class
             );
 
-            System.out.println(response.getBody());
-
             return response.getBody();
         } catch (final HttpClientErrorException exception) {
             throw new OAuthException.InvalidAuthorizationTokenException();
