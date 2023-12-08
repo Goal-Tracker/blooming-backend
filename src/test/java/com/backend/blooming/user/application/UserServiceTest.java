@@ -29,7 +29,27 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.id()).isPositive();
             softAssertions.assertThat(actual.oAuthId()).isEqualTo(사용자.getOAuthId());
             softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
+            softAssertions.assertThat(actual.email()).isEqualTo(사용자.getEmail());
             softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
+            softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColor().getCode());
+            softAssertions.assertThat(actual.statusMessage()).isEqualTo(사용자.getStatusMessage());
+        });
+    }
+
+    @Test
+    void 사용자_조회시_테마_색상과_상태_메시지를_설정하기_전이라면_각각_null을_반환한다() {
+        // when
+        final UserDto actual = userService.readById(테마_색상을_설정하지_않은_사용자_아이디);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.id()).isPositive();
+            softAssertions.assertThat(actual.oAuthId()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthId());
+            softAssertions.assertThat(actual.oAuthType()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthType().name());
+            softAssertions.assertThat(actual.email()).isEqualTo(테마_색상을_설정하지_않은_사용자.getEmail());
+            softAssertions.assertThat(actual.name()).isEqualTo(테마_색상을_설정하지_않은_사용자.getName());
+            softAssertions.assertThat(actual.color()).isNull();
+            softAssertions.assertThat(actual.statusMessage()).isNull();
         });
     }
 
