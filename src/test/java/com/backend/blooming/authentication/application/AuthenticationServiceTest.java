@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -62,6 +63,13 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
             softAssertions.assertThat(actual.token().refreshToken()).isNotEmpty();
             softAssertions.assertThat(actual.isSignUp()).isFalse();
         });
+    }
+
+    @Test
+    void 로그인시_oauth_타입이_null인_경우_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.login(null, 소셜_액세스_토큰))
+                .isInstanceOf(UnsupportedOAuthTypeException.class);
     }
 
     @Test
