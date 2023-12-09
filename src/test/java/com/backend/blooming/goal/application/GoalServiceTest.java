@@ -60,21 +60,21 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
     @Test
     void 골_종료날짜가_현재보다_이전인_경우_예외를_발생한다() {
-        // when, then
+        // when & then
         assertThatThrownBy(() -> goalService.createGoal(골_종료날짜가_현재보다_이전인_골_생성_dto))
                 .isInstanceOf(GoalException.InvalidGoalEndDay.class);
     }
 
     @Test
     void 골_종료날짜가_시작날짜보다_이전인_경우_예외를_발생한다() {
-        // when, then
+        // when & then
         assertThatThrownBy(() -> goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
                 .isInstanceOf(GoalException.InvalidGoalPeriod.class);
     }
 
     @Test
     void 골_날짜가_1_미만인_경우_예외를_발생한다() {
-        // when, then
+        // when & then
         assertThatThrownBy(() -> goalService.createGoal(골_날짜가_1_미만인_골_생성_dto))
                 .isInstanceOf(GoalException.InvalidGoalDays.class);
     }
