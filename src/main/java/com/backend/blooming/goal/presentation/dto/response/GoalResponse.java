@@ -2,6 +2,7 @@ package com.backend.blooming.goal.presentation.dto.response;
 
 import com.backend.blooming.goal.application.dto.GoalDto;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.List;
 
@@ -15,9 +16,11 @@ public record GoalResponse(
         @JsonProperty("goalMemo")
         String goalMemo,
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         @JsonProperty("goalStartDay")
         String goalStartDay,
 
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
         @JsonProperty("goalEndDay")
         String goalEndDay,
 
