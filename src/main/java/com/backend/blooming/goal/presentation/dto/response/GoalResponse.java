@@ -27,15 +27,16 @@ public record GoalResponse(
         @JsonProperty("goalTeamUserIds")
         List<Long> goalTeamUserIds
 ) {
-        public static GoalResponse from(final GoalDto goalDto){
-                return new GoalResponse(
-                        goalDto.goalId(),
-                        goalDto.goalName(),
-                        goalDto.goalMemo(),
-                        goalDto.goalStartDay().toString(),
-                        goalDto.goalEndDay().toString(),
-                        goalDto.goalDays(),
-                        goalDto.goalTeamUserIds()
-                );
-        }
+
+    public static GoalResponse from(final GoalDto goalDto) {
+        return new GoalResponse(
+                goalDto.goalId(),
+                goalDto.goalName(),
+                goalDto.goalMemo(),
+                goalDto.goalStartDay().toString(),
+                goalDto.goalEndDay().toString(),
+                goalDto.goalDays(),
+                goalDto.goalTeamUserIds()
+        );
+    }
 }

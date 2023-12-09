@@ -2,19 +2,24 @@ package com.backend.blooming.goal.application.dto;
 
 import com.backend.blooming.goal.domain.Goal;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public record GoalDto(
         Long goalId,
         String goalName,
         String goalMemo,
-        Date goalStartDay,
-        Date goalEndDay,
+        LocalDate goalStartDay,
+        LocalDate goalEndDay,
         int goalDays,
         List<Long> goalTeamUserIds
 ) {
+
     public static GoalDto from(final Goal goal) {
+        final List<Long> goalTeamUserIds = new ArrayList<>();
+        goal.getGoalTeams().forEach(goalTeam -> goalTeamUserIds.add(goalTeam.getUser().getId()));
+
         return new GoalDto(
                 goal.getId(),
                 goal.getGoalName(),
@@ -22,6 +27,7 @@ public record GoalDto(
                 goal.getGoalStartDay(),
                 goal.getGoalEndDay(),
                 goal.getGoalDays(),
-                goal.getGoalTeamIds());
+                goalTeamUserIds
+        );
     }
 }

@@ -1,6 +1,5 @@
 package com.backend.blooming.goal.domain;
 
-import com.backend.blooming.goal.application.util.DateFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,7 +8,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -22,17 +20,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-@Entity(name = "goal")
-@Table(name = "goal")
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = "goalTeams")
 @Slf4j
-public class Goal extends DateFormat {
+public class Goal {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +42,10 @@ public class Goal extends DateFormat {
     private String goalMemo;
 
     @Column(nullable = false)
-    private Date goalStartDay;
+    private LocalDate goalStartDay;
 
     @Column(nullable = false)
-    private Date goalEndDay;
+    private LocalDate goalEndDay;
 
     @Column(nullable = false)
     private int goalDays;
@@ -58,7 +54,7 @@ public class Goal extends DateFormat {
     private List<GoalTeam> goalTeams = new ArrayList<>();
 
     @Column(nullable = false)
-    private boolean deleted;
+    private boolean deleted = false;
 
     @CreationTimestamp
     @Column(nullable = false, length = 20, updatable = false)
@@ -72,10 +68,10 @@ public class Goal extends DateFormat {
     private Goal(
             final String goalName,
             final String goalMemo,
-            final Date goalStartDay,
-            final Date goalEndDay,
+            final LocalDate goalStartDay,
+            final LocalDate goalEndDay,
             final int goalDays
-    ){
+    ) {
         this.goalName = goalName;
         this.goalMemo = goalMemo;
         this.goalStartDay = goalStartDay;
@@ -84,32 +80,11 @@ public class Goal extends DateFormat {
         this.goalTeams = new ArrayList<>();
     }
 
-    public boolean isGoalAvailable() {
-        final Date nowDate = dateFormatter(LocalDate.now().toString());
-
-        if (nowDate.compareTo(goalStartDay)>0 && nowDate.compareTo(goalEndDay)>0) {
-            log.info("이미 종료된 골입니다.");
-            throw new IllegalArgumentException();
-        }
-
-        return true;
-    }
-
-    public void updateGoalTeams(List<GoalTeam> goalTeams){
+    public void updateGoalTeams(List<GoalTeam> goalTeams) {
         this.goalTeams = goalTeams;
     }
 
-    public List<Long> getGoalTeamIds(){
-        List<Long> goalTeamIds = new ArrayList<>();
-        for(GoalTeam goalTeam:goalTeams){
-            goalTeamIds.add(goalTeam.getUser().getId());
-        }
-        return goalTeamIds;
-    }
-
-    public void updateIsDeleted(){
-        if (!deleted){
-            this.deleted = true;
-        }
+    public void updateDeleted() {
+        this.deleted = true;
     }
 }

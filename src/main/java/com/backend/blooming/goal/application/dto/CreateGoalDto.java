@@ -13,7 +13,8 @@ public record CreateGoalDto(
         int goalDays,
         List<Long> goalTeamUserIds
 ) {
-    public static CreateGoalDto from(final GoalRequest request){
+
+    public static CreateGoalDto from(final GoalRequest request) {
         return new CreateGoalDto(
                 request.goalId(),
                 request.goalName(),

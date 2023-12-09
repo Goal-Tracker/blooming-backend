@@ -3,12 +3,10 @@ package com.backend.blooming.goal.application;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.application.exception.GoalException;
-import com.backend.blooming.goal.application.util.DateFormat;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
-import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -18,13 +16,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
+@Transactional
 @RequiredArgsConstructor
-public class GoalService extends DateFormat {
+public class GoalService {
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
@@ -38,37 +35,34 @@ public class GoalService extends DateFormat {
         return GoalDto.from(goal);
     }
 
-    public Goal persistGoal(CreateGoalDto createGoalDto) {
-        final Date goalStartDay = dateFormatter(createGoalDto.goalStartDay());
-        final Date goalEndDay = dateFormatter(createGoalDto.goalEndDay());
+    private Goal persistGoal(CreateGoalDto createGoalDto) {
+        final LocalDate goalStartDay = LocalDate.parse(createGoalDto.goalStartDay());
+        final LocalDate goalEndDay = LocalDate.parse(createGoalDto.goalEndDay());
 
         validateGoalDatePeriod(goalStartDay, goalEndDay);
         validateGoalDays(createGoalDto.goalDays());
 
         final Goal goal = Goal.builder()
-                .goalName(createGoalDto.goalName())
-                .goalMemo(createGoalDto.goalMemo())
-                .goalStartDay(goalStartDay)
-                .goalEndDay(goalEndDay)
-                .goalDays(createGoalDto.goalDays())
-                .build();
+                              .goalName(createGoalDto.goalName())
+                              .goalMemo(createGoalDto.goalMemo())
+                              .goalStartDay(goalStartDay)
+                              .goalEndDay(goalEndDay)
+                              .goalDays(createGoalDto.goalDays())
+                              .build();
 
         return goalRepository.save(goal);
     }
 
     public List<GoalTeam> createGoalTeams(List<Long> goalTeamUserIds, Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                .orElseThrow(GoalException.GoalNotFoundException::new);
+                                        .orElseThrow(GoalException.GoalNotFoundException::new);
 
         List<GoalTeam> goalTeams = new ArrayList<>();
 
         for (Long goalTeamUser : goalTeamUserIds) {
             // 유저 정보가 존재하는지 검증하는 exception은 pr #6 머지 후 리팩토링하면서 진행하겠습니다.
             final User user = userRepository.findById(goalTeamUser).orElseThrow(EntityNotFoundException::new);
-            final GoalTeam goalTeam = GoalTeam.builder()
-                    .user(user)
-                    .goal(goal)
-                    .build();
+            final GoalTeam goalTeam = new GoalTeam(user, goal);
             final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
 
             goalTeams.add(persistGoalTeam);
@@ -77,14 +71,14 @@ public class GoalService extends DateFormat {
         return goalTeams;
     }
 
-    public void validateGoalDatePeriod(Date goalStartDay, Date goalEndDay) {
-        final Date localDate = dateFormatter(String.valueOf(LocalDate.now()));
+    public void validateGoalDatePeriod(LocalDate goalStartDay, LocalDate goalEndDay) {
+        final LocalDate nowDate = LocalDate.now();
 
-        if (goalStartDay.compareTo(localDate) < 0) {
+        if (goalStartDay.isBefore(nowDate)) {
             throw new GoalException.InvalidGoalStartDay();
-        } else if (goalEndDay.compareTo(localDate) < 0) {
+        } else if (goalEndDay.isBefore(nowDate)) {
             throw new GoalException.InvalidGoalEndDay();
-        } else if (goalEndDay.compareTo(goalStartDay) < 0) {
+        } else if (goalEndDay.isBefore(goalStartDay)) {
             throw new GoalException.InvalidGoalPeriod();
         }
     }
@@ -93,22 +87,5 @@ public class GoalService extends DateFormat {
         if (goalDays < 1) {
             throw new GoalException.InvalidGoalDays();
         }
-    }
-
-    public void deleteGoal(GoalRequest request) {
-        List<GoalTeam> goalTeams;
-//        final Goal goal = goalRepository.findById(request.id())
-//                .orElseThrow(() -> new NotFoundGoalException("골을 조회할 수 없습니다."));
-//        if (goal.isDeleted() != true) {
-//            goal.updateIsDeleted();
-//        }
-//        if (goal.getGoalTeams().size() != 0) {
-//            goalTeams = goal.getGoalTeams();
-//            for (GoalTeam goalTeam : goalTeams) {
-//                if (goalTeam.isDeleted() != true) {
-//                    goalTeam.updateIsDeleted();
-//                }
-//            }
-//        }
     }
 }
