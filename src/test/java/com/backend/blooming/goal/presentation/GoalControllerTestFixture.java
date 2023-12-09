@@ -15,6 +15,8 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GoalControllerTestFixture {
+
+    protected Long 골_아이디 = 1L;
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
     protected GoalDto 유효한_골_dto;
@@ -23,7 +25,6 @@ public class GoalControllerTestFixture {
 
     @BeforeEach
     void setUp() {
-        Long 골_아이디 = 1L;
         String 골_제목 = "골 제목";
         String 골_메모 = "골 메모";
         LocalDate 골_시작일 = LocalDate.now();

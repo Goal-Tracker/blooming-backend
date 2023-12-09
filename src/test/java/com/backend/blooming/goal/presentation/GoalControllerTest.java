@@ -17,13 +17,17 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -44,7 +48,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
     GoalService goalService;
 
     @Test
-    public void 골_생성을_요청하면_생성된_골의_정보를_반환한다() throws Exception {
+    void 골_생성을_요청하면_생성된_골의_정보를_반환한다() throws Exception {
         // given
         given(goalService.createGoal(유효한_골_생성_dto)).willReturn(유효한_골_dto);
 
@@ -56,8 +60,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         ).andExpectAll(
                 redirectedUrl("/goals/" + 응답한_골_dto.goalId()),
                 status().isCreated()
-        ).andDo(document(
-                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")).toString(),
+        ).andDo(document("goal-add",
+                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")),
                 requestFields(
                         fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
                         fieldWithPath("goalName").type(JsonFieldType.STRING).description("골 제목"),
@@ -76,6 +80,22 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("goalDays").type(JsonFieldType.NUMBER).description("골 날짜 수"),
                         fieldWithPath("goalTeamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
                 )
+        ));
+    }
+
+    @Test
+    void 요청한_골_아이디에_해당하는_골을_삭제한다() throws Exception {
+        // given
+        willDoNothing().given(goalService).deleteGoal(골_아이디);
+
+        // when & then
+        mockMvc.perform(delete("/goals/{goalId}", 골_아이디)
+                .header("X-API-VERSION", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpectAll(status().isNoContent()
+        ).andDo(document("goals-delete",
+                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")),
+                pathParameters(parameterWithName("goalId").description("삭제할 골 ID"))
         ));
     }
 }
