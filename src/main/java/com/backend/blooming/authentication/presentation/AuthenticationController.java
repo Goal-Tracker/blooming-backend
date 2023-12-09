@@ -37,7 +37,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/reissue", headers = "X-API-VERSION=1")
-    public ResponseEntity<TokenResponse> ReissueAccessToken(@RequestBody ReissueAccessTokenRequest reissueRequest) {
+    public ResponseEntity<TokenResponse> reissueAccessToken(@RequestBody ReissueAccessTokenRequest reissueRequest) {
         final TokenDto tokenDto = authenticationService.reissueAccessToken(reissueRequest.refreshToken());
 
         return ResponseEntity.ok(TokenResponse.from(tokenDto));
