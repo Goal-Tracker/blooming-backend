@@ -42,7 +42,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     public void 골_팀을_생성한다() {
         // when
-        final List<GoalTeam> result = goalService.createGoalTeams(골_팀에_등록된_사용자_아이디_목록, 골_아이디);
+        final List<GoalTeam> result = goalService.createGoalTeams(골_팀에_등록된_사용자_아이디_목록, 유효한_골_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -77,5 +77,14 @@ class GoalServiceTest extends GoalServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> goalService.createGoal(골_날짜가_1_미만인_골_생성_dto))
                 .isInstanceOf(GoalException.InvalidGoalDays.class);
+    }
+
+    @Test
+    void 요청받은_골의_아이디에_해당하는_골을_삭제한다(){
+        // when & then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThatCode(() -> goalService.deleteGoal(유효한_골_아이디)).doesNotThrowAnyException();
+            softAssertions.assertThatThrownBy(() -> goalService.deleteGoal(유효하지_않은_골_아이디)).isInstanceOf(GoalException.GoalNotFoundException.class);
+        });
     }
 }
