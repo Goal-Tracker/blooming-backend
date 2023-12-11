@@ -22,7 +22,7 @@ public class FriendServiceTestFixture {
     protected Long 존재하지_않는_사용자_아이디 = 9999L;
     protected Long 사용자_아이디;
     protected Long 친구_요청할_사용자_아이디;
-    protected Long 이미_친구인_사용자_아이디;
+    protected Long 이미_친구_요청한_사용자;
 
     @BeforeEach
     void setUpFixture() {
@@ -48,7 +48,7 @@ public class FriendServiceTestFixture {
 
         사용자_아이디 = 사용자.getId();
         친구_요청할_사용자_아이디 = 친구_요청할_사용자.getId();
-        이미_친구인_사용자_아이디 = 이미_친구인_사용자.getId();
+        이미_친구_요청한_사용자 = 이미_친구인_사용자.getId();
 
         final Friend 친구 = new Friend(사용자, 이미_친구인_사용자);
         friendRepository.save(친구);

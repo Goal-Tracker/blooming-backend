@@ -22,7 +22,7 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
     @Test
     void 요청한_사용자와_요청받은_사용자가_동일한_데이터가_있다면_참을_반환한다() {
         // when
-        final boolean actual = friendRepository.existsByRequestUserIdAndRequestedUserId(
+        final boolean actual = friendRepository.existsByRequestFriend(
                 친구_요청한_사용자.getId(),
                 이미_친구_요청_받은_사용자.getId()
         );
@@ -32,9 +32,21 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
     }
 
     @Test
+    void 요청한_사용자와_요청받은_사용자가_반대인_데이터가_있다면_참을_반환한다() {
+        // when
+        final boolean actual = friendRepository.existsByRequestFriend(
+                이미_친구_요청_받은_사용자.getId(),
+                친구_요청한_사용자.getId()
+        );
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
     void 요청한_사용자와_요청받은_사용자가_동일한_데이터가_없다면_거짓을_반환한다() {
         // when
-        final boolean actual = friendRepository.existsByRequestUserIdAndRequestedUserId(
+        final boolean actual = friendRepository.existsByRequestFriend(
                 친구_요청한_사용자.getId(),
                 친구_요청을_받은적_없는_사용자.getId()
         );

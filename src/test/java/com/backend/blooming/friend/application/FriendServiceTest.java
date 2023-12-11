@@ -43,9 +43,16 @@ class FriendServiceTest extends FriendServiceTestFixture {
     }
 
     @Test
-    void 이미_친구인_사용자에게_다시_친구_요청할_경우_예외가_발생한다() {
+    void 이미_친구_요청을_보낸_사용자에게_다시_친구_요청할_경우_예외가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.create(사용자_아이디, 이미_친구인_사용자_아이디))
+        assertThatThrownBy(() -> friendService.create(사용자_아이디, 이미_친구_요청한_사용자))
+                .isInstanceOf(AlreadyRequestedFriendException.class);
+    }
+
+    @Test
+    void 이미_친구_요청이_온_사용자에게_친구_요청할_경우_예외가_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> friendService.create(이미_친구_요청한_사용자, 사용자_아이디))
                 .isInstanceOf(AlreadyRequestedFriendException.class);
     }
 }

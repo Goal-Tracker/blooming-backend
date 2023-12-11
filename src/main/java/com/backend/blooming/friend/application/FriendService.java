@@ -30,7 +30,7 @@ public class FriendService {
     }
 
     private void validateFriendStatus(final Long userId, final Long friendId) {
-        if (friendRepository.existsByRequestUserIdAndRequestedUserId(userId, friendId)) {
+        if (friendRepository.existsByRequestFriend(userId, friendId)) {
             throw new AlreadyRequestedFriendException();
         }
     }
