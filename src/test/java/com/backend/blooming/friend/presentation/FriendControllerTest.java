@@ -52,13 +52,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
     TokenProvider tokenProvider;
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
     RestDocumentationResultHandler restDocs;
-
-    @Autowired
-    RestDocumentationContextProvider restDocumentation;
 
     @Test
     void 친구_요청한다() throws Exception {
@@ -68,7 +62,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         given(friendService.create(사용자_아이디, 친구_요청_사용자_아이디)).willReturn(친구_요청_아이디);
 
         // when & then
-        mockMvc.perform(post("/friends/add/{requestedUserId}", 친구_요청_사용자_아이디)
+        mockMvc.perform(post("/friends/request/{requestedUserId}", 친구_요청_사용자_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -95,7 +89,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         given(friendService.create(사용자_아이디, 존재하지_않는_사용자_아이다)).willThrow(new NotFoundUserException());
 
         // when & then
-        mockMvc.perform(post("/friends/add/{requestedUserId}", 존재하지_않는_사용자_아이다)
+        mockMvc.perform(post("/friends/request/{requestedUserId}", 존재하지_않는_사용자_아이다)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -112,7 +106,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         given(friendService.create(사용자_아이디, 이미_친구인_사용자_아이디)).willThrow(new AlreadyRequestedFriendException());
 
         // when & then
-        mockMvc.perform(post("/friends/add/{requestedUserId}", 이미_친구인_사용자_아이디)
+        mockMvc.perform(post("/friends/request/{requestedUserId}", 이미_친구인_사용자_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
