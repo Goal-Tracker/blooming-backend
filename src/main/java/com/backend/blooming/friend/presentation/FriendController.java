@@ -19,8 +19,8 @@ public class FriendController {
 
     private final FriendService friendService;
 
-    @PostMapping(value = "/request/{requestedUserId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<Void> create(
+    @PostMapping(value = "/{requestedUserId}", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> request(
             @Authenticated AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestedUserId
     ) {
