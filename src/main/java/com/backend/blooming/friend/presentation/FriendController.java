@@ -24,7 +24,7 @@ public class FriendController {
             @Authenticated AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestedUserId
     ) {
-        friendService.create(authenticatedUser.userId(), requestedUserId);
+        friendService.request(authenticatedUser.userId(), requestedUserId);
 
         return ResponseEntity.created(URI.create("/temp-url"))
                              .build();

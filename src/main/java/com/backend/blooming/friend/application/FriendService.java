@@ -18,7 +18,7 @@ public class FriendService {
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
 
-    public Long create(final Long userId, final Long friendId) {
+    public Long request(final Long userId, final Long friendId) {
         validateFriendStatus(userId, friendId);
 
         final User user = findUser(userId);

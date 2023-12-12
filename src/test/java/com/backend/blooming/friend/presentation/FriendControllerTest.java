@@ -7,7 +7,6 @@ import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,7 +16,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpHeaders;
-import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -59,7 +57,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(friendService.create(사용자_아이디, 친구_요청_사용자_아이디)).willReturn(친구_요청_아이디);
+        given(friendService.request(사용자_아이디, 친구_요청_사용자_아이디)).willReturn(친구_요청_아이디);
 
         // when & then
         mockMvc.perform(post("/friends/request/{requestedUserId}", 친구_요청_사용자_아이디)
@@ -86,7 +84,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(friendService.create(사용자_아이디, 존재하지_않는_사용자_아이다)).willThrow(new NotFoundUserException());
+        given(friendService.request(사용자_아이디, 존재하지_않는_사용자_아이다)).willThrow(new NotFoundUserException());
 
         // when & then
         mockMvc.perform(post("/friends/request/{requestedUserId}", 존재하지_않는_사용자_아이다)
@@ -103,7 +101,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(friendService.create(사용자_아이디, 이미_친구인_사용자_아이디)).willThrow(new AlreadyRequestedFriendException());
+        given(friendService.request(사용자_아이디, 이미_친구인_사용자_아이디)).willThrow(new AlreadyRequestedFriendException());
 
         // when & then
         mockMvc.perform(post("/friends/request/{requestedUserId}", 이미_친구인_사용자_아이디)

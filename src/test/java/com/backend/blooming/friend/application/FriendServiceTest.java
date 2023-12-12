@@ -22,7 +22,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 친구를_요청한다() {
         // when
-        final Long actual = friendService.create(사용자_아이디, 친구_요청할_사용자_아이디);
+        final Long actual = friendService.request(사용자_아이디, 친구_요청할_사용자_아이디);
 
         // then
         assertThat(actual).isPositive();
@@ -31,28 +31,28 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 존재하지_않는_사용자로_친구를_요청하는_경우_예외가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.create(존재하지_않는_사용자_아이디, 친구_요청할_사용자_아이디))
+        assertThatThrownBy(() -> friendService.request(존재하지_않는_사용자_아이디, 친구_요청할_사용자_아이디))
                 .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
     void 존재하지_않는_사용자를_친구로_요청하는_경우_예외가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.create(사용자_아이디, 존재하지_않는_사용자_아이디))
+        assertThatThrownBy(() -> friendService.request(사용자_아이디, 존재하지_않는_사용자_아이디))
                 .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
     void 이미_친구_요청을_보낸_사용자에게_다시_친구_요청할_경우_예외가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.create(사용자_아이디, 이미_친구_요청한_사용자))
+        assertThatThrownBy(() -> friendService.request(사용자_아이디, 이미_친구_요청한_사용자))
                 .isInstanceOf(AlreadyRequestedFriendException.class);
     }
 
     @Test
     void 이미_친구_요청이_온_사용자에게_친구_요청할_경우_예외가_발생한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.create(이미_친구_요청한_사용자, 사용자_아이디))
+        assertThatThrownBy(() -> friendService.request(이미_친구_요청한_사용자, 사용자_아이디))
                 .isInstanceOf(AlreadyRequestedFriendException.class);
     }
 }
