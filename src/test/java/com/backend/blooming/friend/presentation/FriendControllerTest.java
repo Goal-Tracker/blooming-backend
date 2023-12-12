@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -19,14 +20,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -55,25 +56,21 @@ class FriendControllerTest extends FriendControllerTestFixture {
     @Test
     void 친구_요청한다() throws Exception {
         // given
-        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
-        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(friendService.request(사용자_아이디, 친구_요청_사용자_아이디)).willReturn(친구_요청_아이디);
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(친구_요청을_받은_사용자_아이디)).willReturn(true);
+        given(friendService.request(친구_요청을_받은_사용자_아이디, 친구_요청을_받은_사용자_아이디)).willReturn(친구_요청_아이디);
 
         // when & then
-        mockMvc.perform(post("/friends/{requestedUserId}", 친구_요청_사용자_아이디)
+        mockMvc.perform(post("/friends/{requestedUserId}", 친구_요청을_받은_사용자_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
-                status().isCreated(),
-                header().string(HttpHeaders.LOCATION, is("/temp-url"))
+                status().isNoContent()
         ).andDo(print()).andDo(
                 restDocs.document(
                         requestHeaders(
                                 headerWithName("X-API-VERSION").description("요청 버전"),
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
-                        ),
-                        responseHeaders(
-                                headerWithName(HttpHeaders.LOCATION).description("redirect url")
                         )
                 )
         );
@@ -111,5 +108,46 @@ class FriendControllerTest extends FriendControllerTestFixture {
                 status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
+    }
+
+    @Test
+    void 친구_요청을_수락한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(친구_요청을_받은_사용자_아이디)).willReturn(true);
+        willDoNothing().given(friendService).acceptFriend(친구_요청을_받은_사용자_아이디, 친구를_요청한_사용자_아이디);
+
+        // when & then
+        mockMvc.perform(patch("/friends/{requestUserId}", 친구를_요청한_사용자_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNoContent()
+        ).andDo(print()).andDo(
+                restDocs.document(
+                        requestHeaders(
+                                headerWithName("X-API-VERSION").description("요청 버전"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                        )
+                )
+        );
+    }
+
+    @Test
+    void 친구_요청_수락시_존재하지_않는_요청이라면_404_예외를_발생시킨다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(친구_요청을_받은_사용자_아이디)).willReturn(true);
+        willThrow(new NotFoundFriendRequestException())
+                .given(friendService).acceptFriend(친구_요청을_받은_사용자_아이디, 친구_요청을_하지_않는_사용자_아이디);
+
+        // when & then
+        mockMvc.perform(patch("/friends/{requestUserId}", 친구_요청을_하지_않는_사용자_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        );
     }
 }

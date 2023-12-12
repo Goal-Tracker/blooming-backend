@@ -6,11 +6,10 @@ import com.backend.blooming.friend.application.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.net.URI;
 
 @Controller
 @RequestMapping("/friends")
@@ -26,7 +25,18 @@ public class FriendController {
     ) {
         friendService.request(authenticatedUser.userId(), requestedUserId);
 
-        return ResponseEntity.created(URI.create("/temp-url"))
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
+    @PatchMapping(value = "/{requestUserId}", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> accept(
+            @Authenticated AuthenticatedUser authenticatedUser,
+            @PathVariable final Long requestUserId
+    ) {
+        friendService.acceptFriend(authenticatedUser.userId(), requestUserId);
+
+        return ResponseEntity.noContent()
                              .build();
     }
 }
