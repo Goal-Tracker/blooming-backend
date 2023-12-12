@@ -26,6 +26,7 @@ public class FriendRepositoryTestFixture {
     protected User 친구_요청한_사용자;
     protected User 이미_친구_요청_받은_사용자;
     protected User 친구_요청을_받은적_없는_사용자;
+    protected Friend 친구_요청;
 
     @BeforeEach
     void setUpFixture() {
@@ -49,7 +50,7 @@ public class FriendRepositoryTestFixture {
                                 .build();
         userRepository.saveAll(List.of(친구_요청한_사용자, 이미_친구_요청_받은_사용자, 친구_요청을_받은적_없는_사용자));
 
-        final Friend 친구_요청 = new Friend(친구_요청한_사용자, 이미_친구_요청_받은_사용자);
+        친구_요청 = new Friend(친구_요청한_사용자, 이미_친구_요청_받은_사용자);
         friendRepository.save(친구_요청);
 
         em.flush();

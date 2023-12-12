@@ -23,7 +23,9 @@ public enum ExceptionMessage {
     UNSUPPORTED_THEME_COLOR("지원하지 않는 테마 색상입니다."),
 
     // 친구
-    ALREADY_REQUESTED_FRIEND("이미 친구를 요청한 사용자입니다.");
+    ALREADY_REQUESTED_FRIEND("이미 친구를 요청한 사용자입니다."),
+    NOT_FOUND_FRIEND_REQUEST("해당 친구 요청을 조회할 수 없습니다.")
+    ;
 
     private final String message;
 }

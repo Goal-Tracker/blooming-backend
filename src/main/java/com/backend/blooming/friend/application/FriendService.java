@@ -1,6 +1,7 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -38,5 +39,11 @@ public class FriendService {
     private User findUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
+    }
+
+    public void acceptFriend(final Long userId, final Long friendId) {
+        final Friend friend = friendRepository.findByRequestUserIdAndRequestedUserId(friendId, userId)
+                                              .orElseThrow(NotFoundFriendRequestException::new);
+        friend.acceptRequest();
     }
 }
