@@ -29,12 +29,12 @@ public class FriendController {
                              .build();
     }
 
-    @PatchMapping(value = "/{requestUserId}", headers = "X-API-VERSION=1")
+    @PatchMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> accept(
             @Authenticated AuthenticatedUser authenticatedUser,
-            @PathVariable final Long requestUserId
+            @PathVariable final Long requestId
     ) {
-        friendService.acceptFriend(authenticatedUser.userId(), requestUserId);
+        friendService.acceptFriend(authenticatedUser.userId(), requestId);
 
         return ResponseEntity.noContent()
                              .build();

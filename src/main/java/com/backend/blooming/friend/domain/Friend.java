@@ -43,6 +43,9 @@ public class Friend extends BaseTimeEntity {
         this.requestedUser = requestedUser;
     }
 
+    public boolean isRequestedUser(final User user) {
+        return this.requestedUser.equals(user);
+    }
 
     public void acceptRequest() {
         this.isFriends = true;

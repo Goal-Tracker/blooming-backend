@@ -15,6 +15,5 @@ public class FriendControllerTestFixture {
     protected Long 친구_요청_아이디 = 1L;
     protected Long 존재하지_않는_사용자_아이다 = 9999L;
     protected Long 이미_친구인_사용자_아이디 = 3L;
-    protected Long 친구를_요청한_사용자_아이디 = 사용자_아이디;
-    protected Long 친구_요청을_하지_않는_사용자_아이디 = 3L;
+    protected Long 존재하지_않는_친구_요청_아이디 = 9999L;
 }

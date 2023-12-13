@@ -23,7 +23,9 @@ public class FriendServiceTestFixture {
     protected Long 사용자_아이디;
     protected Long 아직_친구_요청_전의_사용자_아이디;
     protected Long 이미_친구_요청을_받은_사용자_아이디;
-    protected Friend 친구;
+    protected Long 친구_요청_아이디;
+    protected Long 존재하지_않는_친구_요청_아이디 = 9999L;
+    protected Long 친구_요청을_받지_않은_사용자_아이디;
 
     @BeforeEach
     void setUpFixture() {
@@ -50,8 +52,11 @@ public class FriendServiceTestFixture {
         사용자_아이디 = 사용자.getId();
         아직_친구_요청_전의_사용자_아이디 = 친구_요청할_사용자.getId();
         이미_친구_요청을_받은_사용자_아이디 = 이미_친구_요청을_받은_사용자.getId();
+        친구_요청을_받지_않은_사용자_아이디 = 사용자_아이디;
 
-        친구 = new Friend(사용자, 이미_친구_요청을_받은_사용자);
+        final Friend 친구 = new Friend(사용자, 이미_친구_요청을_받은_사용자);
         friendRepository.save(친구);
+
+        친구_요청_아이디 = 친구.getId();
     }
 }

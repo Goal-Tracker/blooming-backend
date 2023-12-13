@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.infrastructure.exception.OAuthExcepti
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.exception.dto.ExceptionResponse;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -124,6 +125,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(FriendAcceptanceForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleFriendAcceptanceForbiddenException(
+            final FriendAcceptanceForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }
