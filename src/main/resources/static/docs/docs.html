@@ -467,6 +467,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_친구">친구</a>
 <ul class="sectlevel2">
 <li><a href="#_친구_요청">친구 요청</a></li>
+<li><a href="#_친구_요청_수락">친구 요청 수락</a></li>
 </ul>
 </li>
 </ul>
@@ -749,7 +750,7 @@ Content-Type: application/json
 <h4 id="_요청_3"><a class="link" href="#_요청_3">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /user HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /users HTTP/1.1
 X-API-VERSION: 1
 Authorization: Bearer access_token</code></pre>
 </div>
@@ -854,7 +855,7 @@ Content-Type: application/json
 <h4 id="_요청_4"><a class="link" href="#_요청_4">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /user HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /users HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
@@ -1002,7 +1003,7 @@ Content-Type: application/json
 <h4 id="_요청_5"><a class="link" href="#_요청_5">요청</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /theme-color HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /theme-colors HTTP/1.1
 X-API-VERSION: 1</code></pre>
 </div>
 </div>
@@ -1120,8 +1121,20 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <h4 id="_응답_6"><a class="link" href="#_응답_6">응답</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: /temp-url</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_친구_요청_수락"><a class="link" href="#_친구_요청_수락">친구 요청 수락</a></h3>
+<div class="sect3">
+<h4 id="_요청_7"><a class="link" href="#_요청_7">요청</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /friends/1 HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -1137,11 +1150,23 @@ Location: /temp-url</code></pre>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Location</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">redirect url</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect3">
+<h4 id="_응답_7"><a class="link" href="#_응답_7">응답</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -1150,7 +1175,7 @@ Location: /temp-url</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2023-12-11 20:40:47 +0900
+Last updated 2023-12-13 20:41:48 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

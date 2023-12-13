@@ -78,4 +78,10 @@ include::{snippets}/friend-controller-test/친구_요청한다/http-request.adoc
 include::{snippets}/friend-controller-test/친구_요청한다/request-headers.adoc[]
 ==== 응답
 include::{snippets}/friend-controller-test/친구_요청한다/http-response.adoc[]
-include::{snippets}/friend-controller-test/친구_요청한다/response-headers.adoc[]
+
+=== 친구 요청 수락
+==== 요청
+include::{snippets}/friend-controller-test/친구_요청을_수락한다/http-request.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_수락한다/request-headers.adoc[]
+==== 응답
+include::{snippets}/friend-controller-test/친구_요청을_수락한다/http-response.adoc[]
