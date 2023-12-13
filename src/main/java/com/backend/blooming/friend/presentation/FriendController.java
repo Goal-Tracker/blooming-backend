@@ -34,7 +34,7 @@ public class FriendController {
             @Authenticated AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestId
     ) {
-        friendService.acceptFriend(authenticatedUser.userId(), requestId);
+        friendService.accept(authenticatedUser.userId(), requestId);
 
         return ResponseEntity.noContent()
                              .build();

@@ -69,7 +69,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 친구_요청을_수락한다() {
         // when
-        friendService.acceptFriend(이미_친구_요청을_받은_사용자_아이디, 친구_요청_아이디);
+        friendService.accept(이미_친구_요청을_받은_사용자_아이디, 친구_요청_아이디);
 
         // then
         final Optional<Friend> actual = friendRepository.findById(친구_요청_아이디);
@@ -82,14 +82,14 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 친구_요청_수락시_해당_요청이_존재하지_않는_경우_예외를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.acceptFriend(사용자_아이디, 존재하지_않는_친구_요청_아이디))
+        assertThatThrownBy(() -> friendService.accept(사용자_아이디, 존재하지_않는_친구_요청_아이디))
                 .isInstanceOf(NotFoundFriendRequestException.class);
     }
 
     @Test
     void 친구_요청_수락시_사용자가_해당_요청의_받는이가_아닌_경우_예외를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> friendService.acceptFriend(친구_요청을_받지_않은_사용자_아이디, 친구_요청_아이디))
+        assertThatThrownBy(() -> friendService.accept(친구_요청을_받지_않은_사용자_아이디, 친구_요청_아이디))
                 .isInstanceOf(FriendAcceptanceForbiddenException.class);
     }
 }

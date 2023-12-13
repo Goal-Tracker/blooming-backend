@@ -42,7 +42,7 @@ public class FriendService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    public void acceptFriend(final Long userId, final Long requestId) {
+    public void accept(final Long userId, final Long requestId) {
         final User user = userRepository.findByIdAndDeletedIsFalse(userId)
                                         .orElseThrow(NotFoundUserException::new);
         final Friend friend = friendRepository.findById(requestId)

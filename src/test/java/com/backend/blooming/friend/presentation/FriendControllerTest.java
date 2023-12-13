@@ -118,7 +118,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(친구_요청을_받은_사용자_아이디)).willReturn(true);
-        willDoNothing().given(friendService).acceptFriend(친구_요청을_받은_사용자_아이디, 친구_요청_아이디);
+        willDoNothing().given(friendService).accept(친구_요청을_받은_사용자_아이디, 친구_요청_아이디);
 
         // when & then
         mockMvc.perform(patch("/friends/{requestId}", 친구_요청_아이디)
@@ -143,7 +143,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(친구_요청을_받은_사용자_아이디)).willReturn(true);
         willThrow(new NotFoundFriendRequestException())
-                .given(friendService).acceptFriend(친구_요청을_받은_사용자_아이디, 존재하지_않는_친구_요청_아이디);
+                .given(friendService).accept(친구_요청을_받은_사용자_아이디, 존재하지_않는_친구_요청_아이디);
 
         // when & then
         mockMvc.perform(patch("/friends/{requestUserId}", 존재하지_않는_친구_요청_아이디)
