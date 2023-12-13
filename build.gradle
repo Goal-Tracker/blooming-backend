@@ -31,12 +31,18 @@ repositories {
 dependencies {
 	// h2
 	runtimeOnly 'com.h2database:h2'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	// mysql
 	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	// jpa
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// jwt
+	implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.2'
 
 	// lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -53,6 +59,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 }
 
 ext {

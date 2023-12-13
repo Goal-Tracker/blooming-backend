@@ -1,36 +1,107 @@
 package com.backend.blooming.exception;
 
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.extern.slf4j.Slf4j;
+import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
+import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
+import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
+import com.backend.blooming.exception.dto.ExceptionResponse;
+import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-@Slf4j
-public class GlobalExceptionHandler {
+@RestControllerAdvice
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final String LOG_MESSAGE_FORMAT = "%s : %s";
-    public static final String ERROR_EXCEPTION = "javax.servlet.error.exception";
-    public static final String ERROR_EXCEPTION_TYPE = "javax.servlet.error.exception_type";
-    public static final String ERROR_MESSAGE = "javax.servlet.error.message";
-    public static final String ERROR_REQUEST_URI = "javax.servlet.error.request_uri";
-    public static final String ERROR_SERVLET_NAME = "javax.servlet.error.servlet_name";
-    public static final String ERROR_STATUS_CODE = "javax.servlet.error.status_code";
+    private static final int METHOD_ARGUMENT_FIRST_ERROR_INDEX = 0;
 
-    public void errorPage404(HttpServletRequest request) {
-        log.info("error 404");
-        printErrorInfo(request);
+    @ExceptionHandler(Exception.class)
+    private ResponseEntity<ExceptionResponse> handleException(Exception exception) {
+        logger.error(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                             .body(new ExceptionResponse("예상치 못한 문제가 발생했습니다."));
     }
 
-    public void errorPage500(HttpServletRequest request) {
-        log.info("error 500");
-        printErrorInfo(request);
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            final MethodArgumentNotValidException exception,
+            final HttpHeaders ignoredHeaders,
+            final HttpStatusCode ignoredStatus,
+            final WebRequest ignoredRequest
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        final String message = exception.getFieldErrors().get(METHOD_ARGUMENT_FIRST_ERROR_INDEX).getDefaultMessage();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(message));
     }
 
-    private void printErrorInfo(HttpServletRequest request) {
-        log.info("ERROR_EXCEPTION = {}", request.getAttribute(ERROR_EXCEPTION));
-        log.info("ERROR_EXCEPTION_TYPE = {}", request.getAttribute(ERROR_EXCEPTION_TYPE));
-        log.info("ERROR_MESSAGE = {}", request.getAttribute(ERROR_MESSAGE));
-        log.info("ERROR_REQUEST_URI = {}", request.getAttribute(ERROR_REQUEST_URI));
-        log.info("ERROR_SERVLET_NAME = {}", request.getAttribute(ERROR_SERVLET_NAME));
-        log.info("ERROR_STATUS_CODE = {}", request.getAttribute(ERROR_STATUS_CODE));
-        log.info("dispatcherType = {}", request.getDispatcherType());
+    @ExceptionHandler(OAuthException.InvalidAuthorizationTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidAuthorizationTokenExceptionException(
+            final OAuthException.InvalidAuthorizationTokenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(OAuthException.KakaoServerUnavailableException.class)
+    public ResponseEntity<ExceptionResponse> handleKakaoServerExceptionException(
+            final OAuthException.KakaoServerUnavailableException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidTokenExceptionException(
+            final InvalidTokenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UnsupportedOAuthTypeException.class)
+    public ResponseEntity<ExceptionResponse> handleUnsupportedOAuthTypeException(
+            final UnsupportedOAuthTypeException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UnsupportedThemeColorException.class)
+    public ResponseEntity<ExceptionResponse> handleUnsupportedThemeColorException(
+            final UnsupportedThemeColorException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundUserException(
+            final NotFoundUserException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
     }
 }
