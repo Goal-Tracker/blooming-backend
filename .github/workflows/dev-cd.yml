@@ -13,7 +13,7 @@ jobs:
       - name: checkout branch
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.SUBMODULE_TOKEN }}
           submodules: true
 
       - name: set up JDK 17
