@@ -16,4 +16,6 @@ public class FriendControllerTestFixture {
     protected Long 존재하지_않는_사용자_아이다 = 9999L;
     protected Long 이미_친구인_사용자_아이디 = 3L;
     protected Long 존재하지_않는_친구_요청_아이디 = 9999L;
+    protected Long 친구_요청을_받지_않은_사용자_아이디 = 4L;
+    protected AuthClaims 친구_요청을_받지_않은_사용자_토큰_정보 = new AuthClaims(친구_요청을_받지_않은_사용자_아이디);
 }
