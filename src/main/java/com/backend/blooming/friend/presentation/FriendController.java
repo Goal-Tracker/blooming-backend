@@ -6,6 +6,7 @@ import com.backend.blooming.friend.application.FriendService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,6 +36,17 @@ public class FriendController {
             @PathVariable final Long requestId
     ) {
         friendService.accept(authenticatedUser.userId(), requestId);
+
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
+    @DeleteMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> delete(
+            @Authenticated AuthenticatedUser authenticatedUser,
+            @PathVariable final Long requestId
+    ) {
+        friendService.delete(authenticatedUser.userId(), requestId);
 
         return ResponseEntity.noContent()
                              .build();
