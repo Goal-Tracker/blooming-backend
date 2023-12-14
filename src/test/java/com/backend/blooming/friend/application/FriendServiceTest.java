@@ -2,6 +2,7 @@ package com.backend.blooming.friend.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
@@ -91,5 +92,36 @@ class FriendServiceTest extends FriendServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> friendService.accept(친구_요청을_받지_않은_사용자_아이디, 친구_요청_아이디))
                 .isInstanceOf(FriendAcceptanceForbiddenException.class);
+    }
+
+    @Test
+    void 친구_요청을_삭제한다() {
+        // when
+        friendService.delete(사용자_아이디, 친구_요청_아이디);
+
+        // then
+        final Optional<Friend> actual = friendRepository.findById(친구_요청_아이디);
+        assertThat(actual).isEmpty();
+    }
+
+    @Test
+    void 친구_요청_삭제시_존재하지_않는_사용자라면_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> friendService.delete(존재하지_않는_사용자_아이디, 친구_요청_아이디))
+                .isInstanceOf(NotFoundUserException.class);
+    }
+
+    @Test
+    void 친구_요쳥_삭제시_존재하지_않는_요청이라면_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> friendService.delete(사용자_아이디, 존재하지_않는_친구_요청_아이디))
+                .isInstanceOf(NotFoundFriendRequestException.class);
+    }
+
+    @Test
+    void 친구_요청_삭제시_요청하거나_요청_받은_사용자가_아니라면_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> friendService.delete(친구_요청을_받지_않은_사용자_아이디, 친구_요청_아이디))
+                .isInstanceOf(DeleteFriendForbiddenException.class);
     }
 }

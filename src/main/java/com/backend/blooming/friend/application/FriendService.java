@@ -1,6 +1,7 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
@@ -55,6 +56,22 @@ public class FriendService {
     private void validateRequestedUser(final User user, final Friend friend) {
         if (!friend.isRequestedUser(user)) {
             throw new FriendAcceptanceForbiddenException();
+        }
+    }
+
+    public void delete(final Long userId, final Long requestId) {
+        final User user = userRepository.findByIdAndDeletedIsFalse(userId)
+                                        .orElseThrow(NotFoundUserException::new);
+        final Friend friend = friendRepository.findById(requestId)
+                                              .orElseThrow(NotFoundFriendRequestException::new);
+        validateCanDelete(user, friend);
+
+        friendRepository.delete(friend);
+    }
+
+    private void validateCanDelete(final User user, final Friend friend) {
+        if (!friend.isOneOfFriends(user)) {
+            throw new DeleteFriendForbiddenException();
         }
     }
 }
