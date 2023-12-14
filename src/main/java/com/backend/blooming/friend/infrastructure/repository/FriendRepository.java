@@ -4,6 +4,8 @@ import com.backend.blooming.friend.domain.Friend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface FriendRepository extends JpaRepository<Friend, Long> {
 
     @Query("""
@@ -15,4 +17,12 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
                 ) as exist
             """)
     boolean existsByRequestFriend(final Long requestUserId, final Long requestedUserId);
+
+    @Query("""
+        SELECT f
+        FROM Friend f
+        JOIN FETCH f.requestedUser
+        WHERE f.requestUser.id = :userId
+    """)
+    List<Friend> findAllByRequestUserId(final Long userId);
 }

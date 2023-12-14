@@ -1,6 +1,7 @@
 package com.backend.blooming.friend.infrastructure.repository;
 
 import com.backend.blooming.configuration.JpaConfiguration;
+import com.backend.blooming.friend.domain.Friend;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -8,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaTest
 @Import(JpaConfiguration.class)
@@ -53,5 +57,17 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
 
         // then
         assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 해당_사용자가_친구_요청한_모든_사용자_목록을_조회한다() {
+        // when
+        final List<Friend> actual = friendRepository.findAllByRequestUserId(친구_요청한_사용자.getId());
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual).hasSize(3);
+            softAssertions.assertThat(actual).containsAll(List.of(친구_요청, 친구_요청2, 친구_요청3));
+        });
     }
 }

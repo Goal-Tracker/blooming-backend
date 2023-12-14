@@ -1,5 +1,6 @@
 package com.backend.blooming.friend.application;
 
+import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
@@ -12,6 +13,8 @@ import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -41,6 +44,12 @@ public class FriendService {
     private User findUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
+    }
+
+    public ReadFriendsDto readAllByRequestId(final Long userId) {
+        final List<Friend> requestUsers = friendRepository.findAllByRequestUserId(userId);
+
+        return ReadFriendsDto.from(requestUsers);
     }
 
     public void accept(final Long userId, final Long requestId) {

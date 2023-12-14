@@ -1,6 +1,7 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
@@ -8,7 +9,6 @@ import com.backend.blooming.friend.application.exception.NotFoundFriendRequestEx
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
-import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,6 +18,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -68,13 +69,27 @@ class FriendServiceTest extends FriendServiceTestFixture {
     }
 
     @Test
+    void 자신이_친구_요청한_사용자_목록을_조회한다() {
+        // when
+        final ReadFriendsDto actual = friendService.readAllByRequestId(친구_요청을_보낸_사용자_아이디);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.friends()).hasSize(3);
+            softAssertions.assertThat(actual.friends().get(0)).isEqualTo(친구_요청_사용자_정보_dto1);
+            softAssertions.assertThat(actual.friends().get(1)).isEqualTo(친구_요청_사용자_정보_dto2);
+            softAssertions.assertThat(actual.friends().get(2)).isEqualTo(친구_요청_사용자_정보_dto3);
+        });
+    }
+
+    @Test
     void 친구_요청을_수락한다() {
         // when
         friendService.accept(이미_친구_요청을_받은_사용자_아이디, 친구_요청_아이디);
 
         // then
         final Optional<Friend> actual = friendRepository.findById(친구_요청_아이디);
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPresent();
             softAssertions.assertThat(actual.get().isFriends()).isTrue();
         });
