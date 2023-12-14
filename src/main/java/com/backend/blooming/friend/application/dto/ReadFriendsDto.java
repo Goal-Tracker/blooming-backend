@@ -28,7 +28,7 @@ public record ReadFriendsDto(List<FriendDto> friends) {
                 String oAuthType,
                 String email,
                 String name,
-                String themeColor,
+                String color,
                 String statusMessage
         ) {
 

@@ -3,10 +3,13 @@ package com.backend.blooming.friend.presentation;
 import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.friend.application.FriendService;
+import com.backend.blooming.friend.application.dto.ReadFriendsDto;
+import com.backend.blooming.friend.presentation.response.ReadFriendsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +31,16 @@ public class FriendController {
 
         return ResponseEntity.noContent()
                              .build();
+    }
+
+    @GetMapping(value = "/request", headers = "X-API-VERSION=1")
+    public ResponseEntity<ReadFriendsResponse> readAllByRequestId(
+            @Authenticated AuthenticatedUser authenticatedUser
+    ) {
+        final ReadFriendsDto friendsDto = friendService.readAllByRequestId(authenticatedUser.userId());
+        final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
+
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
