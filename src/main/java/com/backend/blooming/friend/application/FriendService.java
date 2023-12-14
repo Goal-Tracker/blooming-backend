@@ -44,13 +44,16 @@ public class FriendService {
     }
 
     public void accept(final Long userId, final Long requestId) {
-        final User user = userRepository.findByIdAndDeletedIsFalse(userId)
-                                        .orElseThrow(NotFoundUserException::new);
-        final Friend friend = friendRepository.findById(requestId)
-                                              .orElseThrow(NotFoundFriendRequestException::new);
+        final User user = findUser(userId);
+        final Friend friend = findFriend(requestId);
         validateRequestedUser(user, friend);
 
         friend.acceptRequest();
+    }
+
+    private Friend findFriend(final Long requestId) {
+        return friendRepository.findById(requestId)
+                               .orElseThrow(NotFoundFriendRequestException::new);
     }
 
     private void validateRequestedUser(final User user, final Friend friend) {
@@ -60,10 +63,8 @@ public class FriendService {
     }
 
     public void delete(final Long userId, final Long requestId) {
-        final User user = userRepository.findByIdAndDeletedIsFalse(userId)
-                                        .orElseThrow(NotFoundUserException::new);
-        final Friend friend = friendRepository.findById(requestId)
-                                              .orElseThrow(NotFoundFriendRequestException::new);
+        final User user = findUser(userId);
+        final Friend friend = findFriend(requestId);
         validateCanDelete(user, friend);
 
         friendRepository.delete(friend);
