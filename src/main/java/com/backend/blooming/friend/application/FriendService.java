@@ -52,6 +52,12 @@ public class FriendService {
         return ReadFriendsDto.from(requestUsers);
     }
 
+    public ReadFriendsDto readAllByRequestedId(final Long userId) {
+        final List<Friend> requestedUser = friendRepository.findAllByRequestedUserId(userId);
+
+        return ReadFriendsDto.from(requestedUser);
+    }
+
     public void accept(final Long userId, final Long requestId) {
         final User user = findUser(userId);
         final Friend friend = findFriend(requestId);

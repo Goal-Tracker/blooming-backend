@@ -67,7 +67,19 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).hasSize(3);
-            softAssertions.assertThat(actual).containsAll(List.of(친구_요청, 친구_요청2, 친구_요청3));
+            softAssertions.assertThat(actual).containsAll(List.of(보낸_친구_요청1, 보낸_친구_요청2, 보낸_친구_요청3));
+        });
+    }
+
+    @Test
+    void 해당_사용자에게_친구_요청한_모든_사용자_목록을_조회한다() {
+        // when
+        final List<Friend> actual = friendRepository.findAllByRequestedUserId(친구_요청을_받은_사용자.getId());
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual).hasSize(3);
+            softAssertions.assertThat(actual).containsAll(List.of(받은_친구_요청1, 받은_친구_요청2, 받은_친구_요청3));
         });
     }
 }

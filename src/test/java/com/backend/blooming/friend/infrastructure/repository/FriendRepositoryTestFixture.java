@@ -25,13 +25,17 @@ public class FriendRepositoryTestFixture {
 
     protected User 친구_요청한_사용자;
     protected User 이미_친구_요청_받은_사용자;
+    protected User 친구_요청을_받은_사용자;
     protected User 친구_요청을_받은_사용자1;
     protected User 친구_요청을_받은_사용자2;
     protected User 친구_요청을_받은_사용자3;
     protected User 친구_요청을_받은적_없는_사용자;
-    protected Friend 친구_요청;
-    protected Friend 친구_요청2;
-    protected Friend 친구_요청3;
+    protected Friend 보낸_친구_요청1;
+    protected Friend 보낸_친구_요청2;
+    protected Friend 보낸_친구_요청3;
+    protected Friend 받은_친구_요청1;
+    protected Friend 받은_친구_요청2;
+    protected Friend 받은_친구_요청3;
 
     @BeforeEach
     void setUpFixture() {
@@ -53,6 +57,7 @@ public class FriendRepositoryTestFixture {
                                 .name("사용자3")
                                 .email("user3@email.com")
                                 .build();
+        친구_요청을_받은_사용자 = 이미_친구_요청_받은_사용자;
         친구_요청을_받은_사용자1 = 이미_친구_요청_받은_사용자;
         친구_요청을_받은_사용자2 = User.builder()
                              .oAuthId("12348")
@@ -74,10 +79,14 @@ public class FriendRepositoryTestFixture {
                 친구_요청을_받은_사용자3
         ));
 
-        친구_요청 = new Friend(친구_요청한_사용자, 이미_친구_요청_받은_사용자);
-        친구_요청2 = new Friend(친구_요청한_사용자, 친구_요청을_받은_사용자2);
-        친구_요청3 = new Friend(친구_요청한_사용자, 친구_요청을_받은_사용자3);
-        friendRepository.saveAll(List.of(친구_요청, 친구_요청2, 친구_요청3));
+        보낸_친구_요청1 = new Friend(친구_요청한_사용자, 이미_친구_요청_받은_사용자);
+        보낸_친구_요청2 = new Friend(친구_요청한_사용자, 친구_요청을_받은_사용자2);
+        보낸_친구_요청3 = new Friend(친구_요청한_사용자, 친구_요청을_받은_사용자3);
+
+        받은_친구_요청1 = 보낸_친구_요청1;
+        받은_친구_요청2 = new Friend(친구_요청을_받은_사용자2, 이미_친구_요청_받은_사용자);
+        받은_친구_요청3 = new Friend(친구_요청을_받은_사용자2, 이미_친구_요청_받은_사용자);
+        friendRepository.saveAll(List.of(보낸_친구_요청1, 보낸_친구_요청2, 보낸_친구_요청3, 받은_친구_요청2, 받은_친구_요청3));
 
         em.flush();
         em.clear();

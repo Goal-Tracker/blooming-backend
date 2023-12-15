@@ -83,6 +83,20 @@ class FriendServiceTest extends FriendServiceTestFixture {
     }
 
     @Test
+    void 자신에게_친구_요청을_받은_사용자_목록을_조회한다() {
+        // when
+        final ReadFriendsDto actual = friendService.readAllByRequestedId(친구_요청을_받은_사용자_아이디);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.friends()).hasSize(3);
+            softAssertions.assertThat(actual.friends().get(0)).isEqualTo(친구_요청을_받은_사용자_정보_dto1);
+            softAssertions.assertThat(actual.friends().get(1)).isEqualTo(친구_요청을_받은_사용자_정보_dto2);
+            softAssertions.assertThat(actual.friends().get(2)).isEqualTo(친구_요청을_받은_사용자_정보_dto3);
+        });
+    }
+
+    @Test
     void 친구_요청을_수락한다() {
         // when
         friendService.accept(이미_친구_요청을_받은_사용자_아이디, 친구_요청_아이디);

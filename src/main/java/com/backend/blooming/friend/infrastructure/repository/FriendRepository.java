@@ -25,4 +25,12 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
         WHERE f.requestUser.id = :userId
     """)
     List<Friend> findAllByRequestUserId(final Long userId);
+
+    @Query("""
+        SELECT f
+        FROM Friend f
+        JOIN FETCH f.requestedUser
+        WHERE f.requestedUser.id = :userId
+    """)
+    List<Friend> findAllByRequestedUserId(final Long userId);
 }
