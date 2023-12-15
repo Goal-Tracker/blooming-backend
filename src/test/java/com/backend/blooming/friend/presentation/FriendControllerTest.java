@@ -182,20 +182,20 @@ class FriendControllerTest extends FriendControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.friends.[0].id", is(친구_요청_정보_dto1.id()), Long.class),
-                jsonPath("$.friends.[0].friend.id", is(친구_요청_정보_dto1.friend().id()), Long.class),
-                jsonPath("$.friends.[0].friend.email", is(친구_요청_정보_dto1.friend().email())),
-                jsonPath("$.friends.[0].friend.name", is(친구_요청_정보_dto1.friend().name())),
-                jsonPath("$.friends.[0].friend.color", is(친구_요청_정보_dto1.friend().color())),
-                jsonPath("$.friends.[0].friend.statusMessage", is(친구_요청_정보_dto1.friend().statusMessage())),
-                jsonPath("$.friends.[0].isFriends", is(친구_요청_정보_dto1.isFriends()), Boolean.class),
-                jsonPath("$.friends.[1].id", is(친구_요청_정보_dto2.id()), Long.class),
-                jsonPath("$.friends.[1].friend.id", is(친구_요청_정보_dto2.friend().id()), Long.class),
-                jsonPath("$.friends.[1].friend.email", is(친구_요청_정보_dto2.friend().email())),
-                jsonPath("$.friends.[1].friend.name", is(친구_요청_정보_dto2.friend().name())),
-                jsonPath("$.friends.[1].friend.color", is(친구_요청_정보_dto2.friend().color())),
-                jsonPath("$.friends.[1].friend.statusMessage", is(친구_요청_정보_dto2.friend().statusMessage())),
-                jsonPath("$.friends.[1].isFriends", is(친구_요청_정보_dto2.isFriends()), Boolean.class)
+                jsonPath("$.friends.[0].id", is(받은_친구_요청_정보_dto1.id()), Long.class),
+                jsonPath("$.friends.[0].friend.id", is(받은_친구_요청_정보_dto1.friend().id()), Long.class),
+                jsonPath("$.friends.[0].friend.email", is(받은_친구_요청_정보_dto1.friend().email())),
+                jsonPath("$.friends.[0].friend.name", is(받은_친구_요청_정보_dto1.friend().name())),
+                jsonPath("$.friends.[0].friend.color", is(받은_친구_요청_정보_dto1.friend().color())),
+                jsonPath("$.friends.[0].friend.statusMessage", is(받은_친구_요청_정보_dto1.friend().statusMessage())),
+                jsonPath("$.friends.[0].isFriends", is(받은_친구_요청_정보_dto1.isFriends()), Boolean.class),
+                jsonPath("$.friends.[1].id", is(받은_친구_요청_정보_dto2.id()), Long.class),
+                jsonPath("$.friends.[1].friend.id", is(받은_친구_요청_정보_dto2.friend().id()), Long.class),
+                jsonPath("$.friends.[1].friend.email", is(받은_친구_요청_정보_dto2.friend().email())),
+                jsonPath("$.friends.[1].friend.name", is(받은_친구_요청_정보_dto2.friend().name())),
+                jsonPath("$.friends.[1].friend.color", is(받은_친구_요청_정보_dto2.friend().color())),
+                jsonPath("$.friends.[1].friend.statusMessage", is(받은_친구_요청_정보_dto2.friend().statusMessage())),
+                jsonPath("$.friends.[1].isFriends", is(받은_친구_요청_정보_dto2.isFriends()), Boolean.class)
         ).andDo(print()).andDo(
                 restDocs.document(
                         requestHeaders(

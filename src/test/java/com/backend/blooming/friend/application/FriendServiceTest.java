@@ -1,7 +1,8 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.friend.application.dto.ReadFriendsDto;
+import com.backend.blooming.friend.application.dto.ReadRequestFriendsDto;
+import com.backend.blooming.friend.application.dto.ReadRequestedFriendsDto;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
@@ -71,7 +72,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 자신이_친구_요청한_사용자_목록을_조회한다() {
         // when
-        final ReadFriendsDto actual = friendService.readAllByRequestId(친구_요청을_보낸_사용자_아이디);
+        final ReadRequestedFriendsDto actual = friendService.readAllByRequestId(친구_요청을_보낸_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -85,7 +86,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 자신에게_친구_요청을_받은_사용자_목록을_조회한다() {
         // when
-        final ReadFriendsDto actual = friendService.readAllByRequestedId(친구_요청을_받은_사용자_아이디);
+        final ReadRequestFriendsDto actual = friendService.readAllByRequestedId(친구_요청을_받은_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {

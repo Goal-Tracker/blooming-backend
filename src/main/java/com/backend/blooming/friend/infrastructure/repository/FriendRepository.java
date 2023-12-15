@@ -29,7 +29,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     @Query("""
         SELECT f
         FROM Friend f
-        JOIN FETCH f.requestedUser
+        JOIN FETCH f.requestUser
         WHERE f.requestedUser.id = :userId
     """)
     List<Friend> findAllByRequestedUserId(final Long userId);
