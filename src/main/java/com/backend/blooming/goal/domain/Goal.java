@@ -83,8 +83,4 @@ public class Goal {
     public void updateGoalTeams(List<GoalTeam> goalTeams) {
         this.goalTeams = goalTeams;
     }
-
-    public void updateDeleted() {
-        this.deleted = true;
-    }
 }
