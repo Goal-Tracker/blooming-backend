@@ -7,7 +7,6 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
-import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -99,13 +98,13 @@ public class GoalService {
         goalRepository.flush();
     }
 
-    private void updateGoalDeleted(final Goal goal){
+    private void updateGoalDeleted(final Goal goal) {
         if (!goal.isDeleted()) {
             goal.updateDeleted();
         }
     }
 
-    private void updateGoalTeamDeleted(final Goal goal){
+    private void updateGoalTeamDeleted(final Goal goal) {
         if (!goal.getGoalTeams().isEmpty()) {
             for (GoalTeam goalTeam : goal.getGoalTeams()) {
                 if (!goalTeam.isDeleted()) {
