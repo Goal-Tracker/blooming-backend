@@ -85,4 +85,20 @@ public class User extends BaseTimeEntity {
     public void updateStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
     }
+
+    public String getColorName() {
+        if (color == null) {
+            return null;
+        }
+
+        return color.name();
+    }
+
+    public String getColorCode() {
+        if (color == null) {
+            return null;
+        }
+
+        return color.getCode();
+    }
 }

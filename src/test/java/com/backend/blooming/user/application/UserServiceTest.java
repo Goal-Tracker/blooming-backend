@@ -31,7 +31,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
             softAssertions.assertThat(actual.email()).isEqualTo(사용자.getEmail());
             softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
-            softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColor().getCode());
+            softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColorCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(사용자.getStatusMessage());
         });
     }

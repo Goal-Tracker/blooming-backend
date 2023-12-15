@@ -1,7 +1,6 @@
 package com.backend.blooming.friend.application.dto;
 
 import com.backend.blooming.friend.domain.Friend;
-import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 
 import java.util.List;
@@ -39,18 +38,10 @@ public record ReadFriendsDto(List<FriendDto> friends) {
                         requestedUser.getOAuthType().name(),
                         requestedUser.getEmail(),
                         requestedUser.getName(),
-                        processColorCode(requestedUser.getColor()),
+                        requestedUser.getColorCode(),
                         requestedUser.getStatusMessage()
                 );
             }
-        }
-
-        private static String processColorCode(final ThemeColor color) {
-            if (color == null) {
-                return null;
-            }
-
-            return color.getCode();
         }
     }
 }
