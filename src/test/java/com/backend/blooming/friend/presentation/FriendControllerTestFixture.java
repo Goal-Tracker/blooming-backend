@@ -29,4 +29,6 @@ public class FriendControllerTestFixture {
     protected ReadFriendsDto.FriendDto 친구_요청_정보_dto1 = new ReadFriendsDto.FriendDto(1L, 사용자_정보_dto1, false);
     protected ReadFriendsDto.FriendDto 친구_요청_정보_dto2 = new ReadFriendsDto.FriendDto(2L, 사용자_정보_dto2, false);
     protected ReadFriendsDto 친구_요청을_보낸_사용자들_정보_dto = new ReadFriendsDto(List.of(친구_요청_정보_dto1, 친구_요청_정보_dto2));
+
+    protected ReadFriendsDto 친구_요청을_받은_사용자들_정보_dto = new ReadFriendsDto(List.of(친구_요청_정보_dto1, 친구_요청_정보_dto2));
 }
