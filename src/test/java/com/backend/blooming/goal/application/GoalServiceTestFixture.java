@@ -38,6 +38,7 @@ public class GoalServiceTestFixture {
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     int 골_날짜수 = 40;
+    protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
@@ -50,7 +51,6 @@ public class GoalServiceTestFixture {
         User 유효한_사용자;
         Long 유효한_사용자_아이디;
         Long 골_관리자_아이디 = 999L;
-        List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
         List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
         GoalTeam 유효한_골_팀;
 
