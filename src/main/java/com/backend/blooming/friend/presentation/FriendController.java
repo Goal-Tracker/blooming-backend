@@ -3,8 +3,7 @@ package com.backend.blooming.friend.presentation;
 import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.friend.application.FriendService;
-import com.backend.blooming.friend.application.dto.ReadRequestFriendsDto;
-import com.backend.blooming.friend.application.dto.ReadRequestedFriendsDto;
+import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.presentation.response.ReadRequestFriendsResponse;
 import com.backend.blooming.friend.presentation.response.ReadRequestedFriendsResponse;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +38,7 @@ public class FriendController {
     public ResponseEntity<ReadRequestedFriendsResponse> readAllByRequestId(
             @Authenticated AuthenticatedUser authenticatedUser
     ) {
-        final ReadRequestedFriendsDto friendsDto = friendService.readAllByRequestId(authenticatedUser.userId());
+        final ReadFriendsDto friendsDto = friendService.readAllByRequestId(authenticatedUser.userId());
         final ReadRequestedFriendsResponse response = ReadRequestedFriendsResponse.from(friendsDto);
 
         return ResponseEntity.ok(response);
@@ -49,7 +48,7 @@ public class FriendController {
     public ResponseEntity<ReadRequestFriendsResponse> readAllByRequestedId(
             @Authenticated AuthenticatedUser authenticatedUser
     ) {
-        final ReadRequestFriendsDto friendsDto = friendService.readAllByRequestedId(authenticatedUser.userId());
+        final ReadFriendsDto friendsDto = friendService.readAllByRequestedId(authenticatedUser.userId());
         final ReadRequestFriendsResponse response = ReadRequestFriendsResponse.from(friendsDto);
 
         return ResponseEntity.ok(response);

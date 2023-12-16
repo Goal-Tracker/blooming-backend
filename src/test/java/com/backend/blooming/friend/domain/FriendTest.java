@@ -79,4 +79,28 @@ class FriendTest extends FriendTestFixture {
         // then
         assertThat(actual).isFalse();
     }
+
+    @Test
+    void 친구_요청을한_사용자로_상대방_조회시_요청을_받은_사용자가_반환된다() {
+        // given
+        final Friend friend = new Friend(친구_요청을_한_사용자, 친구_요청을_받은_사용자);
+
+        // when
+        final User actual = friend.getOther(친구_요청을_한_사용자);
+
+        // then
+        assertThat(actual).isEqualTo(친구_요청을_받은_사용자);
+    }
+
+    @Test
+    void 친구_요청을_받은_사용자로_상대방_조회시_요청을_한_사용자가_반환된다() {
+        // given
+        final Friend friend = new Friend(친구_요청을_한_사용자, 친구_요청을_받은_사용자);
+
+        // when
+        final User actual = friend.getOther(친구_요청을_받은_사용자);
+
+        // then
+        assertThat(actual).isEqualTo(친구_요청을_한_사용자);
+    }
 }

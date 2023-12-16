@@ -22,7 +22,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
         SELECT f
         FROM Friend f
         JOIN FETCH f.requestedUser
-        WHERE f.requestUser.id = :userId
+        WHERE f.requestUser.id = :userId AND f.isFriends = FALSE
     """)
     List<Friend> findAllByRequestUserId(final Long userId);
 
@@ -30,7 +30,16 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
         SELECT f
         FROM Friend f
         JOIN FETCH f.requestUser
-        WHERE f.requestedUser.id = :userId
+        WHERE f.requestedUser.id = :userId AND f.isFriends = FALSE
     """)
     List<Friend> findAllByRequestedUserId(final Long userId);
+
+    @Query("""
+        SELECT f
+        FROM Friend f
+        JOIN FETCH f.requestUser
+        JOIN FETCH f.requestedUser
+        WHERE (f.requestUser.id = :userId OR f.requestedUser.id = :userId) AND f.isFriends = TRUE
+    """)
+    List<Friend> findAllByUserIdAndIsFriends(final Long userId);
 }

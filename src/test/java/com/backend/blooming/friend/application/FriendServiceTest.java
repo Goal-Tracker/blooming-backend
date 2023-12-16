@@ -1,8 +1,7 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.friend.application.dto.ReadRequestFriendsDto;
-import com.backend.blooming.friend.application.dto.ReadRequestedFriendsDto;
+import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
@@ -72,7 +71,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 자신이_친구_요청한_사용자_목록을_조회한다() {
         // when
-        final ReadRequestedFriendsDto actual = friendService.readAllByRequestId(친구_요청을_보낸_사용자_아이디);
+        final ReadFriendsDto actual = friendService.readAllByRequestId(친구_요청을_보낸_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -86,7 +85,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Test
     void 자신에게_친구_요청을_받은_사용자_목록을_조회한다() {
         // when
-        final ReadRequestFriendsDto actual = friendService.readAllByRequestedId(친구_요청을_받은_사용자_아이디);
+        final ReadFriendsDto actual = friendService.readAllByRequestedId(친구_요청을_받은_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -94,6 +93,20 @@ class FriendServiceTest extends FriendServiceTestFixture {
             softAssertions.assertThat(actual.friends().get(0)).isEqualTo(친구_요청을_받은_사용자_정보_dto1);
             softAssertions.assertThat(actual.friends().get(1)).isEqualTo(친구_요청을_받은_사용자_정보_dto2);
             softAssertions.assertThat(actual.friends().get(2)).isEqualTo(친구_요청을_받은_사용자_정보_dto3);
+        });
+    }
+
+    @Test
+    void 서로_친구인_사용자_목록을_조회한다() {
+        // when
+        final ReadFriendsDto actual = friendService.readAllMutualByUserId(사용자_아이디);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.friends()).hasSize(3);
+            softAssertions.assertThat(actual.friends().get(0)).isEqualTo(서로_친구인_사용자_정보_dto1);
+            softAssertions.assertThat(actual.friends().get(1)).isEqualTo(서로_친구인_사용자_정보_dto2);
+            softAssertions.assertThat(actual.friends().get(2)).isEqualTo(서로_친구인_사용자_정보_dto3);
         });
     }
 

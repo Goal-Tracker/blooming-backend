@@ -54,4 +54,12 @@ public class Friend extends BaseTimeEntity {
     public boolean isOneOfFriends(final User user) {
         return requestUser.equals(user) || requestedUser.equals(user);
     }
+
+    public User getOther(final User user) {
+        if (requestUser.equals(user)) {
+            return requestedUser;
+        }
+
+        return requestUser;
+    }
 }
