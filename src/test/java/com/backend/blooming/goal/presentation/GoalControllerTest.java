@@ -44,7 +44,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
     GoalService goalService;
 
     @Test
-    public void 골_생성을_요청하면_생성된_골의_정보를_반환한다() throws Exception {
+    public void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
         // given
         given(goalService.createGoal(유효한_골_생성_dto)).willReturn(유효한_골_dto);
 
@@ -59,16 +59,6 @@ class GoalControllerTest extends GoalControllerTestFixture {
         ).andDo(document(
                 requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")).toString(),
                 requestFields(
-                        fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
-                        fieldWithPath("goalName").type(JsonFieldType.STRING).description("골 제목"),
-                        fieldWithPath("goalMemo").type(JsonFieldType.STRING).description("골 메모"),
-                        fieldWithPath("goalStartDay").type(JsonFieldType.STRING).description("골 시작날짜"),
-                        fieldWithPath("goalEndDay").type(JsonFieldType.STRING).description("골 종료날짜"),
-                        fieldWithPath("goalDays").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                        fieldWithPath("goalTeamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
-                ),
-                responseFields(
-                        fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
                         fieldWithPath("goalName").type(JsonFieldType.STRING).description("골 제목"),
                         fieldWithPath("goalMemo").type(JsonFieldType.STRING).description("골 메모"),
                         fieldWithPath("goalStartDay").type(JsonFieldType.STRING).description("골 시작날짜"),

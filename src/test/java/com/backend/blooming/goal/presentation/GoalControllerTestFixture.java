@@ -1,11 +1,13 @@
 package com.backend.blooming.goal.presentation;
 
+import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.GoalResponse;
+import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -29,23 +31,27 @@ public class GoalControllerTestFixture {
         LocalDate 골_시작일 = LocalDate.now();
         LocalDate 골_종료일 = LocalDate.now().plusDays(40);
         int 골_날짜수 = 40;
+        Long 골_관리자_아이디 = 999L;
         List<GoalTeam> 골_팀_목록 = new ArrayList<>();
         List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L));
 
         유효한_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 골_시작일.toString(),
                 골_종료일.toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
         final User user = User.builder()
-                              .oauthId("아이디")
+                              .oAuthId("아이디")
+                              .oAuthType(OAuthType.KAKAO)
                               .email("test@gmail.com")
-                              .name("test")
+                              .name("테스트")
+                              .color(ThemeColor.BABY_BLUE)
+                              .statusMessage("상태메시지")
                               .build();
 
         유효한_골 = Goal.builder()
@@ -60,12 +66,12 @@ public class GoalControllerTestFixture {
         골_팀_목록.add(goalTeam);
 
         요청한_골_dto = new GoalRequest(
-                골_아이디,
                 골_제목,
                 골_메모,
                 골_시작일.toString(),
                 골_종료일.toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -76,6 +82,7 @@ public class GoalControllerTestFixture {
                 골_시작일.toString(),
                 골_종료일.toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -86,6 +93,7 @@ public class GoalControllerTestFixture {
                 골_시작일,
                 골_종료일,
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
     }
