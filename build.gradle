@@ -29,8 +29,6 @@ repositories {
 }
 
 dependencies {
-	testImplementation 'org.projectlombok:lombok:1.18.28'
-
 	// h2
 	runtimeOnly 'com.h2database:h2'
 	implementation 'org.springframework.boot:spring-boot-devtools'
