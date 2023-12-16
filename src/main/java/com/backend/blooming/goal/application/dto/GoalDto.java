@@ -13,6 +13,7 @@ public record GoalDto(
         LocalDate goalStartDay,
         LocalDate goalEndDay,
         int goalDays,
+        Long goalManagerId,
         List<Long> goalTeamUserIds
 ) {
 
@@ -27,6 +28,7 @@ public record GoalDto(
                 goal.getGoalStartDay(),
                 goal.getGoalEndDay(),
                 goal.getGoalDays(),
+                goal.getGoalManagerId(),
                 goalTeamUserIds
         );
     }

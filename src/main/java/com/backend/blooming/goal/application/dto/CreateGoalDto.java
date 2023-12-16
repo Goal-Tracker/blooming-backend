@@ -10,6 +10,7 @@ public record CreateGoalDto(
         String goalStartDay,
         String goalEndDay,
         int goalDays,
+        Long goalManagerId,
         List<Long> goalTeamUserIds
 ) {
 
@@ -20,6 +21,7 @@ public record CreateGoalDto(
                 request.goalStartDay(),
                 request.goalEndDay(),
                 request.goalDays(),
+                request.goalManagerId(),
                 request.goalTeamUserIds()
         );
     }

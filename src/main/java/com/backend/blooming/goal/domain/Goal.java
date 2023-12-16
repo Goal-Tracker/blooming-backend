@@ -60,13 +60,15 @@ public class Goal extends BaseTimeEntity {
             final String goalMemo,
             final LocalDate goalStartDay,
             final LocalDate goalEndDay,
-            final int goalDays
+            final int goalDays,
+            final Long goalManagerId
     ) {
         this.goalName = goalName;
         this.goalMemo = goalMemo;
         this.goalStartDay = goalStartDay;
         this.goalEndDay = goalEndDay;
         this.goalDays = goalDays;
+        this.goalManagerId = goalManagerId;
         this.goalTeams = new ArrayList<>();
     }
 

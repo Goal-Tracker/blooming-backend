@@ -16,8 +16,7 @@ public record GoalResponse(
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         String goalEndDay,
         int goalDays,
-
-        @JsonProperty("goalTeamUserIds")
+        Long goalManagerId,
         List<Long> goalTeamUserIds
 ) {
 
@@ -29,6 +28,7 @@ public record GoalResponse(
                 goalDto.goalStartDay().toString(),
                 goalDto.goalEndDay().toString(),
                 goalDto.goalDays(),
+                goalDto.goalManagerId(),
                 goalDto.goalTeamUserIds()
         );
     }
