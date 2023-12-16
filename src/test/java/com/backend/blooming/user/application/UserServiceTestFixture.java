@@ -17,12 +17,12 @@ public class UserServiceTestFixture {
     private UserRepository userRepository;
 
     protected User 사용자;
-    protected User 테마_색상을_설정하지_않은_사용자;
+    protected User 사용자2;
     protected Long 사용자_아이디;
-    protected Long 테마_색상을_설정하지_않은_사용자_아이디;
     protected Long 삭제한_사용자_아아디;
     protected Long 존재하지_않는_사용자_아아디 = 9999L;
 
+    protected String 검색_키워드 = "사용자";
     protected String 수정한_이름 = "수정한 이름";
     protected ThemeColor 수정한_테마_색상 = ThemeColor.BLUE;
     protected String 수정한_상태_메시지 = "수정한 상태 메시지";
@@ -44,12 +44,12 @@ public class UserServiceTestFixture {
                   .color(ThemeColor.BEIGE)
                   .statusMessage("기존 상태 메시지")
                   .build();
-        테마_색상을_설정하지_않은_사용자 = User.builder()
-                                 .oAuthId("12346")
-                                 .oAuthType(OAuthType.KAKAO)
-                                 .name("사용자2")
-                                 .email("test2@email.com")
-                                 .build();
+        사용자2 = User.builder()
+                   .oAuthId("12346")
+                   .oAuthType(OAuthType.KAKAO)
+                   .name("사용자2")
+                   .email("test2@email.com")
+                   .build();
         final User 삭제한_사용자 = User.builder()
                                  .oAuthId("12347")
                                  .oAuthType(OAuthType.KAKAO)
@@ -58,10 +58,9 @@ public class UserServiceTestFixture {
                                  .build();
         삭제한_사용자.delete();
 
-        userRepository.saveAll(List.of(사용자, 테마_색상을_설정하지_않은_사용자, 삭제한_사용자));
+        userRepository.saveAll(List.of(사용자, 사용자2, 삭제한_사용자));
 
         사용자_아이디 = 사용자.getId();
-        테마_색상을_설정하지_않은_사용자_아이디 = 테마_색상을_설정하지_않은_사용자.getId();
         삭제한_사용자_아아디 = 삭제한_사용자.getId();
         기존_이름 = 사용자.getName();
         기존_테마_색상 = 사용자.getColor();

@@ -3,12 +3,15 @@ package com.backend.blooming.user.application;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
 import com.backend.blooming.user.application.dto.UserDto;
+import com.backend.blooming.user.application.dto.UsersDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -23,6 +26,13 @@ public class UserService {
                                         .orElseThrow(NotFoundUserException::new);
 
         return UserDto.from(user);
+    }
+
+    @Transactional(readOnly = true)
+    public UsersDto readAllWithKeyword(final String keyword) {
+        final List<User> users = userRepository.findAllByNameContainsAndDeletedIsFalse(keyword);
+
+        return UsersDto.from(users);
     }
 
     public UserDto updateById(final Long userId, final UpdateUserDto updateUserDto) {

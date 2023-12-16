@@ -2,6 +2,7 @@ package com.backend.blooming.user.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.application.dto.UserDto;
+import com.backend.blooming.user.application.dto.UsersDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -20,7 +21,7 @@ class UserServiceTest extends UserServiceTestFixture {
     UserService userService;
 
     @Test
-    void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회할_수_있다() {
+    void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회한다() {
         // when
         final UserDto actual = userService.readById(사용자_아이디);
 
@@ -37,19 +38,17 @@ class UserServiceTest extends UserServiceTestFixture {
     }
 
     @Test
-    void 사용자_조회시_테마_색상과_상태_메시지를_설정하기_전이라면_각각_null을_반환한다() {
+    void 특정_키워드가_포함된_사용자_목록을_조회한다() {
         // when
-        final UserDto actual = userService.readById(테마_색상을_설정하지_않은_사용자_아이디);
+        final UsersDto actual = userService.readAllWithKeyword(검색_키워드);
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.id()).isPositive();
-            softAssertions.assertThat(actual.oAuthId()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthId());
-            softAssertions.assertThat(actual.oAuthType()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthType().name());
-            softAssertions.assertThat(actual.email()).isEqualTo(테마_색상을_설정하지_않은_사용자.getEmail());
-            softAssertions.assertThat(actual.name()).isEqualTo(테마_색상을_설정하지_않은_사용자.getName());
-            softAssertions.assertThat(actual.color()).isNull();
-            softAssertions.assertThat(actual.statusMessage()).isNull();
+            softAssertions.assertThat(actual.users()).hasSize(2);
+            softAssertions.assertThat(actual.users().get(0).id()).isEqualTo(사용자.getId());
+            softAssertions.assertThat(actual.users().get(0).name()).isEqualTo(사용자.getName());
+            softAssertions.assertThat(actual.users().get(1).id()).isEqualTo(사용자2.getId());
+            softAssertions.assertThat(actual.users().get(1).name()).isEqualTo(사용자2.getName());
         });
     }
 
