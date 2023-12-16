@@ -4,15 +4,15 @@ import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 
 import java.util.List;
 
-public record ReadRequestedFriendsResponse(List<FriendResponse> friends) {
+public record ReadFriendsResponse(List<FriendResponse> friends) {
 
-    public static ReadRequestedFriendsResponse from(final ReadFriendsDto friendsDto) {
+    public static ReadFriendsResponse from(final ReadFriendsDto friendsDto) {
         final List<FriendResponse> friendResponses = friendsDto.friends()
                                                                .stream()
                                                                .map(FriendResponse::from)
                                                                .toList();
 
-        return new ReadRequestedFriendsResponse(friendResponses);
+        return new ReadFriendsResponse(friendResponses);
     }
 
     public record FriendResponse(Long id, UserResponse friend, boolean isFriends) {

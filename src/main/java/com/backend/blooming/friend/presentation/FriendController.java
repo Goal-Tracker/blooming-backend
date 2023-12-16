@@ -4,8 +4,7 @@ import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
-import com.backend.blooming.friend.presentation.response.ReadRequestFriendsResponse;
-import com.backend.blooming.friend.presentation.response.ReadRequestedFriendsResponse;
+import com.backend.blooming.friend.presentation.response.ReadFriendsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,21 +34,21 @@ public class FriendController {
     }
 
     @GetMapping(value = "/request", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadRequestedFriendsResponse> readAllByRequestId(
+    public ResponseEntity<ReadFriendsResponse> readAllByRequestId(
             @Authenticated AuthenticatedUser authenticatedUser
     ) {
         final ReadFriendsDto friendsDto = friendService.readAllByRequestId(authenticatedUser.userId());
-        final ReadRequestedFriendsResponse response = ReadRequestedFriendsResponse.from(friendsDto);
+        final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/requested", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadRequestFriendsResponse> readAllByRequestedId(
+    public ResponseEntity<ReadFriendsResponse> readAllByRequestedId(
             @Authenticated AuthenticatedUser authenticatedUser
     ) {
         final ReadFriendsDto friendsDto = friendService.readAllByRequestedId(authenticatedUser.userId());
-        final ReadRequestFriendsResponse response = ReadRequestFriendsResponse.from(friendsDto);
+        final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
 
         return ResponseEntity.ok(response);
     }
