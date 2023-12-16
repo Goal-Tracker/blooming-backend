@@ -20,3 +20,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     boolean existsByIdAndDeletedIsFalse(final Long userId);
 }
+
