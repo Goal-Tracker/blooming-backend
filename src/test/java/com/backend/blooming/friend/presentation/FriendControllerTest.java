@@ -217,6 +217,53 @@ class FriendControllerTest extends FriendControllerTestFixture {
     }
 
     @Test
+    void 서로_친구인_사용자_목록을_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(friendService.readAllMutualByUserId(사용자_아이디)).willReturn(서로_친구인_사용자들_정보_dto);
+
+        // when & then
+        mockMvc.perform(get("/friends/mutual")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.friends.[0].id", is(서로_친구인_친구_요청_정보_dto1.id()), Long.class),
+                jsonPath("$.friends.[0].friend.id", is(서로_친구인_친구_요청_정보_dto1.friend().id()), Long.class),
+                jsonPath("$.friends.[0].friend.email", is(서로_친구인_친구_요청_정보_dto1.friend().email())),
+                jsonPath("$.friends.[0].friend.name", is(서로_친구인_친구_요청_정보_dto1.friend().name())),
+                jsonPath("$.friends.[0].friend.color", is(서로_친구인_친구_요청_정보_dto1.friend().color())),
+                jsonPath("$.friends.[0].friend.statusMessage", is(서로_친구인_친구_요청_정보_dto1.friend().statusMessage())),
+                jsonPath("$.friends.[0].isFriends", is(서로_친구인_친구_요청_정보_dto1.isFriends()), Boolean.class),
+                jsonPath("$.friends.[1].id", is(서로_친구인_친구_요청_정보_dto2.id()), Long.class),
+                jsonPath("$.friends.[1].friend.id", is(서로_친구인_친구_요청_정보_dto2.friend().id()), Long.class),
+                jsonPath("$.friends.[1].friend.email", is(서로_친구인_친구_요청_정보_dto2.friend().email())),
+                jsonPath("$.friends.[1].friend.name", is(서로_친구인_친구_요청_정보_dto2.friend().name())),
+                jsonPath("$.friends.[1].friend.color", is(서로_친구인_친구_요청_정보_dto2.friend().color())),
+                jsonPath("$.friends.[1].friend.statusMessage", is(서로_친구인_친구_요청_정보_dto2.friend().statusMessage())),
+                jsonPath("$.friends.[1].isFriends", is(서로_친구인_친구_요청_정보_dto2.isFriends()), Boolean.class)
+        ).andDo(print()).andDo(
+                restDocs.document(
+                        requestHeaders(
+                                headerWithName("X-API-VERSION").description("요청 버전"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                        ),
+                        responseFields(
+                                fieldWithPath("friends").type(JsonFieldType.ARRAY).description("서로 친구인 사용자 목록"),
+                                fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
+                                fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
+                        )
+                )
+        );
+    }
+
+    @Test
     void 친구_요청을_수락한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(친구_요청을_받은_사용자_토큰_정보);

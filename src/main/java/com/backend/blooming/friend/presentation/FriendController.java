@@ -53,6 +53,16 @@ public class FriendController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping(value = "/mutual", headers = "X-API-VERSION=1")
+    public ResponseEntity<ReadFriendsResponse> readAllMutualByUserId(
+            @Authenticated AuthenticatedUser authenticatedUser
+    ) {
+        final ReadFriendsDto friendsDto = friendService.readAllMutualByUserId(authenticatedUser.userId());
+        final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PatchMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> accept(
             @Authenticated AuthenticatedUser authenticatedUser,

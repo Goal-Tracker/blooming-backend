@@ -56,37 +56,21 @@ public class FriendControllerTestFixture {
             친구_요청_정보_dto1,
             친구_요청_정보_dto2
     ));
-
-    private ReadFriendsDto.FriendDto.UserDto 요청_받은_친구_사용자_정보_dto1= new ReadFriendsDto.FriendDto.UserDto(
+    protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto1 = 친구_요청_정보_dto1;
+    protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto2 = 친구_요청_정보_dto2;
+    protected ReadFriendsDto 친구_요청을_받은_사용자들_정보_dto = 친구_요청을_보낸_사용자들_정보_dto;
+    protected ReadFriendsDto.FriendDto 서로_친구인_친구_요청_정보_dto1 = new ReadFriendsDto.FriendDto(
+            1L,
+            사용자_정보_dto1,
+            true
+    );
+    protected ReadFriendsDto.FriendDto 서로_친구인_친구_요청_정보_dto2 = new ReadFriendsDto.FriendDto(
             2L,
-            "12345",
-            OAuthType.KAKAO.name(),
-            "user1@email.com",
-            "사용자1",
-            ThemeColor.BLUE.getCode(),
-            "상태 메시지"
+            사용자_정보_dto2,
+            true
     );
-    private ReadFriendsDto.FriendDto.UserDto 요청_받은_친구_사용자_정보_dto2 = new ReadFriendsDto.FriendDto.UserDto(
-            3L,
-            "12346",
-            OAuthType.KAKAO.name(),
-            "user2@email.com",
-            "사용자2",
-            ThemeColor.BLUE.getCode(),
-            "상태 메시지"
-    );
-    protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto1 = new ReadFriendsDto.FriendDto(
-            1L,
-            요청_받은_친구_사용자_정보_dto1,
-            false
-    );
-    protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto2 = new ReadFriendsDto.FriendDto(
-            1L,
-            요청_받은_친구_사용자_정보_dto2,
-            false
-    );
-    protected ReadFriendsDto 친구_요청을_받은_사용자들_정보_dto = new ReadFriendsDto(List.of(
-            받은_친구_요청_정보_dto1,
-            받은_친구_요청_정보_dto2
+    protected ReadFriendsDto 서로_친구인_사용자들_정보_dto = new ReadFriendsDto(List.of(
+            서로_친구인_친구_요청_정보_dto1,
+            서로_친구인_친구_요청_정보_dto2
     ));
 }
