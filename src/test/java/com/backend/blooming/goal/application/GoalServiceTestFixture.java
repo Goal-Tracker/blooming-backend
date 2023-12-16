@@ -1,19 +1,27 @@
 package com.backend.blooming.goal.application;
 
+import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
+import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
+@DirtiesContext
 public class GoalServiceTestFixture {
 
     @Autowired
@@ -22,19 +30,16 @@ public class GoalServiceTestFixture {
     @Autowired
     private GoalRepository goalRepository;
 
-    protected Long 골_아이디 = 1L;
+    @Autowired
+    private GoalTeamRepository goalTeamRepository;
+
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     int 골_날짜수 = 40;
-    protected User 유효한_사용자;
-    protected Long 유효한_사용자_아이디;
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
-    protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
-    protected List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
-    protected GoalTeam 유효한_골_팀;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto;
@@ -42,26 +47,32 @@ public class GoalServiceTestFixture {
 
     @BeforeEach
     void setUp() {
-        String 사용자_oauth_아이디 = "아이디";
-        String 사용자_이메일 = "test@gmail.com";
-        String 사용자_이름 = "테스트";
+        User 유효한_사용자;
+        Long 유효한_사용자_아이디;
+        Long 골_관리자_아이디 = 999L;
+        List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
+        List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
+        GoalTeam 유효한_골_팀;
 
         유효한_사용자 = User.builder()
-                      .oauthId(사용자_oauth_아이디)
-                      .email(사용자_이메일)
-                      .name(사용자_이름)
+                      .oAuthId("아이디")
+                      .oAuthType(OAuthType.KAKAO)
+                      .email("test@gmail.com")
+                      .name("테스트")
+                      .color(ThemeColor.BABY_BLUE)
+                      .statusMessage("상태메시지")
                       .build();
 
-        userRepository.save(유효한_사용자);
+        유효한_사용자 = userRepository.save(유효한_사용자);
         유효한_사용자_아이디 = 유효한_사용자.getId();
 
         유효한_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 골_시작일.toString(),
                 골_종료일.toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -71,52 +82,55 @@ public class GoalServiceTestFixture {
                     .goalStartDay(골_시작일)
                     .goalEndDay(골_종료일)
                     .goalDays(골_날짜수)
+                    .goalManagerId(골_관리자_아이디)
                     .build();
 
         goalRepository.save(유효한_골);
 
         유효한_골_팀 = new GoalTeam(유효한_사용자, 유효한_골);
+        goalTeamRepository.save(유효한_골_팀);
+
         골에_등록된_골_팀_목록.add(유효한_골_팀);
         유효한_골.updateGoalTeams(골에_등록된_골_팀_목록);
         골_팀에_등록된_사용자_아이디_목록.add(유효한_사용자_아이디);
 
         골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 LocalDate.now().minusDays(2).toString(),
                 골_종료일.toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
         골_종료날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 골_시작일.toString(),
                 LocalDate.now().minusDays(2).toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
         골_종료날짜가_시작날짜보다_이전인_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 LocalDate.now().plusDays(4).toString(),
                 LocalDate.now().plusDays(2).toString(),
                 골_날짜수,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
         골_날짜가_1_미만인_골_생성_dto = new CreateGoalDto(
-                골_아이디,
                 골_제목,
                 골_메모,
                 골_시작일.toString(),
                 골_종료일.toString(),
                 0,
+                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
     }
