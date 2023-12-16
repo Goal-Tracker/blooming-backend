@@ -88,4 +88,12 @@ public class GoalService {
             throw new GoalException.InvalidGoalDays();
         }
     }
+
+    @Transactional(readOnly = true)
+    public GoalDto readGoalById(final Long goalId) {
+        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
+                                        .orElseThrow(GoalException.GoalNotFoundException::new);
+
+        return GoalDto.from(goal);
+    }
 }
