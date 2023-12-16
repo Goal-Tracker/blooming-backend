@@ -1,6 +1,6 @@
 package com.backend.blooming.goal.domain;
 
-import jakarta.persistence.CascadeType;
+import com.backend.blooming.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -14,11 +14,8 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import lombok.extern.slf4j.Slf4j;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +24,10 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = "goalTeams")
-@Slf4j
-public class Goal {
+public class Goal extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "goal_id")
     private Long id;
 
     @Column(nullable = false)
@@ -50,19 +45,14 @@ public class Goal {
     @Column(nullable = false)
     private int goalDays;
 
-    @OneToMany(mappedBy = "goal", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @Column(nullable = false)
+    private Long goalManagerId;
+
+    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY)
     private List<GoalTeam> goalTeams = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean deleted = false;
-
-    @CreationTimestamp
-    @Column(nullable = false, length = 20, updatable = false)
-    private LocalDateTime createdAt;
-
-    @CreationTimestamp
-    @Column(length = 20)
-    private LocalDateTime updatedAt;
 
     @Builder
     private Goal(

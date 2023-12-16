@@ -1,9 +1,11 @@
 package com.backend.blooming.goal.domain;
 
+import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,20 +21,19 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString(exclude = "user")
-public class GoalTeam {
+@ToString(exclude = {"user", "goal"})
+public class GoalTeam extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "goal_team_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id", nullable = false)
+    @JoinColumn(name = "goal_id", foreignKey = @ForeignKey(name = "fk_goal_id"), nullable = false)
     private Goal goal;
 
     @Column(nullable = false)

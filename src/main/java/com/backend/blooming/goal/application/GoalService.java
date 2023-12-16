@@ -7,9 +7,9 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,15 +53,15 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    public List<GoalTeam> createGoalTeams(final List<Long> goalTeamUserIds, final Long goalId) {
+    private List<GoalTeam> createGoalTeams(final List<Long> goalTeamUserIds, final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(GoalException.GoalNotFoundException::new);
 
-        List<GoalTeam> goalTeams = new ArrayList<>();
+        final List<GoalTeam> goalTeams = new ArrayList<>();
 
-        for (Long goalTeamUser : goalTeamUserIds) {
-            // 유저 정보가 존재하는지 검증하는 exception은 pr #6 머지 후 리팩토링하면서 진행하겠습니다.
-            final User user = userRepository.findById(goalTeamUser).orElseThrow(EntityNotFoundException::new);
+        for (final Long goalTeamUser : goalTeamUserIds) {
+            final User user = userRepository.findByIdAndDeletedIsFalse(goalTeamUser)
+                                            .orElseThrow(NotFoundUserException::new);
             final GoalTeam goalTeam = new GoalTeam(user, goal);
             final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
 
@@ -71,7 +71,7 @@ public class GoalService {
         return goalTeams;
     }
 
-    public void validateGoalDatePeriod(final LocalDate goalStartDay, final LocalDate goalEndDay) {
+    private void validateGoalDatePeriod(final LocalDate goalStartDay, final LocalDate goalEndDay) {
         final LocalDate nowDate = LocalDate.now();
 
         if (goalStartDay.isBefore(nowDate)) {
@@ -83,7 +83,7 @@ public class GoalService {
         }
     }
 
-    public void validateGoalDays(final int goalDays) {
+    private void validateGoalDays(final int goalDays) {
         if (goalDays < 1) {
             throw new GoalException.InvalidGoalDays();
         }

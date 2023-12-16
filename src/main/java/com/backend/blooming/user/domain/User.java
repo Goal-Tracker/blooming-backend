@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Entity(name = "user")
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
@@ -27,7 +27,6 @@ import lombok.ToString;
 public class User extends BaseTimeEntity {
 
     @Id
-    @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
