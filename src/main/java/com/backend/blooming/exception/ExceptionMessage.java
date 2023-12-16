@@ -27,6 +27,7 @@ public enum ExceptionMessage {
 
     // 골 추가
     GOAL_NOT_FOUND("골 정보를 찾을 수 없습니다."),
+    GOAL_TEAM_NOT_FOUND("골 팀 정보를 찾을 수 없습니다."),
     INVALID_GOAL_START_DAY("시작 날짜가 현재 날짜 이전입니다."),
     INVALID_GOAL_END_DAY("종료 날짜가 현재 날짜 이전입니다."),
     INVALID_GOAL_PERIOD("시작 날짜가 종료 날짜 이후입니다."),
