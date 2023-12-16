@@ -46,6 +46,7 @@ public class FriendService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
+    @Transactional(readOnly = true)
     public ReadFriendsDto readAllByRequestId(final Long userId) {
         final User user = findUser(userId);
         final List<Friend> requestUsers = friendRepository.findAllByRequestUserId(userId);
@@ -53,6 +54,7 @@ public class FriendService {
         return ReadFriendsDto.of(requestUsers, user);
     }
 
+    @Transactional(readOnly = true)
     public ReadFriendsDto readAllByRequestedId(final Long userId) {
         final User user = findUser(userId);
         final List<Friend> requestedUser = friendRepository.findAllByRequestedUserId(userId);
@@ -60,6 +62,7 @@ public class FriendService {
         return ReadFriendsDto.of(requestedUser, user);
     }
 
+    @Transactional(readOnly = true)
     public ReadFriendsDto readAllMutualByUserId(final Long userId) {
         final User user = findUser(userId);
         final List<Friend> friends = friendRepository.findAllByUserIdAndIsFriends(userId);
