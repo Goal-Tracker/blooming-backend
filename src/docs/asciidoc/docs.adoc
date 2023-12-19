@@ -53,6 +53,15 @@ include::{snippets}/user-controller-test/사용자_정보를_조회한다/reques
 include::{snippets}/user-controller-test/사용자_정보를_조회한다/http-response.adoc[]
 include::{snippets}/user-controller-test/사용자_정보를_조회한다/response-fields.adoc[]
 
+=== 검색을 통한 사용자 정보 목록 조회
+==== 요청
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/http-request.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/request-headers.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/query-parameters.adoc[]
+==== 응답
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/http-response.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/response-fields.adoc[]
+
 === 사용자 정보 수정
 ==== 요청
 include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/http-request.adoc[]
@@ -80,6 +89,30 @@ include::{snippets}/friend-controller-test/친구_요청한다/path-parameters.a
 ==== 응답
 include::{snippets}/friend-controller-test/친구_요청한다/http-response.adoc[]
 
+=== 친구 요청을 보낸 사용자 목록 조회
+==== 요청
+include::{snippets}/friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다/http-request.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다/request-headers.adoc[]
+==== 응답
+include::{snippets}/friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다/http-response.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다/response-fields.adoc[]
+
+=== 친구 요청을 받은 사용자 목록 조회
+==== 요청
+include::{snippets}/friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다/http-request.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다/request-headers.adoc[]
+==== 응답
+include::{snippets}/friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다/http-response.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다/response-fields.adoc[]
+
+=== 서로 친구인 사용자 목록 조회
+==== 요청
+include::{snippets}/friend-controller-test/서로_친구인_사용자_목록을_조회한다/http-request.adoc[]
+include::{snippets}/friend-controller-test/서로_친구인_사용자_목록을_조회한다/request-headers.adoc[]
+==== 응답
+include::{snippets}/friend-controller-test/서로_친구인_사용자_목록을_조회한다/http-response.adoc[]
+include::{snippets}/friend-controller-test/서로_친구인_사용자_목록을_조회한다/response-fields.adoc[]
+
 === 친구 요청 수락
 ==== 요청
 include::{snippets}/friend-controller-test/친구_요청을_수락한다/http-request.adoc[]
@@ -87,3 +120,11 @@ include::{snippets}/friend-controller-test/친구_요청을_수락한다/request
 include::{snippets}/friend-controller-test/친구_요청을_수락한다/path-parameters.adoc[]
 ==== 응답
 include::{snippets}/friend-controller-test/친구_요청을_수락한다/http-response.adoc[]
+
+=== 친구 요청 거절/취소
+==== 요청
+include::{snippets}/friend-controller-test/친구_요청을_거절한다/http-request.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_거절한다/request-headers.adoc[]
+include::{snippets}/friend-controller-test/친구_요청을_거절한다/path-parameters.adoc[]
+==== 응답
+include::{snippets}/friend-controller-test/친구_요청을_거절한다/http-response.adoc[]
