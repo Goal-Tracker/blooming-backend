@@ -1,9 +1,10 @@
 package com.backend.blooming.user.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.dto.UserDto;
-import com.backend.blooming.user.application.dto.UsersDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import com.backend.blooming.user.infrastructure.repository.dto.FriendsStatus;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -40,15 +41,20 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 특정_키워드가_포함된_사용자_목록을_조회한다() {
         // when
-        final UsersDto actual = userService.readAllWithKeyword(검색_키워드);
+        final ReadUsersWithFriendsStatusDto actual = userService.readAllWithKeyword(사용자_아이디, 검색_키워드);
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.users()).hasSize(2);
+            softAssertions.assertThat(actual.users()).hasSize(3);
             softAssertions.assertThat(actual.users().get(0).id()).isEqualTo(사용자.getId());
             softAssertions.assertThat(actual.users().get(0).name()).isEqualTo(사용자.getName());
-            softAssertions.assertThat(actual.users().get(1).id()).isEqualTo(사용자2.getId());
-            softAssertions.assertThat(actual.users().get(1).name()).isEqualTo(사용자2.getName());
+            softAssertions.assertThat(actual.users().get(0).friendsStatus()).isEqualTo(FriendsStatus.SELF.name());
+            softAssertions.assertThat(actual.users().get(1).id()).isEqualTo(친구인_사용자.getId());
+            softAssertions.assertThat(actual.users().get(1).name()).isEqualTo(친구인_사용자.getName());
+            softAssertions.assertThat(actual.users().get(1).friendsStatus()).isEqualTo(FriendsStatus.FRIENDS.name());
+            softAssertions.assertThat(actual.users().get(2).id()).isEqualTo(친구가_아닌_사용자.getId());
+            softAssertions.assertThat(actual.users().get(2).name()).isEqualTo(친구가_아닌_사용자.getName());
+            softAssertions.assertThat(actual.users().get(2).friendsStatus()).isEqualTo(FriendsStatus.NONE.name());
         });
     }
 

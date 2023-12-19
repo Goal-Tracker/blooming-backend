@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -73,37 +72,6 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
 
         // then
         assertThat(actual).isEmpty();
-    }
-
-    @Test
-    void 검색_키워드가_포함되어_있는_이름의_사용자_목록을_반환한다() {
-        // when
-        final List<User> actual = userRepository.findAllByNameContainsAndDeletedIsFalse(검색_키워드);
-
-        // then
-        assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual).hasSize(2);
-            softAssertions.assertThat(actual).containsExactly(사용자, 사용자2);
-            softAssertions.assertThat(actual).doesNotContainSequence(검색_키워드가_포함되지_않은_사용자, 삭제된_사용자);
-        });
-    }
-
-    @Test
-    void 검색_키워드가_빈값이라면_전체_사용자_목록을_반환한다() {
-        // when
-        final List<User> actual = userRepository.findAllByNameContainsAndDeletedIsFalse("");
-
-        // then
-        assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual).hasSize(3);
-            softAssertions.assertThat(actual).containsExactly(사용자, 사용자2, 검색_키워드가_포함되지_않은_사용자);
-            softAssertions.assertThat(actual).doesNotContainSequence(삭제된_사용자);
-        });
-    }
-
-    @Test
-    void 검색어를_초함하는_사용자_목록을_반환한다() {
-
     }
 
     @Test
