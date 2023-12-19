@@ -4,11 +4,11 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
-import com.backend.blooming.user.application.dto.UserDto;
 import com.backend.blooming.user.infrastructure.repository.dto.FriendsStatus;
-import com.backend.blooming.user.presentation.request.UpdateUserRequest;
+import com.backend.blooming.user.presentation.dto.request.UpdateUserRequest;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public class UserControllerTestFixture {
     protected Long 사용자_아이디 = 1L;
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(사용자_아이디);
     protected String 검색어 = "사용자";
-    protected UserDto 사용자_정보_dto = new UserDto(
+    protected ReadUserDto 사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             "12345",
             "KAKAO",
@@ -31,7 +31,7 @@ public class UserControllerTestFixture {
     );
 
     protected UpdateUserDto 사용자의_모든_정보_수정_dto = new UpdateUserDto("수정한 이름", ThemeColor.BLUE.name(), "수정한 상태 메시지");
-    protected UserDto 모든_정보가_수정된_사용자_정보_dto = new UserDto(
+    protected ReadUserDto 모든_정보가_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
             사용자_정보_dto.oAuthType(),
@@ -71,7 +71,7 @@ public class UserControllerTestFixture {
             사용자의_모든_정보_수정_dto.statusMessage()
     );
     protected UpdateUserDto 사용자의_이름만_수정_dto = new UpdateUserDto("수정한 이름", null, null);
-    protected UserDto 이름만_수정된_사용자_정보_dto = new UserDto(
+    protected ReadUserDto 이름만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
             사용자_정보_dto.oAuthType(),
@@ -86,7 +86,7 @@ public class UserControllerTestFixture {
             사용자의_이름만_수정_dto.statusMessage()
     );
     protected UpdateUserDto 사용자의_테마_색상만_수정_dto = new UpdateUserDto(null, ThemeColor.BLUE.name(), null);
-    protected UserDto 테마_색상만_수정된_사용자_정보_dto = new UserDto(
+    protected ReadUserDto 테마_색상만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
             사용자_정보_dto.oAuthType(),
@@ -101,7 +101,7 @@ public class UserControllerTestFixture {
             사용자의_테마_색상만_수정_dto.statusMessage()
     );
     protected UpdateUserDto 사용자의_상태_메시지만_수정_dto = new UpdateUserDto(null, null, "수정한 상태 메시지");
-    protected UserDto 상태_메시지만_수정된_사용자_정보_dto = new UserDto(
+    protected ReadUserDto 상태_메시지만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
             사용자_정보_dto.oAuthType(),

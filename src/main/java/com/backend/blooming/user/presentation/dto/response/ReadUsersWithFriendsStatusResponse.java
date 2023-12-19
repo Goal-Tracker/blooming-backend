@@ -1,4 +1,4 @@
-package com.backend.blooming.user.presentation.response;
+package com.backend.blooming.user.presentation.dto.response;
 
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 

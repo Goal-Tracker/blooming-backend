@@ -2,7 +2,7 @@ package com.backend.blooming.user.application.dto;
 
 import com.backend.blooming.user.domain.User;
 
-public record UserDto(
+public record ReadUserDto(
         Long id,
         String oAuthId,
         String oAuthType,
@@ -12,8 +12,8 @@ public record UserDto(
         String statusMessage
 ) {
 
-    public static UserDto from(final User user) {
-        return new UserDto(
+    public static ReadUserDto from(final User user) {
+        return new ReadUserDto(
                 user.getId(),
                 user.getOAuthId(),
                 user.getOAuthType().name(),

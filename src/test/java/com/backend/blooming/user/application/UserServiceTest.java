@@ -1,8 +1,8 @@
 package com.backend.blooming.user.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
-import com.backend.blooming.user.application.dto.UserDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.dto.FriendsStatus;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -24,7 +24,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회한다() {
         // when
-        final UserDto actual = userService.readById(사용자_아이디);
+        final ReadUserDto actual = userService.readById(사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -75,7 +75,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_모든_정보를_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 모든_사용자_정보를_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 모든_사용자_정보를_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -88,7 +88,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_이름만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 이름만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 이름만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -101,7 +101,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_테마_색상만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 테마_색상만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 테마_색상만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -114,7 +114,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_상태_메시지만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 상태_메시지만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 상태_메시지만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {

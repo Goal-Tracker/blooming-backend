@@ -1,7 +1,7 @@
 package com.backend.blooming.themecolor.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.themecolor.application.dto.ThemeColorDto;
+import com.backend.blooming.themecolor.application.dto.ReadThemeColorDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -23,7 +23,7 @@ class ThemeColorServiceTest {
     @Test
     void 테마_색상_목록을_조회한다() {
         // when
-        final List<ThemeColorDto> actual = themeColorService.readAll();
+        final List<ReadThemeColorDto> actual = themeColorService.readAll();
 
         // then
         assertSoftly(softAssertions -> {

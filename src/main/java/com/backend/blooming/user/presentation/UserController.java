@@ -5,10 +5,10 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.user.application.UserService;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
-import com.backend.blooming.user.application.dto.UserDto;
-import com.backend.blooming.user.presentation.request.UpdateUserRequest;
-import com.backend.blooming.user.presentation.response.ReadUsersWithFriendsStatusResponse;
-import com.backend.blooming.user.presentation.response.UserResponse;
+import com.backend.blooming.user.application.dto.ReadUserDto;
+import com.backend.blooming.user.presentation.dto.request.UpdateUserRequest;
+import com.backend.blooming.user.presentation.dto.response.ReadUsersWithFriendsStatusResponse;
+import com.backend.blooming.user.presentation.dto.response.ReadUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,10 +26,10 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<UserResponse> readById(@Authenticated AuthenticatedUser authenticatedUser) {
-        final UserDto userDto = userService.readById(authenticatedUser.userId());
+    public ResponseEntity<ReadUserResponse> readById(@Authenticated AuthenticatedUser authenticatedUser) {
+        final ReadUserDto readUserDto = userService.readById(authenticatedUser.userId());
 
-        return ResponseEntity.ok(UserResponse.from(userDto));
+        return ResponseEntity.ok(ReadUserResponse.from(readUserDto));
     }
 
     @GetMapping(value = "/all", headers = "X-API-VERSION=1")
@@ -46,15 +46,15 @@ public class UserController {
     }
 
     @PatchMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<UserResponse> updateById(
+    public ResponseEntity<ReadUserResponse> updateById(
             @Authenticated AuthenticatedUser authenticatedUser,
             @RequestBody UpdateUserRequest updateUserRequest
     ) {
-        final UserDto userDto = userService.updateById(
+        final ReadUserDto readUserDto = userService.updateById(
                 authenticatedUser.userId(),
                 UpdateUserDto.from(updateUserRequest)
         );
 
-        return ResponseEntity.ok(UserResponse.from(userDto));
+        return ResponseEntity.ok(ReadUserResponse.from(readUserDto));
     }
 }

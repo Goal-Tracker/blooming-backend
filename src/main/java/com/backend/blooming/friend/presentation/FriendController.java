@@ -4,7 +4,7 @@ import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
-import com.backend.blooming.friend.presentation.response.ReadFriendsResponse;
+import com.backend.blooming.friend.presentation.dto.response.ReadFriendsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
