@@ -2,7 +2,8 @@ package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
-import com.backend.blooming.goal.application.exception.GoalException;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -29,25 +30,26 @@ public class GoalService {
 
     public GoalDto createGoal(final CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
-        final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.goalTeamUserIds(), goal.getId());
+        final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.teamUserIds(), goal.getId());
         goal.updateGoalTeams(goalTeams);
 
         return GoalDto.from(goal);
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
-        final LocalDate goalStartDay = LocalDate.parse(createGoalDto.goalStartDay());
-        final LocalDate goalEndDay = LocalDate.parse(createGoalDto.goalEndDay());
+        final LocalDate startDate = LocalDate.parse(createGoalDto.startDate());
+        final LocalDate endDate = LocalDate.parse(createGoalDto.endDate());
 
-        validateGoalDatePeriod(goalStartDay, goalEndDay);
-        validateGoalDays(createGoalDto.goalDays());
+        validateGoalDatePeriod(startDate, endDate);
+        validateGoalDays(createGoalDto.days());
 
         final Goal goal = Goal.builder()
-                              .goalName(createGoalDto.goalName())
-                              .goalMemo(createGoalDto.goalMemo())
-                              .goalStartDay(goalStartDay)
-                              .goalEndDay(goalEndDay)
-                              .goalDays(createGoalDto.goalDays())
+                              .name(createGoalDto.name())
+                              .memo(createGoalDto.memo())
+                              .startDate(startDate)
+                              .endDate(endDate)
+                              .days(createGoalDto.days())
+                              .managerId(createGoalDto.managerId())
                               .build();
 
         return goalRepository.save(goal);
@@ -55,7 +57,7 @@ public class GoalService {
 
     private List<GoalTeam> createGoalTeams(final List<Long> goalTeamUserIds, final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                                        .orElseThrow(GoalException.GoalNotFoundException::new);
+                                        .orElseThrow(NotFoundGoalException::new);
 
         final List<GoalTeam> goalTeams = new ArrayList<>();
 
@@ -75,24 +77,24 @@ public class GoalService {
         final LocalDate nowDate = LocalDate.now();
 
         if (goalStartDay.isBefore(nowDate)) {
-            throw new GoalException.InvalidGoalStartDay();
+            throw new InvalidGoalException.InvalidInvalidGoalStartDay();
         } else if (goalEndDay.isBefore(nowDate)) {
-            throw new GoalException.InvalidGoalEndDay();
+            throw new InvalidGoalException.InvalidInvalidGoalEndDay();
         } else if (goalEndDay.isBefore(goalStartDay)) {
-            throw new GoalException.InvalidGoalPeriod();
+            throw new InvalidGoalException.InvalidInvalidGoalPeriod();
         }
     }
 
     private void validateGoalDays(final int goalDays) {
         if (goalDays < 1) {
-            throw new GoalException.InvalidGoalDays();
+            throw new InvalidGoalException.InvalidInvalidGoalDays();
         }
     }
 
     @Transactional(readOnly = true)
     public GoalDto readGoalById(final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                                        .orElseThrow(GoalException.GoalNotFoundException::new);
+                                        .orElseThrow(NotFoundGoalException::new);
 
         return GoalDto.from(goal);
     }
