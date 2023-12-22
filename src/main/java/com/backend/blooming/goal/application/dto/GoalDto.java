@@ -7,29 +7,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record GoalDto(
-        Long goalId,
-        String goalName,
-        String goalMemo,
-        LocalDate goalStartDay,
-        LocalDate goalEndDay,
-        int goalDays,
-        Long goalManagerId,
-        List<Long> goalTeamUserIds
+        Long id,
+        String name,
+        String memo,
+        LocalDate startDate,
+        LocalDate endDate,
+        int days,
+        Long managerId,
+        List<Long> teamUserIds
 ) {
 
     public static GoalDto from(final Goal goal) {
-        final List<Long> goalTeamUserIds = new ArrayList<>();
-        goal.getGoalTeams().forEach(goalTeam -> goalTeamUserIds.add(goalTeam.getUser().getId()));
+        final List<Long> teamUserIds = goal.getTeams().stream().map(team -> team.getUser().getId()).toList();
 
         return new GoalDto(
                 goal.getId(),
-                goal.getGoalName(),
-                goal.getGoalMemo(),
-                goal.getGoalStartDay(),
-                goal.getGoalEndDay(),
-                goal.getGoalDays(),
-                goal.getGoalManagerId(),
-                goalTeamUserIds
+                goal.getName(),
+                goal.getMemo(),
+                goal.getStartDate(),
+                goal.getEndDate(),
+                goal.getDays(),
+                goal.getManagerId(),
+                teamUserIds
         );
     }
 }

@@ -9,6 +9,10 @@ plugins {
 
 configurations {
 	asciidoctorExt
+
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
 }
 
 group = 'com.blomming'
@@ -16,12 +20,6 @@ version = '0.0.1-SNAPSHOT'
 
 java {
 	sourceCompatibility = '17'
-}
-
-configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
 }
 
 repositories {

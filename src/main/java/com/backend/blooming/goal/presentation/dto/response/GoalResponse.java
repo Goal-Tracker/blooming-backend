@@ -6,30 +6,30 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.List;
 
 public record GoalResponse(
-        Long goalId,
-        String goalName,
-        String goalMemo,
+        Long id,
+        String name,
+        String memo,
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        String goalStartDay,
+        String startDate,
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        String goalEndDay,
-        int goalDays,
-        Long goalManagerId,
-        List<Long> goalTeamUserIds
+        String endDate,
+        int days,
+        Long managerId,
+        List<Long> teamUserIds
 ) {
 
     public static GoalResponse from(final GoalDto goalDto) {
         return new GoalResponse(
-                goalDto.goalId(),
-                goalDto.goalName(),
-                goalDto.goalMemo(),
-                goalDto.goalStartDay().toString(),
-                goalDto.goalEndDay().toString(),
-                goalDto.goalDays(),
-                goalDto.goalManagerId(),
-                goalDto.goalTeamUserIds()
+                goalDto.id(),
+                goalDto.name(),
+                goalDto.memo(),
+                goalDto.startDate().toString(),
+                goalDto.endDate().toString(),
+                goalDto.days(),
+                goalDto.managerId(),
+                goalDto.teamUserIds()
         );
     }
 }

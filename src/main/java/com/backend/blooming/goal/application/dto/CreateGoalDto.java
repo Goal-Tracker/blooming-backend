@@ -5,24 +5,24 @@ import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
 import java.util.List;
 
 public record CreateGoalDto(
-        String goalName,
-        String goalMemo,
-        String goalStartDay,
-        String goalEndDay,
-        int goalDays,
-        Long goalManagerId,
-        List<Long> goalTeamUserIds
+        String name,
+        String memo,
+        String startDate,
+        String endDate,
+        int days,
+        Long managerId,
+        List<Long> teamUserIds
 ) {
 
-    public static CreateGoalDto from(final GoalRequest request) {
+    public static CreateGoalDto from(final GoalRequest request, Long managerId) {
         return new CreateGoalDto(
-                request.goalName(),
-                request.goalMemo(),
-                request.goalStartDay(),
-                request.goalEndDay(),
-                request.goalDays(),
-                request.goalManagerId(),
-                request.goalTeamUserIds()
+                request.name(),
+                request.memo(),
+                request.startDate(),
+                request.endDate(),
+                request.days(),
+                managerId,
+                request.teamUserIds()
         );
     }
 }

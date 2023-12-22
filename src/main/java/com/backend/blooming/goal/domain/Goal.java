@@ -23,7 +23,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString(exclude = "goalTeams")
+@ToString(exclude = "teams")
 public class Goal extends BaseTimeEntity {
 
     @Id
@@ -31,48 +31,48 @@ public class Goal extends BaseTimeEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String goalName;
+    private String name;
 
     @Column(columnDefinition = "text")
-    private String goalMemo;
+    private String memo;
 
     @Column(nullable = false)
-    private LocalDate goalStartDay;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private LocalDate goalEndDay;
+    private LocalDate endDate;
 
     @Column(nullable = false)
-    private int goalDays;
+    private int days;
 
     @Column(nullable = false)
-    private Long goalManagerId;
+    private Long managerId;
 
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY)
-    private List<GoalTeam> goalTeams = new ArrayList<>();
+    private List<GoalTeam> teams = new ArrayList<>();
 
     @Column(nullable = false)
     private boolean deleted = false;
 
     @Builder
     private Goal(
-            final String goalName,
-            final String goalMemo,
-            final LocalDate goalStartDay,
-            final LocalDate goalEndDay,
-            final int goalDays,
-            final Long goalManagerId
+            final String name,
+            final String memo,
+            final LocalDate startDate,
+            final LocalDate endDate,
+            final int days,
+            final Long managerId
     ) {
-        this.goalName = goalName;
-        this.goalMemo = goalMemo;
-        this.goalStartDay = goalStartDay;
-        this.goalEndDay = goalEndDay;
-        this.goalDays = goalDays;
-        this.goalManagerId = goalManagerId;
-        this.goalTeams = new ArrayList<>();
+        this.name = name;
+        this.memo = memo;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.days = days;
+        this.managerId = managerId;
+        this.teams = new ArrayList<>();
     }
 
-    public void updateGoalTeams(List<GoalTeam> goalTeams) {
-        this.goalTeams = goalTeams;
+    public void updateGoalTeams(List<GoalTeam> teams) {
+        this.teams = teams;
     }
 }
