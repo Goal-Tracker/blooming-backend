@@ -79,12 +79,12 @@ public class GoalServiceTestFixture {
         );
 
         유효한_골 = Goal.builder()
-                    .goalName(골_제목)
-                    .goalMemo(골_메모)
-                    .goalStartDay(골_시작일)
-                    .goalEndDay(골_종료일)
-                    .goalDays(골_날짜수)
-                    .goalManagerId(골_관리자_아이디)
+                    .name(골_제목)
+                    .memo(골_메모)
+                    .startDate(골_시작일)
+                    .endDate(골_종료일)
+                    .days(골_날짜수)
+                    .managerId(골_관리자_아이디)
                     .build();
 
         goalRepository.save(유효한_골);
