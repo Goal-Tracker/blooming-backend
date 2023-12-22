@@ -2,6 +2,7 @@ package com.backend.blooming.goal.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -37,10 +38,12 @@ public class GoalServiceTestFixture {
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
-    int 골_날짜수 = 40;
+    protected int 골_날짜수 = 40;
+    protected Long 골_관리자_아이디 = 999L;
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
+    protected GoalDto 유효한_골_dto;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto;
@@ -50,7 +53,6 @@ public class GoalServiceTestFixture {
     void setUp() {
         User 유효한_사용자;
         Long 유효한_사용자_아이디;
-        Long 골_관리자_아이디 = 999L;
         List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
         GoalTeam 유효한_골_팀;
 
@@ -93,6 +95,17 @@ public class GoalServiceTestFixture {
         골에_등록된_골_팀_목록.add(유효한_골_팀);
         유효한_골.updateGoalTeams(골에_등록된_골_팀_목록);
         골_팀에_등록된_사용자_아이디_목록.add(유효한_사용자_아이디);
+
+        유효한_골_dto = new GoalDto(
+                유효한_골.getId(),
+                골_제목,
+                골_메모,
+                골_시작일,
+                골_종료일,
+                골_날짜수,
+                골_관리자_아이디,
+                골_팀에_등록된_사용자_아이디_목록
+        );
 
         골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
                 골_제목,

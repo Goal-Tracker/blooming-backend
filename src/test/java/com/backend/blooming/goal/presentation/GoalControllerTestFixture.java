@@ -17,6 +17,7 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GoalControllerTestFixture {
+    protected String 액세스_토큰 = "Bearer access_token";
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
     protected GoalDto 유효한_골_dto;
@@ -55,11 +56,12 @@ public class GoalControllerTestFixture {
                               .build();
 
         유효한_골 = Goal.builder()
-                    .goalName(골_제목)
-                    .goalMemo(골_메모)
-                    .goalStartDay(골_시작일)
-                    .goalEndDay(골_종료일)
-                    .goalDays(골_날짜수)
+                    .name(골_제목)
+                    .memo(골_메모)
+                    .startDate(골_시작일)
+                    .endDate(골_종료일)
+                    .days(골_날짜수)
+                    .managerId(골_관리자_아이디)
                     .build();
 
         final GoalTeam goalTeam = new GoalTeam(user, 유효한_골);
@@ -71,7 +73,6 @@ public class GoalControllerTestFixture {
                 골_시작일.toString(),
                 골_종료일.toString(),
                 골_날짜수,
-                골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 

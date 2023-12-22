@@ -1,5 +1,6 @@
 package com.backend.blooming.goal.presentation;
 
+import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
@@ -12,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -29,6 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(GoalController.class)
 @AutoConfigureRestDocs
+@Import({RestDocsConfiguration.class})
 @MockBean({GoalRepository.class, GoalTeamRepository.class, UserRepository.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -43,6 +49,9 @@ class GoalControllerTest extends GoalControllerTestFixture {
     @MockBean
     GoalService goalService;
 
+    @Autowired
+    RestDocumentationResultHandler restDocs;
+
     @Test
     public void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
         // given
@@ -51,20 +60,50 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // when & then
         mockMvc.perform(post("/goals/add")
                 .header("X-API-VERSION", "1")
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(요청한_골_dto))
         ).andExpectAll(
-                redirectedUrl("/goals/" + 응답한_골_dto.goalId()),
+                redirectedUrl("/goals/" + 응답한_골_dto.id()),
+                status().isCreated()
+        ).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("골 메모"),
+                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("managerId").type(JsonFieldType.STRING).description("골 관리자 아이디"),
+                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
+                )
+        ));
+    }
+
+    @Test
+    void 골_아이디로_요청하면_해당_골의_정보를_반환한다() throws Exception {
+        // given
+        given(goalService.readGoalById(유효한_골.getId())).willReturn(유효한_골_dto);
+
+        // when & then
+        mockMvc.perform(post("/goals/{goalId}")
+                .header("X-API-VERSION", "1")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpectAll(
                 status().isCreated()
         ).andDo(document(
                 requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")).toString(),
-                requestFields(
-                        fieldWithPath("goalName").type(JsonFieldType.STRING).description("골 제목"),
-                        fieldWithPath("goalMemo").type(JsonFieldType.STRING).description("골 메모"),
-                        fieldWithPath("goalStartDay").type(JsonFieldType.STRING).description("골 시작날짜"),
-                        fieldWithPath("goalEndDay").type(JsonFieldType.STRING).description("골 종료날짜"),
-                        fieldWithPath("goalDays").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                        fieldWithPath("goalTeamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("골 메모"),
+                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
                 )
         ));
     }
