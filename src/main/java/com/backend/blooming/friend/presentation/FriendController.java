@@ -24,7 +24,7 @@ public class FriendController {
 
     @PostMapping(value = "/{requestedUserId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> request(
-            @Authenticated AuthenticatedUser authenticatedUser,
+            @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestedUserId
     ) {
         friendService.request(authenticatedUser.userId(), requestedUserId);
@@ -35,7 +35,7 @@ public class FriendController {
 
     @GetMapping(value = "/request", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadFriendsResponse> readAllByRequestId(
-            @Authenticated AuthenticatedUser authenticatedUser
+            @Authenticated final AuthenticatedUser authenticatedUser
     ) {
         final ReadFriendsDto friendsDto = friendService.readAllByRequestId(authenticatedUser.userId());
         final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
@@ -45,7 +45,7 @@ public class FriendController {
 
     @GetMapping(value = "/requested", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadFriendsResponse> readAllByRequestedId(
-            @Authenticated AuthenticatedUser authenticatedUser
+            @Authenticated final AuthenticatedUser authenticatedUser
     ) {
         final ReadFriendsDto friendsDto = friendService.readAllByRequestedId(authenticatedUser.userId());
         final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
@@ -55,7 +55,7 @@ public class FriendController {
 
     @GetMapping(value = "/mutual", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadFriendsResponse> readAllMutualByUserId(
-            @Authenticated AuthenticatedUser authenticatedUser
+            @Authenticated final AuthenticatedUser authenticatedUser
     ) {
         final ReadFriendsDto friendsDto = friendService.readAllMutualByUserId(authenticatedUser.userId());
         final ReadFriendsResponse response = ReadFriendsResponse.from(friendsDto);
@@ -65,7 +65,7 @@ public class FriendController {
 
     @PatchMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> accept(
-            @Authenticated AuthenticatedUser authenticatedUser,
+            @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestId
     ) {
         friendService.accept(authenticatedUser.userId(), requestId);
@@ -76,7 +76,7 @@ public class FriendController {
 
     @DeleteMapping(value = "/{requestId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> delete(
-            @Authenticated AuthenticatedUser authenticatedUser,
+            @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long requestId
     ) {
         friendService.delete(authenticatedUser.userId(), requestId);

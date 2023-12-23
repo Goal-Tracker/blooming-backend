@@ -26,7 +26,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadUserResponse> readById(@Authenticated AuthenticatedUser authenticatedUser) {
+    public ResponseEntity<ReadUserResponse> readById(@Authenticated final AuthenticatedUser authenticatedUser) {
         final ReadUserDto readUserDto = userService.readById(authenticatedUser.userId());
 
         return ResponseEntity.ok(ReadUserResponse.from(readUserDto));
@@ -47,8 +47,8 @@ public class UserController {
 
     @PatchMapping(headers = "X-API-VERSION=1")
     public ResponseEntity<ReadUserResponse> updateById(
-            @Authenticated AuthenticatedUser authenticatedUser,
-            @RequestBody UpdateUserRequest updateUserRequest
+            @Authenticated final AuthenticatedUser authenticatedUser,
+            @RequestBody final UpdateUserRequest updateUserRequest
     ) {
         final ReadUserDto readUserDto = userService.updateById(
                 authenticatedUser.userId(),
