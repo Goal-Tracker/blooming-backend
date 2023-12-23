@@ -64,7 +64,7 @@ class FriendTest extends FriendTestFixture {
         assertThat(actual).isTrue();
     }
 
-    static Stream<User> provideUsers() {
+    private static Stream<User> provideUsers() {
         return Stream.of(친구_요청을_한_사용자, 친구_요청을_받은_사용자);
     }
 
