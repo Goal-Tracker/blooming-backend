@@ -155,7 +155,6 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                         ),
                         responseFields(
-                                // TODO: 12/14/23 [고민] description의 경우 개행을 할까요 말까요? 개인적으로는 개행하지 않은게 더 보기 좋은 것 같은데 의견 주시면 감사하겠습니다!
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 보낸 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
