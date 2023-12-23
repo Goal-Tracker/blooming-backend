@@ -23,6 +23,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = {"requestUser", "requestedUser"})
 public class Friend extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
