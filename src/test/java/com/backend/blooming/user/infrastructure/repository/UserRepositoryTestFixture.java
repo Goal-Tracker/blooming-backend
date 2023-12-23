@@ -2,8 +2,6 @@ package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.user.domain.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -11,9 +9,6 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class UserRepositoryTestFixture {
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Autowired
     private UserRepository userRepository;
@@ -56,8 +51,5 @@ public class UserRepositoryTestFixture {
 
         사용자_아이디 = 사용자.getId();
         삭제된_사용자_아이디 = 삭제된_사용자.getId();
-
-        em.flush();
-        em.clear();
     }
 }

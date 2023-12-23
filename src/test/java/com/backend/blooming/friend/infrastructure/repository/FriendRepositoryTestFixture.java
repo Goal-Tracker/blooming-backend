@@ -4,8 +4,6 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,9 +11,6 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class FriendRepositoryTestFixture {
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Autowired
     private UserRepository userRepository;
@@ -112,9 +107,6 @@ public class FriendRepositoryTestFixture {
         친구인_요청1 = new Friend(친구_요청을_받은_사용자3, 친구인_사용자1);
         친구인_요청2 = new Friend(친구인_사용자2, 친구_요청을_받은_사용자3);
         친구인_요청3 = new Friend(친구_요청을_받은_사용자3, 친구인_사용자3);
-        친구인_요청1.acceptRequest();
-        친구인_요청2.acceptRequest();
-        친구인_요청3.acceptRequest();
         friendRepository.saveAll(List.of(
                 보낸_친구_요청1,
                 보낸_친구_요청2,
@@ -125,8 +117,8 @@ public class FriendRepositoryTestFixture {
                 친구인_요청2,
                 친구인_요청3
         ));
-
-        em.flush();
-        em.clear();
+        친구인_요청1.acceptRequest();
+        친구인_요청2.acceptRequest();
+        친구인_요청3.acceptRequest();
     }
 }

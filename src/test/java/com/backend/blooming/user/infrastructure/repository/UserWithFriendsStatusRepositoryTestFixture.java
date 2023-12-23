@@ -4,8 +4,6 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.user.domain.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,9 +11,6 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class UserWithFriendsStatusRepositoryTestFixture {
-
-    @PersistenceContext
-    private EntityManager em;
 
     @Autowired
     private UserRepository userRepository;
@@ -76,8 +71,5 @@ public class UserWithFriendsStatusRepositoryTestFixture {
         final Friend 친구로_요청_받은_요청 = new Friend(친구_요청을_받은_사용자, 사용자);
         친구인_요청.acceptRequest();
         friendRepository.saveAll(List.of(친구인_요청, 친구_요청만_한_요청, 친구로_요청_받은_요청));
-
-        em.flush();
-        em.clear();
     }
 }
