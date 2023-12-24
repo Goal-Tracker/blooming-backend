@@ -1,0 +1,34 @@
+=== 친구 요청
+==== 요청
+operation::friend-controller-test/친구_요청한다[snippets='http-request,request-headers,path-parameters']
+==== 응답
+operation::friend-controller-test/친구_요청한다[snippets='http-response']
+
+=== 친구 요청을 보낸 사용자 목록 조회
+==== 요청
+operation::friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다[snippets='http-request,request-headers']
+==== 응답
+operation::friend-controller-test/친구_요청을_보낸_사용자_목록을_조회한다[snippets='http-response,response-fields']
+
+=== 친구 요청을 받은 사용자 목록 조회
+==== 요청
+operation::friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다[snippets='http-request,request-headers']
+==== 응답
+
+=== 서로 친구인 사용자 목록 조회
+==== 요청
+operation::friend-controller-test/서로_친구인_사용자_목록을_조회한다[snippets='http-request,request-headers']
+==== 응답
+operation::friend-controller-test/서로_친구인_사용자_목록을_조회한다[snippets='http-response,response-fields']
+
+=== 친구 요청 수락
+==== 요청
+operation::friend-controller-test/친구_요청을_수락한다[snippets='http-request,request-headers,path-parameters']
+==== 응답
+operation::friend-controller-test/친구_요청을_수락한다[snippets='http-response']
+
+=== 친구 요청 거절/취소
+==== 요청
+operation::friend-controller-test/친구_요청을_거절한다[snippets='http-request,request-headers,path-parameters']
+==== 응답
+operation::friend-controller-test/친구_요청을_거절한다[snippets='http-response']
