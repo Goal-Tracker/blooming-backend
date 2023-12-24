@@ -49,19 +49,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FriendControllerTest extends FriendControllerTestFixture {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    FriendService friendService;
+    private FriendService friendService;
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     @Autowired
-    RestDocumentationResultHandler restDocs;
+    private RestDocumentationResultHandler restDocs;
 
     @Test
     void 친구_요청한다() throws Exception {
