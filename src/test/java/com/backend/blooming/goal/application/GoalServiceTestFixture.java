@@ -10,9 +10,6 @@ import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -38,7 +35,7 @@ public class GoalServiceTestFixture {
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
-    protected int 골_날짜수 = 40;
+    protected long 골_날짜수 = 40L;
     protected Long 골_관리자_아이디 = 999L;
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
@@ -73,7 +70,6 @@ public class GoalServiceTestFixture {
                 골_메모,
                 골_시작일.toString(),
                 골_종료일.toString(),
-                골_날짜수,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -83,7 +79,6 @@ public class GoalServiceTestFixture {
                     .memo(골_메모)
                     .startDate(골_시작일)
                     .endDate(골_종료일)
-                    .days(골_날짜수)
                     .managerId(골_관리자_아이디)
                     .build();
 
@@ -112,7 +107,6 @@ public class GoalServiceTestFixture {
                 골_메모,
                 LocalDate.now().minusDays(2).toString(),
                 골_종료일.toString(),
-                골_날짜수,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -122,7 +116,6 @@ public class GoalServiceTestFixture {
                 골_메모,
                 골_시작일.toString(),
                 LocalDate.now().minusDays(2).toString(),
-                골_날짜수,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -132,7 +125,6 @@ public class GoalServiceTestFixture {
                 골_메모,
                 LocalDate.now().plusDays(4).toString(),
                 LocalDate.now().plusDays(2).toString(),
-                골_날짜수,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -140,9 +132,8 @@ public class GoalServiceTestFixture {
         골_날짜가_1_미만인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                골_시작일.toString(),
-                골_종료일.toString(),
-                0,
+                LocalDate.now().toString(),
+                LocalDate.now().toString(),
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
