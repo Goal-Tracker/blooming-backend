@@ -71,3 +71,5 @@ include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_�
 include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/http-response.adoc[]
 include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/response-fields.adoc[]
 
+== 골
+include::goal.adoc[]
