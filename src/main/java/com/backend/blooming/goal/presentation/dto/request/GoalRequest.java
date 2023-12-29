@@ -15,9 +15,6 @@ public record GoalRequest(
 
         @NotEmpty(message = "끝나는 날짜를 선택해주세요.")
         String endDate,
-
-        @NotEmpty(message = "골 날짜수를 입력해주세요.")
-        int days,
         List<Long> teamUserIds
 ) {
 }

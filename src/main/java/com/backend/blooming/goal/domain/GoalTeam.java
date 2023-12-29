@@ -43,8 +43,4 @@ public class GoalTeam extends BaseTimeEntity {
         this.user = user;
         this.goal = goal;
     }
-
-    public void updateDeleted() {
-        this.deleted = true;
-    }
 }

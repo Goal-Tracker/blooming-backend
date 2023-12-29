@@ -3,8 +3,8 @@ package com.backend.blooming.goal.application.dto;
 import com.backend.blooming.goal.domain.Goal;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public record GoalDto(
         Long id,
@@ -12,21 +12,24 @@ public record GoalDto(
         String memo,
         LocalDate startDate,
         LocalDate endDate,
-        int days,
+        long days,
         Long managerId,
         List<Long> teamUserIds
 ) {
 
     public static GoalDto from(final Goal goal) {
-        final List<Long> teamUserIds = goal.getTeams().stream().map(team -> team.getUser().getId()).toList();
+        final List<Long> teamUserIds = goal.getTeams()
+                                           .stream()
+                                           .map(team -> team.getUser().getId())
+                                           .collect(Collectors.toList());
 
         return new GoalDto(
                 goal.getId(),
                 goal.getName(),
                 goal.getMemo(),
-                goal.getStartDate(),
-                goal.getEndDate(),
-                goal.getDays(),
+                goal.getGoalTerm().getStartDate(),
+                goal.getGoalTerm().getEndDate(),
+                goal.getGoalTerm().getDays(),
                 goal.getManagerId(),
                 teamUserIds
         );

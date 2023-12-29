@@ -9,7 +9,6 @@ public record CreateGoalDto(
         String memo,
         String startDate,
         String endDate,
-        int days,
         Long managerId,
         List<Long> teamUserIds
 ) {
@@ -20,7 +19,6 @@ public record CreateGoalDto(
                 request.memo(),
                 request.startDate(),
                 request.endDate(),
-                request.days(),
                 managerId,
                 request.teamUserIds()
         );

@@ -15,7 +15,7 @@ public record GoalResponse(
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         String endDate,
-        int days,
+        long days,
         Long managerId,
         List<Long> teamUserIds
 ) {

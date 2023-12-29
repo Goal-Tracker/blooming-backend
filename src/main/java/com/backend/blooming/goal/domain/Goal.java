@@ -2,6 +2,7 @@ package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,14 +37,8 @@ public class Goal extends BaseTimeEntity {
     @Column(columnDefinition = "text")
     private String memo;
 
-    @Column(nullable = false)
-    private LocalDate startDate;
-
-    @Column(nullable = false)
-    private LocalDate endDate;
-
-    @Column(nullable = false)
-    private int days;
+    @Embedded
+    private GoalTerm goalTerm;
 
     @Column(nullable = false)
     private Long managerId;
@@ -60,14 +55,11 @@ public class Goal extends BaseTimeEntity {
             final String memo,
             final LocalDate startDate,
             final LocalDate endDate,
-            final int days,
             final Long managerId
     ) {
         this.name = name;
         this.memo = memo;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.days = days;
+        this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
         this.teams = new ArrayList<>();
     }
