@@ -14,6 +14,7 @@ operation::friend-controller-test/친구_요청을_보낸_사용자_목록을_�
 ==== 요청
 operation::friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다[snippets='http-request,request-headers']
 ==== 응답
+operation::friend-controller-test/친구_요청을_받은_사용자_목록을_조회한다[snippets='http-response,response-fields']
 
 === 서로 친구인 사용자 목록 조회
 ==== 요청
