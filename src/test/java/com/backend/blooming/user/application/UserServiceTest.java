@@ -1,8 +1,10 @@
 package com.backend.blooming.user.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.user.application.dto.UserDto;
+import com.backend.blooming.user.application.dto.ReadUserDto;
+import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import com.backend.blooming.user.infrastructure.repository.dto.FriendsStatus;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -20,9 +22,9 @@ class UserServiceTest extends UserServiceTestFixture {
     UserService userService;
 
     @Test
-    void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회할_수_있다() {
+    void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회한다() {
         // when
-        final UserDto actual = userService.readById(사용자_아이디);
+        final ReadUserDto actual = userService.readById(사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -31,25 +33,28 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
             softAssertions.assertThat(actual.email()).isEqualTo(사용자.getEmail());
             softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
-            softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColor().getCode());
+            softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColorCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(사용자.getStatusMessage());
         });
     }
 
     @Test
-    void 사용자_조회시_테마_색상과_상태_메시지를_설정하기_전이라면_각각_null을_반환한다() {
+    void 특정_키워드가_포함된_사용자_목록을_조회한다() {
         // when
-        final UserDto actual = userService.readById(테마_색상을_설정하지_않은_사용자_아이디);
+        final ReadUsersWithFriendsStatusDto actual = userService.readAllWithKeyword(사용자_아이디, 검색_키워드);
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual.id()).isPositive();
-            softAssertions.assertThat(actual.oAuthId()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthId());
-            softAssertions.assertThat(actual.oAuthType()).isEqualTo(테마_색상을_설정하지_않은_사용자.getOAuthType().name());
-            softAssertions.assertThat(actual.email()).isEqualTo(테마_색상을_설정하지_않은_사용자.getEmail());
-            softAssertions.assertThat(actual.name()).isEqualTo(테마_색상을_설정하지_않은_사용자.getName());
-            softAssertions.assertThat(actual.color()).isNull();
-            softAssertions.assertThat(actual.statusMessage()).isNull();
+            softAssertions.assertThat(actual.users()).hasSize(3);
+            softAssertions.assertThat(actual.users().get(0).id()).isEqualTo(사용자.getId());
+            softAssertions.assertThat(actual.users().get(0).name()).isEqualTo(사용자.getName());
+            softAssertions.assertThat(actual.users().get(0).friendsStatus()).isEqualTo(FriendsStatus.SELF.name());
+            softAssertions.assertThat(actual.users().get(1).id()).isEqualTo(친구인_사용자.getId());
+            softAssertions.assertThat(actual.users().get(1).name()).isEqualTo(친구인_사용자.getName());
+            softAssertions.assertThat(actual.users().get(1).friendsStatus()).isEqualTo(FriendsStatus.FRIENDS.name());
+            softAssertions.assertThat(actual.users().get(2).id()).isEqualTo(친구가_아닌_사용자.getId());
+            softAssertions.assertThat(actual.users().get(2).name()).isEqualTo(친구가_아닌_사용자.getName());
+            softAssertions.assertThat(actual.users().get(2).friendsStatus()).isEqualTo(FriendsStatus.NONE.name());
         });
     }
 
@@ -70,7 +75,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_모든_정보를_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 모든_사용자_정보를_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 모든_사용자_정보를_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -83,7 +88,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_이름만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 이름만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 이름만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -96,7 +101,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_테마_색상만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 테마_색상만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 테마_색상만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {
@@ -109,7 +114,7 @@ class UserServiceTest extends UserServiceTestFixture {
     @Test
     void 사용자_정보_수정시_상태_메시지만_수정할_수_있다() {
         // when
-        final UserDto actual = userService.updateById(사용자_아이디, 상태_메시지만_수정한_dto);
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 상태_메시지만_수정한_dto);
 
         // then
         assertSoftly(softAssertions -> {

@@ -1,5 +1,6 @@
 package com.backend.blooming.user.domain;
 
+import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -76,5 +77,75 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
             softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(updateStatusMessage);
         });
+    }
+
+    @Test
+    void 테마_색상의_이름_조회시_테마_색상을_선택했다면_해당_색상의_이름을_반환한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name("사용자")
+                              .email("user@email.com")
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        final String actual = user.getColorName();
+
+        // then
+        assertThat(actual).isEqualTo(ThemeColor.BEIGE.name());
+    }
+
+    @Test
+    void 테마_색상의_이름_조회시_테마_색상을_선택하기_전이라면_null을_반환한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name("사용자")
+                              .email("user@email.com")
+                              .build();
+
+        // when
+        final String actual = user.getColorName();
+
+        // then
+        assertThat(actual).isNull();
+    }
+
+    @Test
+    void 테마_색상의_코드_조회시_테마_색상을_선택했다면_해당_색상의_코드를_반환한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name("사용자")
+                              .email("user@email.com")
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        final String actual = user.getColorCode();
+
+        // then
+        assertThat(actual).isEqualTo(ThemeColor.BEIGE.getCode());
+    }
+
+    @Test
+    void 테마_색상의_코드_조회시_테마_색상을_선택하기_전이라면_null을_반환한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name("사용자")
+                              .email("user@email.com")
+                              .build();
+
+        // when
+        final String actual = user.getColorCode();
+
+        // then
+        assertThat(actual).isNull();
     }
 }

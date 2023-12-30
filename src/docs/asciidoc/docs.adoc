@@ -53,6 +53,15 @@ include::{snippets}/user-controller-test/사용자_정보를_조회한다/reques
 include::{snippets}/user-controller-test/사용자_정보를_조회한다/http-response.adoc[]
 include::{snippets}/user-controller-test/사용자_정보를_조회한다/response-fields.adoc[]
 
+=== 검색을 통한 사용자 정보 목록 조회
+==== 요청
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/http-request.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/request-headers.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/query-parameters.adoc[]
+==== 응답
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/http-response.adoc[]
+include::{snippets}/user-controller-test/검색한_키워드가_이름에_포한된_사용자_목록을_조회한다/response-fields.adoc[]
+
 === 사용자 정보 수정
 ==== 요청
 include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/http-request.adoc[]
@@ -71,3 +80,5 @@ include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_�
 include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/http-response.adoc[]
 include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/response-fields.adoc[]
 
+== 친구
+include::friend.adoc[]

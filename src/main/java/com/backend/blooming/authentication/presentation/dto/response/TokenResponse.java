@@ -1,4 +1,4 @@
-package com.backend.blooming.authentication.presentation.response;
+package com.backend.blooming.authentication.presentation.dto.response;
 
 import com.backend.blooming.authentication.application.dto.TokenDto;
 

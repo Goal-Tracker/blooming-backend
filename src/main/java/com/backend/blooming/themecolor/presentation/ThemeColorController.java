@@ -1,8 +1,8 @@
 package com.backend.blooming.themecolor.presentation;
 
 import com.backend.blooming.themecolor.application.ThemeColorService;
-import com.backend.blooming.themecolor.application.dto.ThemeColorDto;
-import com.backend.blooming.themecolor.presentation.response.ThemeColorsResponse;
+import com.backend.blooming.themecolor.application.dto.ReadThemeColorDto;
+import com.backend.blooming.themecolor.presentation.dto.response.ReadThemeColorsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,9 +19,9 @@ public class ThemeColorController {
     private final ThemeColorService themeColorService;
 
     @GetMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<ThemeColorsResponse> readAll() {
-        final List<ThemeColorDto> themeColorDtos = themeColorService.readAll();
+    public ResponseEntity<ReadThemeColorsResponse> readAll() {
+        final List<ReadThemeColorDto> readThemeColorDtos = themeColorService.readAll();
 
-        return ResponseEntity.ok(ThemeColorsResponse.from(themeColorDtos));
+        return ResponseEntity.ok(ReadThemeColorsResponse.from(readThemeColorDtos));
     }
 }

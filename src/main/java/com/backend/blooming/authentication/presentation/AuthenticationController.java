@@ -4,10 +4,10 @@ import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
-import com.backend.blooming.authentication.presentation.request.ReissueAccessTokenRequest;
-import com.backend.blooming.authentication.presentation.response.LoginInformationResponse;
-import com.backend.blooming.authentication.presentation.response.SocialLoginRequest;
-import com.backend.blooming.authentication.presentation.response.TokenResponse;
+import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
+import com.backend.blooming.authentication.presentation.dto.response.LoginInformationResponse;
+import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
+import com.backend.blooming.authentication.presentation.dto.response.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ public class AuthenticationController {
     @PostMapping(value = "/login/oauth/{oAuthType}", headers = "X-API-VERSION=1")
     public ResponseEntity<LoginInformationResponse> login(
             @PathVariable final String oAuthType,
-            @RequestBody SocialLoginRequest loginRequest
+            @RequestBody final SocialLoginRequest loginRequest
     ) {
         final LoginInformationDto loginInformationDto = authenticationService.login(
                 OAuthType.from(oAuthType),
@@ -37,7 +37,9 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/reissue", headers = "X-API-VERSION=1")
-    public ResponseEntity<TokenResponse> reissueAccessToken(@RequestBody ReissueAccessTokenRequest reissueRequest) {
+    public ResponseEntity<TokenResponse> reissueAccessToken(
+            @RequestBody final ReissueAccessTokenRequest reissueRequest
+    ) {
         final TokenDto tokenDto = authenticationService.reissueAccessToken(reissueRequest.refreshToken());
 
         return ResponseEntity.ok(TokenResponse.from(tokenDto));
