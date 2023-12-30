@@ -23,7 +23,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @SuppressWarnings("NonAsciiCharacters")
 class UserWithFriendsStatusRepositoryTest extends UserWithFriendsStatusRepositoryTestFixture {
 
-    UserWithFriendsStatusRepository userWithFriendsStatusRepository;
+    private UserWithFriendsStatusRepository userWithFriendsStatusRepository;
 
     @BeforeEach
     void setUp(@Autowired final JPAQueryFactory jpaQueryFactory) {

@@ -19,7 +19,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class UserServiceTest extends UserServiceTestFixture {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
     @Test
     void 사용자_조회시_존재하는_사용자_아이디라면_사용자를_조회한다() {

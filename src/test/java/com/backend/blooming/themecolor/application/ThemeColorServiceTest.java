@@ -18,7 +18,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class ThemeColorServiceTest {
 
     @Autowired
-    ThemeColorService themeColorService;
+    private ThemeColorService themeColorService;
 
     @Test
     void 테마_색상_목록을_조회한다() {
