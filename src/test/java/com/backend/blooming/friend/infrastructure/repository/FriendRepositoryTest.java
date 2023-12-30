@@ -21,7 +21,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class FriendRepositoryTest extends FriendRepositoryTestFixture {
 
     @Autowired
-    FriendRepository friendRepository;
+    private FriendRepository friendRepository;
 
     @Test
     void 요청한_사용자와_요청받은_사용자가_동일한_데이터가_있다면_참을_반환한다() {

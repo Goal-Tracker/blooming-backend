@@ -26,10 +26,10 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class FriendServiceTest extends FriendServiceTestFixture {
 
     @Autowired
-    FriendService friendService;
+    private FriendService friendService;
 
     @Autowired
-    FriendRepository friendRepository;
+    private FriendRepository friendRepository;
 
     @Test
     void 친구를_요청한다() {
