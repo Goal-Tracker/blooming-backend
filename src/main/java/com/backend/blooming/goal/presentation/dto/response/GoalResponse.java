@@ -1,20 +1,22 @@
 package com.backend.blooming.goal.presentation.dto.response;
 
 import com.backend.blooming.goal.application.dto.GoalDto;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public record GoalResponse(
+
         Long id,
         String name,
         String memo,
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
-        String startDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        LocalDate startDate,
 
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
-        String endDate,
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        LocalDate endDate,
         long days,
         Long managerId,
         List<Long> teamUserIds
@@ -25,8 +27,8 @@ public record GoalResponse(
                 goalDto.id(),
                 goalDto.name(),
                 goalDto.memo(),
-                goalDto.startDate().toString(),
-                goalDto.endDate().toString(),
+                goalDto.startDate(),
+                goalDto.endDate(),
                 goalDto.days(),
                 goalDto.managerId(),
                 goalDto.teamUserIds()

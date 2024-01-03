@@ -1,7 +1,9 @@
 package com.backend.blooming.goal.presentation.dto.request;
 
 import jakarta.validation.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public record GoalRequest(
@@ -10,11 +12,11 @@ public record GoalRequest(
         String name,
         String memo,
 
-        @NotEmpty(message = "시작 날짜를 선택해주세요.")
-        String startDate,
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate startDate,
 
-        @NotEmpty(message = "끝나는 날짜를 선택해주세요.")
-        String endDate,
+        @DateTimeFormat(pattern = "yyyy-MM-dd")
+        LocalDate endDate,
         List<Long> teamUserIds
 ) {
 }
