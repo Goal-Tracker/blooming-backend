@@ -2,6 +2,7 @@ package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,26 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class UserTest extends UserTestFixture {
+
+    @Test
+    void 사용자_생성시_이름_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다() {
+        // when
+        final User actual = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .email(new Email("user@email.com"))
+                              .build();
+
+        // then
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.getOAuthId()).isEqualTo("12345");
+            softAssertions.assertThat(actual.getOAuthType()).isEqualTo(OAuthType.KAKAO);
+            softAssertions.assertThat(actual.getEmail()).isEqualTo("user@email.com");
+            softAssertions.assertThat(actual.getName()).isEqualTo("");
+            softAssertions.assertThat(actual.getColor()).isEqualTo(ThemeColor.INDIGO);
+            softAssertions.assertThat(actual.getStatusMessage()).isEqualTo("");
+        });
+    }
 
     @Test
     void 사용자를_삭제한다() {
@@ -80,7 +101,25 @@ class UserTest extends UserTestFixture {
     }
 
     @Test
-    void 테마_색상의_이름_조회시_테마_색상을_선택했다면_해당_색상의_이름을_반환한다() {
+    void 이메일_조회시_이메일_값을_반환한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name("사용자")
+                              .email(new Email("user@email.com"))
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        final String actual = user.getEmail();
+
+        // then
+        assertThat(actual).isEqualTo("user@email.com");
+    }
+
+    @Test
+    void 테마_색상의_이름_조회시_해당_색상의_이름을_반환한다() {
         // given
         final User user = User.builder()
                               .oAuthId("12345")
@@ -98,24 +137,7 @@ class UserTest extends UserTestFixture {
     }
 
     @Test
-    void 테마_색상의_이름_조회시_테마_색상을_선택하기_전이라면_null을_반환한다() {
-        // given
-        final User user = User.builder()
-                              .oAuthId("12345")
-                              .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
-                              .email(new Email("user@email.com"))
-                              .build();
-
-        // when
-        final String actual = user.getColorName();
-
-        // then
-        assertThat(actual).isNull();
-    }
-
-    @Test
-    void 테마_색상의_코드_조회시_테마_색상을_선택했다면_해당_색상의_코드를_반환한다() {
+    void 테마_색상의_코드_조회시_해당_색상의_코드를_반환한다() {
         // given
         final User user = User.builder()
                               .oAuthId("12345")
@@ -130,22 +152,5 @@ class UserTest extends UserTestFixture {
 
         // then
         assertThat(actual).isEqualTo(ThemeColor.BEIGE.getCode());
-    }
-
-    @Test
-    void 테마_색상의_코드_조회시_테마_색상을_선택하기_전이라면_null을_반환한다() {
-        // given
-        final User user = User.builder()
-                              .oAuthId("12345")
-                              .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
-                              .email(new Email("user@email.com"))
-                              .build();
-
-        // when
-        final String actual = user.getColorCode();
-
-        // then
-        assertThat(actual).isNull();
     }
 }

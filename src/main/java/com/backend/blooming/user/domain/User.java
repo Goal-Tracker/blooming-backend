@@ -46,14 +46,14 @@ public class User extends BaseTimeEntity {
     private Email email;
 
     @Column(unique = true, length = 50, nullable = false)
-    private String name = DEFAULT_NAME;
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "theme_color", nullable = false)
-    private ThemeColor color = DEFAULT_THEME_COLOR;
+    private ThemeColor color;
 
     @Column(columnDefinition = "text", nullable = false)
-    private String statusMessage = DEFAULT_STATUS_MESSAGE;
+    private String statusMessage;
 
     @Column(name = "is_deleted")
     private boolean deleted = false;
@@ -70,9 +70,33 @@ public class User extends BaseTimeEntity {
         this.oAuthId = oAuthId;
         this.oAuthType = oAuthType;
         this.email = email;
-        this.name = name;
-        this.color = color;
-        this.statusMessage = statusMessage;
+        this.name = processName(name);
+        this.color = processColor(color);
+        this.statusMessage = processStatusMessage(statusMessage);
+    }
+
+    private String processName(final String name) {
+        if (name == null) {
+            return DEFAULT_NAME;
+        }
+
+        return name;
+    }
+
+    private ThemeColor processColor(final ThemeColor color) {
+        if (color == null) {
+            return DEFAULT_THEME_COLOR;
+        }
+
+        return color;
+    }
+
+    private String processStatusMessage(final String statusMessage) {
+        if (statusMessage == null) {
+            return DEFAULT_STATUS_MESSAGE;
+        }
+
+        return statusMessage;
     }
 
     public void delete() {
@@ -96,18 +120,10 @@ public class User extends BaseTimeEntity {
     }
 
     public String getColorName() {
-        if (color == null) {
-            return null;
-        }
-
         return color.name();
     }
 
     public String getColorCode() {
-        if (color == null) {
-            return null;
-        }
-
         return color.getCode();
     }
 }
