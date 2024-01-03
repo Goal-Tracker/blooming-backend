@@ -1,6 +1,7 @@
 package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,19 +30,19 @@ public class UserRepositoryTestFixture {
                   .oAuthId("12345")
                   .oAuthType(OAuthType.KAKAO)
                   .name("사용자")
-                  .email("test@email.com")
+                  .email(new Email("test@email.com"))
                   .build();
         사용자2 = User.builder()
                    .oAuthId("12346")
                    .oAuthType(OAuthType.KAKAO)
                    .name("사용자2")
-                   .email("test2@email.com")
+                   .email(new Email("test2@email.com"))
                    .build();
         삭제된_사용자 = User.builder()
                       .oAuthId("12348")
                       .oAuthType(OAuthType.KAKAO)
                       .name("삭제된 사용자")
-                      .email("test4@email.com")
+                      .email(new Email("test4@email.com"))
                       .build();
         삭제된_사용자.delete();
         userRepository.saveAll(List.of(사용자, 사용자2, 삭제된_사용자));

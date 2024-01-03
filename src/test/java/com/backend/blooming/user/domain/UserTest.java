@@ -86,7 +86,7 @@ class UserTest extends UserTestFixture {
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
                               .name("사용자")
-                              .email("user@email.com")
+                              .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
 
@@ -104,7 +104,7 @@ class UserTest extends UserTestFixture {
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
                               .name("사용자")
-                              .email("user@email.com")
+                              .email(new Email("user@email.com"))
                               .build();
 
         // when
@@ -121,7 +121,7 @@ class UserTest extends UserTestFixture {
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
                               .name("사용자")
-                              .email("user@email.com")
+                              .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
 
@@ -139,7 +139,7 @@ class UserTest extends UserTestFixture {
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
                               .name("사용자")
-                              .email("user@email.com")
+                              .email(new Email("user@email.com"))
                               .build();
 
         // when

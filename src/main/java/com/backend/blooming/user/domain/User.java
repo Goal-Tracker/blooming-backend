@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import jakarta.persistence.Column;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -37,10 +38,10 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private OAuthType oAuthType;
 
-    @Column(nullable = false)
-    private String email;
+    @Embedded
+    private Email email;
 
-    @Column(unique = true)
+    @Column(unique = true, length = 50)
     private String name;
 
     @Enumerated(EnumType.STRING)
@@ -57,7 +58,7 @@ public class User extends BaseTimeEntity {
     private User(
             final String oAuthId,
             final OAuthType oAuthType,
-            final String email,
+            final Email email,
             final String name,
             final ThemeColor color,
             final String statusMessage
@@ -84,6 +85,10 @@ public class User extends BaseTimeEntity {
 
     public void updateStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public String getEmail() {
+        return email.getValue();
     }
 
     public String getColorName() {

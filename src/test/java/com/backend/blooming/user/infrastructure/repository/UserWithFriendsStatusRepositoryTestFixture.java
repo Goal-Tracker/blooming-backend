@@ -3,6 +3,7 @@ package com.backend.blooming.user.infrastructure.repository;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,37 +32,37 @@ public class UserWithFriendsStatusRepositoryTestFixture {
                   .oAuthId("12345")
                   .oAuthType(OAuthType.KAKAO)
                   .name("사용자")
-                  .email("test@email.com")
+                  .email(new Email("test@email.com"))
                   .build();
         친구인_사용자 = User.builder()
                       .oAuthId("12346")
                       .oAuthType(OAuthType.KAKAO)
                       .name("사용자2 검색어")
-                      .email("test2@email.com")
+                      .email(new Email("test2@email.com"))
                       .build();
         친구로_요청한_사용자 = User.builder()
                           .oAuthId("12347")
                           .oAuthType(OAuthType.KAKAO)
                           .name("사용자3 검색어")
-                          .email("test3@email.com")
+                          .email(new Email("test3@email.com"))
                           .build();
         친구_요청을_받은_사용자 = User.builder()
                             .oAuthId("12348")
                             .oAuthType(OAuthType.KAKAO)
                             .name("사용자4")
-                            .email("test4@email.com")
+                            .email(new Email("test4@email.com"))
                             .build();
         관계가_없는_사용자 = User.builder()
                          .oAuthId("12349")
                          .oAuthType(OAuthType.KAKAO)
                          .name("사용자5")
-                         .email("test5@email.com")
+                         .email(new Email("test5@email.com"))
                          .build();
         삭제된_사용자 = User.builder()
                       .oAuthId("12350")
                       .oAuthType(OAuthType.KAKAO)
                       .name("사용자6")
-                      .email("test6@email.com")
+                      .email(new Email("test6@email.com"))
                       .build();
         삭제된_사용자.delete();
         userRepository.saveAll(List.of(사용자, 친구인_사용자, 친구로_요청한_사용자, 친구_요청을_받은_사용자, 관계가_없는_사용자, 삭제된_사용자));

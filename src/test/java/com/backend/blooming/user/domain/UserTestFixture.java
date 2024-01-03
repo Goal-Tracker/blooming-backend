@@ -16,7 +16,7 @@ public class UserTestFixture {
                              .oAuthId(기존_소셜_아이디)
                              .oAuthType(기존_소셜_타입)
                              .name(기존_이름)
-                             .email(기존_이메일)
+                             .email(new Email(기존_이메일))
                              .color(기존_테마_색상)
                              .statusMessage(기존_상태_메시지)
                              .build();

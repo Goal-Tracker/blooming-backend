@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,55 +46,55 @@ public class FriendServiceTestFixture {
                              .oAuthId("12345")
                              .oAuthType(OAuthType.KAKAO)
                              .name("사용자1")
-                             .email("user1@email.com")
+                             .email(new Email("user1@email.com"))
                              .build();
         final User 친구_요청할_사용자 = User.builder()
                                     .oAuthId("12346")
                                     .oAuthType(OAuthType.KAKAO)
                                     .name("사용자2")
-                                    .email("user2@email.com")
+                                    .email(new Email("user2@email.com"))
                                     .build();
         final User 친구_요청을_보낸_사용자 = User.builder()
                                        .oAuthId("12347")
                                        .oAuthType(OAuthType.KAKAO)
                                        .name("사용자3")
-                                       .email("user3@email.com")
+                                       .email(new Email("user3@email.com"))
                                        .build();
         final User 이미_친구_요청을_받은_사용자 = User.builder()
                                           .oAuthId("12348")
                                           .oAuthType(OAuthType.KAKAO)
                                           .name("사용자4")
-                                          .email("user4@email.com")
+                                          .email(new Email("user4@email.com"))
                                           .build();
         final User 친구_요청을_받은_사용자2 = User.builder()
                                         .oAuthId("12349")
                                         .oAuthType(OAuthType.KAKAO)
                                         .name("사용자5")
-                                        .email("user5@email.com")
+                                        .email(new Email("user5@email.com"))
                                         .build();
         final User 친구_요청을_받은_사용자3 = User.builder()
                                         .oAuthId("12350")
                                         .oAuthType(OAuthType.KAKAO)
                                         .name("사용자6")
-                                        .email("user6@email.com")
+                                        .email(new Email("user6@email.com"))
                                         .build();
         final User 친구인_사용자1 = User.builder()
                                   .oAuthId("23456")
                                   .oAuthType(OAuthType.KAKAO)
                                   .name("친구1")
-                                  .email("friend1@email.com")
+                                  .email(new Email("friend1@email.com"))
                                   .build();
         final User 친구인_사용자2 = User.builder()
                                   .oAuthId("23457")
                                   .oAuthType(OAuthType.KAKAO)
                                   .name("친구2")
-                                  .email("friend2@email.com")
+                                  .email(new Email("friend2@email.com"))
                                   .build();
         final User 친구인_사용자3 = User.builder()
                                   .oAuthId("23458")
                                   .oAuthType(OAuthType.KAKAO)
                                   .name("친구3")
-                                  .email("friend3@email.com")
+                                  .email(new Email("friend3@email.com"))
                                   .build();
         userRepository.saveAll(List.of(
                 사용자,
