@@ -27,6 +27,10 @@ import lombok.ToString;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
+    private static final String DEFAULT_NAME = "";
+    private static final String DEFAULT_STATUS_MESSAGE = "";
+    private static final ThemeColor DEFAULT_THEME_COLOR = ThemeColor.INDIGO;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,15 +45,15 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Email email;
 
-    @Column(unique = true, length = 50)
-    private String name;
+    @Column(unique = true, length = 50, nullable = false)
+    private String name = DEFAULT_NAME;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "theme_color")
-    private ThemeColor color;
+    @Column(name = "theme_color", nullable = false)
+    private ThemeColor color = DEFAULT_THEME_COLOR;
 
-    @Column(columnDefinition = "text")
-    private String statusMessage;
+    @Column(columnDefinition = "text", nullable = false)
+    private String statusMessage = DEFAULT_STATUS_MESSAGE;
 
     @Column(name = "is_deleted")
     private boolean deleted = false;
