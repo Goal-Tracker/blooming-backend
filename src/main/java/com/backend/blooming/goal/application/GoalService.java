@@ -37,16 +37,13 @@ public class GoalService {
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
-        final LocalDate startDate = LocalDate.parse(createGoalDto.startDate());
-        final LocalDate endDate = LocalDate.parse(createGoalDto.endDate());
-
-        validateGoalDatePeriod(startDate, endDate);
+        validateGoalDatePeriod(createGoalDto.startDate(), createGoalDto.endDate());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
                               .memo(createGoalDto.memo())
-                              .startDate(startDate)
-                              .endDate(endDate)
+                              .startDate(createGoalDto.startDate())
+                              .endDate(createGoalDto.endDate())
                               .managerId(createGoalDto.managerId())
                               .build();
 

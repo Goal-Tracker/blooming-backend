@@ -68,8 +68,8 @@ public class GoalServiceTestFixture {
         유효한_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                골_시작일.toString(),
-                골_종료일.toString(),
+                골_시작일,
+                골_종료일,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -105,8 +105,8 @@ public class GoalServiceTestFixture {
         골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                LocalDate.now().minusDays(2).toString(),
-                골_종료일.toString(),
+                LocalDate.now().minusDays(2),
+                골_종료일,
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -114,8 +114,8 @@ public class GoalServiceTestFixture {
         골_종료날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                골_시작일.toString(),
-                LocalDate.now().minusDays(2).toString(),
+                골_시작일,
+                LocalDate.now().minusDays(2),
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -123,8 +123,8 @@ public class GoalServiceTestFixture {
         골_종료날짜가_시작날짜보다_이전인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                LocalDate.now().plusDays(4).toString(),
-                LocalDate.now().plusDays(2).toString(),
+                LocalDate.now().plusDays(4),
+                LocalDate.now().plusDays(2),
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
@@ -132,8 +132,8 @@ public class GoalServiceTestFixture {
         골_날짜가_1_미만인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
-                LocalDate.now().toString(),
-                LocalDate.now().toString(),
+                LocalDate.now(),
+                LocalDate.now(),
                 골_관리자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
