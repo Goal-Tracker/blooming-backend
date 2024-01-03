@@ -20,15 +20,19 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -40,22 +44,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class GoalControllerTest extends GoalControllerTestFixture {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @MockBean
-    GoalService goalService;
+    private GoalService goalService;
 
     @Autowired
-    RestDocumentationResultHandler restDocs;
+    private RestDocumentationResultHandler restDocs;
 
     @MockBean
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     public void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
@@ -72,7 +76,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .content(objectMapper.writeValueAsString(요청한_골_dto))
         ).andExpectAll(
                 status().isCreated(),
-                redirectedUrl("/goals/" + 응답한_골_dto.id())
+                redirectedUrl("/goals/" + 유효한_골_아이디)
         ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
@@ -91,16 +95,31 @@ class GoalControllerTest extends GoalControllerTestFixture {
     @Test
     void 골_아이디로_요청하면_해당_골의_정보를_반환한다() throws Exception {
         // given
-        given(goalService.readGoalById(유효한_골.getId())).willReturn(유효한_골_dto);
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readGoalById(유효한_골_아이디)).willReturn(유효한_골_dto);
 
         // when & then
-        mockMvc.perform(post("/goals/{goalId}")
+        mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", "1")
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpectAll(
-                status().isCreated()
-        ).andDo(document(
-                requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")).toString(),
+                status().isOk(),
+                jsonPath("$.id", is(유효한_골_dto.id()), Long.class),
+                jsonPath("$.name", is(유효한_골_dto.name()), String.class),
+                jsonPath("$.memo", is(유효한_골_dto.memo()), String.class),
+                jsonPath("$.startDate", is(유효한_골_dto.startDate().toString()), String.class),
+                jsonPath("$.endDate", is(유효한_골_dto.endDate().toString()), String.class),
+                jsonPath("$.days", is(유효한_골_dto.days()), long.class),
+                jsonPath("$.managerId", is(유효한_골_dto.managerId()), Long.class),
+                jsonPath("$.teamUserIds.[0]", is(유효한_골_dto.teamUserIds().get(0)), Long.class)
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
                 responseFields(
                         fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
                         fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
@@ -108,6 +127,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
                         fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
                         fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
                         fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
                 )
         ));
