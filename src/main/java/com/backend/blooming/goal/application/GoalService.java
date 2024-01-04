@@ -38,13 +38,14 @@ public class GoalService {
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
         validateGoalDatePeriod(createGoalDto.startDate(), createGoalDto.endDate());
+        final User user = getValidUser(createGoalDto.managerId());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
                               .memo(createGoalDto.memo())
                               .startDate(createGoalDto.startDate())
                               .endDate(createGoalDto.endDate())
-                              .managerId(createGoalDto.managerId())
+                              .managerId(user.getId())
                               .build();
 
         return goalRepository.save(goal);
@@ -57,8 +58,7 @@ public class GoalService {
         final List<GoalTeam> goalTeams = new ArrayList<>();
 
         for (final Long goalTeamUser : goalTeamUserIds) {
-            final User user = userRepository.findByIdAndDeletedIsFalse(goalTeamUser)
-                                            .orElseThrow(NotFoundUserException::new);
+            final User user = getValidUser(goalTeamUser);
             final GoalTeam goalTeam = new GoalTeam(user, goal);
             final GoalTeam persistGoalTeam = goalTeamRepository.save(goalTeam);
 
@@ -80,6 +80,11 @@ public class GoalService {
         if (endDate.isBefore(startDate)) {
             throw new InvalidGoalException.InvalidInvalidGoalPeriod();
         }
+    }
+
+    private User getValidUser(final Long userId) {
+        return userRepository.findByIdAndDeletedIsFalse(userId)
+                             .orElseThrow(NotFoundUserException::new);
     }
 
     @Transactional(readOnly = true)
