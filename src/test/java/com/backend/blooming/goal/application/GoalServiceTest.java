@@ -3,6 +3,7 @@ package com.backend.blooming.goal.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -17,10 +18,10 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class GoalServiceTest extends GoalServiceTestFixture {
 
     @Autowired
-    GoalService goalService;
+    private GoalService goalService;
 
     @Test
-    public void 새로운_골을_생성한다() {
+    void 새로운_골을_생성한다() {
         // when
         final GoalDto result = goalService.createGoal(유효한_골_생성_dto);
 
@@ -32,9 +33,23 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.startDate()).isEqualTo(골_시작일);
             softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
-            softAssertions.assertThat(result.managerId()).isEqualTo(골_관리자_아이디);
+            softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
         });
+    }
+
+    @Test
+    void 골_생성시_존재하지_않는_사용자가_관리자인_경우_예외를_발생한다() {
+        // when
+        assertThatThrownBy(() -> goalService.createGoal(존재하지_않는_사용자가_관리자인_골_생성_dto))
+                .isInstanceOf(NotFoundUserException.class);
+    }
+
+    @Test
+    void 골_생성시_존재하지_않는_사용자가_참여자로_있는_경우_예외를_발생한다() {
+        // when
+        assertThatThrownBy(() -> goalService.createGoal(존재하지_않는_사용자가_참여자로_있는_골_생성_dto))
+                .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
@@ -61,7 +76,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_날짜가_1_미만인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.createGoal(골_날짜가_1_미만인_골_생성_dto))
+        assertThatThrownBy(() -> goalService.createGoal(골_날짜수가_1_미만인_골_생성_dto))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalDays.class);
     }
 
@@ -78,7 +93,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.startDate()).isEqualTo(골_시작일);
             softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
-            softAssertions.assertThat(result.managerId()).isEqualTo(골_관리자_아이디);
+            softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
         });
     }

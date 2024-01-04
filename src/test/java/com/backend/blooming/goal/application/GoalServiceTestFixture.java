@@ -31,27 +31,30 @@ public class GoalServiceTestFixture {
     @Autowired
     private GoalTeamRepository goalTeamRepository;
 
+    protected Long 유효한_사용자_아이디;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     protected long 골_날짜수 = 40L;
-    protected Long 골_관리자_아이디 = 999L;
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
     protected GoalDto 유효한_골_dto;
+    protected CreateGoalDto 존재하지_않는_사용자가_관리자인_골_생성_dto;
+    protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto;
-    protected CreateGoalDto 골_날짜가_1_미만인_골_생성_dto;
+    protected CreateGoalDto 골_날짜수가_1_미만인_골_생성_dto;
 
     @BeforeEach
     void setUp() {
         User 유효한_사용자;
-        Long 유효한_사용자_아이디;
         List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
         GoalTeam 유효한_골_팀;
+        Long 존재하지_않는_사용자_아이디 = 998L;
+        List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>();
 
         유효한_사용자 = User.builder()
                       .oAuthId("아이디")
@@ -70,7 +73,7 @@ public class GoalServiceTestFixture {
                 골_메모,
                 골_시작일,
                 골_종료일,
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -79,7 +82,7 @@ public class GoalServiceTestFixture {
                     .memo(골_메모)
                     .startDate(골_시작일)
                     .endDate(골_종료일)
-                    .managerId(골_관리자_아이디)
+                    .managerId(유효한_사용자_아이디)
                     .build();
 
         goalRepository.save(유효한_골);
@@ -98,8 +101,28 @@ public class GoalServiceTestFixture {
                 골_시작일,
                 골_종료일,
                 골_날짜수,
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
+        );
+
+        존재하지_않는_사용자가_관리자인_골_생성_dto = new CreateGoalDto(
+                골_제목,
+                골_메모,
+                골_시작일,
+                골_종료일,
+                존재하지_않는_사용자_아이디,
+                골_팀에_등록된_사용자_아이디_목록
+        );
+
+        존재하지_않는_사용자가_있는_사용자_아이디_목록.add(존재하지_않는_사용자_아이디);
+
+        존재하지_않는_사용자가_참여자로_있는_골_생성_dto = new CreateGoalDto(
+                골_제목,
+                골_메모,
+                골_시작일,
+                골_종료일,
+                유효한_사용자_아이디,
+                존재하지_않는_사용자가_있는_사용자_아이디_목록
         );
 
         골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
@@ -107,7 +130,7 @@ public class GoalServiceTestFixture {
                 골_메모,
                 LocalDate.now().minusDays(2),
                 골_종료일,
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -116,7 +139,7 @@ public class GoalServiceTestFixture {
                 골_메모,
                 골_시작일,
                 LocalDate.now().minusDays(2),
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
@@ -125,16 +148,16 @@ public class GoalServiceTestFixture {
                 골_메모,
                 LocalDate.now().plusDays(4),
                 LocalDate.now().plusDays(2),
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
 
-        골_날짜가_1_미만인_골_생성_dto = new CreateGoalDto(
+        골_날짜수가_1_미만인_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
                 LocalDate.now(),
                 LocalDate.now(),
-                골_관리자_아이디,
+                유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
     }
