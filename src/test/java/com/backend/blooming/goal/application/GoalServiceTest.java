@@ -3,6 +3,7 @@ package com.backend.blooming.goal.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.GoalDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -96,5 +97,12 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
         });
+    }
+
+    @Test
+    void 존재하지_않는_골_아이디를_조회한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.readGoalById(존재하지_않는_골_아이디))
+                .isInstanceOf(NotFoundGoalException.class);
     }
 }

@@ -192,15 +192,12 @@ class GoalControllerTest extends GoalControllerTestFixture {
     @Test
     void 골_아이디로_조회하면_해당_골의_정보를_반환한다() throws Exception {
         // given
-        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
-        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.readGoalById(유효한_골_아이디)).willReturn(유효한_골_dto);
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", "1")
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
-                .contentType(MediaType.APPLICATION_JSON)
         ).andExpectAll(
                 status().isOk(),
                 jsonPath("$.id", is(유효한_골_dto.id()), Long.class),
