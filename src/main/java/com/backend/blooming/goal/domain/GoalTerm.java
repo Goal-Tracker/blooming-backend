@@ -21,21 +21,36 @@ public class GoalTerm {
     @Column(nullable = false)
     private long days;
 
+    @Column(nullable = false)
+    private long inProgressDays;
+
     public GoalTerm() {
     }
 
     public GoalTerm(final LocalDate startDate, final LocalDate endDate) {
         this.startDate = startDate;
         this.endDate = endDate;
-        validateGoalDays(startDate, endDate);
-        this.days = ChronoUnit.DAYS.between(startDate, endDate);
+        this.days = getValidGoalDays(startDate, endDate);
+        this.inProgressDays = getValidInProgressDay(startDate, endDate);
     }
 
-    private void validateGoalDays(final LocalDate startDate, final LocalDate endDate) {
-        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate);
+    private long getValidGoalDays(final LocalDate startDate, final LocalDate endDate) {
+        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
 
         if (goalDays < 1 || goalDays > 100) {
             throw new InvalidGoalException.InvalidInvalidGoalDays();
         }
+        return goalDays;
+    }
+
+    private long getValidInProgressDay(final LocalDate startDate, final LocalDate endDate) {
+        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        final LocalDate nowDate = LocalDate.now();
+        final long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
+
+        if (inProgressDays < 0 || inProgressDays > goalDays) {
+            throw new InvalidGoalException.InvalidInvalidInProgressDays();
+        }
+        return inProgressDays;
     }
 }

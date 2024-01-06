@@ -36,4 +36,11 @@ public class InvalidGoalException extends BloomingException {
             super(ExceptionMessage.INVALID_GOAL_DAYS);
         }
     }
+
+    public static class InvalidInvalidInProgressDays extends InvalidGoalException {
+
+        public InvalidInvalidInProgressDays() {
+            super(ExceptionMessage.INVALID_IN_PROGRESS_DAYS);
+        }
+    }
 }

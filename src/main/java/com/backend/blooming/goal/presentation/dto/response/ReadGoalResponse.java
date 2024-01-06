@@ -18,6 +18,7 @@ public record ReadGoalResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         LocalDate endDate,
         long days,
+        long inProgressDays,
         Long managerId,
         List<Long> teamUserIds
 ) {
@@ -30,6 +31,7 @@ public record ReadGoalResponse(
                 goalDto.startDate(),
                 goalDto.endDate(),
                 goalDto.days(),
+                goalDto.inProgressDays(),
                 goalDto.managerId(),
                 goalDto.teamUserIds()
         );

@@ -31,7 +31,8 @@ public enum ExceptionMessage {
     INVALID_GOAL_START_DAY("시작 날짜가 현재 날짜 이전입니다."),
     INVALID_GOAL_END_DAY("종료 날짜가 현재 날짜 이전입니다."),
     INVALID_GOAL_PERIOD("시작 날짜가 종료 날짜 이후입니다."),
-    INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)");
+    INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)"),
+    INVALID_IN_PROGRESS_DAYS("현재 진행중인 날짜 수가 범위 밖입니다.(범위: 1~전체 날짜 수)");
 
     private final String message;
 }

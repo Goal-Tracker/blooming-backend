@@ -31,7 +31,7 @@ public class GoalService {
     public Long createGoal(final CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
         final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.teamUserIds(), goal.getId());
-        goal.updateGoalTeams(goalTeams);
+        goal.updateTeams(goalTeams);
 
         return goal.getId();
     }
