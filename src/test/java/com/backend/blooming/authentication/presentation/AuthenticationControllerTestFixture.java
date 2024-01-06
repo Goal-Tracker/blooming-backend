@@ -3,8 +3,8 @@ package com.backend.blooming.authentication.presentation;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
-import com.backend.blooming.authentication.presentation.request.ReissueAccessTokenRequest;
-import com.backend.blooming.authentication.presentation.response.SocialLoginRequest;
+import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
+import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthenticationControllerTestFixture {

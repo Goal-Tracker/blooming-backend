@@ -1,9 +1,8 @@
 package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,13 +11,12 @@ import java.util.List;
 @SuppressWarnings("NonAsciiCharacters")
 public class UserRepositoryTestFixture {
 
-    @PersistenceContext
-    private EntityManager em;
-
     @Autowired
     private UserRepository userRepository;
 
     protected User 사용자;
+    protected User 사용자2;
+    protected User 삭제된_사용자;
     protected String 유효한_oAuth_아이디;
     protected OAuthType 유효한_oAuth_타입;
     protected String 유효하지_않은_oAuth_아이디 = "invalid";
@@ -32,24 +30,27 @@ public class UserRepositoryTestFixture {
                   .oAuthId("12345")
                   .oAuthType(OAuthType.KAKAO)
                   .name("사용자")
-                  .email("test@email.com")
+                  .email(new Email("test@email.com"))
                   .build();
-        final User 삭제된_사용자 = User.builder()
-                                 .oAuthId("12346")
-                                 .oAuthType(OAuthType.KAKAO)
-                                 .name("삭제된 사용자")
-                                 .email("test2@email.com")
-                                 .build();
+        사용자2 = User.builder()
+                   .oAuthId("12346")
+                   .oAuthType(OAuthType.KAKAO)
+                   .name("사용자2")
+                   .email(new Email("test2@email.com"))
+                   .build();
+        삭제된_사용자 = User.builder()
+                      .oAuthId("12348")
+                      .oAuthType(OAuthType.KAKAO)
+                      .name("삭제된 사용자")
+                      .email(new Email("test4@email.com"))
+                      .build();
         삭제된_사용자.delete();
-        userRepository.saveAll(List.of(사용자, 삭제된_사용자));
+        userRepository.saveAll(List.of(사용자, 사용자2, 삭제된_사용자));
 
         유효한_oAuth_아이디 = 사용자.getOAuthId();
         유효한_oAuth_타입 = 사용자.getOAuthType();
 
         사용자_아이디 = 사용자.getId();
         삭제된_사용자_아이디 = 삭제된_사용자.getId();
-
-        em.flush();
-        em.clear();
     }
 }

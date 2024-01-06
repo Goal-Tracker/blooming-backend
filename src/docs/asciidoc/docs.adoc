@@ -25,51 +25,16 @@
 |===
 
 == 인증 & 인가
-=== 로그인
-==== 요청
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-request.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/request-headers.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/path-parameters.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/request-fields.adoc[]
-==== 응답
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-response.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/response-fields.adoc[]
-
-=== Access Token 재발급
-==== 요청
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/http-request.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/request-headers.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/request-fields.adoc[]
-==== 응답
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/http-response.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/response-fields.adoc[]
+include::authentication.adoc[]
 
 == 사용자 정보
-=== 사용자 정보 조회
-==== 요청
-include::{snippets}/user-controller-test/사용자_정보를_조회한다/http-request.adoc[]
-include::{snippets}/user-controller-test/사용자_정보를_조회한다/request-headers.adoc[]
-==== 응답
-include::{snippets}/user-controller-test/사용자_정보를_조회한다/http-response.adoc[]
-include::{snippets}/user-controller-test/사용자_정보를_조회한다/response-fields.adoc[]
-
-=== 사용자 정보 수정
-==== 요청
-include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/http-request.adoc[]
-include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/request-headers.adoc[]
-include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/request-fields.adoc[]
-==== 응답
-include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/http-response.adoc[]
-include::{snippets}/user-controller-test/사용자의_모든_정보를_수정한다/response-fields.adoc[]
+include::user.adoc[]
 
 == 테마 색상
-=== 전체 테마 색상 목록 조회
-==== 요청
-include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/http-request.adoc[]
-include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/request-headers.adoc[]
-==== 응답
-include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/http-response.adoc[]
-include::{snippets}/theme-color-controller-test/전체_테마_색상_목록을_조회한다/response-fields.adoc[]
+include::themecolor.adoc[]
+
+== 친구
+include::friend.adoc[]
 
 == 골
 include::goal.adoc[]

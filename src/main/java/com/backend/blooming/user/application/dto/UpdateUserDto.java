@@ -1,6 +1,6 @@
 package com.backend.blooming.user.application.dto;
 
-import com.backend.blooming.user.presentation.request.UpdateUserRequest;
+import com.backend.blooming.user.presentation.dto.request.UpdateUserRequest;
 
 public record UpdateUserDto(String name, String color, String statusMessage) {
 

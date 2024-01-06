@@ -5,7 +5,6 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.themecolor.application.ThemeColorService;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -36,16 +35,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ThemeColorControllerTest extends ThemeColorControllerTestFixture {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    ThemeColorService themeColorService;
+    private ThemeColorService themeColorService;
 
     @Autowired
-    ObjectMapper objectMapper;
-
-    @Autowired
-    RestDocumentationResultHandler restDocs;
+    private RestDocumentationResultHandler restDocs;
 
     @Test
     void 전체_테마_색상_목록을_조회한다() throws Exception {

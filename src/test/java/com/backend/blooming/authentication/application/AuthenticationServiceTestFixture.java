@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
 import com.backend.blooming.authentication.infrastructure.oauth.kakao.dto.KakaoUserInformationDto;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -36,7 +37,7 @@ public class AuthenticationServiceTestFixture {
                                 .oAuthType(oauth_타입)
                                 .oAuthId(기존_사용자_소셜_정보.oAuthId())
                                 .name("기존 사용자")
-                                .email(기존_사용자_소셜_정보.email())
+                                .email(new Email(기존_사용자_소셜_정보.email()))
                                 .build();
 
         userRepository.save(기존_사용자);

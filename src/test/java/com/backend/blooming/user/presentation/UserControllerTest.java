@@ -30,6 +30,8 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -41,22 +43,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends UserControllerTestFixture {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    RestDocumentationResultHandler restDocs;
+    private RestDocumentationResultHandler restDocs;
 
     @Test
     void 사용자_정보를_조회한다() throws Exception {
@@ -126,6 +128,53 @@ class UserControllerTest extends UserControllerTestFixture {
                 status().isNotFound(),
                 jsonPath("$.message").exists()
         );
+    }
+
+    @Test
+    void 검색한_키워드가_이름에_포한된_사용자_목록을_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.readAllWithKeyword(사용자_아이디, 검색어)).willReturn(검색어가_이름에_포함된_사용자들의_정보_dto);
+
+        // when & then
+        mockMvc.perform(get("/users/all")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .queryParam("keyword", 검색어)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.users.[0].id", is(사용자_정보_dto1.id()), Long.class),
+                jsonPath("$.users.[0].email", is(사용자_정보_dto1.email())),
+                jsonPath("$.users.[0].name", is(사용자_정보_dto1.name())),
+                jsonPath("$.users.[0].color", is(사용자_정보_dto1.color())),
+                jsonPath("$.users.[0].statusMessage", is(사용자_정보_dto1.statusMessage())),
+                jsonPath("$.users.[0].friendsStatus", is(사용자_정보_dto1.friendsStatus())),
+                jsonPath("$.users.[1].id", is(사용자_정보_dto2.id()), Long.class),
+                jsonPath("$.users.[1].email", is(사용자_정보_dto2.email())),
+                jsonPath("$.users.[1].name", is(사용자_정보_dto2.name())),
+                jsonPath("$.users.[1].color", is(사용자_정보_dto2.color())),
+                jsonPath("$.users.[1].statusMessage", is(사용자_정보_dto2.statusMessage())),
+                jsonPath("$.users.[1].friendsStatus", is(사용자_정보_dto2.friendsStatus()))
+        ).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                queryParameters(
+                        parameterWithName("keyword").description("사용자 이름 검색어")
+                ),
+                responseFields(
+                        fieldWithPath("users").type(JsonFieldType.ARRAY).description("검색된 사용자 목록"),
+                        fieldWithPath("users.[].id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
+                        fieldWithPath("users.[].email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                        fieldWithPath("users.[].name").type(JsonFieldType.STRING).description("사용자 이름"),
+                        fieldWithPath("users.[].color").type(JsonFieldType.STRING).description("사용자 테마 색상 코드"),
+                        fieldWithPath("users.[].statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                        fieldWithPath("users.[].friendsStatus").type(JsonFieldType.STRING)
+                                                               .description("로그인한 사용자와의 친구 상태")
+                )
+        ));
     }
 
     @Test

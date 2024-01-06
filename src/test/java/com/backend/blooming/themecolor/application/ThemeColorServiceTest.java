@@ -1,7 +1,7 @@
 package com.backend.blooming.themecolor.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.themecolor.application.dto.ThemeColorDto;
+import com.backend.blooming.themecolor.application.dto.ReadThemeColorsDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -18,21 +18,22 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class ThemeColorServiceTest {
 
     @Autowired
-    ThemeColorService themeColorService;
+    private ThemeColorService themeColorService;
 
     @Test
     void 테마_색상_목록을_조회한다() {
         // when
-        final List<ThemeColorDto> actual = themeColorService.readAll();
+        final ReadThemeColorsDto actual = themeColorService.readAll();
 
         // then
         assertSoftly(softAssertions -> {
             final ThemeColor[] themeColors = ThemeColor.values();
-            softAssertions.assertThat(actual).hasSize(themeColors.length);
+            final List<ReadThemeColorsDto.ReadThemeColorDto> actualColors = actual.colors();
+            softAssertions.assertThat(actualColors).hasSize(themeColors.length);
 
             for (int i = 0; i < themeColors.length; i++) {
-                softAssertions.assertThat(actual.get(i).name()).isEqualTo(themeColors[i].name());
-                softAssertions.assertThat(actual.get(i).code()).isEqualTo(themeColors[i].getCode());
+                softAssertions.assertThat(actualColors.get(i).name()).isEqualTo(themeColors[i].name());
+                softAssertions.assertThat(actualColors.get(i).code()).isEqualTo(themeColors[i].getCode());
             }
         });
     }

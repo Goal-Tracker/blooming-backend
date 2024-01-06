@@ -21,7 +21,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class UserRepositoryTest extends UserRepositoryTestFixture {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     void oauth_아이디와_oauth_타입을_통해_사용자를_찾을_수_있다() {

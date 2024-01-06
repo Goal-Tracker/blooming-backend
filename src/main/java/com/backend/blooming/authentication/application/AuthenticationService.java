@@ -11,6 +11,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -55,7 +56,7 @@ public class AuthenticationService {
         final User savedUser = User.builder()
                                    .oAuthId(userInformationDto.oAuthId())
                                    .oAuthType(oAuthType)
-                                   .email(userInformationDto.email())
+                                   .email(new Email(userInformationDto.email()))
                                    .build();
 
         return userRepository.save(savedUser);

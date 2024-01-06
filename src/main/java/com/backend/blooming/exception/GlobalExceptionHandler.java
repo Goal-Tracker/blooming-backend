@@ -4,6 +4,10 @@ import com.backend.blooming.authentication.infrastructure.exception.InvalidToken
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.exception.dto.ExceptionResponse;
+import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
+import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
+import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
+import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalTeamException;
@@ -135,6 +139,46 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyRequestedFriendException.class)
+    public ResponseEntity<ExceptionResponse> handleAlreadyRequestedFriendException(
+            final AlreadyRequestedFriendException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundFriendRequestException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundFriendRequestException(
+            final NotFoundFriendRequestException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(FriendAcceptanceForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleFriendAcceptanceForbiddenException(
+            final FriendAcceptanceForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(DeleteFriendForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleDeleteFriendForbiddenException(
+            final DeleteFriendForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }
