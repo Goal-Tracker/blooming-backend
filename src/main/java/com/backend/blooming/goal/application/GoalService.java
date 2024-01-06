@@ -28,12 +28,12 @@ public class GoalService {
     private final UserRepository userRepository;
     private final GoalTeamRepository goalTeamRepository;
 
-    public GoalDto createGoal(final CreateGoalDto createGoalDto) {
+    public Long createGoal(final CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
         final List<GoalTeam> goalTeams = createGoalTeams(createGoalDto.teamUserIds(), goal.getId());
         goal.updateGoalTeams(goalTeams);
 
-        return GoalDto.from(goal);
+        return goal.getId();
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {

@@ -48,6 +48,7 @@ public class GoalServiceTestFixture {
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_날짜수가_1_미만인_골_생성_dto;
     protected Long 존재하지_않는_골_아이디 = 997L;
+    protected Long 유효한_골_아이디;
 
     @BeforeEach
     void setUp() {
@@ -88,6 +89,7 @@ public class GoalServiceTestFixture {
 
         goalRepository.save(유효한_골);
 
+        유효한_골_아이디 = 유효한_골.getId();
         유효한_골_팀 = new GoalTeam(유효한_사용자, 유효한_골);
         goalTeamRepository.save(유효한_골_팀);
 

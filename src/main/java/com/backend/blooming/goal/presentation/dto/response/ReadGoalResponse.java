@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import java.util.List;
 
-public record GoalResponse(
+public record ReadGoalResponse(
 
         Long id,
         String name,
@@ -22,8 +22,8 @@ public record GoalResponse(
         List<Long> teamUserIds
 ) {
 
-    public static GoalResponse from(final GoalDto goalDto) {
-        return new GoalResponse(
+    public static ReadGoalResponse from(final GoalDto goalDto) {
+        return new ReadGoalResponse(
                 goalDto.id(),
                 goalDto.name(),
                 goalDto.memo(),

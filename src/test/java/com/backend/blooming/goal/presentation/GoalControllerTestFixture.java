@@ -4,7 +4,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
-import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
+import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -81,7 +81,7 @@ public class GoalControllerTestFixture {
             골_팀에_등록된_사용자_아이디_목록
     );
 
-    protected GoalRequest 요청한_골_dto = new GoalRequest(
+    protected CreateGoalRequest 요청한_골_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
             골_시작일,

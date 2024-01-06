@@ -5,8 +5,8 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.GoalDto;
-import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
-import com.backend.blooming.goal.presentation.dto.response.GoalResponse;
+import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,19 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping(value = "/add", headers = "X-API-VERSION=1")
-    public ResponseEntity<GoalResponse> createGoal(@RequestBody @Valid final GoalRequest request,
-                                                   @Authenticated final AuthenticatedUser authenticatedUser) {
+    public ResponseEntity<ReadGoalResponse> createGoal(@RequestBody @Valid final CreateGoalRequest request,
+                                                       @Authenticated final AuthenticatedUser authenticatedUser) {
         final CreateGoalDto createGoalDto = CreateGoalDto.from(request, authenticatedUser.userId());
-        final GoalDto goalDto = goalService.createGoal(createGoalDto);
-        final GoalResponse goalResponse = GoalResponse.from(goalDto);
+        final Long goalId = goalService.createGoal(createGoalDto);
 
-        return ResponseEntity.created(URI.create("/goals/" + goalResponse.id())).build();
+        return ResponseEntity.created(URI.create("/goals/" + goalId)).build();
     }
 
     @GetMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<GoalResponse> readGoalById(@PathVariable("goalId") final Long goalId) {
+    public ResponseEntity<ReadGoalResponse> readGoalById(@PathVariable("goalId") final Long goalId) {
         final GoalDto goalDto = goalService.readGoalById(goalId);
-        final GoalResponse goalResponse = GoalResponse.from(goalDto);
+        final ReadGoalResponse readGoalResponse = ReadGoalResponse.from(goalDto);
 
-        return ResponseEntity.ok().body(goalResponse);
+        return ResponseEntity.ok().body(readGoalResponse);
     }
 }

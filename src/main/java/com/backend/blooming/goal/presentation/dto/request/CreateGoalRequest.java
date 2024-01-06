@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.List;
 
-public record GoalRequest(
+public record CreateGoalRequest(
 
         @NotEmpty(message = "제목을 입력해주세요.")
         String name,

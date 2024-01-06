@@ -1,6 +1,6 @@
 package com.backend.blooming.goal.application.dto;
 
-import com.backend.blooming.goal.presentation.dto.request.GoalRequest;
+import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +14,7 @@ public record CreateGoalDto(
         List<Long> teamUserIds
 ) {
 
-    public static CreateGoalDto from(final GoalRequest request, Long managerId) {
+    public static CreateGoalDto from(final CreateGoalRequest request, Long managerId) {
         return new CreateGoalDto(
                 request.name(),
                 request.memo(),

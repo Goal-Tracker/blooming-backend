@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -24,19 +25,10 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 새로운_골을_생성한다() {
         // when
-        final GoalDto result = goalService.createGoal(유효한_골_생성_dto);
+        final Long goalId = goalService.createGoal(유효한_골_생성_dto);
 
         // then
-        assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result).isNotNull();
-            softAssertions.assertThat(result.name()).isEqualTo(골_제목);
-            softAssertions.assertThat(result.memo()).isEqualTo(골_메모);
-            softAssertions.assertThat(result.startDate()).isEqualTo(골_시작일);
-            softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
-            softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
-            softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
-            softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
-        });
+        assertThat(goalId).isPositive();
     }
 
     @Test
@@ -84,11 +76,10 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final GoalDto result = goalService.readGoalById(유효한_골_dto.id());
+        final GoalDto result = goalService.readGoalById(유효한_골_아이디);
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result).isNotNull();
             softAssertions.assertThat(result.name()).isEqualTo(골_제목);
             softAssertions.assertThat(result.memo()).isEqualTo(골_메모);
             softAssertions.assertThat(result.startDate()).isEqualTo(골_시작일);
