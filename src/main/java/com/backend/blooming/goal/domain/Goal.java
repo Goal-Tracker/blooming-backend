@@ -27,6 +27,8 @@ import java.util.List;
 @ToString(exclude = "teams")
 public class Goal extends BaseTimeEntity {
 
+    private final String MEMO_DEFAULT = "";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -34,7 +36,7 @@ public class Goal extends BaseTimeEntity {
     @Column(nullable = false, length = 50)
     private String name;
 
-    @Column(columnDefinition = "text")
+    @Column(nullable = false, columnDefinition = "text")
     private String memo;
 
     @Embedded
@@ -47,7 +49,7 @@ public class Goal extends BaseTimeEntity {
     private List<GoalTeam> teams = new ArrayList<>();
 
     @Column(nullable = false)
-    private boolean deleted = false;
+    private boolean deleted;
 
     @Builder
     private Goal(
@@ -58,13 +60,21 @@ public class Goal extends BaseTimeEntity {
             final Long managerId
     ) {
         this.name = name;
-        this.memo = memo;
+        this.memo = setNewMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
         this.teams = new ArrayList<>();
+        this.deleted = false;
     }
 
-    public void updateGoalTeams(List<GoalTeam> teams) {
+    private String setNewMemo(final String memo){
+        if (memo == null || memo.isEmpty()) {
+            return MEMO_DEFAULT;
+        }
+        return memo;
+    }
+
+    public void updateTeams(List<GoalTeam> teams) {
         this.teams = teams;
     }
 }
