@@ -1,7 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -76,7 +76,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final GoalDto result = goalService.readGoalById(유효한_골_아이디);
+        final ReadGoalDetailDto result = goalService.readGoalById(유효한_골_아이디);
 
         // then
         assertSoftly(softAssertions -> {

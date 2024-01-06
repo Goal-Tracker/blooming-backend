@@ -2,7 +2,7 @@ package com.backend.blooming.goal.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -41,7 +41,7 @@ public class GoalServiceTestFixture {
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
-    protected GoalDto 유효한_골_dto;
+    protected ReadGoalDetailDto 유효한_골_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_관리자인_골_생성_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
@@ -98,7 +98,7 @@ public class GoalServiceTestFixture {
         유효한_골.updateTeams(골에_등록된_골_팀_목록);
         골_팀에_등록된_사용자_아이디_목록.add(유효한_사용자_아이디);
 
-        유효한_골_dto = new GoalDto(
+        유효한_골_dto = new ReadGoalDetailDto(
                 유효한_골.getId(),
                 골_제목,
                 골_메모,

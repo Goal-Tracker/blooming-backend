@@ -1,6 +1,6 @@
 package com.backend.blooming.goal.presentation.dto.response;
 
-import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
@@ -23,17 +23,17 @@ public record ReadGoalResponse(
         List<Long> teamUserIds
 ) {
 
-    public static ReadGoalResponse from(final GoalDto goalDto) {
+    public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
         return new ReadGoalResponse(
-                goalDto.id(),
-                goalDto.name(),
-                goalDto.memo(),
-                goalDto.startDate(),
-                goalDto.endDate(),
-                goalDto.days(),
-                goalDto.inProgressDays(),
-                goalDto.managerId(),
-                goalDto.teamUserIds()
+                readGoalDetailDto.id(),
+                readGoalDetailDto.name(),
+                readGoalDetailDto.memo(),
+                readGoalDetailDto.startDate(),
+                readGoalDetailDto.endDate(),
+                readGoalDetailDto.days(),
+                readGoalDetailDto.inProgressDays(),
+                readGoalDetailDto.managerId(),
+                readGoalDetailDto.teamUserIds()
         );
     }
 }

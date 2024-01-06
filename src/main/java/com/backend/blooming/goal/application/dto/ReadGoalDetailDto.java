@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record GoalDto(
+public record ReadGoalDetailDto(
         Long id,
         String name,
         String memo,
@@ -18,13 +18,13 @@ public record GoalDto(
         List<Long> teamUserIds
 ) {
 
-    public static GoalDto from(final Goal goal) {
+    public static ReadGoalDetailDto from(final Goal goal) {
         final List<Long> teamUserIds = goal.getTeams()
                                            .stream()
                                            .map(team -> team.getUser().getId())
                                            .collect(Collectors.toList());
 
-        return new GoalDto(
+        return new ReadGoalDetailDto(
                 goal.getId(),
                 goal.getName(),
                 goal.getMemo(),

@@ -1,7 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.GoalDto;
+import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
@@ -88,10 +88,10 @@ public class GoalService {
     }
 
     @Transactional(readOnly = true)
-    public GoalDto readGoalById(final Long goalId) {
+    public ReadGoalDetailDto readGoalById(final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(NotFoundGoalException::new);
 
-        return GoalDto.from(goal);
+        return ReadGoalDetailDto.from(goal);
     }
 }
