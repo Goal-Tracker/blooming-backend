@@ -67,9 +67,9 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
-    void 골_날짜가_1_미만인_경우_예외를_발생한다() {
+    void 골_날짜가_100_초과인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.createGoal(골_날짜수가_1_미만인_골_생성_dto))
+        assertThatThrownBy(() -> goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalDays.class);
     }
 
@@ -85,6 +85,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.startDate()).isEqualTo(골_시작일);
             softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
+            softAssertions.assertThat(result.inProgressDays()).isEqualTo(현재_진행중인_날짜수);
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
         });
