@@ -35,12 +35,12 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 class KakaoOAuthClientTest extends KakaoOAuthClientTestFixture {
 
     @Autowired
-    KakaoOAuthClient kakaoOAuthClient;
+    private KakaoOAuthClient kakaoOAuthClient;
 
     @Autowired
-    MockRestServiceServer kakaoMockServer;
+    private MockRestServiceServer kakaoMockServer;
 
-    ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Test
     void 소셜_로그인_타입을_요청하면_카카오_타입을_반환한다() {

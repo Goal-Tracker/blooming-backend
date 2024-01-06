@@ -43,22 +43,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class UserControllerTest extends UserControllerTestFixture {
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @MockBean
-    UserService userService;
+    private UserService userService;
 
     @MockBean
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     @MockBean
-    TokenProvider tokenProvider;
+    private TokenProvider tokenProvider;
 
     @Autowired
-    ObjectMapper objectMapper;
+    private ObjectMapper objectMapper;
 
     @Autowired
-    RestDocumentationResultHandler restDocs;
+    private RestDocumentationResultHandler restDocs;
 
     @Test
     void 사용자_정보를_조회한다() throws Exception {

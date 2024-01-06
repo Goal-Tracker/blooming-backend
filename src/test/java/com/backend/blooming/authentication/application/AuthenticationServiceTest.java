@@ -7,7 +7,6 @@ import com.backend.blooming.authentication.infrastructure.exception.OAuthExcepti
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -25,13 +24,10 @@ import static org.mockito.BDDMockito.willThrow;
 class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
 
     @SpyBean
-    OAuthClient oAuthClient;
+    private OAuthClient oAuthClient;
 
     @Autowired
-    AuthenticationService authenticationService;
-
-    @Autowired
-    UserRepository userRepository;
+    private AuthenticationService authenticationService;
 
     @Test
     void 로그인시_존재하지_않는_사용자인_경우_해당_사용자를_저장후_토큰_정보를_반환한다() {
