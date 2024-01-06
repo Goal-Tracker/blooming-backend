@@ -17,7 +17,6 @@ import java.util.regex.Pattern;
 @EqualsAndHashCode
 @ToString
 public class Email {
-    // TODO: 1/3/24 [고민] vo 패키지로 묶는 것이 더 좋을까요?
 
     private static final int MAX_LENGTH = 50;
     private static final String PATTERN = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
