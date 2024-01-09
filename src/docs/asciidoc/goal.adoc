@@ -6,6 +6,6 @@ operation::goal-controller-test/골_생성을_요청하면_새로운_골을_생�
 
 === 단일 골 정보 조회
 ==== 요청
-operation::goal-controller-test/골_아이디로_요청하면_해당_골의_정보를_반환한다[snippets='http-request,path-parameters,request-headers']
+operation::goal-controller-test/골_아이디로_조회하면_해당_골의_정보를_반환한다[snippets='http-request,path-parameters,request-headers']
 ==== 응답
-operation::goal-controller-test/골_아이디로_요청하면_해당_골의_정보를_반환한다[snippets='http-response,response-body']
+operation::goal-controller-test/골_아이디로_조회하면_해당_골의_정보를_반환한다[snippets='http-response,response-body']
