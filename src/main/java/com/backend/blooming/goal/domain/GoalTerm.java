@@ -49,7 +49,7 @@ public class GoalTerm {
         long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
 
         if (inProgressDays < 0) {
-            throw new InvalidGoalException.InvalidInvalidInProgressDays();
+            throw new InvalidGoalException.InvalidInvalidGoalDays();
         }
         if (inProgressDays > goalDays) {
             inProgressDays = goalDays;
