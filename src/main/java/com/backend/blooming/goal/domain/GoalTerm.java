@@ -46,10 +46,13 @@ public class GoalTerm {
     private long getValidInProgressDay(final LocalDate startDate, final LocalDate endDate) {
         final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
         final LocalDate nowDate = LocalDate.now();
-        final long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
+        long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
 
-        if (inProgressDays < 0 || inProgressDays > goalDays) {
+        if (inProgressDays < 0) {
             throw new InvalidGoalException.InvalidInvalidInProgressDays();
+        }
+        if (inProgressDays > goalDays) {
+            inProgressDays = goalDays;
         }
         return inProgressDays;
     }
