@@ -194,7 +194,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readGoalById(유효한_골_아이디)).willReturn(유효한_골_dto);
+        given(goalService.readGoalDetailById(유효한_골_아이디)).willReturn(유효한_골_dto);
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
@@ -210,7 +210,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.days", is(유효한_골_dto.days()), long.class),
                 jsonPath("$.inProgressDays", is(유효한_골_dto.inProgressDays()), long.class),
                 jsonPath("$.managerId", is(유효한_골_dto.managerId()), Long.class),
-                jsonPath("$.teamUserIds.[0]", is(유효한_골_dto.teamUserIds().get(0)), Long.class)
+                jsonPath("$.goalTeamsWithUserName.[0].userId", is(골에_참여한_사용자_정보를_포함한_골_팀1.userId()), Long.class),
+                jsonPath("$.goalTeamsWithUserName.[0].userName", is(골에_참여한_사용자_정보를_포함한_골_팀1.userName()), String.class),
+                jsonPath("$.goalTeamsWithUserName.[0].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀1.userColor()
+                                                                                            .toString()), String.class),
+                jsonPath("$.goalTeamsWithUserName.[1].userId", is(골에_참여한_사용자_정보를_포함한_골_팀2.userId()), Long.class),
+                jsonPath("$.goalTeamsWithUserName.[1].userName", is(골에_참여한_사용자_정보를_포함한_골_팀2.userName()), String.class),
+                jsonPath("$.goalTeamsWithUserName.[1].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀2.userColor()
+                                                                                            .toString()), String.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
@@ -226,7 +233,12 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
                         fieldWithPath("inProgressDays").type(JsonFieldType.NUMBER).description("현재 진행중인 골 날짜 수"),
                         fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
-                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("골 팀 사용자 아이디")
+                        fieldWithPath("goalTeamsWithUserName.[].userId").type(JsonFieldType.NUMBER)
+                                                                        .description("골 참여자 아이디"),
+                        fieldWithPath("goalTeamsWithUserName.[].userName").type(JsonFieldType.STRING)
+                                                                          .description("골 참여자 이름"),
+                        fieldWithPath("goalTeamsWithUserName.[].userColor").type(JsonFieldType.STRING)
+                                                                           .description("골 참여자 색상")
                 )
         ));
     }

@@ -7,7 +7,9 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,25 +52,40 @@ public class GoalServiceTestFixture {
     protected CreateGoalDto 골_날짜수가_100_초과인_골_생성_dto;
     protected Long 존재하지_않는_골_아이디 = 997L;
     protected Long 유효한_골_아이디;
+    protected GoalTeamWithUserNameDto 골에_참여한_사용자_1;
+    protected GoalTeamWithUserNameDto 골에_참여한_사용자_2;
+    protected List<GoalTeamWithUserNameDto> 골에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
         User 유효한_사용자;
+        User 유효한_사용자_2;
         List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
         GoalTeam 유효한_골_팀;
+        GoalTeam 유효한_골_팀2;
         Long 존재하지_않는_사용자_아이디 = 998L;
         List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>();
 
         유효한_사용자 = User.builder()
                       .oAuthId("아이디")
                       .oAuthType(OAuthType.KAKAO)
-                      .email("test@gmail.com")
+                      .email(new Email("test@gmail.com"))
                       .name("테스트")
                       .color(ThemeColor.BABY_BLUE)
                       .statusMessage("상태메시지")
                       .build();
 
+        유효한_사용자_2 = User.builder()
+                        .oAuthId("아이디2")
+                        .oAuthType(OAuthType.KAKAO)
+                        .email(new Email("test2@gmail.com"))
+                        .name("테스트2")
+                        .color(ThemeColor.BABY_BLUE)
+                        .statusMessage("상태메시지2")
+                        .build();
+
         유효한_사용자 = userRepository.save(유효한_사용자);
+        유효한_사용자_2 = userRepository.save(유효한_사용자_2);
         유효한_사용자_아이디 = 유효한_사용자.getId();
 
         유효한_골_생성_dto = new CreateGoalDto(
@@ -92,7 +109,8 @@ public class GoalServiceTestFixture {
 
         유효한_골_아이디 = 유효한_골.getId();
         유효한_골_팀 = new GoalTeam(유효한_사용자, 유효한_골);
-        goalTeamRepository.save(유효한_골_팀);
+        유효한_골_팀2 = new GoalTeam(유효한_사용자_2, 유효한_골);
+        goalTeamRepository.saveAll(List.of(유효한_골_팀, 유효한_골_팀2));
 
         골에_등록된_골_팀_목록.add(유효한_골_팀);
         유효한_골.updateTeams(골에_등록된_골_팀_목록);
@@ -107,7 +125,7 @@ public class GoalServiceTestFixture {
                 골_날짜수,
                 현재_진행중인_날짜수,
                 유효한_사용자_아이디,
-                골_팀에_등록된_사용자_아이디_목록
+                골에_참여한_사용자_정보를_포함한_골_팀_리스트
         );
 
         존재하지_않는_사용자가_관리자인_골_생성_dto = new CreateGoalDto(
@@ -165,5 +183,19 @@ public class GoalServiceTestFixture {
                 유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
+
+        골에_참여한_사용자_1 = new GoalTeamWithUserNameDto(
+                유효한_사용자_아이디,
+                유효한_사용자.getName(),
+                유효한_사용자.getColor()
+        );
+
+        골에_참여한_사용자_2 = new GoalTeamWithUserNameDto(
+                유효한_사용자_2.getId(),
+                유효한_사용자_2.getName(),
+                유효한_사용자_2.getColor()
+        );
+
+        골에_참여한_사용자_정보를_포함한_골_팀_리스트.addAll(List.of(골에_참여한_사용자_1, 골에_참여한_사용자_2));
     }
 }

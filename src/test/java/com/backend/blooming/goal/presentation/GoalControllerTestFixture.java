@@ -4,7 +4,10 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.themecolor.domain.ThemeColor;
+import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -22,11 +25,24 @@ public class GoalControllerTestFixture {
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
     private List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(999L));
+    private Long 골_참여_사용자_아이디 = 2L;
 
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
+    protected List<GoalTeamWithUserNameDto> 골에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
+
+    protected GoalTeamWithUserNameDto 골에_참여한_사용자_정보를_포함한_골_팀1 = new GoalTeamWithUserNameDto(
+            골_관리자_아이디,
+            "테스트1",
+            ThemeColor.BABY_BLUE
+    );
+    protected GoalTeamWithUserNameDto 골에_참여한_사용자_정보를_포함한_골_팀2 = new GoalTeamWithUserNameDto(
+            골_참여_사용자_아이디,
+            "테스트2",
+            ThemeColor.BABY_BLUE
+    );
 
     protected CreateGoalDto 유효한_골_생성_dto = new CreateGoalDto(
             골_제목,
@@ -99,6 +115,12 @@ public class GoalControllerTestFixture {
             골_날짜수,
             현재_진행중인_날짜수,
             골_관리자_아이디,
-            골_팀에_등록된_사용자_아이디_목록
+            골에_참여한_사용자_정보를_포함한_골_팀_리스트
     );
+
+    @BeforeEach
+    void setUp() {
+        골에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_정보를_포함한_골_팀1);
+        골에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_정보를_포함한_골_팀2);
+    }
 }

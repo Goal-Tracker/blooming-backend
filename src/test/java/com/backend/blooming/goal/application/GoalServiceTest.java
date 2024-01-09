@@ -76,7 +76,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final ReadGoalDetailDto result = goalService.readGoalById(유효한_골_아이디);
+        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -87,14 +87,16 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
             softAssertions.assertThat(result.inProgressDays()).isEqualTo(현재_진행중인_날짜수);
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
-            softAssertions.assertThat(result.teamUserIds()).isEqualTo(골_팀에_등록된_사용자_아이디_목록);
+            softAssertions.assertThat(result.goalTeamsWithUserName())
+                          .usingRecursiveComparison()
+                          .isEqualTo(골에_참여한_사용자_정보를_포함한_골_팀_리스트);
         });
     }
 
     @Test
     void 존재하지_않는_골_아이디를_조회한_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.readGoalById(존재하지_않는_골_아이디))
+        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
     }
 }
