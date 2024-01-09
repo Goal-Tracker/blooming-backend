@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -89,7 +92,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(result.goalTeamsWithUserName())
                           .usingRecursiveComparison()
-                          .isEqualTo(골에_참여한_사용자_정보를_포함한_골_팀_리스트);
+                          .isEqualTo(골1에_참여한_사용자_정보를_포함한_골_팀_리스트);
         });
     }
 
@@ -98,5 +101,43 @@ class GoalServiceTest extends GoalServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_모든_골_정보를_조회한다() {
+        // when
+        final List<ReadAllGoalDto> result = goalService.readAllGoalByUserId(유효한_사용자_아이디);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result).hasSize(3);
+            softAssertions.assertThat(result.get(0).id()).isEqualTo(유효한_골.getId());
+            softAssertions.assertThat(result.get(0).name()).isEqualTo(유효한_골.getName());
+            softAssertions.assertThat(result.get(0).startDate()).isEqualTo(유효한_골.getGoalTerm().getStartDate());
+            softAssertions.assertThat(result.get(0).endDate()).isEqualTo(유효한_골.getGoalTerm().getEndDate());
+            softAssertions.assertThat(result.get(0).days()).isEqualTo(유효한_골.getGoalTerm().getDays());
+            softAssertions.assertThat(result.get(0).inProgressDays()).isEqualTo(유효한_골.getGoalTerm().getInProgressDays());
+            softAssertions.assertThat(result.get(0).goalTeamsWithUserName())
+                          .usingRecursiveComparison()
+                          .isEqualTo(골1에_참여한_사용자_정보를_포함한_골_팀_리스트);
+            softAssertions.assertThat(result.get(1).id()).isEqualTo(유효한_골2.getId());
+            softAssertions.assertThat(result.get(1).name()).isEqualTo(유효한_골2.getName());
+            softAssertions.assertThat(result.get(1).startDate()).isEqualTo(유효한_골2.getGoalTerm().getStartDate());
+            softAssertions.assertThat(result.get(1).endDate()).isEqualTo(유효한_골2.getGoalTerm().getEndDate());
+            softAssertions.assertThat(result.get(1).days()).isEqualTo(유효한_골2.getGoalTerm().getDays());
+            softAssertions.assertThat(result.get(1).inProgressDays()).isEqualTo(유효한_골2.getGoalTerm().getInProgressDays());
+            softAssertions.assertThat(result.get(1).goalTeamsWithUserName())
+                          .usingRecursiveComparison()
+                          .isEqualTo(골2에_참여한_사용자_정보를_포함한_골_팀_리스트);
+            softAssertions.assertThat(result.get(2).id()).isEqualTo(유효한_골3.getId());
+            softAssertions.assertThat(result.get(2).name()).isEqualTo(유효한_골3.getName());
+            softAssertions.assertThat(result.get(2).startDate()).isEqualTo(유효한_골3.getGoalTerm().getStartDate());
+            softAssertions.assertThat(result.get(2).endDate()).isEqualTo(유효한_골3.getGoalTerm().getEndDate());
+            softAssertions.assertThat(result.get(2).days()).isEqualTo(유효한_골3.getGoalTerm().getDays());
+            softAssertions.assertThat(result.get(2).inProgressDays()).isEqualTo(유효한_골3.getGoalTerm().getInProgressDays());
+            softAssertions.assertThat(result.get(2).goalTeamsWithUserName())
+                          .usingRecursiveComparison()
+                          .isEqualTo(골3에_참여한_사용자_정보를_포함한_골_팀_리스트);
+        });
     }
 }

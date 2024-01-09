@@ -2,12 +2,14 @@ package com.backend.blooming.goal.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.User;
@@ -43,6 +45,8 @@ public class GoalServiceTestFixture {
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
+    protected Goal 유효한_골2;
+    protected Goal 유효한_골3;
     protected ReadGoalDetailDto 유효한_골_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_관리자인_골_생성_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto;
@@ -54,7 +58,12 @@ public class GoalServiceTestFixture {
     protected Long 유효한_골_아이디;
     protected GoalTeamWithUserNameDto 골에_참여한_사용자_1;
     protected GoalTeamWithUserNameDto 골에_참여한_사용자_2;
-    protected List<GoalTeamWithUserNameDto> 골에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
+    protected List<GoalTeamWithUserNameDto> 골1에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
+    protected List<GoalTeamWithUserNameDto> 골2에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
+    protected List<GoalTeamWithUserNameDto> 골3에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
+    protected ReadAllGoalDto 사용자가_참여한_골_dto1;
+    protected ReadAllGoalDto 사용자가_참여한_골_dto2;
+    protected ReadAllGoalDto 사용자가_참여한_골_dto3;
 
     @BeforeEach
     void setUp() {
@@ -63,6 +72,8 @@ public class GoalServiceTestFixture {
         List<GoalTeam> 골에_등록된_골_팀_목록 = new ArrayList<>();
         GoalTeam 유효한_골_팀;
         GoalTeam 유효한_골_팀2;
+        GoalTeam 유효한_골_팀3;
+        GoalTeam 유효한_골_팀4;
         Long 존재하지_않는_사용자_아이디 = 998L;
         List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>();
 
@@ -84,8 +95,7 @@ public class GoalServiceTestFixture {
                         .statusMessage("상태메시지2")
                         .build();
 
-        유효한_사용자 = userRepository.save(유효한_사용자);
-        유효한_사용자_2 = userRepository.save(유효한_사용자_2);
+        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자_2));
         유효한_사용자_아이디 = 유효한_사용자.getId();
 
         유효한_골_생성_dto = new CreateGoalDto(
@@ -105,12 +115,30 @@ public class GoalServiceTestFixture {
                     .managerId(유효한_사용자_아이디)
                     .build();
 
-        goalRepository.save(유효한_골);
+        유효한_골2 = Goal.builder()
+                    .name("골 제목2")
+                    .memo("골 메모2")
+                    .startDate(골_시작일)
+                    .endDate(LocalDate.now().plusDays(30))
+                    .managerId(유효한_사용자_아이디)
+                    .build();
+
+        유효한_골3 = Goal.builder()
+                    .name("골 제목3")
+                    .memo("골 메모3")
+                    .startDate(골_시작일)
+                    .endDate(LocalDate.now().plusDays(60))
+                    .managerId(유효한_사용자_아이디)
+                    .build();
+
+        goalRepository.saveAll(List.of(유효한_골, 유효한_골2, 유효한_골3));
 
         유효한_골_아이디 = 유효한_골.getId();
         유효한_골_팀 = new GoalTeam(유효한_사용자, 유효한_골);
         유효한_골_팀2 = new GoalTeam(유효한_사용자_2, 유효한_골);
-        goalTeamRepository.saveAll(List.of(유효한_골_팀, 유효한_골_팀2));
+        유효한_골_팀3 = new GoalTeam(유효한_사용자, 유효한_골2);
+        유효한_골_팀4 = new GoalTeam(유효한_사용자, 유효한_골3);
+        goalTeamRepository.saveAll(List.of(유효한_골_팀, 유효한_골_팀2, 유효한_골_팀3, 유효한_골_팀4));
 
         골에_등록된_골_팀_목록.add(유효한_골_팀);
         유효한_골.updateTeams(골에_등록된_골_팀_목록);
@@ -125,7 +153,7 @@ public class GoalServiceTestFixture {
                 골_날짜수,
                 현재_진행중인_날짜수,
                 유효한_사용자_아이디,
-                골에_참여한_사용자_정보를_포함한_골_팀_리스트
+                골1에_참여한_사용자_정보를_포함한_골_팀_리스트
         );
 
         존재하지_않는_사용자가_관리자인_골_생성_dto = new CreateGoalDto(
@@ -196,6 +224,38 @@ public class GoalServiceTestFixture {
                 유효한_사용자_2.getColor()
         );
 
-        골에_참여한_사용자_정보를_포함한_골_팀_리스트.addAll(List.of(골에_참여한_사용자_1, 골에_참여한_사용자_2));
+        골1에_참여한_사용자_정보를_포함한_골_팀_리스트.addAll(List.of(골에_참여한_사용자_1, 골에_참여한_사용자_2));
+        골2에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_1);
+        골3에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_1);
+
+        사용자가_참여한_골_dto1 = new ReadAllGoalDto(
+                유효한_골.getId(),
+                골_제목,
+                LocalDate.now(),
+                LocalDate.now().plusDays(100),
+                유효한_골.getGoalTerm().getDays(),
+                유효한_골.getGoalTerm().getInProgressDays(),
+                골1에_참여한_사용자_정보를_포함한_골_팀_리스트
+        );
+
+        사용자가_참여한_골_dto2 = new ReadAllGoalDto(
+                유효한_골2.getId(),
+                유효한_골2.getName(),
+                유효한_골2.getGoalTerm().getStartDate(),
+                유효한_골2.getGoalTerm().getEndDate(),
+                유효한_골2.getGoalTerm().getDays(),
+                유효한_골2.getGoalTerm().getInProgressDays(),
+                골2에_참여한_사용자_정보를_포함한_골_팀_리스트
+        );
+
+        사용자가_참여한_골_dto3 = new ReadAllGoalDto(
+                유효한_골3.getId(),
+                유효한_골3.getName(),
+                유효한_골3.getGoalTerm().getStartDate(),
+                유효한_골3.getGoalTerm().getEndDate(),
+                유효한_골3.getGoalTerm().getDays(),
+                유효한_골3.getGoalTerm().getInProgressDays(),
+                골3에_참여한_사용자_정보를_포함한_골_팀_리스트
+        );
     }
 }

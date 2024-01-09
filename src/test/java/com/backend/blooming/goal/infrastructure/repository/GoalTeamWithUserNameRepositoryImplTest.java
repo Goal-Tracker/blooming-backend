@@ -3,6 +3,7 @@ package com.backend.blooming.goal.infrastructure.repository;
 import com.backend.blooming.configuration.JpaConfiguration;
 import com.backend.blooming.configuration.QuerydslConfiguration;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -20,7 +21,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @Import({JpaConfiguration.class, QuerydslConfiguration.class})
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class GoalTeamWithUserNameRepositoryTest extends GoalTeamWithUserNameRepositoryTestFixture {
+public class GoalTeamWithUserNameRepositoryImplTest extends GoalTeamWithUserNameRepositoryTestFixture {
 
     private GoalTeamWithUserNameRepository goalTeamWithUserNameRepository;
 

@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -212,12 +213,10 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.managerId", is(유효한_골_dto.managerId()), Long.class),
                 jsonPath("$.goalTeamsWithUserName.[0].userId", is(골에_참여한_사용자_정보를_포함한_골_팀1.userId()), Long.class),
                 jsonPath("$.goalTeamsWithUserName.[0].userName", is(골에_참여한_사용자_정보를_포함한_골_팀1.userName()), String.class),
-                jsonPath("$.goalTeamsWithUserName.[0].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀1.userColor()
-                                                                                            .toString()), String.class),
+                jsonPath("$.goalTeamsWithUserName.[0].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀1.userColor().toString()), String.class),
                 jsonPath("$.goalTeamsWithUserName.[1].userId", is(골에_참여한_사용자_정보를_포함한_골_팀2.userId()), Long.class),
                 jsonPath("$.goalTeamsWithUserName.[1].userName", is(골에_참여한_사용자_정보를_포함한_골_팀2.userName()), String.class),
-                jsonPath("$.goalTeamsWithUserName.[1].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀2.userColor()
-                                                                                            .toString()), String.class)
+                jsonPath("$.goalTeamsWithUserName.[1].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀2.userColor().toString()), String.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
@@ -241,5 +240,102 @@ class GoalControllerTest extends GoalControllerTestFixture {
                                                                            .description("골 참여자 색상")
                 )
         ));
+    }
+
+    @Test
+    void 존재하지_않는_골을_조회했을_때_404_예외를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readGoalDetailById(유효한_골_아이디)).willThrow(new NotFoundGoalException());
+
+        // when & then
+        mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", "1")
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_모든_골을_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readAllGoalByUserId(사용자_토큰_정보.userId())).willReturn(사용자가_참여한_모든_골_dto);
+
+        // when & then
+        mockMvc.perform(get("/goals/main")
+                .header("X-API-VERSION", "1")
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.readAllGoals.[0].id", is(사용자가_참여한_골_dto_1.id()), Long.class),
+                jsonPath("$.readAllGoals.[0].name", is(사용자가_참여한_골_dto_1.name()), String.class),
+                jsonPath("$.readAllGoals.[0].startDate", is(사용자가_참여한_골_dto_1.startDate().toString()), String.class),
+                jsonPath("$.readAllGoals.[0].endDate", is(사용자가_참여한_골_dto_1.endDate().toString()), String.class),
+                jsonPath("$.readAllGoals.[0].days", is(사용자가_참여한_골_dto_1.days()), long.class),
+                jsonPath("$.readAllGoals.[0].inProgressDays", is(사용자가_참여한_골_dto_1.inProgressDays()), long.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[0].userId", is(골에_참여한_사용자_정보를_포함한_골_팀1.userId()), Long.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[0].userName", is(골에_참여한_사용자_정보를_포함한_골_팀1.userName()), String.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[0].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀1.userColor()
+                                                                                            .toString()), String.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[1].userId", is(골에_참여한_사용자_정보를_포함한_골_팀2.userId()), Long.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[1].userName", is(골에_참여한_사용자_정보를_포함한_골_팀2.userName()), String.class),
+                jsonPath("$.readAllGoals.[0].goalTeamsWithUserName.[1].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀2.userColor()
+                                                                                            .toString()), String.class),
+                jsonPath("$.readAllGoals.[1].id", is(사용자가_참여한_골_dto_2.id()), Long.class),
+                jsonPath("$.readAllGoals.[1].name", is(사용자가_참여한_골_dto_2.name()), String.class),
+                jsonPath("$.readAllGoals.[1].startDate", is(사용자가_참여한_골_dto_2.startDate().toString()), String.class),
+                jsonPath("$.readAllGoals.[1].endDate", is(사용자가_참여한_골_dto_2.endDate().toString()), String.class),
+                jsonPath("$.readAllGoals.[1].days", is(사용자가_참여한_골_dto_2.days()), long.class),
+                jsonPath("$.readAllGoals.[1].inProgressDays", is(사용자가_참여한_골_dto_2.inProgressDays()), long.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[0].userId", is(골에_참여한_사용자_정보를_포함한_골_팀1.userId()), Long.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[0].userName", is(골에_참여한_사용자_정보를_포함한_골_팀1.userName()), String.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[0].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀1.userColor()
+                                                                                                .toString()), String.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[1].userId", is(골에_참여한_사용자_정보를_포함한_골_팀2.userId()), Long.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[1].userName", is(골에_참여한_사용자_정보를_포함한_골_팀2.userName()), String.class),
+                jsonPath("$.readAllGoals.[1].goalTeamsWithUserName.[1].userColor", is(골에_참여한_사용자_정보를_포함한_골_팀2.userColor()
+                                                                                            .toString()), String.class)
+        ).andDo(print()).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                responseFields(
+                        fieldWithPath("readAllGoals.[].id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("readAllGoals.[].name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("readAllGoals.[].startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("readAllGoals.[].endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("readAllGoals.[].days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("readAllGoals.[].inProgressDays").type(JsonFieldType.NUMBER).description("현재 진행중인 골 날짜 수"),
+                        fieldWithPath("readAllGoals.[].goalTeamsWithUserName.[].userId").type(JsonFieldType.NUMBER)
+                                                                        .description("골 참여자 아이디"),
+                        fieldWithPath("readAllGoals.[].goalTeamsWithUserName.[].userName").type(JsonFieldType.STRING)
+                                                                          .description("골 참여자 이름"),
+                        fieldWithPath("readAllGoals.[].goalTeamsWithUserName.[].userColor").type(JsonFieldType.STRING)
+                                                                           .description("골 참여자 색상")
+                )
+        ));
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_골_중_존재하지_않는_골을_조회했을_때_404_예외를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readAllGoalByUserId(사용자_토큰_정보.userId())).willThrow(new NotFoundGoalException());
+
+        // when & then
+        mockMvc.perform(get("/goals/main")
+                .header("X-API-VERSION", "1")
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
     }
 }
