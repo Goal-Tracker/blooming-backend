@@ -4,8 +4,10 @@ import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/goals")
@@ -41,5 +44,13 @@ public class GoalController {
         final ReadGoalResponse readGoalResponse = ReadGoalResponse.from(readGoalDetailDto);
 
         return ResponseEntity.ok().body(readGoalResponse);
+    }
+
+    @GetMapping(value = "/main", headers = "X-API-VERSION=1")
+    public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(@Authenticated final AuthenticatedUser authenticatedUser) {
+        final List<ReadAllGoalDto> readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
+        final ReadAllGoalResponse readAllGoalResponse = new ReadAllGoalResponse(readAllGoalDtos);
+
+        return ResponseEntity.ok().body(readAllGoalResponse);
     }
 }

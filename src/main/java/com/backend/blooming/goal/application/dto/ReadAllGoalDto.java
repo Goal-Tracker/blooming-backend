@@ -7,29 +7,25 @@ import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQ
 import java.time.LocalDate;
 import java.util.List;
 
-public record ReadGoalDetailDto(
+public record ReadAllGoalDto(
         Long id,
         String name,
-        String memo,
         LocalDate startDate,
         LocalDate endDate,
         long days,
         long inProgressDays,
-        Long managerId,
         List<GoalTeamWithUserNameDto> goalTeamsWithUserName
 ) {
 
-    public static ReadGoalDetailDto from(final Goal goal, final List<GoalTeamWithUserNameDto> goalTeamsWithUserNames) {
-        return new ReadGoalDetailDto(
+    public static ReadAllGoalDto from(final Goal goal, final List<GoalTeamWithUserNameDto> goalTeamsWithUserName) {
+        return new ReadAllGoalDto(
                 goal.getId(),
                 goal.getName(),
-                goal.getMemo(),
                 goal.getGoalTerm().getStartDate(),
                 goal.getGoalTerm().getEndDate(),
                 goal.getGoalTerm().getDays(),
                 goal.getGoalTerm().getInProgressDays(),
-                goal.getManagerId(),
-                goalTeamsWithUserNames
+                goalTeamsWithUserName
         );
     }
 }

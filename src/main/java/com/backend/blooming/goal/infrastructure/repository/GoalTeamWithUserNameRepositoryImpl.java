@@ -1,12 +1,14 @@
 package com.backend.blooming.goal.infrastructure.repository;
 
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.QGoalTeamWithUserNameDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.QGoalTeamWithUserQueryProjectionDto;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.backend.blooming.goal.domain.QGoal.goal;
 import static com.backend.blooming.goal.domain.QGoalTeam.goalTeam;
@@ -20,15 +22,19 @@ public class GoalTeamWithUserNameRepositoryImpl implements GoalTeamWithUserNameR
 
     @Override
     public List<GoalTeamWithUserNameDto> findAllByGoalIdAndDeletedIsFalse(final Long goalId) {
-        final List<GoalTeamWithUserNameDto> goalTeamWithUserNameDtos = queryFactory.select(new QGoalTeamWithUserNameDto(user.id, user.name, user.color))
-                                                                                   .from(goalTeam)
-                                                                                   .leftJoin(goalTeam.goal, goal)
-                                                                                   .on(goalTeam.goal.id.eq(goalId))
-                                                                                   .leftJoin(goalTeam.user, user)
-                                                                                   .where(goalTeam.user.deleted.isFalse()
-                                                                                                               .and(goalTeam.deleted.isFalse()))
-                                                                                   .fetch();
+        final List<GoalTeamWithUserQueryProjectionDto> goalTeamWithUserQueryProjectionDtos = queryFactory.select(new QGoalTeamWithUserQueryProjectionDto(goalTeam, goal, user))
+                                                                                                         .from(goalTeam)
+                                                                                                         .join(goalTeam.goal)
+                                                                                                         .fetchJoin()
+                                                                                                         .join(goalTeam.user)
+                                                                                                         .fetchJoin()
+                                                                                                         .where(goalTeam.goal.id.eq(goalId)
+                                                                                                                                .and(goalTeam.user.deleted.isFalse())
+                                                                                                                                .and(goalTeam.deleted.isFalse()))
+                                                                                                         .fetch();
 
-        return goalTeamWithUserNameDtos;
+        return goalTeamWithUserQueryProjectionDtos.stream()
+                                                  .map(dto -> new GoalTeamWithUserNameDto(dto.user().getId(), dto.user().getName(), dto.user().getColor()))
+                                                  .collect(Collectors.toList());
     }
 }

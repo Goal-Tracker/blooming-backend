@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -10,6 +11,7 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamWithUserNameRepositoryImpl;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -94,8 +96,26 @@ public class GoalService {
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(NotFoundGoalException::new);
-        final List<GoalTeamWithUserNameDto> goalTeamWithUserNameDtos = goalTeamWithUserNameRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
+        final List<GoalTeamWithUserNameDto> goalTeamWithUserQueryProjectionDtos = goalTeamWithUserNameRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
 
-        return ReadGoalDetailDto.from(goal, goalTeamWithUserNameDtos);
+        return ReadGoalDetailDto.from(goal, goalTeamWithUserQueryProjectionDtos);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReadAllGoalDto> readAllGoalByUserId(final Long userId) {
+        final List<ReadAllGoalDto> readAllGoalDtos = new ArrayList<>();
+        final User user = getValidUser(userId);
+        final List<GoalTeam> goalTeamsUserAttend = goalTeamRepository.findAllByUserId(user.getId());
+        final List<Long> goalIdsUserAttend = goalTeamsUserAttend.stream()
+                                                                .map(goalTeam -> goalTeam.getGoal().getId())
+                                                                .toList();
+        goalIdsUserAttend.forEach(goalId -> {
+            final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
+                                            .orElseThrow(NotFoundGoalException::new);
+            final List<GoalTeamWithUserNameDto> goalTeamsWithUserName = goalTeamWithUserNameRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
+            readAllGoalDtos.add(ReadAllGoalDto.from(goal, goalTeamsWithUserName));
+        });
+
+        return readAllGoalDtos;
     }
 }

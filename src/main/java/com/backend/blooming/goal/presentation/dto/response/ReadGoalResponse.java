@@ -2,6 +2,7 @@ package com.backend.blooming.goal.presentation.dto.response;
 
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
