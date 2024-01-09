@@ -2,7 +2,6 @@ package com.backend.blooming.goal.application.dto;
 
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -22,19 +22,22 @@ public class GoalTeamWithUserNameRepositoryImpl implements GoalTeamWithUserNameR
 
     @Override
     public List<GoalTeamWithUserNameDto> findAllByGoalIdAndDeletedIsFalse(final Long goalId) {
-        final List<GoalTeamWithUserQueryProjectionDto> goalTeamWithUserQueryProjectionDtos = queryFactory.select(new QGoalTeamWithUserQueryProjectionDto(goalTeam, goal, user))
-                                                                                                         .from(goalTeam)
-                                                                                                         .join(goalTeam.goal)
-                                                                                                         .fetchJoin()
-                                                                                                         .join(goalTeam.user)
-                                                                                                         .fetchJoin()
-                                                                                                         .where(goalTeam.goal.id.eq(goalId)
-                                                                                                                                .and(goalTeam.user.deleted.isFalse())
-                                                                                                                                .and(goalTeam.deleted.isFalse()))
-                                                                                                         .fetch();
+        final List<GoalTeamWithUserQueryProjectionDto> goalTeamWithUserQueryProjectionDtos =
+                queryFactory.select(new QGoalTeamWithUserQueryProjectionDto(goalTeam, goal, user))
+                            .from(goalTeam)
+                            .join(goalTeam.goal)
+                            .fetchJoin()
+                            .join(goalTeam.user)
+                            .fetchJoin()
+                            .where(goalTeam.goal.id.eq(goalId)
+                                                   .and(goalTeam.user.deleted.isFalse())
+                                                   .and(goalTeam.deleted.isFalse()))
+                            .fetch();
 
         return goalTeamWithUserQueryProjectionDtos.stream()
-                                                  .map(dto -> new GoalTeamWithUserNameDto(dto.user().getId(), dto.user().getName(), dto.user().getColor()))
+                                                  .map(dto -> new GoalTeamWithUserNameDto(dto.user().getId(),
+                                                          dto.user().getName(),
+                                                          dto.user().getColor()))
                                                   .collect(Collectors.toList());
     }
 }

@@ -11,7 +11,6 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamWithUserNameRepositoryImpl;
 import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
