@@ -8,6 +8,8 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.infrastructure.repository.GoalTeamRepository;
+import com.backend.blooming.goal.infrastructure.repository.GoalTeamWithUserNameRepositoryImpl;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -27,6 +29,7 @@ public class GoalService {
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final GoalTeamRepository goalTeamRepository;
+    private final GoalTeamWithUserNameRepositoryImpl goalTeamWithUserNameRepository;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
@@ -88,10 +91,11 @@ public class GoalService {
     }
 
     @Transactional(readOnly = true)
-    public ReadGoalDetailDto readGoalById(final Long goalId) {
+    public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(NotFoundGoalException::new);
+        final List<GoalTeamWithUserNameDto> goalTeamWithUserNameDtos = goalTeamWithUserNameRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
 
-        return ReadGoalDetailDto.from(goal);
+        return ReadGoalDetailDto.from(goal, goalTeamWithUserNameDtos);
     }
 }

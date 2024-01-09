@@ -1,10 +1,10 @@
 package com.backend.blooming.goal.application.dto;
 
 import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public record ReadGoalDetailDto(
         Long id,
@@ -15,15 +15,10 @@ public record ReadGoalDetailDto(
         long days,
         long inProgressDays,
         Long managerId,
-        List<Long> teamUserIds
+        List<GoalTeamWithUserNameDto> goalTeamsWithUserName
 ) {
 
-    public static ReadGoalDetailDto from(final Goal goal) {
-        final List<Long> teamUserIds = goal.getTeams()
-                                           .stream()
-                                           .map(team -> team.getUser().getId())
-                                           .collect(Collectors.toList());
-
+    public static ReadGoalDetailDto from(final Goal goal, final List<GoalTeamWithUserNameDto> goalTeamsWithUserNames) {
         return new ReadGoalDetailDto(
                 goal.getId(),
                 goal.getName(),
@@ -33,7 +28,7 @@ public record ReadGoalDetailDto(
                 goal.getGoalTerm().getDays(),
                 goal.getGoalTerm().getInProgressDays(),
                 goal.getManagerId(),
-                teamUserIds
+                goalTeamsWithUserNames
         );
     }
 }

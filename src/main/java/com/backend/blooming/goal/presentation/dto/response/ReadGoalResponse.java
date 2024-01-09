@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.presentation.dto.response;
 
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
@@ -20,7 +21,7 @@ public record ReadGoalResponse(
         long days,
         long inProgressDays,
         Long managerId,
-        List<Long> teamUserIds
+        List<GoalTeamWithUserNameDto> goalTeamsWithUserName
 ) {
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
@@ -33,7 +34,7 @@ public record ReadGoalResponse(
                 readGoalDetailDto.days(),
                 readGoalDetailDto.inProgressDays(),
                 readGoalDetailDto.managerId(),
-                readGoalDetailDto.teamUserIds()
+                readGoalDetailDto.goalTeamsWithUserName()
         );
     }
 }
