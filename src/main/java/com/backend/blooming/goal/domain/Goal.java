@@ -27,7 +27,7 @@ import java.util.List;
 @ToString(exclude = "teams")
 public class Goal extends BaseTimeEntity {
 
-    private final String MEMO_DEFAULT = "";
+    private final static String MEMO_DEFAULT = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

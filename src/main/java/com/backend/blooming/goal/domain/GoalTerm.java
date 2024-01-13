@@ -3,13 +3,17 @@ package com.backend.blooming.goal.domain;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 @Embeddable
 @Getter
+@EqualsAndHashCode
+@ToString
 public class GoalTerm {
 
     @Column(nullable = false)

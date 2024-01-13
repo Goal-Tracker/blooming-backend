@@ -29,7 +29,7 @@ public class GoalController {
 
     private final GoalService goalService;
 
-    @PostMapping(value = "/add", headers = "X-API-VERSION=1")
+    @PostMapping(headers = "X-API-VERSION=1")
     public ResponseEntity<ReadGoalResponse> createGoal(@RequestBody @Valid final CreateGoalRequest request,
                                                        @Authenticated final AuthenticatedUser authenticatedUser) {
         final CreateGoalDto createGoalDto = CreateGoalDto.from(request, authenticatedUser.userId());

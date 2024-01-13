@@ -2,7 +2,6 @@ package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.user.domain.User;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,11 +29,11 @@ public class GoalTeam extends BaseTimeEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_user_id"), nullable = false)
+    @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_goal_team_goal"), nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "goal_id", foreignKey = @ForeignKey(name = "fk_goal_id"), nullable = false)
+    @JoinColumn(name = "goal_id", foreignKey = @ForeignKey(name = "fk_goal_team_user"), nullable = false)
     private Goal goal;
 
     @Column(nullable = false)

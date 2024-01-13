@@ -55,7 +55,8 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    private List<GoalTeam> createGoalTeams(final List<Long> goalTeamUserIds, final Long goalId) {
+    private List<GoalTeam> createGoalTeams(final List<Long> goalTeamUserIds,
+                                           final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(NotFoundGoalException::new);
 
@@ -72,7 +73,8 @@ public class GoalService {
         return goalTeams;
     }
 
-    private void validateGoalDatePeriod(final LocalDate startDate, final LocalDate endDate) {
+    private void validateGoalDatePeriod(final LocalDate startDate,
+                                        final LocalDate endDate) {
         final LocalDate nowDate = LocalDate.now();
 
         if (startDate.isBefore(nowDate)) {
@@ -106,7 +108,8 @@ public class GoalService {
         final User user = getValidUser(userId);
         final List<GoalTeam> goalTeamsUserAttend = goalTeamRepository.findAllByUserId(user.getId());
         final List<Long> goalIdsUserAttend = goalTeamsUserAttend.stream()
-                                                                .map(goalTeam -> goalTeam.getGoal().getId())
+                                                                .map(goalTeam -> goalTeam.getGoal()
+                                                                                         .getId())
                                                                 .toList();
         goalIdsUserAttend.forEach(goalId -> {
             final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)

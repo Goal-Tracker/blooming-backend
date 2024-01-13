@@ -72,8 +72,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(유효한_골_생성_dto)).willReturn(유효한_골_아이디);
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(요청한_골_dto))
@@ -103,8 +103,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(존재하지_않는_사용자가_참여자로_있는_골_생성_dto)).willThrow(new NotFoundUserException());
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(존재하지_않는_사용자가_참여자로_있는_골_생성_dto))
@@ -122,8 +122,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(골_시작날짜가_현재보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalStartDay());
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_시작날짜가_현재보다_이전인_골_생성_dto))
@@ -141,8 +141,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(골_종료날짜가_현재보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalEndDay());
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_종료날짜가_현재보다_이전인_골_생성_dto))
@@ -160,8 +160,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
@@ -179,8 +179,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
 
         // when & then
-        mockMvc.perform(post("/goals/add")
-                .header("X-API-VERSION", "1")
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_날짜수가_100_초과인_골_생성_dto))
@@ -199,7 +199,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
-                .header("X-API-VERSION", "1")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
@@ -251,7 +251,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
-                .header("X-API-VERSION", "1")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isNotFound(),
@@ -268,7 +268,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
 
         // when & then
         mockMvc.perform(get("/goals/main")
-                .header("X-API-VERSION", "1")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
@@ -331,7 +331,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
 
         // when & then
         mockMvc.perform(get("/goals/main")
-                .header("X-API-VERSION", "1")
+                .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isNotFound(),
