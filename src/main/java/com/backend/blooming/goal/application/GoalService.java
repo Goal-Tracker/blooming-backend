@@ -41,7 +41,6 @@ public class GoalService {
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
-        validateGoalDatePeriod(createGoalDto.startDate(), createGoalDto.endDate());
         final User user = getValidUser(createGoalDto.managerId());
 
         final Goal goal = Goal.builder()
@@ -71,21 +70,6 @@ public class GoalService {
         }
 
         return goalTeams;
-    }
-
-    private void validateGoalDatePeriod(final LocalDate startDate,
-                                        final LocalDate endDate) {
-        final LocalDate nowDate = LocalDate.now();
-
-        if (startDate.isBefore(nowDate)) {
-            throw new InvalidGoalException.InvalidInvalidGoalStartDay();
-        }
-        if (endDate.isBefore(nowDate)) {
-            throw new InvalidGoalException.InvalidInvalidGoalEndDay();
-        }
-        if (endDate.isBefore(startDate)) {
-            throw new InvalidGoalException.InvalidInvalidGoalPeriod();
-        }
     }
 
     private User getValidUser(final Long userId) {

@@ -32,10 +32,26 @@ public class GoalTerm {
     }
 
     public GoalTerm(final LocalDate startDate, final LocalDate endDate) {
+        validateGoalDatePeriod(startDate, endDate);
         this.startDate = startDate;
         this.endDate = endDate;
         this.days = getValidGoalDays(startDate, endDate);
         this.inProgressDays = getValidInProgressDay(startDate, endDate);
+    }
+
+    private void validateGoalDatePeriod(final LocalDate startDate,
+                                        final LocalDate endDate) {
+        final LocalDate nowDate = LocalDate.now();
+
+        if (startDate.isBefore(nowDate)) {
+            throw new InvalidGoalException.InvalidInvalidGoalStartDay();
+        }
+        if (endDate.isBefore(nowDate)) {
+            throw new InvalidGoalException.InvalidInvalidGoalEndDay();
+        }
+        if (endDate.isBefore(startDate)) {
+            throw new InvalidGoalException.InvalidInvalidGoalPeriod();
+        }
     }
 
     private long getValidGoalDays(final LocalDate startDate, final LocalDate endDate) {
