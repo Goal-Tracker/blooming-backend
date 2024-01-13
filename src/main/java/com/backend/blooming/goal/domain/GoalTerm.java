@@ -54,7 +54,8 @@ public class GoalTerm {
         }
     }
 
-    private long getValidGoalDays(final LocalDate startDate, final LocalDate endDate) {
+    private long getValidGoalDays(final LocalDate startDate,
+                                  final LocalDate endDate) {
         final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
 
         if (goalDays < 1 || goalDays > 100) {
@@ -63,7 +64,8 @@ public class GoalTerm {
         return goalDays;
     }
 
-    private long getValidInProgressDay(final LocalDate startDate, final LocalDate endDate) {
+    private long getValidInProgressDay(final LocalDate startDate,
+                                       final LocalDate endDate) {
         final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
         final LocalDate nowDate = LocalDate.now();
         long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
