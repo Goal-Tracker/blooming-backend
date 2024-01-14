@@ -25,6 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
+    private static final int NAME_MAX_LENGTH = 50;
     private final OAuthClientComposite oAuthClientComposite;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
@@ -56,10 +57,19 @@ public class AuthenticationService {
         final User savedUser = User.builder()
                                    .oAuthId(userInformationDto.oAuthId())
                                    .oAuthType(oAuthType)
+                                   .name(truncateNameMaxLength(userInformationDto.oAuthId()))
                                    .email(new Email(userInformationDto.email()))
                                    .build();
 
         return userRepository.save(savedUser);
+    }
+
+    private String truncateNameMaxLength(final String oAuthId) {
+        if (oAuthId.length() > NAME_MAX_LENGTH) {
+            return oAuthId.substring(NAME_MAX_LENGTH);
+        }
+
+        return oAuthId;
     }
 
     private TokenDto convertToTokenDto(final User user) {
