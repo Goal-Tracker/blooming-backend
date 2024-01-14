@@ -3,6 +3,7 @@ package com.backend.blooming.goal.domain;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import jakarta.validation.constraints.FutureOrPresent;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
@@ -17,9 +18,11 @@ import java.time.temporal.ChronoUnit;
 public class GoalTerm {
 
     @Column(nullable = false)
+    @FutureOrPresent
     private LocalDate startDate;
 
     @Column(nullable = false)
+    @FutureOrPresent
     private LocalDate endDate;
 
     @Column(nullable = false)
