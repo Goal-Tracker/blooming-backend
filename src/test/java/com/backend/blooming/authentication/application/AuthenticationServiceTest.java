@@ -46,6 +46,22 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     }
 
     @Test
+    void 로그인시_존재하지_않는_사용자이며_oauthid가_50자를_초과하는_경우_이름을_50자까지만_저장한_후_토큰_정보를_반환한다() {
+        // given
+        willReturn(oauthid가_50자를_초과하는_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
+
+        // when
+        final LoginInformationDto actual = authenticationService.login(oauth_타입, 소셜_액세스_토큰);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.token().accessToken()).isNotEmpty();
+            softAssertions.assertThat(actual.token().refreshToken()).isNotEmpty();
+            softAssertions.assertThat(actual.isSignUp()).isTrue();
+        });
+    }
+
+    @Test
     void 로그인시_존재하는_사용자인_경우_사용자_정보를_반환시_회원가입_여부는_거짓이다() {
         // given
         willReturn(기존_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
