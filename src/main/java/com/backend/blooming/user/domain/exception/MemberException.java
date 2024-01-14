@@ -33,7 +33,7 @@ public class MemberException extends BloomingException {
     public static class NullOrEmptyNameException extends MemberException {
 
         public NullOrEmptyNameException() {
-            super(ExceptionMessage.NULL_OREMPTY_NAME);
+            super(ExceptionMessage.NULL_OR_EMPTY_NAME);
         }
     }
 
