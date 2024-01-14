@@ -21,7 +21,7 @@ class UserTest extends UserTestFixture {
                                 .oAuthId("12345")
                                 .oAuthType(OAuthType.KAKAO)
                                 .email(new Email("user@email.com"))
-                                .name("test")
+                                .name(new Name("test"))
                                 .build();
 
         // then
@@ -50,7 +50,7 @@ class UserTest extends UserTestFixture {
         final String updateName = "수정한 이름";
 
         // when
-        사용자.updateName(updateName);
+        사용자.updateName(new Name(updateName));
 
         // then
         assertSoftly(softAssertions -> {
@@ -107,7 +107,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
@@ -125,7 +125,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
@@ -143,7 +143,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();

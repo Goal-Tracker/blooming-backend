@@ -12,6 +12,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
 import com.backend.blooming.user.domain.Email;
+import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -57,19 +58,19 @@ public class AuthenticationService {
         final User savedUser = User.builder()
                                    .oAuthId(userInformationDto.oAuthId())
                                    .oAuthType(oAuthType)
-                                   .name(truncateNameMaxLength(userInformationDto.oAuthId()))
+                                   .name(convertToNameAndTruncateLength(userInformationDto.oAuthId()))
                                    .email(new Email(userInformationDto.email()))
                                    .build();
 
         return userRepository.save(savedUser);
     }
 
-    private String truncateNameMaxLength(final String oAuthId) {
+    private Name convertToNameAndTruncateLength(final String oAuthId) {
         if (oAuthId.length() > NAME_MAX_LENGTH) {
-            return oAuthId.substring(NAME_MAX_LENGTH);
+            return new Name(oAuthId.substring(NAME_MAX_LENGTH));
         }
 
-        return oAuthId;
+        return new Name(oAuthId);
     }
 
     private TokenDto convertToTokenDto(final User user) {

@@ -21,7 +21,8 @@ public enum ExceptionMessage {
     NULL_OR_EMPTY_EMAIL("이메일은 비어있을 수 없습니다."),
     LONGER_THAN_MAXIMUM_EMAIL("이메일의 최대 길이를 초과했습니다."),
     INVALID_EMAIL_FORMAT("이메일 형식에 어긋났습니다."),
-
+    NULL_OREMPTY_NAME("이름은 비어있을 수 없습니다."),
+    LONGER_THAN_MAXIMUM_NAME("이름의 최대 길이를 초과했습니다."),
 
     // 테마 색상
     UNSUPPORTED_THEME_COLOR("지원하지 않는 테마 색상입니다."),

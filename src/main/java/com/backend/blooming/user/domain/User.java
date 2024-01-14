@@ -44,8 +44,8 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Email email;
 
-    @Column(unique = true, length = 50, nullable = false)
-    private String name;
+    @Embedded
+    private Name name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "theme_color", nullable = false)
@@ -62,7 +62,7 @@ public class User extends BaseTimeEntity {
             final String oAuthId,
             final OAuthType oAuthType,
             final Email email,
-            final String name,
+            final Name name,
             final ThemeColor color,
             final String statusMessage
     ) {
@@ -94,7 +94,7 @@ public class User extends BaseTimeEntity {
         this.deleted = true;
     }
 
-    public void updateName(final String name) {
+    public void updateName(final Name name) {
         this.name = name;
     }
 
@@ -108,6 +108,10 @@ public class User extends BaseTimeEntity {
 
     public String getEmail() {
         return email.getValue();
+    }
+
+    public String getName() {
+        return name.getValue();
     }
 
     public String getColorName() {
