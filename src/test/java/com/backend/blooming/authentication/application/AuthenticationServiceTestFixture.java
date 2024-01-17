@@ -28,10 +28,10 @@ public class AuthenticationServiceTestFixture {
     protected UserInformationDto oauthid가_50자를_초과하는_사용자_소셜_정보 =
             new KakaoUserInformationDto(
                     "1234567890123456789012345678901234567890123456789012345",
-                    new KakaoUserInformationDto.KakaoAccount("test@email.com")
+                    new KakaoUserInformationDto.KakaoAccount("test2@email.com")
             );
     protected UserInformationDto 기존_사용자_소셜_정보 =
-            new KakaoUserInformationDto("12346", new KakaoUserInformationDto.KakaoAccount("test2@email.com"));
+            new KakaoUserInformationDto("12346", new KakaoUserInformationDto.KakaoAccount("test3@email.com"));
     protected String 유효한_refresh_token;
     protected String 존재하지_않는_사용자의_refresh_token;
     protected String 유효하지_않는_refresh_token = "Bearer invalid_refresh_token";

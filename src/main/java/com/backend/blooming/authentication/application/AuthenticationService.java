@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class AuthenticationService {
 
     private static final int NAME_MAX_LENGTH = 50;
+    private static final int BEGIN_INDEX = 0;
     private final OAuthClientComposite oAuthClientComposite;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
@@ -67,7 +68,7 @@ public class AuthenticationService {
 
     private Name convertToNameAndTruncateLength(final String oAuthId) {
         if (oAuthId.length() > NAME_MAX_LENGTH) {
-            return new Name(oAuthId.substring(NAME_MAX_LENGTH));
+            return new Name(oAuthId.substring(BEGIN_INDEX, NAME_MAX_LENGTH));
         }
 
         return new Name(oAuthId);
