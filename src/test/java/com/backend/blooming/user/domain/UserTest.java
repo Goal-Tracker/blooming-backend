@@ -15,20 +15,21 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 class UserTest extends UserTestFixture {
 
     @Test
-    void 사용자_생성시_이름_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다() {
+    void 사용자_생성시_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다() {
         // when
         final User actual = User.builder()
-                              .oAuthId("12345")
-                              .oAuthType(OAuthType.KAKAO)
-                              .email(new Email("user@email.com"))
-                              .build();
+                                .oAuthId("12345")
+                                .oAuthType(OAuthType.KAKAO)
+                                .email(new Email("user@email.com"))
+                                .name(new Name("test"))
+                                .build();
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.getOAuthId()).isEqualTo("12345");
             softAssertions.assertThat(actual.getOAuthType()).isEqualTo(OAuthType.KAKAO);
             softAssertions.assertThat(actual.getEmail()).isEqualTo("user@email.com");
-            softAssertions.assertThat(actual.getName()).isEqualTo("");
+            softAssertions.assertThat(actual.getName()).isEqualTo("test");
             softAssertions.assertThat(actual.getColor()).isEqualTo(ThemeColor.INDIGO);
             softAssertions.assertThat(actual.getStatusMessage()).isEqualTo("");
         });
@@ -49,7 +50,7 @@ class UserTest extends UserTestFixture {
         final String updateName = "수정한 이름";
 
         // when
-        사용자.updateName(updateName);
+        사용자.updateName(new Name(updateName));
 
         // then
         assertSoftly(softAssertions -> {
@@ -106,7 +107,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
@@ -124,7 +125,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();
@@ -142,7 +143,7 @@ class UserTest extends UserTestFixture {
         final User user = User.builder()
                               .oAuthId("12345")
                               .oAuthType(OAuthType.KAKAO)
-                              .name("사용자")
+                              .name(new Name("사용자"))
                               .email(new Email("user@email.com"))
                               .color(ThemeColor.BEIGE)
                               .build();

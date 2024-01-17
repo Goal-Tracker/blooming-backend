@@ -7,6 +7,8 @@ import com.backend.blooming.authentication.infrastructure.exception.OAuthExcepti
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.user.domain.User;
+import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -29,6 +31,9 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     @Autowired
     private AuthenticationService authenticationService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     @Test
     void 로그인시_존재하지_않는_사용자인_경우_해당_사용자를_저장후_토큰_정보를_반환한다() {
         // given
@@ -42,6 +47,30 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
             softAssertions.assertThat(actual.token().accessToken()).isNotEmpty();
             softAssertions.assertThat(actual.token().refreshToken()).isNotEmpty();
             softAssertions.assertThat(actual.isSignUp()).isTrue();
+        });
+    }
+
+    @Test
+    void 로그인시_존재하지_않는_사용자이며_oauthid가_50자를_초과하는_경우_이름을_50자까지만_저장한_후_토큰_정보를_반환한다() {
+        // given
+        willReturn(oauthid가_50자를_초과하는_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
+
+        // when
+        final LoginInformationDto actual = authenticationService.login(oauth_타입, 소셜_액세스_토큰);
+
+        // then
+        final User savedUser = userRepository.findByOAuthIdAndOAuthType(
+                                                     oauthid가_50자를_초과하는_사용자_소셜_정보.oAuthId(),
+                                                     oauth_타입
+                                             )
+                                             .get();
+        System.out.println(savedUser);
+
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.token().accessToken()).isNotEmpty();
+            softAssertions.assertThat(actual.token().refreshToken()).isNotEmpty();
+            softAssertions.assertThat(actual.isSignUp()).isTrue();
+            softAssertions.assertThat(savedUser.getName().length()).isEqualTo(50);
         });
     }
 

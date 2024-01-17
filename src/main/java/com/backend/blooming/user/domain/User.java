@@ -27,7 +27,6 @@ import lombok.ToString;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-    private static final String DEFAULT_NAME = "";
     private static final String DEFAULT_STATUS_MESSAGE = "";
     private static final ThemeColor DEFAULT_THEME_COLOR = ThemeColor.INDIGO;
 
@@ -45,8 +44,8 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Email email;
 
-    @Column(unique = true, length = 50, nullable = false)
-    private String name;
+    @Embedded
+    private Name name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "theme_color", nullable = false)
@@ -63,24 +62,16 @@ public class User extends BaseTimeEntity {
             final String oAuthId,
             final OAuthType oAuthType,
             final Email email,
-            final String name,
+            final Name name,
             final ThemeColor color,
             final String statusMessage
     ) {
         this.oAuthId = oAuthId;
         this.oAuthType = oAuthType;
         this.email = email;
-        this.name = processName(name);
+        this.name = name;
         this.color = processColor(color);
         this.statusMessage = processStatusMessage(statusMessage);
-    }
-
-    private String processName(final String name) {
-        if (name == null) {
-            return DEFAULT_NAME;
-        }
-
-        return name;
     }
 
     private ThemeColor processColor(final ThemeColor color) {
@@ -103,7 +94,7 @@ public class User extends BaseTimeEntity {
         this.deleted = true;
     }
 
-    public void updateName(final String name) {
+    public void updateName(final Name name) {
         this.name = name;
     }
 
@@ -117,6 +108,10 @@ public class User extends BaseTimeEntity {
 
     public String getEmail() {
         return email.getValue();
+    }
+
+    public String getName() {
+        return name.getValue();
     }
 
     public String getColorName() {

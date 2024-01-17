@@ -6,6 +6,7 @@ import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
 import com.backend.blooming.user.domain.Email;
+import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -46,7 +47,7 @@ public class UserServiceTestFixture {
         사용자 = User.builder()
                   .oAuthId("12345")
                   .oAuthType(OAuthType.KAKAO)
-                  .name("사용자")
+                  .name(new Name("사용자"))
                   .email(new Email("test@email.com"))
                   .color(ThemeColor.BEIGE)
                   .statusMessage("기존 상태 메시지")
@@ -54,19 +55,19 @@ public class UserServiceTestFixture {
         친구인_사용자 = User.builder()
                    .oAuthId("12346")
                    .oAuthType(OAuthType.KAKAO)
-                   .name("사용자2")
+                   .name(new Name("사용자2"))
                    .email(new Email("test2@email.com"))
                    .build();
         친구가_아닌_사용자 = User.builder()
                    .oAuthId("12347")
                    .oAuthType(OAuthType.KAKAO)
-                   .name("사용자3")
+                   .name(new Name("사용자3"))
                    .email(new Email("test3@email.com"))
                    .build();
         final User 삭제한_사용자 = User.builder()
                                  .oAuthId("12348")
                                  .oAuthType(OAuthType.KAKAO)
-                                 .name("삭제한 사용자")
+                                 .name(new Name("삭제한 사용자"))
                                  .email(new Email("test4@email.com"))
                                  .build();
         삭제한_사용자.delete();

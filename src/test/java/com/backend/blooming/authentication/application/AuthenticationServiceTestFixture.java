@@ -6,6 +6,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
 import com.backend.blooming.authentication.infrastructure.oauth.kakao.dto.KakaoUserInformationDto;
 import com.backend.blooming.user.domain.Email;
+import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,8 +25,13 @@ public class AuthenticationServiceTestFixture {
     protected String 소셜_액세스_토큰 = "social_access_token";
     protected UserInformationDto 첫_로그인_사용자_소셜_정보 =
             new KakaoUserInformationDto("12345", new KakaoUserInformationDto.KakaoAccount("test@email.com"));
+    protected UserInformationDto oauthid가_50자를_초과하는_사용자_소셜_정보 =
+            new KakaoUserInformationDto(
+                    "1234567890123456789012345678901234567890123456789012345",
+                    new KakaoUserInformationDto.KakaoAccount("test2@email.com")
+            );
     protected UserInformationDto 기존_사용자_소셜_정보 =
-            new KakaoUserInformationDto("12346", new KakaoUserInformationDto.KakaoAccount("test2@email.com"));
+            new KakaoUserInformationDto("12346", new KakaoUserInformationDto.KakaoAccount("test3@email.com"));
     protected String 유효한_refresh_token;
     protected String 존재하지_않는_사용자의_refresh_token;
     protected String 유효하지_않는_refresh_token = "Bearer invalid_refresh_token";
@@ -36,7 +42,7 @@ public class AuthenticationServiceTestFixture {
         final User 기존_사용자 = User.builder()
                                 .oAuthType(oauth_타입)
                                 .oAuthId(기존_사용자_소셜_정보.oAuthId())
-                                .name("기존 사용자")
+                                .name(new Name("기존 사용자"))
                                 .email(new Email(기존_사용자_소셜_정보.email()))
                                 .build();
 

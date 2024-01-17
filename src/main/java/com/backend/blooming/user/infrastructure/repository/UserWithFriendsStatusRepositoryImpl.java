@@ -31,7 +31,7 @@ public class UserWithFriendsStatusRepositoryImpl implements UserWithFriendsStatu
                             .leftJoin(friend)
                             .on(buildFriendsConditions(currentUser.getId()))
                             .fetchJoin()
-                            .where(user.deleted.isFalse().and(user.name.contains(keyword)))
+                            .where(user.deleted.isFalse().and(user.name.value.contains(keyword)))
                             .fetch();
 
         return userWithFriendDtos.stream()
