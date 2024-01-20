@@ -3,6 +3,7 @@ package com.backend.blooming.goal.domain;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
+import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -23,7 +24,7 @@ public class GoalTestFixture {
                                .oAuthId("아이디")
                                .oAuthType(OAuthType.KAKAO)
                                .email(new Email("test@gmail.com"))
-                               .name("테스트")
+                               .name(new Name("테스트"))
                                .color(ThemeColor.BABY_BLUE)
                                .statusMessage("상태메시지")
                                .build();
@@ -31,7 +32,7 @@ public class GoalTestFixture {
                                  .oAuthId("아이디2")
                                  .oAuthType(OAuthType.KAKAO)
                                  .email(new Email("test2@gmail.com"))
-                                 .name("테스트2")
+                                 .name(new Name("테스트2"))
                                  .color(ThemeColor.BABY_BLUE)
                                  .statusMessage("상태메시지2")
                                  .build();
