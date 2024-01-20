@@ -25,7 +25,7 @@ class GoalTest extends GoalTestFixture {
                               .build();
 
         // then
-        assertThat(goal.getMemo()).isEqualTo("");
+        assertThat(goal.getMemo()).isEmpty();
     }
 
     @Test
