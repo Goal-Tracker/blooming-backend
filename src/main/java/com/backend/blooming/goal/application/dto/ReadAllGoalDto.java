@@ -43,7 +43,7 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
 
             public static GoalTeamWithUserInfoDto from(final GoalTeam goalTeam) {
                 return new GoalTeamWithUserInfoDto(
-                        goalTeam.getId(),
+                        goalTeam.getUser().getId(),
                         goalTeam.getUser().getName(),
                         goalTeam.getUser().getColor()
                 );
