@@ -63,13 +63,13 @@ public class Goal extends BaseTimeEntity {
             final List<User> users
     ) {
         this.name = name;
-        this.memo = setNewMemo(memo);
+        this.memo = processDefaultMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
         createGoalTeams(users);
     }
 
-    private String setNewMemo(final String memo) {
+    private String processDefaultMemo(final String memo) {
         if (memo == null || memo.isEmpty()) {
             return MEMO_DEFAULT;
         }
