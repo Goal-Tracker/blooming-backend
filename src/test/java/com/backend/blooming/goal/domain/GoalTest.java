@@ -1,10 +1,12 @@
 package com.backend.blooming.goal.domain;
 
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -40,5 +42,19 @@ class GoalTest extends GoalTestFixture {
 
         // then
         assertThat(goal.getTeams()).hasSize(2);
+    }
+
+    @Test
+    void 골_참여자_목록이_5명_초과인_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> Goal.builder()
+                                     .name(골_제목)
+                                     .memo("골 메모")
+                                     .startDate(골_시작일)
+                                     .endDate(골_종료일)
+                                     .managerId(골_관리자_아이디)
+                                     .users(유효하지_않은_골_참여자_목록)
+                                     .build())
+                .isInstanceOf(InvalidGoalException.InvalidInvalidUsersSize.class);
     }
 }

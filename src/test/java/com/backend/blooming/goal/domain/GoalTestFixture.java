@@ -18,6 +18,7 @@ public class GoalTestFixture {
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     protected Long 골_관리자_아이디 = 1L;
     protected List<User> 골_참여자_목록 = new ArrayList<>();
+    protected List<User> 유효하지_않은_골_참여자_목록 = new ArrayList<>();
     private User 유효한_사용자 = User.builder()
                                .oAuthId("아이디")
                                .oAuthType(OAuthType.KAKAO)
@@ -38,5 +39,6 @@ public class GoalTestFixture {
     @BeforeEach
     void setUp() {
         골_참여자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
+        유효하지_않은_골_참여자_목록.addAll(List.of(유효한_사용자, 유효한_사용자, 유효한_사용자, 유효한_사용자, 유효한_사용자, 유효한_사용자));
     }
 }

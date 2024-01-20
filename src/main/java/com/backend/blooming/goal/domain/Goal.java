@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -30,6 +31,7 @@ import java.util.List;
 public class Goal extends BaseTimeEntity {
 
     private final static String MEMO_DEFAULT = "";
+    private final static int TEAMS_MAXIMUM_LENGTH = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +50,7 @@ public class Goal extends BaseTimeEntity {
     private Long managerId;
 
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<GoalTeam> teams = new ArrayList<>();
+    private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -77,8 +79,15 @@ public class Goal extends BaseTimeEntity {
     }
 
     private void createGoalTeams(final List<User> users) {
+        validateUsersSize(users);
         users.forEach(user -> {
             new GoalTeam(user, this);
         });
+    }
+
+    private void validateUsersSize(final List<User> users) {
+        if (users.size() > 5) {
+            throw new InvalidGoalException.InvalidInvalidUsersSize();
+        }
     }
 }
