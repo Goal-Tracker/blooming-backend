@@ -65,7 +65,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
     private UserRepository userRepository;
 
     @Test
-    public void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
+    void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
