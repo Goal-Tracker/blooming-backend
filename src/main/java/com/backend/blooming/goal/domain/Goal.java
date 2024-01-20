@@ -80,9 +80,7 @@ public class Goal extends BaseTimeEntity {
 
     private void createGoalTeams(final List<User> users) {
         validateUsersSize(users);
-        users.forEach(user -> {
-            new GoalTeam(user, this);
-        });
+        users.forEach(user -> new GoalTeam(user, this));
     }
 
     private void validateUsersSize(final List<User> users) {
