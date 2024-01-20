@@ -29,8 +29,9 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadGoalResponse> createGoal(@RequestBody @Valid final CreateGoalRequest request,
-                                                       @Authenticated final AuthenticatedUser authenticatedUser) {
+    public ResponseEntity<ReadGoalResponse> createGoal(
+            @RequestBody @Valid final CreateGoalRequest request,
+            @Authenticated final AuthenticatedUser authenticatedUser) {
         final CreateGoalDto createGoalDto = CreateGoalDto.of(request, authenticatedUser.userId());
         final Long goalId = goalService.createGoal(createGoalDto);
 
@@ -46,7 +47,8 @@ public class GoalController {
     }
 
     @GetMapping(value = "/all", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(@Authenticated final AuthenticatedUser authenticatedUser) {
+    public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(
+            @Authenticated final AuthenticatedUser authenticatedUser) {
         final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
         final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 

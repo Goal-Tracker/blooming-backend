@@ -37,9 +37,7 @@ public record ReadGoalDetailDto(
         );
     }
 
-    public record GoalTeamWithUserInfoDto(Long id, String name,
-                                          ThemeColor color,
-                                          String statusMessage) {
+    public record GoalTeamWithUserInfoDto(Long id, String name, ThemeColor color, String statusMessage) {
 
         public static GoalTeamWithUserInfoDto from(final GoalTeam goalTeam) {
             return new GoalTeamWithUserInfoDto(

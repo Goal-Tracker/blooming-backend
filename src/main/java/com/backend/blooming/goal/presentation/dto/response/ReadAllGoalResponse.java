@@ -28,7 +28,13 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
                                                                                                 .map(GoalTeamWithUserInfoResponse::from)
                                                                                                 .toList();
 
-            return new GoalInfoResponse(goalInfoDto.id(), goalInfoDto.name(), goalInfoDto.startDate(), goalInfoDto.endDate(), goalInfoDto.days(), goalTeamWithUserInfoResponses);
+            return new GoalInfoResponse(
+                    goalInfoDto.id(),
+                    goalInfoDto.name(),
+                    goalInfoDto.startDate(),
+                    goalInfoDto.endDate(),
+                    goalInfoDto.days(),
+                    goalTeamWithUserInfoResponses);
         }
     }
 
@@ -36,8 +42,10 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
                                                String colorCode) {
 
         public static GoalTeamWithUserInfoResponse from(final ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto goalTeamWithUserInfoDto) {
-            return new GoalTeamWithUserInfoResponse(goalTeamWithUserInfoDto.id(), goalTeamWithUserInfoDto.name(), goalTeamWithUserInfoDto.color()
-                                                                                                                                         .getCode());
+            return new GoalTeamWithUserInfoResponse(
+                    goalTeamWithUserInfoDto.id(),
+                    goalTeamWithUserInfoDto.name(),
+                    goalTeamWithUserInfoDto.color().getCode());
         }
     }
 }
