@@ -1,8 +1,6 @@
 package com.backend.blooming.goal.presentation.dto.response;
 
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserQueryProjectionDto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.time.LocalDate;
@@ -20,12 +18,17 @@ public record ReadGoalResponse(
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
         LocalDate endDate,
         long days,
-        long inProgressDays,
         Long managerId,
-        List<GoalTeamWithUserNameDto> goalTeamsWithUserName
+        List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfo
 ) {
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
+
+        final List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfoResponses = readGoalDetailDto.GoalTeamWithUserInfo()
+                                                                                                  .stream()
+                                                                                                  .map(GoalTeamWithUserInfoResponse::from)
+                                                                                                  .toList();
+
         return new ReadGoalResponse(
                 readGoalDetailDto.id(),
                 readGoalDetailDto.name(),
@@ -33,9 +36,22 @@ public record ReadGoalResponse(
                 readGoalDetailDto.startDate(),
                 readGoalDetailDto.endDate(),
                 readGoalDetailDto.days(),
-                readGoalDetailDto.inProgressDays(),
                 readGoalDetailDto.managerId(),
-                readGoalDetailDto.goalTeamsWithUserName()
+                goalTeamWithUserInfoResponses
         );
+    }
+
+    public record GoalTeamWithUserInfoResponse(Long id, String name,
+                                               String colorCode,
+                                               String statusMessage) {
+
+        public static GoalTeamWithUserInfoResponse from(final ReadGoalDetailDto.GoalTeamWithUserInfoDto goalTeamWithUserInfoDto) {
+
+            return new GoalTeamWithUserInfoResponse(
+                    goalTeamWithUserInfoDto.id(),
+                    goalTeamWithUserInfoDto.name(),
+                    goalTeamWithUserInfoDto.color().getCode(),
+                    goalTeamWithUserInfoDto.statusMessage());
+        }
     }
 }

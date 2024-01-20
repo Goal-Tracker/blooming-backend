@@ -1,7 +1,8 @@
 package com.backend.blooming.goal.application.dto;
 
 import com.backend.blooming.goal.domain.Goal;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
+import com.backend.blooming.goal.domain.GoalTeam;
+import com.backend.blooming.themecolor.domain.ThemeColor;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,12 +14,17 @@ public record ReadGoalDetailDto(
         LocalDate startDate,
         LocalDate endDate,
         long days,
-        long inProgressDays,
         Long managerId,
-        List<GoalTeamWithUserNameDto> goalTeamsWithUserName
+        List<GoalTeamWithUserInfoDto> GoalTeamWithUserInfo
 ) {
 
-    public static ReadGoalDetailDto from(final Goal goal, final List<GoalTeamWithUserNameDto> goalTeamsWithUserNames) {
+    public static ReadGoalDetailDto from(final Goal goal) {
+
+        final List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos = goal.getTeams()
+                                                                           .stream()
+                                                                           .map(GoalTeamWithUserInfoDto::from)
+                                                                           .toList();
+
         return new ReadGoalDetailDto(
                 goal.getId(),
                 goal.getName(),
@@ -26,9 +32,22 @@ public record ReadGoalDetailDto(
                 goal.getGoalTerm().getStartDate(),
                 goal.getGoalTerm().getEndDate(),
                 goal.getGoalTerm().getDays(),
-                goal.getGoalTerm().getInProgressDays(),
                 goal.getManagerId(),
-                goalTeamsWithUserNames
+                goalTeamWithUserInfoDtos
         );
+    }
+
+    public record GoalTeamWithUserInfoDto(Long id, String name,
+                                          ThemeColor color,
+                                          String statusMessage) {
+
+        public static GoalTeamWithUserInfoDto from(final GoalTeam goalTeam) {
+            return new GoalTeamWithUserInfoDto(
+                    goalTeam.getId(),
+                    goalTeam.getUser().getName(),
+                    goalTeam.getUser().getColor(),
+                    goalTeam.getUser().getStatusMessage()
+            );
+        }
     }
 }

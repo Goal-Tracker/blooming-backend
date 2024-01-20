@@ -17,6 +17,10 @@ import java.time.temporal.ChronoUnit;
 @ToString
 public class GoalTerm {
 
+    private static final int GOAL_DAYS_MINIMUM = 1;
+    private static final int GOAL_DAYS_MAXIMUM = 100;
+    private static final int COUNT_GOAL_DAYS = 1;
+
     @Column(nullable = false)
     @FutureOrPresent
     private LocalDate startDate;
@@ -28,9 +32,6 @@ public class GoalTerm {
     @Column(nullable = false)
     private long days;
 
-    @Column(nullable = false)
-    private long inProgressDays;
-
     public GoalTerm() {
     }
 
@@ -39,7 +40,6 @@ public class GoalTerm {
         this.startDate = startDate;
         this.endDate = endDate;
         this.days = getValidGoalDays(startDate, endDate);
-        this.inProgressDays = getValidInProgressDay(startDate, endDate);
     }
 
     private void validateGoalDatePeriod(final LocalDate startDate,
@@ -59,26 +59,11 @@ public class GoalTerm {
 
     private long getValidGoalDays(final LocalDate startDate,
                                   final LocalDate endDate) {
-        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + COUNT_GOAL_DAYS;
 
-        if (goalDays < 1 || goalDays > 100) {
+        if (goalDays < GOAL_DAYS_MINIMUM || goalDays > GOAL_DAYS_MAXIMUM) {
             throw new InvalidGoalException.InvalidInvalidGoalDays();
         }
         return goalDays;
-    }
-
-    private long getValidInProgressDay(final LocalDate startDate,
-                                       final LocalDate endDate) {
-        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + 1;
-        final LocalDate nowDate = LocalDate.now();
-        long inProgressDays = ChronoUnit.DAYS.between(startDate, nowDate) + 1;
-
-        if (inProgressDays < 0) {
-            throw new InvalidGoalException.InvalidInvalidGoalDays();
-        }
-        if (inProgressDays > goalDays) {
-            inProgressDays = goalDays;
-        }
-        return inProgressDays;
     }
 }
