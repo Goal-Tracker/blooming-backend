@@ -29,4 +29,18 @@ public class MemberException extends BloomingException {
             super(ExceptionMessage.INVALID_EMAIL_FORMAT);
         }
     }
+
+    public static class NullOrEmptyNameException extends MemberException {
+
+        public NullOrEmptyNameException() {
+            super(ExceptionMessage.NULL_OR_EMPTY_NAME);
+        }
+    }
+
+    public static class LongerThanMaximumNameLengthException extends MemberException {
+
+        public LongerThanMaximumNameLengthException() {
+            super(ExceptionMessage.LONGER_THAN_MAXIMUM_NAME);
+        }
+    }
 }

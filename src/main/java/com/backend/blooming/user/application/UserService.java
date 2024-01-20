@@ -5,6 +5,7 @@ import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.backend.blooming.user.infrastructure.repository.UserWithFriendsStatusRepository;
@@ -52,7 +53,8 @@ public class UserService {
 
     private void updateUserByRequest(final User user, final UpdateUserDto updateUserDto) {
         if (updateUserDto.name() != null) {
-            user.updateName(updateUserDto.name());
+            final Name updateName = new Name(updateUserDto.name());
+            user.updateName(updateName);
         }
         if (updateUserDto.color() != null) {
             final ThemeColor themeColor = ThemeColor.from(updateUserDto.color());
