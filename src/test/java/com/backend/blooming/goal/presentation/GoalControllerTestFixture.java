@@ -24,6 +24,7 @@ public class GoalControllerTestFixture {
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
     private List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 999L));
+    private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
@@ -79,6 +80,14 @@ public class GoalControllerTestFixture {
             LocalDate.now().plusDays(100),
             골_관리자_아이디,
             골_팀에_등록된_사용자_아이디_목록
+    );
+    protected CreateGoalDto 참여자_리스트가_5명_초과인_골_생성_dto = new CreateGoalDto(
+            골_제목,
+            골_메모,
+            LocalDate.now(),
+            LocalDate.now().plusDays(40),
+            골_관리자_아이디,
+            유효하지_않은_골_참여_사용자_아이디_목록
     );
     protected CreateGoalRequest 요청한_골_dto = new CreateGoalRequest(
             골_제목,

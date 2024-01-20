@@ -196,6 +196,25 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
+    void 골_생성시_사용자_리스트가_5명_초과인_경우_403_예외를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
+
+        // when & then
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(참여자_리스트가_5명_초과인_골_생성_dto))
+        ).andExpectAll(
+                status().isForbidden(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
     void 골_아이디로_조회하면_해당_골의_정보를_반환한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
