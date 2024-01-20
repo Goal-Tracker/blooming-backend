@@ -5,10 +5,10 @@ import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
-import com.backend.blooming.goal.infrastructure.repository.dto.GoalTeamWithUserNameDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
+import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import com.backend.blooming.themecolor.domain.ThemeColor;
-import org.junit.jupiter.api.BeforeEach;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -21,51 +21,33 @@ public class GoalControllerTestFixture {
     private String 골_메모 = "골 메모";
     private LocalDate 골_시작일 = LocalDate.now();
     private LocalDate 골_종료일 = LocalDate.now().plusDays(40);
-    private long 골_날짜수 = 41L;
-    private long 현재_진행중인_날짜수 = 1L;
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
-    private List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(999L));
-    private Long 골_참여_사용자_아이디 = 2L;
-    protected Long 유효한_골_아이디2 = 2L;
-    protected String 골_제목2 = "골 제목2";
-    private String 골_메모2 = "골 메모2";
-    private LocalDate 골_시작일2 = LocalDate.now();
-    private LocalDate 골_종료일2 = LocalDate.now().plusDays(50);
-    private long 골_날짜수2 = 51L;
-    private long 현재_진행중인_날짜수2 = 1L;
+    private List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 999L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
-    protected List<GoalTeamWithUserNameDto> 골에_참여한_사용자_정보를_포함한_골_팀_리스트 = new ArrayList<>();
-    protected List<ReadAllGoalDto> 사용자가_참여한_모든_골_dto = new ArrayList<>();
-    protected GoalTeamWithUserNameDto 골에_참여한_사용자_정보를_포함한_골_팀1 = new GoalTeamWithUserNameDto(
-            골_관리자_아이디,
-            "테스트1",
-            ThemeColor.BABY_BLUE
-    );
-    protected GoalTeamWithUserNameDto 골에_참여한_사용자_정보를_포함한_골_팀2 = new GoalTeamWithUserNameDto(
-            골_참여_사용자_아이디,
-            "테스트2",
-            ThemeColor.BABY_BLUE
-    );
-    protected CreateGoalDto 유효한_골_생성_dto = new CreateGoalDto(
+    protected CreateGoalRequest 유효한_골_생성_요청_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
             골_시작일,
             골_종료일,
-            골_관리자_아이디,
             골_팀에_등록된_사용자_아이디_목록
     );
-    protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto = new CreateGoalDto(
+
+    protected CreateGoalDto 유효한_골_생성_dto = CreateGoalDto.of(유효한_골_생성_요청_dto, 골_관리자_아이디);
+
+    protected CreateGoalRequest 존재하지_않는_사용자가_참여자로_있는_골_생성_요청_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
             골_시작일,
             골_종료일,
-            골_관리자_아이디,
             존재하지_않는_사용자가_있는_사용자_아이디_목록
     );
+
+    protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto = CreateGoalDto.of(존재하지_않는_사용자가_참여자로_있는_골_생성_요청_dto, 골_관리자_아이디);
+
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
             골_제목,
             골_메모,
@@ -105,40 +87,28 @@ public class GoalControllerTestFixture {
             골_종료일,
             골_팀에_등록된_사용자_아이디_목록
     );
-    protected ReadGoalDetailDto 유효한_골_dto = new ReadGoalDetailDto(
-            유효한_골_아이디,
-            골_제목,
-            골_메모,
-            골_시작일,
-            골_종료일,
-            골_날짜수,
-            현재_진행중인_날짜수,
-            골_관리자_아이디,
-            골에_참여한_사용자_정보를_포함한_골_팀_리스트
-    );
-    protected ReadAllGoalDto 사용자가_참여한_골_dto_1 = new ReadAllGoalDto(
-            유효한_골_아이디,
-            골_제목,
-            골_시작일,
-            골_종료일,
-            골_날짜수,
-            현재_진행중인_날짜수,
-            골에_참여한_사용자_정보를_포함한_골_팀_리스트
-    );
-    protected ReadAllGoalDto 사용자가_참여한_골_dto_2 = new ReadAllGoalDto(
-            유효한_골_아이디2,
-            골_제목2,
-            골_시작일2,
-            골_종료일2,
-            골_날짜수2,
-            현재_진행중인_날짜수2,
-            골에_참여한_사용자_정보를_포함한_골_팀_리스트
-    );
 
-    @BeforeEach
-    void setUp() {
-        골에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_정보를_포함한_골_팀1);
-        골에_참여한_사용자_정보를_포함한_골_팀_리스트.add(골에_참여한_사용자_정보를_포함한_골_팀2);
-        사용자가_참여한_모든_골_dto.addAll(List.of(사용자가_참여한_골_dto_1, 사용자가_참여한_골_dto_2));
-    }
+    protected ReadGoalDetailDto.GoalTeamWithUserInfoDto 골_참여자1 = new ReadGoalDetailDto.GoalTeamWithUserInfoDto(1L, "테스트 유저1", ThemeColor.BABY_PINK, "테스트 상태메시지1");
+    protected ReadGoalDetailDto.GoalTeamWithUserInfoDto 골_참여자2 = new ReadGoalDetailDto.GoalTeamWithUserInfoDto(2L, "테스트 유저2", ThemeColor.BABY_BLUE, "테스트 상태메시지2");
+    protected ReadGoalResponse.GoalTeamWithUserInfoResponse 골_참여자_응답1 = new ReadGoalResponse.GoalTeamWithUserInfoResponse(1L, "테스트 유저1", "#f8c8c4", "테스트 상태메시지1");
+    protected ReadGoalResponse.GoalTeamWithUserInfoResponse 골_참여자_응답2 = new ReadGoalResponse.GoalTeamWithUserInfoResponse(2L, "테스트 유저2", "#a1b3d7", "테스트 상태메시지2");
+    protected ReadGoalDetailDto 유효한_골_dto = new ReadGoalDetailDto(1L, "테스트 골1", "테스트 골 메모1", LocalDate.now(), LocalDate.now()
+                                                                                                                       .plusDays(10), 11, 1L, List.of(골_참여자1, 골_참여자2));
+    protected ReadGoalResponse 유효한_골_응답_dto = new ReadGoalResponse(1L, "테스트 골1", "테스트 골 메모1", LocalDate.now(), LocalDate.now()
+                                                                                                                        .plusDays(10), 11, 1L, List.of(골_참여자_응답1, 골_참여자_응답2));
+
+    protected ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto 골_참여자_정보1 = new ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto(1L, "테스트 유저1", ThemeColor.BABY_PINK);
+    protected ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto 골_참여자_정보2 = new ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto(2L, "테스트 유저2", ThemeColor.BABY_BLUE);
+    protected ReadAllGoalDto.GoalInfoDto 유효한_골_정보_dto1 = new ReadAllGoalDto.GoalInfoDto(1L, "테스트 골1", LocalDate.now(), LocalDate.now()
+                                                                                                                                .plusDays(10), 11, List.of(골_참여자_정보1, 골_참여자_정보2));
+    protected ReadAllGoalDto.GoalInfoDto 유효한_골_정보_dto2 = new ReadAllGoalDto.GoalInfoDto(2L, "테스트 골2", LocalDate.now(), LocalDate.now()
+                                                                                                                                .plusDays(20), 21, List.of(골_참여자_정보1, 골_참여자_정보2));
+    protected ReadAllGoalResponse.GoalTeamWithUserInfoResponse 골_참여자_정보_응답1 = new ReadAllGoalResponse.GoalTeamWithUserInfoResponse(1L, "테스트 유저1", "#f8c8c4");
+    protected ReadAllGoalResponse.GoalTeamWithUserInfoResponse 골_참여자_정보_응답2 = new ReadAllGoalResponse.GoalTeamWithUserInfoResponse(2L, "테스트 유저2", "#a1b3d7");
+    protected ReadAllGoalResponse.GoalInfoResponse 유효한_골_정보_응답_dto1 = new ReadAllGoalResponse.GoalInfoResponse(1L, "테스트 골1", LocalDate.now(), LocalDate.now()
+                                                                                                                                                       .plusDays(10), 11, List.of(골_참여자_정보_응답1, 골_참여자_정보_응답2));
+    protected ReadAllGoalResponse.GoalInfoResponse 유효한_골_정보_응답_dto2 = new ReadAllGoalResponse.GoalInfoResponse(2L, "테스트 골2", LocalDate.now(), LocalDate.now()
+                                                                                                                                                       .plusDays(20), 21, List.of(골_참여자_정보_응답1, 골_참여자_정보_응답2));
+    protected ReadAllGoalDto 사용자가_참여한_모든_골_목록_dto = new ReadAllGoalDto(List.of(유효한_골_정보_dto1, 유효한_골_정보_dto2));
+    protected ReadAllGoalResponse 사용자가_참여한_모든_골_목록_응답_dto = new ReadAllGoalResponse(List.of(유효한_골_정보_응답_dto1, 유효한_골_정보_응답_dto2));
 }

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/goals")
@@ -32,7 +31,7 @@ public class GoalController {
     @PostMapping(headers = "X-API-VERSION=1")
     public ResponseEntity<ReadGoalResponse> createGoal(@RequestBody @Valid final CreateGoalRequest request,
                                                        @Authenticated final AuthenticatedUser authenticatedUser) {
-        final CreateGoalDto createGoalDto = CreateGoalDto.from(request, authenticatedUser.userId());
+        final CreateGoalDto createGoalDto = CreateGoalDto.of(request, authenticatedUser.userId());
         final Long goalId = goalService.createGoal(createGoalDto);
 
         return ResponseEntity.created(URI.create("/goals/" + goalId)).build();
@@ -41,16 +40,16 @@ public class GoalController {
     @GetMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadGoalResponse> readGoalById(@PathVariable("goalId") final Long goalId) {
         final ReadGoalDetailDto readGoalDetailDto = goalService.readGoalDetailById(goalId);
-        final ReadGoalResponse readGoalResponse = ReadGoalResponse.from(readGoalDetailDto);
+        final ReadGoalResponse response = ReadGoalResponse.from(readGoalDetailDto);
 
-        return ResponseEntity.ok().body(readGoalResponse);
+        return ResponseEntity.ok().body(response);
     }
 
-    @GetMapping(value = "/main", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/all", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(@Authenticated final AuthenticatedUser authenticatedUser) {
-        final List<ReadAllGoalDto> readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
-        final ReadAllGoalResponse readAllGoalResponse = new ReadAllGoalResponse(readAllGoalDtos);
+        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
+        final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
-        return ResponseEntity.ok().body(readAllGoalResponse);
+        return ResponseEntity.ok().body(response);
     }
 }
