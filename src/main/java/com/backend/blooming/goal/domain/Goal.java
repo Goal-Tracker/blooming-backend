@@ -1,6 +1,8 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
+import com.backend.blooming.user.domain.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -45,11 +47,11 @@ public class Goal extends BaseTimeEntity {
     @Column(nullable = false)
     private Long managerId;
 
-    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> teams = new ArrayList<>();
 
     @Column(nullable = false)
-    private boolean deleted;
+    private boolean deleted = false;
 
     @Builder
     private Goal(
@@ -57,14 +59,14 @@ public class Goal extends BaseTimeEntity {
             final String memo,
             final LocalDate startDate,
             final LocalDate endDate,
-            final Long managerId
+            final Long managerId,
+            final List<User> users
     ) {
         this.name = name;
         this.memo = setNewMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
-        this.teams = new ArrayList<>();
-        this.deleted = false;
+        createGoalTeams(users);
     }
 
     private String setNewMemo(final String memo) {
@@ -74,7 +76,9 @@ public class Goal extends BaseTimeEntity {
         return memo;
     }
 
-    public void updateTeams(List<GoalTeam> teams) {
-        this.teams = teams;
+    private void createGoalTeams(final List<User> users) {
+        users.forEach(user -> {
+            new GoalTeam(user, this);
+        });
     }
 }
