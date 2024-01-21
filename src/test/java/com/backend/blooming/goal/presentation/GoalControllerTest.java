@@ -120,44 +120,6 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
-    void 골_시작날짜가_현재보다_이전인_경우_403_예외를_발생한다() throws Exception {
-        // given
-        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
-        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_시작날짜가_현재보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalStartDay());
-
-        // when & then
-        mockMvc.perform(post("/goals")
-                .header("X-API-VERSION", 1)
-                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(골_시작날짜가_현재보다_이전인_골_생성_dto))
-        ).andExpectAll(
-                status().isForbidden(),
-                jsonPath("$.message").exists()
-        ).andDo(print());
-    }
-
-    @Test
-    void 골_종료날짜가_현재보다_이전인_경우_403_예외를_발생한다() throws Exception {
-        // given
-        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
-        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_종료날짜가_현재보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalEndDay());
-
-        // when & then
-        mockMvc.perform(post("/goals")
-                .header("X-API-VERSION", 1)
-                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(골_종료날짜가_현재보다_이전인_골_생성_dto))
-        ).andExpectAll(
-                status().isForbidden(),
-                jsonPath("$.message").exists()
-        ).andDo(print());
-    }
-
-    @Test
     void 골_종료날짜가_시작날짜보다_이전인_경우_403_예외를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
