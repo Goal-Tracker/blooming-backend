@@ -22,11 +22,9 @@ public class GoalTerm {
     private static final int COUNT_GOAL_DAYS = 1;
 
     @Column(nullable = false)
-    @FutureOrPresent
     private LocalDate startDate;
 
     @Column(nullable = false)
-    @FutureOrPresent
     private LocalDate endDate;
 
     @Column(nullable = false)
@@ -42,8 +40,9 @@ public class GoalTerm {
         this.days = getValidGoalDays(startDate, endDate);
     }
 
-    private void validateGoalDatePeriod(final LocalDate startDate,
-                                        final LocalDate endDate) {
+    private void validateGoalDatePeriod(
+            final LocalDate startDate,
+            final LocalDate endDate) {
         final LocalDate nowDate = LocalDate.now();
 
         if (startDate.isBefore(nowDate)) {
@@ -57,13 +56,15 @@ public class GoalTerm {
         }
     }
 
-    private long getValidGoalDays(final LocalDate startDate,
-                                  final LocalDate endDate) {
+    private long getValidGoalDays(
+            final LocalDate startDate,
+            final LocalDate endDate) {
         final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + COUNT_GOAL_DAYS;
 
         if (goalDays < GOAL_DAYS_MINIMUM || goalDays > GOAL_DAYS_MAXIMUM) {
             throw new InvalidGoalException.InvalidInvalidGoalDays();
         }
+
         return goalDays;
     }
 }
