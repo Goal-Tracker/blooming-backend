@@ -43,7 +43,7 @@ public class GoalController {
         final ReadGoalDetailDto readGoalDetailDto = goalService.readGoalDetailById(goalId);
         final ReadGoalResponse response = ReadGoalResponse.from(readGoalDetailDto);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping(value = "/all", headers = "X-API-VERSION=1")
@@ -52,6 +52,6 @@ public class GoalController {
         final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
         final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
-        return ResponseEntity.ok().body(response);
+        return ResponseEntity.ok(response);
     }
 }

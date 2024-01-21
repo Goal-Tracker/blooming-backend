@@ -23,17 +23,14 @@ class GoalTermTest {
     @Test
     void 골_종료날짜가_시작날짜보다_이전인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> new GoalTerm(LocalDate.now()
-                                                       .plusDays(5), LocalDate.now()
-                                                                              .plusDays(2)))
+        assertThatThrownBy(() -> new GoalTerm(LocalDate.now().plusDays(5), LocalDate.now().plusDays(2)))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalPeriod.class);
     }
 
     @Test
     void 골_날짜가_100_초과인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> new GoalTerm(LocalDate.now(), LocalDate.now()
-                                                                        .plusDays(100)))
+        assertThatThrownBy(() -> new GoalTerm(LocalDate.now(), LocalDate.now().plusDays(100)))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalDays.class);
     }
 }

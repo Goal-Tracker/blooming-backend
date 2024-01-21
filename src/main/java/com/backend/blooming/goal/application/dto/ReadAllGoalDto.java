@@ -10,7 +10,6 @@ import java.util.List;
 public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
 
     public static ReadAllGoalDto from(final List<Goal> goals) {
-
         final List<GoalInfoDto> goalInfoDtos = goals.stream()
                                                     .map(GoalInfoDto::from)
                                                     .toList();
@@ -18,12 +17,15 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
         return new ReadAllGoalDto(goalInfoDtos);
     }
 
-    public record GoalInfoDto(Long id, String name, LocalDate startDate,
-                              LocalDate endDate, long days,
-                              List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos) {
+    public record GoalInfoDto(
+            Long id,
+            String name,
+            LocalDate startDate,
+            LocalDate endDate,
+            long days,
+            List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos) {
 
         public static GoalInfoDto from(final Goal goal) {
-
             final List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos = goal.getTeams()
                                                                                .stream()
                                                                                .map(GoalTeamWithUserInfoDto::from)
