@@ -31,7 +31,16 @@ public enum ExceptionMessage {
     ALREADY_REQUESTED_FRIEND("이미 친구를 요청한 사용자입니다."),
     NOT_FOUND_FRIEND_REQUEST("해당 친구 요청을 조회할 수 없습니다."),
     FRIEND_ACCEPTANCE_FORBIDDEN("친구 요청을 수락할 권한이 없습니다."),
-    DELETE_FRIEND_FORBIDDEN("친구를 삭제할 권한이 없습니다.");
+    DELETE_FRIEND_FORBIDDEN("친구를 삭제할 권한이 없습니다."),
+
+    // 골 추가
+    GOAL_NOT_FOUND("골 정보를 찾을 수 없습니다."),
+    GOAL_TEAM_NOT_FOUND("골 팀 정보를 찾을 수 없습니다."),
+    INVALID_GOAL_START_DAY("시작 날짜가 현재 날짜 이전입니다."),
+    INVALID_GOAL_END_DAY("종료 날짜가 현재 날짜 이전입니다."),
+    INVALID_GOAL_PERIOD("시작 날짜가 종료 날짜 이후입니다."),
+    INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)"),
+    INVALID_USERS_SIZE("골에 참여하는 친구가 5명 초과입니다.");
 
     private final String message;
 }

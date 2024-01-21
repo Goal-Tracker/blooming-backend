@@ -8,6 +8,9 @@ import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendE
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.NotFoundGoalTeamException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
@@ -102,6 +105,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<ExceptionResponse> handleNotFoundUserException(
             final NotFoundUserException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidGoalException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidGoalException(
+            final InvalidGoalException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundGoalException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundGoalException(
+            final NotFoundGoalException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(NotFoundGoalTeamException.class)
+    public ResponseEntity<ExceptionResponse> handleNotFoundGoalTeamException(
+            final NotFoundGoalTeamException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
