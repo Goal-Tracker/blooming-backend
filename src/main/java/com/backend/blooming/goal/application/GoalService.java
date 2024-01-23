@@ -30,10 +30,10 @@ public class GoalService {
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
-        final User user = getValidUser(createGoalDto.managerId());
+        final User user = getUser(createGoalDto.managerId());
         final List<User> users = createGoalDto.teamUserIds()
                                               .stream()
-                                              .map(this::getValidUser)
+                                              .map(this::getUser)
                                               .toList();
 
         final Goal goal = Goal.builder()
@@ -48,7 +48,7 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    private User getValidUser(final Long userId) {
+    private User getUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
     }
