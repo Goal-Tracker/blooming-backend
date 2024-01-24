@@ -38,7 +38,7 @@ public class GoalService {
         final List<User> users = createGoalDto.teamUserIds()
                                               .stream()
                                               .map(userId -> validateIsFriend(createGoalDto.managerId(), userId))
-                                              .collect(Collectors.toList());
+                                              .toList();
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
@@ -58,10 +58,8 @@ public class GoalService {
     }
 
     private User validateIsFriend(final Long managerId, final Long userId) {
-        if (!managerId.equals(userId)) {
-            if (!friendRepository.existsByFriendsAndIsFriends(managerId, userId)) {
-                throw new InvalidGoalException.InvalidInvalidUserToParticipate();
-            }
+        if (!managerId.equals(userId) && !friendRepository.existsByFriendsAndIsFriends(managerId, userId)) {
+            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
         }
 
         return getUser(userId);
