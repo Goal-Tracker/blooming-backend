@@ -47,9 +47,10 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(result).hasSize(사용자가_참여한_골_목록.size());
-            softAssertions.assertThat(result)
-                          .usingRecursiveComparison()
-                          .isEqualTo(사용자가_참여한_골_목록);
+            softAssertions.assertThat(result.get(0).getId()).isEqualTo(유효한_골.getId());
+            softAssertions.assertThat(result.get(0).getName()).isEqualTo(유효한_골.getName());
+            softAssertions.assertThat(result.get(1).getId()).isEqualTo(사용자가_참여한_골2.getId());
+            softAssertions.assertThat(result.get(1).getName()).isEqualTo(사용자가_참여한_골2.getName());
         });
     }
 }

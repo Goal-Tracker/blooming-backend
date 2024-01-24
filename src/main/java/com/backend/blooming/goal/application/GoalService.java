@@ -1,8 +1,10 @@
 package com.backend.blooming.goal.application;
 
+import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,6 +25,7 @@ public class GoalService {
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
+    private final FriendRepository friendRepository;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
         final Goal goal = persistGoal(createGoalDto);
@@ -33,8 +37,8 @@ public class GoalService {
         final User user = getUser(createGoalDto.managerId());
         final List<User> users = createGoalDto.teamUserIds()
                                               .stream()
-                                              .map(this::getUser)
-                                              .toList();
+                                              .map(userId -> validateIsFriend(createGoalDto.managerId(), userId))
+                                              .collect(Collectors.toList());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
@@ -51,6 +55,16 @@ public class GoalService {
     private User getUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
+    }
+
+    private User validateIsFriend(final Long managerId, final Long userId) {
+        if (!managerId.equals(userId)) {
+            if (!friendRepository.existsByFriendsAndIsFriends(managerId, userId)) {
+                throw new InvalidGoalException.InvalidInvalidUserToParticipate();
+            }
+        }
+
+        return getUser(userId);
     }
 
     @Transactional(readOnly = true)
