@@ -25,7 +25,7 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString
+@ToString(exclude = "receiver")
 @Table
 public class Notification extends BaseTimeEntity {
 
