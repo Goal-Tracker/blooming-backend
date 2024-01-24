@@ -1,6 +1,8 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.friend.domain.Friend;
+import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
@@ -30,6 +32,9 @@ public class GoalServiceTestFixture {
     @Autowired
     private GoalRepository goalRepository;
 
+    @Autowired
+    private FriendRepository friendRepository;
+
     protected Long 유효한_사용자_아이디;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
@@ -43,47 +48,56 @@ public class GoalServiceTestFixture {
     protected Goal 유효한_골3;
     protected ReadGoalDetailDto 유효한_골_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_관리자인_골_생성_dto;
-    protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto;
+    protected CreateGoalDto 친구가_아닌_사용자가_참여자로_있는_골_생성_dto;
     protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_현재보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto;
     protected CreateGoalDto 골_날짜수가_100_초과인_골_생성_dto;
     protected Long 존재하지_않는_골_아이디 = 997L;
     protected Long 유효한_골_아이디;
-    protected List<User> 유효한_사용자_목록 = new ArrayList<>();
+    protected List<User> 골_참여_사용자_목록 = new ArrayList<>();
     protected List<Goal> 참여한_골_목록 = new ArrayList<>();
     protected ReadAllGoalDto 사용자가_참여한_골_목록;
 
     @BeforeEach
     void setUp() {
-        User 유효한_사용자;
-        User 유효한_사용자_2;
         Long 존재하지_않는_사용자_아이디 = 998L;
-        List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>();
         CreateGoalRequest 유효한_골_생성_요청_dto;
         CreateGoalRequest 존재하지_않는_사용자가_관리자인_골_생성_요청_dto;
 
-        유효한_사용자 = User.builder()
-                      .oAuthId("아이디")
-                      .oAuthType(OAuthType.KAKAO)
-                      .email(new Email("test@gmail.com"))
-                      .name(new Name("테스트"))
-                      .color(ThemeColor.BABY_BLUE)
-                      .statusMessage("상태메시지")
-                      .build();
+        User 유효한_사용자 = User.builder()
+                           .oAuthId("아이디")
+                           .oAuthType(OAuthType.KAKAO)
+                           .email(new Email("test@gmail.com"))
+                           .name(new Name("테스트"))
+                           .color(ThemeColor.BABY_BLUE)
+                           .statusMessage("상태메시지")
+                           .build();
+        User 유효한_사용자_2 = User.builder()
+                             .oAuthId("아이디2")
+                             .oAuthType(OAuthType.KAKAO)
+                             .email(new Email("test2@gmail.com"))
+                             .name(new Name("테스트2"))
+                             .color(ThemeColor.BABY_BLUE)
+                             .statusMessage("상태메시지2")
+                             .build();
+        User 친구가_아닌_사용자 = User.builder()
+                              .oAuthId("아이디3")
+                              .oAuthType(OAuthType.KAKAO)
+                              .email(new Email("test3@gmail.com"))
+                              .name(new Name("테스트3"))
+                              .color(ThemeColor.CORAL)
+                              .statusMessage("상태메시지3")
+                              .build();
 
-        유효한_사용자_2 = User.builder()
-                        .oAuthId("아이디2")
-                        .oAuthType(OAuthType.KAKAO)
-                        .email(new Email("test2@gmail.com"))
-                        .name(new Name("테스트2"))
-                        .color(ThemeColor.BABY_BLUE)
-                        .statusMessage("상태메시지2")
-                        .build();
-
-        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자_2));
-        유효한_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
+        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자_2, 친구가_아닌_사용자));
         유효한_사용자_아이디 = 유효한_사용자.getId();
+
+        final Friend 유효한_친구 = new Friend(유효한_사용자, 유효한_사용자_2);
+        friendRepository.saveAll(List.of(유효한_친구));
+        유효한_친구.acceptRequest();
+
+        골_참여_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
 
         유효한_골 = Goal.builder()
                     .name(골_제목)
@@ -91,31 +105,30 @@ public class GoalServiceTestFixture {
                     .startDate(골_시작일)
                     .endDate(골_종료일)
                     .managerId(유효한_사용자_아이디)
-                    .users(유효한_사용자_목록)
+                    .users(골_참여_사용자_목록)
                     .build();
-
         유효한_골2 = Goal.builder()
                      .name("골 제목2")
                      .memo("골 메모2")
                      .startDate(골_시작일)
                      .endDate(LocalDate.now().plusDays(30))
                      .managerId(유효한_사용자_아이디)
-                     .users(유효한_사용자_목록)
+                     .users(골_참여_사용자_목록)
                      .build();
-
         유효한_골3 = Goal.builder()
                      .name("골 제목3")
                      .memo("골 메모3")
                      .startDate(골_시작일)
                      .endDate(LocalDate.now().plusDays(60))
                      .managerId(유효한_사용자_아이디)
-                     .users(유효한_사용자_목록)
+                     .users(골_참여_사용자_목록)
                      .build();
 
         goalRepository.saveAll(List.of(유효한_골, 유효한_골2, 유효한_골3));
         유효한_골_아이디 = 유효한_골.getId();
 
         골_팀에_등록된_사용자_아이디_목록.addAll(List.of(유효한_사용자.getId(), 유효한_사용자_2.getId()));
+        List<Long> 친구가_아닌_사용자가_포함된_사용자_아이디_목록 = new ArrayList<>(List.of(유효한_사용자.getId(), 친구가_아닌_사용자.getId()));
         참여한_골_목록.addAll(List.of(유효한_골, 유효한_골2, 유효한_골3));
 
         유효한_골_생성_요청_dto = new CreateGoalRequest(
@@ -138,15 +151,13 @@ public class GoalServiceTestFixture {
 
         존재하지_않는_사용자가_관리자인_골_생성_dto = CreateGoalDto.of(존재하지_않는_사용자가_관리자인_골_생성_요청_dto, 존재하지_않는_사용자_아이디);
 
-        존재하지_않는_사용자가_있는_사용자_아이디_목록.add(존재하지_않는_사용자_아이디);
-
-        존재하지_않는_사용자가_참여자로_있는_골_생성_dto = new CreateGoalDto(
+        친구가_아닌_사용자가_참여자로_있는_골_생성_dto = new CreateGoalDto(
                 골_제목,
                 골_메모,
                 골_시작일,
                 골_종료일,
                 유효한_사용자_아이디,
-                존재하지_않는_사용자가_있는_사용자_아이디_목록
+                친구가_아닌_사용자가_포함된_사용자_아이디_목록
         );
 
         골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(

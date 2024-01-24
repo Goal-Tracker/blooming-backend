@@ -26,9 +26,9 @@ public class GoalRepositoryTestFixture {
     protected User 골_관리자_사용자;
     protected User 골에_참여한_사용자;
     protected Goal 유효한_골;
+    protected Goal 사용자가_참여한_골2;
     protected List<Goal> 사용자가_참여한_골_목록 = new ArrayList<>();
     private List<User> 골에_참여한_사용자_목록 = new ArrayList<>();
-    private Goal 사용자가_참여한_골2;
 
     @BeforeEach
     void setUp() {

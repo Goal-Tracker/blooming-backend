@@ -94,4 +94,13 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
             softAssertions.assertThat(actual).containsAll(List.of(친구인_요청1, 친구인_요청2, 친구인_요청3));
         });
     }
+
+    @Test
+    void 현재_로그인한_사용자와_입력받은_아이디의_사용자가_서로_친구_관계일_경우_참을_반환한다() {
+        // when
+        final boolean actual = friendRepository.existsByFriendsAndIsFriends(현재_로그인한_사용자_아이디, 친구인_사용자_아이디);
+
+        // then
+        assertThat(actual).isTrue();
+    }
 }

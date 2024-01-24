@@ -23,7 +23,7 @@ public class GoalControllerTestFixture {
     private LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
-    private List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 999L));
+    private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 999L));
     private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
@@ -39,32 +39,15 @@ public class GoalControllerTestFixture {
 
     protected CreateGoalDto 유효한_골_생성_dto = CreateGoalDto.of(유효한_골_생성_요청_dto, 골_관리자_아이디);
 
-    protected CreateGoalRequest 존재하지_않는_사용자가_참여자로_있는_골_생성_요청_dto = new CreateGoalRequest(
+    protected CreateGoalRequest 친구가_아닌_사용자가_참여자로_있는_골_생성_요청_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
             골_시작일,
             골_종료일,
-            존재하지_않는_사용자가_있는_사용자_아이디_목록
+            친구가_아닌_사용자가_있는_사용자_아이디_목록
     );
 
-    protected CreateGoalDto 존재하지_않는_사용자가_참여자로_있는_골_생성_dto = CreateGoalDto.of(존재하지_않는_사용자가_참여자로_있는_골_생성_요청_dto, 골_관리자_아이디);
-
-    protected CreateGoalDto 골_시작날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
-            골_제목,
-            골_메모,
-            LocalDate.now().minusDays(2),
-            골_종료일,
-            골_관리자_아이디,
-            골_팀에_등록된_사용자_아이디_목록
-    );
-    protected CreateGoalDto 골_종료날짜가_현재보다_이전인_골_생성_dto = new CreateGoalDto(
-            골_제목,
-            골_메모,
-            골_시작일,
-            LocalDate.now().minusDays(2),
-            골_관리자_아이디,
-            골_팀에_등록된_사용자_아이디_목록
-    );
+    protected CreateGoalDto 친구가_아닌_사용자가_참여자로_있는_골_생성_dto = CreateGoalDto.of(친구가_아닌_사용자가_참여자로_있는_골_생성_요청_dto, 골_관리자_아이디);
     protected CreateGoalDto 골_종료날짜가_시작날짜보다_이전인_골_생성_dto = new CreateGoalDto(
             골_제목,
             골_메모,
