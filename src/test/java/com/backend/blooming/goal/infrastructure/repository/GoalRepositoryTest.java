@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,8 +50,42 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
             softAssertions.assertThat(result).hasSize(사용자가_참여한_골_목록.size());
             softAssertions.assertThat(result.get(0).getId()).isEqualTo(유효한_골.getId());
             softAssertions.assertThat(result.get(0).getName()).isEqualTo(유효한_골.getName());
-            softAssertions.assertThat(result.get(1).getId()).isEqualTo(사용자가_참여한_골2.getId());
-            softAssertions.assertThat(result.get(1).getName()).isEqualTo(사용자가_참여한_골2.getName());
+            softAssertions.assertThat(result.get(1).getId()).isEqualTo(현재_진행중인_골.getId());
+            softAssertions.assertThat(result.get(1).getName()).isEqualTo(현재_진행중인_골.getName());
+            softAssertions.assertThat(result.get(2).getId()).isEqualTo(이미_종료된_골.getId());
+            softAssertions.assertThat(result.get(2).getName()).isEqualTo(이미_종료된_골.getName());
+            softAssertions.assertThat(result.get(3).getId()).isEqualTo(이미_종료된_골2.getId());
+            softAssertions.assertThat(result.get(3).getName()).isEqualTo(이미_종료된_골2.getName());
+        });
+    }
+
+    @Test
+    void 요청한_사용자_아이디가_골_참여자로_있는_골_중_현재_진행중인_모든_골을_반환한다() {
+        // when
+        final List<Goal> result = goalRepository.findAllByUserIdAndInProgress(골_관리자_사용자.getId(), LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result).hasSize(사용자가_참여한_골_중_현재_진행중인_골_목록.size());
+            softAssertions.assertThat(result.get(0).getId()).isEqualTo(유효한_골.getId());
+            softAssertions.assertThat(result.get(0).getName()).isEqualTo(유효한_골.getName());
+            softAssertions.assertThat(result.get(1).getId()).isEqualTo(현재_진행중인_골.getId());
+            softAssertions.assertThat(result.get(1).getName()).isEqualTo(현재_진행중인_골.getName());
+        });
+    }
+
+    @Test
+    void 요청한_사용자_아이디가_골_참여자로_있는_골_중_종료된_모든_골을_반환한다() {
+        // when
+        final List<Goal> result = goalRepository.findAllByUserIdAndFinished(골_관리자_사용자.getId(), LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result).hasSize(사용자가_참여한_골_중_종료된_골_목록.size());
+            softAssertions.assertThat(result.get(0).getId()).isEqualTo(이미_종료된_골.getId());
+            softAssertions.assertThat(result.get(0).getName()).isEqualTo(이미_종료된_골.getName());
+            softAssertions.assertThat(result.get(1).getId()).isEqualTo(이미_종료된_골2.getId());
+            softAssertions.assertThat(result.get(1).getName()).isEqualTo(이미_종료된_골2.getName());
         });
     }
 }

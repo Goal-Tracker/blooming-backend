@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
+import java.time.LocalDate;
 
 @RestController
 @RequestMapping("/goals")
@@ -50,6 +51,24 @@ public class GoalController {
     public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(
             @Authenticated final AuthenticatedUser authenticatedUser) {
         final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
+        final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/all/progress", headers = "X-API-VERSION=1")
+    public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserInProgress(
+            @Authenticated final AuthenticatedUser authenticatedUser) {
+        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndInProgress(authenticatedUser.userId(), LocalDate.now());
+        final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(value = "/all/finished", headers = "X-API-VERSION=1")
+    public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserFinished(
+            @Authenticated final AuthenticatedUser authenticatedUser) {
+        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndFinished(authenticatedUser.userId(), LocalDate.now());
         final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
         return ResponseEntity.ok(response);
