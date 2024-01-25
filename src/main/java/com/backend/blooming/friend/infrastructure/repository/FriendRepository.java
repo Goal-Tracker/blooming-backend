@@ -49,6 +49,7 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
                 FROM Friend f
                 WHERE (f.requestUser.id = :recentUserId AND f.requestedUser.id = :userId)
                 OR (f.requestUser.id = :userId AND f.requestedUser.id = :recentUserId)
+                AND f.isFriends = TRUE
             ) as exist
             """)
     boolean existsByFriendsAndIsFriends(final Long recentUserId, final Long userId);
