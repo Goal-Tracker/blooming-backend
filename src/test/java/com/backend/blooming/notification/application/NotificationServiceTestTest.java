@@ -1,12 +1,18 @@
 package com.backend.blooming.notification.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.notification.application.dto.ReadNotificationsDto;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -23,5 +29,27 @@ class NotificationServiceTestTest extends NotificationServiceTestFixture {
 
         // then
         assertThat(actual).isPositive();
+    }
+
+    @Test
+    void 특정_사용자의_전체_알림_목록을_조회한다() {
+        // when
+        final ReadNotificationsDto actual = notificationService.readAllByUserId(사용자_아이디);
+
+        // then
+        SoftAssertions.assertSoftly(softAssertions -> {
+            final List<ReadNotificationsDto.ReadNotificationDto> notifications = actual.notifications();
+            softAssertions.assertThat(notifications).hasSize(2);
+            softAssertions.assertThat(notifications.get(0).id()).isEqualTo(친구_요청_알림1.getId());
+            softAssertions.assertThat(notifications.get(0).title()).isEqualTo(친구_요청_알림1.getTitle());
+            softAssertions.assertThat(notifications.get(1).id()).isEqualTo(친구_요청_알림2.getId());
+            softAssertions.assertThat(notifications.get(1).title()).isEqualTo(친구_요청_알림2.getTitle());
+        });
+    }
+
+    @Test
+    void 특정_사용자의_전체_알림_목록을_조회시_존재하지_않는_사용자라면_예외를_반환한다() {
+        assertThatThrownBy(() -> notificationService.readAllByUserId(존재하지_않는_사용자))
+                .isInstanceOf(NotFoundUserException.class);
     }
 }
