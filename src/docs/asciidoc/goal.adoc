@@ -10,8 +10,14 @@ operation::goal-controller-test/골_아이디로_조회하면_해당_골의_정�
 ==== 응답
 operation::goal-controller-test/골_아이디로_조회하면_해당_골의_정보를_반환한다[snippets='http-response,response-body,response-fields']
 
-=== 현재 로그인한 사용자가 참여한 모든 골 조회
+=== 현재 로그인한 사용자가 참여한 현재 진행중인 모든 골 조회
 ==== 요청
-operation::goal-controller-test/현재_로그인한_사용자가_참여한_모든_골을_조회한다[snippets='http-request,request-headers']
+operation::goal-controller-test/현재_로그인한_사용자가_참여한_현재_진행중인_모든_골을_조회한다[snippets='http-request,request-headers']
 ==== 응답
-operation::goal-controller-test/현재_로그인한_사용자가_참여한_모든_골을_조회한다[snippets='http-response,response-body,response-fields']
+operation::goal-controller-test/현재_로그인한_사용자가_참여한_현재_진행중인_모든_골을_조회한다[snippets='http-response,response-body,response-fields']
+
+=== 현재 로그인한 사용자가 참여한 종료된 모든 골 조회
+==== 요청
+operation::goal-controller-test/현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다[snippets='http-request,request-headers']
+==== 응답
+operation::goal-controller-test/현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다[snippets='http-response,response-body,response-fields']
