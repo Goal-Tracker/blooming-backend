@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,17 +35,19 @@ public class GoalServiceTestFixture {
     @Autowired
     private FriendRepository friendRepository;
 
+    protected final long 테스트를_위한_시스템_현재_시간_설정값 = 10L;
     protected Long 유효한_사용자_아이디;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
-    protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
-    protected long 골_날짜수 = 41L;
+    protected LocalDate 골_종료일 = LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 + 10);
+    protected long 골_날짜수 = ChronoUnit.DAYS.between(골_시작일, 골_종료일) + 1;
     protected List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>();
     protected CreateGoalDto 유효한_골_생성_dto;
     protected Goal 유효한_골;
-    protected Goal 유효한_골2;
-    protected Goal 유효한_골3;
+    protected Goal 현재_진행중인_골;
+    protected Goal 이미_종료된_골1;
+    protected Goal 이미_종료된_골2;
     protected ReadGoalDetailDto 유효한_골_dto;
     protected CreateGoalDto 존재하지_않는_사용자가_관리자인_골_생성_dto;
     protected CreateGoalDto 친구가_아닌_사용자가_참여자로_있는_골_생성_dto;
@@ -105,29 +108,37 @@ public class GoalServiceTestFixture {
                     .managerId(유효한_사용자_아이디)
                     .users(골_참여_사용자_목록)
                     .build();
-        유효한_골2 = Goal.builder()
-                     .name("골 제목2")
-                     .memo("골 메모2")
-                     .startDate(골_시작일)
-                     .endDate(LocalDate.now().plusDays(30))
-                     .managerId(유효한_사용자_아이디)
-                     .users(골_참여_사용자_목록)
-                     .build();
-        유효한_골3 = Goal.builder()
-                     .name("골 제목3")
-                     .memo("골 메모3")
-                     .startDate(골_시작일)
-                     .endDate(LocalDate.now().plusDays(60))
-                     .managerId(유효한_사용자_아이디)
-                     .users(골_참여_사용자_목록)
-                     .build();
+        현재_진행중인_골 = Goal.builder()
+                        .name("골 제목2")
+                        .memo("골 메모2")
+                        .startDate(골_시작일)
+                        .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 + 1))
+                        .managerId(유효한_사용자_아이디)
+                        .users(골_참여_사용자_목록)
+                        .build();
+        이미_종료된_골1 = Goal.builder()
+                        .name("이미 종료된 골1")
+                        .memo("이미 종료된 골1")
+                        .startDate(골_시작일)
+                        .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 - 1))
+                        .managerId(유효한_사용자_아이디)
+                        .users(골_참여_사용자_목록)
+                        .build();
+        이미_종료된_골2 = Goal.builder()
+                        .name("이미 종료된 골2")
+                        .memo("이미 종료된 골2")
+                        .startDate(골_시작일)
+                        .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 - 2))
+                        .managerId(유효한_사용자_아이디)
+                        .users(골_참여_사용자_목록)
+                        .build();
 
-        goalRepository.saveAll(List.of(유효한_골, 유효한_골2, 유효한_골3));
+        goalRepository.saveAll(List.of(유효한_골, 현재_진행중인_골, 이미_종료된_골1, 이미_종료된_골2));
         유효한_골_아이디 = 유효한_골.getId();
 
         골_팀에_등록된_사용자_아이디_목록.addAll(List.of(유효한_사용자.getId(), 유효한_사용자_2.getId()));
         List<Long> 친구가_아닌_사용자가_포함된_사용자_아이디_목록 = new ArrayList<>(List.of(유효한_사용자.getId(), 친구가_아닌_사용자.getId()));
-        참여한_골_목록.addAll(List.of(유효한_골, 유효한_골2, 유효한_골3));
+        참여한_골_목록.addAll(List.of(유효한_골, 현재_진행중인_골, 이미_종료된_골1, 이미_종료된_골2));
 
         유효한_골_생성_요청_dto = new CreateGoalRequest(
                 골_제목,

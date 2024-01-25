@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -71,5 +73,35 @@ class GoalServiceTest extends GoalServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_골_중_현재_진행중인_모든_골_정보를_조회한다() {
+        // when
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndInProgress(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.goalInfoDtos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(유효한_골.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(유효한_골.getName());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(현재_진행중인_골.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(현재_진행중인_골.getName());
+        });
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_골_중_종료된_모든_골_정보를_조회한다() {
+        // when
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndFinished(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.goalInfoDtos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(이미_종료된_골1.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(이미_종료된_골1.getName());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(이미_종료된_골2.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(이미_종료된_골2.getName());
+        });
     }
 }

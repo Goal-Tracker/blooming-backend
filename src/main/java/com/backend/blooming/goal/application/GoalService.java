@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -71,5 +72,19 @@ public class GoalService {
                                         .orElseThrow(NotFoundGoalException::new);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    @Transactional(readOnly = true)
+    public ReadAllGoalDto readAllGoalByUserIdAndInProgress(final Long userId, final LocalDate now) {
+        final List<Goal> goals = goalRepository.findAllByUserIdAndInProgress(userId, now);
+
+        return ReadAllGoalDto.from(goals);
+    }
+
+    @Transactional(readOnly = true)
+    public ReadAllGoalDto readAllGoalByUserIdAndFinished(final Long userId, final LocalDate now) {
+        final List<Goal> goals = goalRepository.findAllByUserIdAndFinished(userId, now);
+
+        return ReadAllGoalDto.from(goals);
     }
 }
