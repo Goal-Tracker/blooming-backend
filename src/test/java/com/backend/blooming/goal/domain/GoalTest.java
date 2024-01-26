@@ -57,4 +57,23 @@ class GoalTest extends GoalTestFixture {
                                      .build())
                 .isInstanceOf(InvalidGoalException.InvalidInvalidUsersSize.class);
     }
+
+    @Test
+    void 골을_삭제한다() {
+        // given
+        final Goal goal = Goal.builder()
+                              .name(골_제목)
+                              .memo("골 메모")
+                              .startDate(골_시작일)
+                              .endDate(골_종료일)
+                              .managerId(골_관리자_아이디)
+                              .users(골_참여자_목록)
+                              .build();
+
+        // when
+        goal.updateDeleted(골_관리자_아이디);
+
+        // then
+        assertThat(goal.isDeleted()).isTrue();
+    }
 }

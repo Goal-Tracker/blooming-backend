@@ -4,6 +4,7 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -104,5 +106,26 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.goalInfos().get(1).id()).isEqualTo(이미_종료된_골2.getId());
             softAssertions.assertThat(result.goalInfos().get(1).name()).isEqualTo(이미_종료된_골2.getName());
         });
+    }
+
+    @Test
+    void 요청받은_골의_아이디에_해당하는_골을_삭제한다() {
+        // when & then
+        assertThatCode(() -> goalService.delete(유효한_사용자_아이디, 유효한_골_아이디)).doesNotThrowAnyException();
+    }
+
+    @Test
+    void 존재하지_않는_골_아이디를_삭제_요청했을_때_예외를_발생한다() {
+        assertThatThrownBy(() -> goalService.delete(유효한_사용자_아이디, 유효하지_않은_골_아이디)).isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 존재하지_않는_사용자가_삭제를_요청했을_때_예외를_발생한다() {
+        assertThatThrownBy(() -> goalService.delete(존재하지_않는_사용자_아이디, 유효한_골_아이디)).isInstanceOf(NotFoundUserException.class);
+    }
+
+    @Test
+    void 삭제_요청한_사용자가_관리자가_아닌_경우_예외를_발생한다() {
+        assertThatThrownBy(() -> goalService.delete(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디)).isInstanceOf(DeleteGoalForbiddenException.class);
     }
 }
