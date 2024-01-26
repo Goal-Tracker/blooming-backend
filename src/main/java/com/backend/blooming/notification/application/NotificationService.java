@@ -5,6 +5,7 @@ import com.backend.blooming.notification.application.dto.ReadNotificationsDto;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,17 +33,19 @@ public class NotificationService {
                                                       .type(REQUEST_FRIEND)
                                                       .requestId(friend.getRequestUser().getId())
                                                       .build();
+        final Notification savedNotification = notificationRepository.save(notification);
 
-        return notificationRepository.save(notification)
-                                     .getId();
+        friend.getRequestedUser().updateNewAlarm(true);
+
+        return savedNotification.getId();
     }
 
-    @Transactional(readOnly = true)
     public ReadNotificationsDto readAllByUserId(final Long userId) {
-        if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
-            throw new NotFoundUserException();
-        }
+        final User user = userRepository.findByIdAndDeletedIsFalse(userId)
+                                        .orElseThrow(NotFoundUserException::new);
         final List<Notification> notifications = notificationRepository.findAllByReceiverId(userId);
+
+        user.updateNewAlarm(false);
 
         return ReadNotificationsDto.from(notifications);
     }

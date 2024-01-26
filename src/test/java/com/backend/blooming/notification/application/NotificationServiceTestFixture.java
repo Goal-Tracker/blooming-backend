@@ -31,8 +31,8 @@ public class NotificationServiceTestFixture {
     protected Friend 보낸_친구_요청;
     protected User 친구_요청을_보낸_사용자;
     protected User 친구_요청을_받은_사용자;
-    protected Long 사용자_아이디;
     protected Long 존재하지_않는_사용자 = 999L;
+    protected User 알림이_있는_사용자;
     protected Notification 친구_요청_알림1;
     protected Notification 친구_요청_알림2;
 
@@ -67,8 +67,7 @@ public class NotificationServiceTestFixture {
 
         보낸_친구_요청 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자);
 
-        final User 알림이_있는_사용자 = 친구_요청을_보낸_사용자;
-        사용자_아이디 = 알림이_있는_사용자.getId();
+        알림이_있는_사용자 = 친구_요청을_보낸_사용자;
         final Friend 보낸_친구_요청1 = new Friend(친구_요청을_보낸_사용자1, 알림이_있는_사용자);
         final Friend 보낸_친구_요청2 = new Friend(친구_요청을_보낸_사용자2, 알림이_있는_사용자);
 
