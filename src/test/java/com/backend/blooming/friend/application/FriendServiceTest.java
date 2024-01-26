@@ -8,12 +8,16 @@ import com.backend.blooming.friend.application.exception.FriendAcceptanceForbidd
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.notification.domain.Notification;
+import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +35,9 @@ class FriendServiceTest extends FriendServiceTestFixture {
     @Autowired
     private FriendRepository friendRepository;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     @Test
     void 친구를_요청한다() {
         // when
@@ -38,6 +45,22 @@ class FriendServiceTest extends FriendServiceTestFixture {
 
         // then
         assertThat(actual).isPositive();
+    }
+
+    @Test
+    void 친구_요청시_요청_상대에게_알림이_저장된다() {
+
+        // when
+        friendService.request(사용자_아이디, 아직_친구_요청_전의_사용자_아이디);
+
+        // then
+        final List<Notification> notification = notificationRepository.findAllByReceiverId(아직_친구_요청_전의_사용자_아이디);
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(notification).hasSize(1);
+            softAssertions.assertThat(notification.get(0).getId()).isPositive();
+            softAssertions.assertThat(notification.get(0).getReceiver().getId()).isEqualTo(아직_친구_요청_전의_사용자_아이디);
+            softAssertions.assertThat(notification.get(0).getRequestId()).isEqualTo(사용자_아이디);
+        });
     }
 
     @Test
