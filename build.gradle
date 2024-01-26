@@ -120,6 +120,7 @@ jacocoTestReport {
 							'**/*Application*',
 							'**/common/**',
 							'**/configuration/**',
+							'**/FCMNotificationService/**'
 					] + Qdomains)
 		}))
 	}
@@ -153,6 +154,7 @@ jacocoTestCoverageVerification {
 					'*.configuration.*',
 					'*.common.*',
 					'*.exception.*',
+					'*.FCMNotificationService.*'
 			] + Qdomains
 		}
 	}
