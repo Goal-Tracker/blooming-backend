@@ -30,6 +30,7 @@ public class DeviceToken {
     @Column(nullable = false)
     private String token;
 
+    @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;
 
     public DeviceToken(final Long userId, final String token) {
