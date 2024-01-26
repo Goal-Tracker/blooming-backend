@@ -29,6 +29,8 @@ public class NotificationServiceTestFixture {
     private NotificationRepository notificationRepository;
 
     protected Friend 보낸_친구_요청;
+    protected User 친구_요청을_보낸_사용자;
+    protected User 친구_요청을_받은_사용자;
     protected Long 사용자_아이디;
     protected Long 존재하지_않는_사용자 = 999L;
     protected Notification 친구_요청_알림1;
@@ -36,18 +38,18 @@ public class NotificationServiceTestFixture {
 
     @BeforeEach
     void setUpFixture() {
-        final User 친구_요청을_보낸_사용자 = User.builder()
-                                       .oAuthId("12345")
-                                       .oAuthType(OAuthType.KAKAO)
-                                       .name(new Name("사용자1"))
-                                       .email(new Email("user1@email.com"))
-                                       .build();
-        final User 친구_요청을_받은_사용자 = User.builder()
-                                       .oAuthId("12346")
-                                       .oAuthType(OAuthType.KAKAO)
-                                       .name(new Name("사용자2"))
-                                       .email(new Email("user2@email.com"))
-                                       .build();
+        친구_요청을_보낸_사용자 = User.builder()
+                            .oAuthId("12345")
+                            .oAuthType(OAuthType.KAKAO)
+                            .name(new Name("사용자1"))
+                            .email(new Email("user1@email.com"))
+                            .build();
+        친구_요청을_받은_사용자 = User.builder()
+                            .oAuthId("12346")
+                            .oAuthType(OAuthType.KAKAO)
+                            .name(new Name("사용자2"))
+                            .email(new Email("user2@email.com"))
+                            .build();
         final User 친구_요청을_보낸_사용자1 = User.builder()
                                         .oAuthId("12347")
                                         .oAuthType(OAuthType.KAKAO)

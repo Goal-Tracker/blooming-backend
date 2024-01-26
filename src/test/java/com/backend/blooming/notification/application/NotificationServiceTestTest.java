@@ -2,8 +2,11 @@ package com.backend.blooming.notification.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.notification.application.dto.ReadNotificationsDto;
+import com.backend.blooming.notification.domain.Notification;
+import com.backend.blooming.notification.domain.NotificationType;
+import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
-import org.assertj.core.api.*;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -11,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IsolateDatabase
@@ -22,13 +24,24 @@ class NotificationServiceTestTest extends NotificationServiceTestFixture {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private NotificationRepository notificationRepository;
+
     @Test
     void 친구_요청에_대한_알림을_저장한다() {
         // when
         final Long actual = notificationService.sendRequestFriendNotification(보낸_친구_요청);
 
         // then
-        assertThat(actual).isPositive();
+        final Notification notification = notificationRepository.findById(actual).get();
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual).isPositive();
+            softAssertions.assertThat(notification.getReceiver().getId()).isEqualTo(친구_요청을_받은_사용자.getId());
+            softAssertions.assertThat(notification.getTitle()).isEqualTo(NotificationType.REQUEST_FRIEND.getTitle());
+            softAssertions.assertThat(notification.getContent()).contains(친구_요청을_보낸_사용자.getName());
+            softAssertions.assertThat(notification.getType()).isEqualTo(NotificationType.REQUEST_FRIEND);
+            softAssertions.assertThat(notification.getRequestId()).isEqualTo(친구_요청을_보낸_사용자.getId());
+        });
     }
 
     @Test

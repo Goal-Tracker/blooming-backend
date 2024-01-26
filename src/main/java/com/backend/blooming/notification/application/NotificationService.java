@@ -30,7 +30,7 @@ public class NotificationService {
                                                               friend.getRequestUser().getName()
                                                       ))
                                                       .type(REQUEST_FRIEND)
-                                                      .requestId(friend.getRequestedUser().getId())
+                                                      .requestId(friend.getRequestUser().getId())
                                                       .build();
 
         return notificationRepository.save(notification)
@@ -42,7 +42,7 @@ public class NotificationService {
         if (!userRepository.existsByIdAndDeletedIsFalse(userId)) {
             throw new NotFoundUserException();
         }
-        final List<Notification> notifications = notificationRepository.readAllByReceiverId(userId);
+        final List<Notification> notifications = notificationRepository.findAllByReceiverId(userId);
 
         return ReadNotificationsDto.from(notifications);
     }

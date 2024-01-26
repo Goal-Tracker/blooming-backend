@@ -21,7 +21,7 @@ class NotificationRepositoryTest extends NotificationRepositoryTestFixture {
     @Test
     void 특정_사용자_아이디의_전체_알림_목록을_조회한다() {
         // when
-        final List<Notification> actual = notificationRepository.readAllByReceiverId(사용자_아이디);
+        final List<Notification> actual = notificationRepository.findAllByReceiverId(사용자_아이디);
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
