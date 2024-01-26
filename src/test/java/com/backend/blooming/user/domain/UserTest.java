@@ -102,6 +102,24 @@ class UserTest extends UserTestFixture {
     }
 
     @Test
+    void 새로운_알림_여부를_참으로_수정한다() {
+        // given
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name(new Name("사용자"))
+                              .email(new Email("user@email.com"))
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        user.updateNewAlarm(true);
+
+        // then
+        assertThat(user.isNewAlarm()).isTrue();
+    }
+
+    @Test
     void 이메일_조회시_이메일_값을_반환한다() {
         // given
         final User user = User.builder()
