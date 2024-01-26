@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
 
     @InjectMocks
-    private FCMNotificationService fcmNotificationService;
+    private ProdFCMNotificationService fcmNotificationService;
 
     @Mock
     private DeviceTokenRepository deviceTokenRepository;

@@ -20,6 +20,7 @@ import static com.backend.blooming.notification.domain.NotificationType.REQUEST_
 @RequiredArgsConstructor
 public class NotificationService {
 
+    private final FCMNotificationService fcmNotificationService;
     private final NotificationRepository notificationRepository;
     private final UserRepository userRepository;
 
@@ -36,6 +37,7 @@ public class NotificationService {
         final Notification savedNotification = notificationRepository.save(notification);
 
         friend.getRequestedUser().updateNewAlarm(true);
+        fcmNotificationService.sendNotification(notification);
 
         return savedNotification.getId();
     }
