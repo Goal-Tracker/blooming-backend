@@ -7,15 +7,12 @@ import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 public class NotificationRepositoryTestFixture {
 

@@ -10,15 +10,12 @@ import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
 
-@DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 public class NotificationServiceTestFixture {
 
@@ -40,17 +37,17 @@ public class NotificationServiceTestFixture {
     @BeforeEach
     void setUpFixture() {
         final User 친구_요청을_보낸_사용자 = User.builder()
-                            .oAuthId("12345")
-                            .oAuthType(OAuthType.KAKAO)
-                            .name(new Name("사용자1"))
-                            .email(new Email("user1@email.com"))
-                            .build();
+                                       .oAuthId("12345")
+                                       .oAuthType(OAuthType.KAKAO)
+                                       .name(new Name("사용자1"))
+                                       .email(new Email("user1@email.com"))
+                                       .build();
         final User 친구_요청을_받은_사용자 = User.builder()
-                            .oAuthId("12346")
-                            .oAuthType(OAuthType.KAKAO)
-                            .name(new Name("사용자2"))
-                            .email(new Email("user2@email.com"))
-                            .build();
+                                       .oAuthId("12346")
+                                       .oAuthType(OAuthType.KAKAO)
+                                       .name(new Name("사용자2"))
+                                       .email(new Email("user2@email.com"))
+                                       .build();
         final User 친구_요청을_보낸_사용자1 = User.builder()
                                         .oAuthId("12347")
                                         .oAuthType(OAuthType.KAKAO)
