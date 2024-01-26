@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
+import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.CascadeType;
@@ -86,6 +87,17 @@ public class Goal extends BaseTimeEntity {
     private void validateUsersSize(final List<User> users) {
         if (users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
+        }
+    }
+
+    public void updateDeleted(final Long userId) {
+        validUserToDelete(userId);
+        this.deleted = true;
+    }
+
+    private void validUserToDelete(final Long userId) {
+        if (!this.getManagerId().equals(userId)) {
+            throw new DeleteGoalForbiddenException();
         }
     }
 }

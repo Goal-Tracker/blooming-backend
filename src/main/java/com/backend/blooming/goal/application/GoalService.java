@@ -69,10 +69,22 @@ public class GoalService {
 
     @Transactional(readOnly = true)
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
-        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                                        .orElseThrow(NotFoundGoalException::new);
+        final Goal goal = getGoal(goalId);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    @Transactional
+    public void delete(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateDeleted(user.getId());
+        goalRepository.flush();
+    }
+
+    private Goal getGoal(final Long id) {
+        return goalRepository.findByIdAndDeletedIsFalse(id)
+                             .orElseThrow(NotFoundGoalException::new);
     }
 
     @Transactional(readOnly = true)

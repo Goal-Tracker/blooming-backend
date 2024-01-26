@@ -37,6 +37,8 @@ public class GoalServiceTestFixture {
 
     protected final long 테스트를_위한_시스템_현재_시간_설정값 = 10L;
     protected Long 유효한_사용자_아이디;
+    protected Long 골_관리자가_아닌_사용자_아이디;
+    protected Long 존재하지_않는_사용자_아이디 = 999L;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
@@ -58,6 +60,8 @@ public class GoalServiceTestFixture {
     protected Long 존재하지_않는_골_아이디 = 997L;
     protected Long 유효한_골_아이디;
     protected List<User> 골_참여_사용자_목록 = new ArrayList<>();
+    protected Long 유효하지_않은_골_아이디;
+    protected List<User> 유효한_사용자_목록 = new ArrayList<>();
     protected List<Goal> 참여한_골_목록 = new ArrayList<>();
 
     @BeforeEach
@@ -91,8 +95,10 @@ public class GoalServiceTestFixture {
                               .statusMessage("상태메시지3")
                               .build();
 
-        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자_2, 친구가_아닌_사용자));
+        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자_2));
+        유효한_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
         유효한_사용자_아이디 = 유효한_사용자.getId();
+        골_관리자가_아닌_사용자_아이디 = 유효한_사용자_2.getId();
 
         final Friend 유효한_친구 = new Friend(유효한_사용자, 유효한_사용자_2);
         friendRepository.saveAll(List.of(유효한_친구));
