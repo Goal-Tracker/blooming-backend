@@ -7,6 +7,7 @@ import com.backend.blooming.friend.application.exception.FriendAcceptanceForbidd
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -23,6 +24,7 @@ public class FriendService {
 
     private final FriendRepository friendRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     public Long request(final Long userId, final Long friendId) {
         validateFriendStatus(userId, friendId);
@@ -30,9 +32,11 @@ public class FriendService {
         final User user = findUser(userId);
         final User friendUser = findUser(friendId);
         final Friend friend = new Friend(user, friendUser);
+        friendRepository.save(friend);
 
-        return friendRepository.save(friend)
-                               .getId();
+        notificationService.sendRequestFriendNotification(friend);
+
+        return friend.getId();
     }
 
     private void validateFriendStatus(final Long userId, final Long friendId) {

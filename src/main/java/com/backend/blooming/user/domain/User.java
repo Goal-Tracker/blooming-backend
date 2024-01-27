@@ -54,7 +54,10 @@ public class User extends BaseTimeEntity {
     @Column(columnDefinition = "text", nullable = false)
     private String statusMessage;
 
-    @Column(name = "is_deleted")
+    @Column(name = "is_new_alarm", nullable = false)
+    private boolean newAlarm = false;
+
+    @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;
 
     @Builder
@@ -104,6 +107,10 @@ public class User extends BaseTimeEntity {
 
     public void updateStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public void updateNewAlarm(final boolean newAlarm) {
+        this.newAlarm = newAlarm;
     }
 
     public String getEmail() {
