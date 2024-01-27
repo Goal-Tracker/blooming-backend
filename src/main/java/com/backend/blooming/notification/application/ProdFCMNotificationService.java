@@ -33,8 +33,8 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     private final DeviceTokenRepository deviceTokenRepository;
 
     public void sendNotification(final Notification notification) {
-        List<String> deviceTokens = getDeviceTokens(notification.getReceiver());
-        List<Message> messages = createMessages(notification, deviceTokens);
+        final List<String> deviceTokens = getDeviceTokens(notification.getReceiver());
+        final List<Message> messages = createMessages(notification, deviceTokens);
 
         try {
             final BatchResponse batchResponse = firebaseMessaging.sendAll(messages);

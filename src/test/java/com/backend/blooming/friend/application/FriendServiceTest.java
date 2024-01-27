@@ -49,7 +49,6 @@ class FriendServiceTest extends FriendServiceTestFixture {
 
     @Test
     void 친구_요청시_요청_상대에게_알림이_저장된다() {
-
         // when
         friendService.request(사용자_아이디, 아직_친구_요청_전의_사용자_아이디);
 

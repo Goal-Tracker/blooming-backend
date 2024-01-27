@@ -32,7 +32,7 @@ public class FCMConfiguration {
     }
 
     private Optional<FirebaseApp> getFirebaseApp() {
-        List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
+        final List<FirebaseApp> firebaseApps = FirebaseApp.getApps();
 
         if (firebaseApps == null || firebaseApps.isEmpty()) {
             return Optional.empty();

@@ -31,7 +31,7 @@ public class NotificationServiceTestFixture {
     protected Friend 보낸_친구_요청;
     protected User 친구_요청을_보낸_사용자;
     protected User 친구_요청을_받은_사용자;
-    protected Long 존재하지_않는_사용자 = 999L;
+    protected Long 존재하지_않는_사용자_아이디 = 999L;
     protected User 알림이_있는_사용자;
     protected Notification 친구_요청_알림1;
     protected Notification 친구_요청_알림2;

@@ -4,7 +4,7 @@ import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 
 import java.util.List;
 
-import static com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto.*;
+import static com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto.ReadUserWithFriendsStatusDto;
 
 public record ReadUsersWithFriendsStatusResponse(List<ReadUserWithFriendsStatusResponse> users) {
 

@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class NotificationServiceTestTest extends NotificationServiceTestFixture {
+class NotificationServiceTest extends NotificationServiceTestFixture {
 
     @Autowired
     private NotificationService notificationService;
@@ -68,7 +68,7 @@ class NotificationServiceTestTest extends NotificationServiceTestFixture {
 
     @Test
     void 특정_사용자의_전체_알림_목록을_조회시_존재하지_않는_사용자라면_예외를_반환한다() {
-        assertThatThrownBy(() -> notificationService.readAllByUserId(존재하지_않는_사용자))
+        assertThatThrownBy(() -> notificationService.readAllByUserId(존재하지_않는_사용자_아이디))
                 .isInstanceOf(NotFoundUserException.class);
     }
 }

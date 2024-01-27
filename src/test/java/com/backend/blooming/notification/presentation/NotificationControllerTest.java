@@ -84,11 +84,9 @@ class NotificationControllerTest extends NotificationControllerTestFixture {
                                 fieldWithPath("notifications").type(JsonFieldType.ARRAY).description("사용자의 알림 목록"),
                                 fieldWithPath("notifications.[].id").type(JsonFieldType.NUMBER).description("알림 아이디"),
                                 fieldWithPath("notifications.[].title").type(JsonFieldType.STRING).description("알림 제목"),
-                                fieldWithPath("notifications.[].content").type(JsonFieldType.STRING)
-                                                                         .description("알림 내용"),
+                                fieldWithPath("notifications.[].content").type(JsonFieldType.STRING).description("알림 내용"),
                                 fieldWithPath("notifications.[].type").type(JsonFieldType.STRING).description("알림 타입"),
-                                fieldWithPath("notifications.[].requestId").type(JsonFieldType.NUMBER)
-                                                                           .description("알림 수락 시 처리를 위한 아이디")
+                                fieldWithPath("notifications.[].requestId").type(JsonFieldType.NUMBER).description("알림 수락 시 처리를 위한 아이디")
                         )
                 )
         );
