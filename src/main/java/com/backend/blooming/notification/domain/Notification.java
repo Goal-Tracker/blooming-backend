@@ -47,7 +47,6 @@ public class Notification extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    // TODO: 1/23/24 [고민] NOT NULL 처리 해주는 것이 좋을까요?
     private Long requestId;
 
     @Builder
