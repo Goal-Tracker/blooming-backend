@@ -34,6 +34,10 @@ public class ProdFCMNotificationService implements FCMNotificationService {
 
     public void sendNotification(final Notification notification) {
         final List<String> deviceTokens = getDeviceTokens(notification.getReceiver());
+        if (deviceTokens.isEmpty()) {
+            return;
+        }
+
         final List<Message> messages = createMessages(notification, deviceTokens);
 
         try {
