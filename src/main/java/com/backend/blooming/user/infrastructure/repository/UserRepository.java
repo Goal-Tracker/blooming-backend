@@ -25,7 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("""
             SELECT u
             FROM User u
-            WHERE u.id IN :userIds AND u.deleted = FALSE
+            WHERE u.id IN :userIds
             """)
     List<User> findAllByUserIds(final List<Long> userIds);
 }

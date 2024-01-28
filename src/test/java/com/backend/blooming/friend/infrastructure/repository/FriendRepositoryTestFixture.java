@@ -9,6 +9,7 @@ import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -35,7 +36,7 @@ public class FriendRepositoryTestFixture {
     protected Friend 친구인_요청2;
     protected Friend 친구인_요청3;
     protected Long 현재_로그인한_사용자_아이디;
-    protected List<Long> 골_초대받은_사용자_아이디_목록;
+    protected List<Long> 골_초대받은_사용자_아이디_목록 = new ArrayList<>();
 
     @BeforeEach
     void setUpFixture() {
@@ -123,12 +124,15 @@ public class FriendRepositoryTestFixture {
                 친구인_요청1,
                 친구인_요청2,
                 친구인_요청3,
-                현재_로그인한_사용자와_친구인_상태
+                현재_로그인한_사용자와_친구인_상태,
+                현재_로그인한_사용자와_친구인_상태2
         ));
 
         친구인_요청1.acceptRequest();
         친구인_요청2.acceptRequest();
         친구인_요청3.acceptRequest();
+        현재_로그인한_사용자와_친구인_상태.acceptRequest();
+        현재_로그인한_사용자와_친구인_상태2.acceptRequest();
 
         현재_로그인한_사용자_아이디 = 친구인_사용자1.getId();
         골_초대받은_사용자_아이디_목록.addAll(List.of(친구인_사용자2.getId(), 친구인_사용자3.getId()));

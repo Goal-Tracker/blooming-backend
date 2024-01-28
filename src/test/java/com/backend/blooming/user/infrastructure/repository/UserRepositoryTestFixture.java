@@ -55,6 +55,6 @@ public class UserRepositoryTestFixture {
 
         사용자_아이디 = 사용자.getId();
         삭제된_사용자_아이디 = 삭제된_사용자.getId();
-        사용자_아이디_목록.addAll(List.of(사용자_아이디, 사용자2.getId()));
+        사용자_아이디_목록.addAll(List.of(사용자_아이디, 사용자2.getId(), 삭제된_사용자_아이디));
     }
 }
