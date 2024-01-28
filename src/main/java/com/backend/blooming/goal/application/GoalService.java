@@ -61,6 +61,8 @@ public class GoalService {
 
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
+        System.out.println(teamUserIds.size()-1);
+        System.out.println(countFriends);
         if (!countFriends.equals((long) teamUserIds.size()-1)){
             throw new InvalidGoalException.InvalidInvalidUserToParticipate();
         }

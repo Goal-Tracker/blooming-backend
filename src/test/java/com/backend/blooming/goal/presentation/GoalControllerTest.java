@@ -190,11 +190,11 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.endDate", is(유효한_골_응답_dto.endDate().toString()), String.class),
                 jsonPath("$.days", is(유효한_골_응답_dto.days()), long.class),
                 jsonPath("$.managerId", is(유효한_골_응답_dto.managerId()), Long.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].id", is(유효한_골_응답_dto.teams().get(0).id()), Long.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].name", is(유효한_골_응답_dto.teams().get(0).name()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].colorCode", is(유효한_골_응답_dto.teams().get(0).colorCode()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].statusMessage", is(유효한_골_응답_dto.teams().get(0).statusMessage()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[1].id", is(유효한_골_응답_dto.teams().get(1).id()), Long.class)
+                jsonPath("$.teams.[0].id", is(유효한_골_응답_dto.teams().get(0).id()), Long.class),
+                jsonPath("$.teams.[0].name", is(유효한_골_응답_dto.teams().get(0).name()), String.class),
+                jsonPath("$.teams.[0].colorCode", is(유효한_골_응답_dto.teams().get(0).colorCode()), String.class),
+                jsonPath("$.teams.[0].statusMessage", is(유효한_골_응답_dto.teams().get(0).statusMessage()), String.class),
+                jsonPath("$.teams.[1].id", is(유효한_골_응답_dto.teams().get(1).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
@@ -209,10 +209,10 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
                         fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
                         fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
-                        fieldWithPath("goalTeamWithUserInfo.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
-                        fieldWithPath("goalTeamWithUserInfo.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
-                        fieldWithPath("goalTeamWithUserInfo.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
-                        fieldWithPath("goalTeamWithUserInfo.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
+                        fieldWithPath("teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
+                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
                 )
         ));
     }
