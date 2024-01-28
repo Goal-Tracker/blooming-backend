@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.List;
@@ -26,8 +26,6 @@ public class FCMConfiguration {
 
     @Value("${fcm.key.scope}")
     private String fireBaseScope;
-
-    private final ResourceLoader resourceLoader;
 
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
@@ -55,7 +53,7 @@ public class FCMConfiguration {
     }
 
     private GoogleCredentials createGoogleCredentials() throws IOException {
-        final Resource resource = resourceLoader.getResource(FCM_PRIVATE_KEY_PATH);
+        final Resource resource = new ClassPathResource(FCM_PRIVATE_KEY_PATH);
         final List<String> scopes = List.of(fireBaseScope);
 
         return GoogleCredentials.fromStream(resource.getInputStream())
