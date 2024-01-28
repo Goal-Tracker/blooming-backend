@@ -3,6 +3,7 @@ package com.backend.blooming.goal.domain;
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -22,7 +23,9 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -33,6 +36,9 @@ public class Goal extends BaseTimeEntity {
 
     private static final String MEMO_DEFAULT = "";
     private static final int TEAMS_MAXIMUM_LENGTH = 5;
+    private static final int MAX_LENGTH_OF_NAME = 50;
+    private static final int START_INDEX_OF_NAME = 0;
+    private static final int END_INDEX_OF_NAME = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -90,6 +96,30 @@ public class Goal extends BaseTimeEntity {
         }
     }
 
+    public void updateName(final String name) {
+        this.name = validateNameLength(name);
+    }
+
+    public void updateMemo(final String memo) {
+        this.memo = memo;
+    }
+
+    public void updateEndDate(final LocalDate endDate) {
+        this.goalTerm.updateEndDate(endDate);
+    }
+
+    public void updateTeams(final List<User> users) {
+        validateUsersSize(users);
+        final List<User> usersBeforeUpdate = this.teams.stream()
+                                                       .map(GoalTeam::getUser)
+                                                       .toList();
+        users.forEach(user -> {
+            if (!usersBeforeUpdate.contains(user) && this.getTeams().size() < TEAMS_MAXIMUM_LENGTH) {
+                new GoalTeam(user, this);
+            }
+        });
+    }
+
     public void updateDeleted(final Long userId) {
         validUserToDelete(userId);
         this.deleted = true;
@@ -99,5 +129,13 @@ public class Goal extends BaseTimeEntity {
         if (!this.getManagerId().equals(userId)) {
             throw new DeleteGoalForbiddenException();
         }
+    }
+
+    private String validateNameLength(final String name) {
+        if (name.length() > MAX_LENGTH_OF_NAME) {
+            return name.substring(START_INDEX_OF_NAME, END_INDEX_OF_NAME);
+        }
+
+        return name;
     }
 }

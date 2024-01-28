@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
@@ -65,5 +66,16 @@ public class GoalTerm {
         }
 
         return goalDays;
+    }
+
+    public void updateEndDate(final LocalDate endDate) {
+        validateEndDate(endDate);
+        this.endDate = endDate;
+    }
+
+    private void validateEndDate(final LocalDate updateDate) {
+        if (updateDate.isBefore(this.endDate)) {
+            throw new UpdateGoalForbiddenException.ForbiddenEndDateToUpdate();
+        }
     }
 }

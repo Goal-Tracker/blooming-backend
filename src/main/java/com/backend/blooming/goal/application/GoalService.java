@@ -5,9 +5,13 @@ import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.goal.presentation.dto.request.UpdateGoalRequest;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -82,6 +86,37 @@ public class GoalService {
         goalRepository.flush();
     }
 
+    @Transactional
+    public ReadGoalDetailDto update(
+            final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto
+    ) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        validateUserToUpdate(goal.getManagerId(), user.getId());
+
+        if (!updateGoalDto.name().isEmpty()) {
+            goal.updateName(updateGoalDto.name());
+        }
+        if (!updateGoalDto.memo().isEmpty()) {
+            goal.updateMemo(updateGoalDto.memo());
+        }
+        if (updateGoalDto.endDate() != null) {
+            goal.updateEndDate(updateGoalDto.endDate());
+        }
+        if (!updateGoalDto.teamUserIds().isEmpty()) {
+            final List<User> users = userRepository.findAllByIdsAndDeletedIsFalse(updateGoalDto.teamUserIds());
+            goal.updateTeams(users);
+        }
+        goalRepository.flush();
+
+        return ReadGoalDetailDto.from(goal);
+    }
+
+    private User getUser(final Long userId) {
+        return userRepository.findByIdAndDeletedIsFalse(userId)
+                             .orElseThrow(NotFoundUserException::new);
+    }
+
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
@@ -99,5 +134,11 @@ public class GoalService {
         final List<Goal> goals = goalRepository.findAllByUserIdAndFinished(userId, now);
 
         return ReadAllGoalDto.from(goals);
+    }
+
+    private void validateUserToUpdate(final Long managerId, final Long userId) {
+        if (!managerId.equals(userId)) {
+            throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
+        }
     }
 }

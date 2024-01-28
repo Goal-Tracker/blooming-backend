@@ -45,7 +45,10 @@ public enum ExceptionMessage {
     INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)"),
     INVALID_USERS_SIZE("골에 참여하는 친구가 5명 초과입니다."),
     INVALID_USER_TO_PARTICIPATE("골에 참여할 수 없는 사용자입니다. 골에는 친구인 사용자만 초대할 수 있습니다."),
-    DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다.");
+    DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
+    UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
+    UPDATE_END_DATE_FORBIDDEN("종료날짜는 기존 날짜보다 이전으로 수정 될 수 없습니다."),
+    UPDATE_TEAMS_FORBIDDEN("기존 사용자는 수정할 수 없습니다.");
 
     private final String message;
 }
