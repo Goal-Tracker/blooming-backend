@@ -3,6 +3,8 @@ spring:
     default: local
 
   config:
-    import: "classpath:/blooming-backend-submodule/application-dev.yml"
+    import:
+      - "classpath:/blooming-backend-submodule/application-dev.yml"
+      - "classpath:/blooming-backend-submodule/blooming-firebase-adminsdk.json"
     activate:
       on-profile: dev
