@@ -4,7 +4,6 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -57,7 +56,6 @@ public class GoalServiceTestFixture {
     protected Long 유효한_골_아이디;
     protected List<User> 골_참여_사용자_목록 = new ArrayList<>();
     protected List<Goal> 참여한_골_목록 = new ArrayList<>();
-    protected ReadAllGoalDto 사용자가_참여한_골_목록;
 
     @BeforeEach
     void setUp() {
@@ -197,7 +195,5 @@ public class GoalServiceTestFixture {
         );
 
         유효한_골_dto = ReadGoalDetailDto.from(유효한_골);
-
-        사용자가_참여한_골_목록 = ReadAllGoalDto.from(참여한_골_목록);
     }
 }
