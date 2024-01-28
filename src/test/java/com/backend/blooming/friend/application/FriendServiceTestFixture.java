@@ -1,6 +1,7 @@
 package com.backend.blooming.friend.application;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.friend.application.dto.FriendType;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
@@ -146,24 +147,24 @@ public class FriendServiceTestFixture {
 
         final ReadFriendsDto 요청한_친구_목록_dto = ReadFriendsDto.of(
                 List.of(보낸_친구_요청1, 보낸_친구_요청2, 보낸_친구_요청3),
-                친구_요청을_보낸_사용자
-        );
+                친구_요청을_보낸_사용자,
+                FriendType.FRIENDS);
         친구_요청_사용자_정보_dto1 = 요청한_친구_목록_dto.friends().get(0);
         친구_요청_사용자_정보_dto2 = 요청한_친구_목록_dto.friends().get(1);
         친구_요청_사용자_정보_dto3 = 요청한_친구_목록_dto.friends().get(2);
 
         final ReadFriendsDto 요청_받은_친구_목록_dto = ReadFriendsDto.of(
                 List.of(받은_친구_요청1, 받은_친구_요청2, 받은_친구_요청3),
-                사용자
-        );
+                사용자,
+                FriendType.FRIENDS);
         친구_요청을_받은_사용자_정보_dto1 = 요청_받은_친구_목록_dto.friends().get(0);
         친구_요청을_받은_사용자_정보_dto2 = 요청_받은_친구_목록_dto.friends().get(1);
         친구_요청을_받은_사용자_정보_dto3 = 요청_받은_친구_목록_dto.friends().get(2);
 
         final ReadFriendsDto 서로_친구인_목록_dto = ReadFriendsDto.of(
                 List.of(친구인_요청1, 친구인_요청2, 친구인_요청3),
-                사용자
-        );
+                사용자,
+                FriendType.FRIENDS);
         서로_친구인_사용자_정보_dto1 = 서로_친구인_목록_dto.friends().get(0);
         서로_친구인_사용자_정보_dto2 = 서로_친구인_목록_dto.friends().get(1);
         서로_친구인_사용자_정보_dto3 = 서로_친구인_목록_dto.friends().get(2);

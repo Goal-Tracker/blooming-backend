@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.friend.application.FriendService;
+import com.backend.blooming.friend.application.dto.FriendType;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
@@ -134,6 +135,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
+                jsonPath("$.friendsStatus", is(FriendType.REQUEST.name())),
                 jsonPath("$.friends.[0].id", is(친구_요청_정보_dto1.id()), Long.class),
                 jsonPath("$.friends.[0].friend.id", is(친구_요청_정보_dto1.friend().id()), Long.class),
                 jsonPath("$.friends.[0].friend.email", is(친구_요청_정보_dto1.friend().email())),
@@ -155,6 +157,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                         ),
                         responseFields(
+                                fieldWithPath("friendsStatus").type(JsonFieldType.STRING).description("친구 목록의 타입"),
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 보낸 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
@@ -181,6 +184,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
+                jsonPath("$.friendsStatus", is(FriendType.REQUESTED.name())),
                 jsonPath("$.friends.[0].id", is(받은_친구_요청_정보_dto1.id()), Long.class),
                 jsonPath("$.friends.[0].friend.id", is(받은_친구_요청_정보_dto1.friend().id()), Long.class),
                 jsonPath("$.friends.[0].friend.email", is(받은_친구_요청_정보_dto1.friend().email())),
@@ -202,6 +206,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                         ),
                         responseFields(
+                                fieldWithPath("friendsStatus").type(JsonFieldType.STRING).description("친구 목록의 타입"),
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 받은 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
@@ -228,6 +233,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
+                jsonPath("$.friendsStatus", is(FriendType.FRIENDS.name())),
                 jsonPath("$.friends.[0].id", is(서로_친구인_친구_요청_정보_dto1.id()), Long.class),
                 jsonPath("$.friends.[0].friend.id", is(서로_친구인_친구_요청_정보_dto1.friend().id()), Long.class),
                 jsonPath("$.friends.[0].friend.email", is(서로_친구인_친구_요청_정보_dto1.friend().email())),
@@ -249,6 +255,7 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                         ),
                         responseFields(
+                                fieldWithPath("friendsStatus").type(JsonFieldType.STRING).description("친구 목록의 타입"),
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("서로 친구인 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
