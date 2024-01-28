@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;

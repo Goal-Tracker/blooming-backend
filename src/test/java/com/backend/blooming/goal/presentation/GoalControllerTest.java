@@ -7,6 +7,8 @@ import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -33,7 +35,9 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.headerWit
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -345,6 +349,75 @@ class GoalControllerTest extends GoalControllerTestFixture {
         mockMvc.perform(delete("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isForbidden(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 요청한_내용으로_골을_수정한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto)).willReturn(수정_후_골_dto);
+
+        // when & then
+        mockMvc.perform(put("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
+        ).andExpectAll(
+                status().isCreated(),
+                redirectedUrl("/goals/" + 유효한_골_아이디)
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
+                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                )
+        ));
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_요청한_아이디의_골을_수정할_권한이_없는_경우_403_에러를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto)).willThrow(new UpdateGoalForbiddenException.ForbiddenUserToUpdate());
+
+        // when & then
+        mockMvc.perform(put("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
+        ).andExpectAll(
+                status().isForbidden(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 수정_요청한_골의_종료날짜가_기존_종료날짜_보다_이전인_경우_403_에러를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto)).willThrow(new UpdateGoalForbiddenException.ForbiddenEndDateToUpdate());
+
+        // when & then
+        mockMvc.perform(put("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
         ).andExpectAll(
                 status().isForbidden(),
                 jsonPath("$.message").exists()
