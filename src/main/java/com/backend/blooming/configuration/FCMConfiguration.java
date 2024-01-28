@@ -4,17 +4,20 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import com.google.firebase.messaging.FirebaseMessaging;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Configuration
+@RequiredArgsConstructor
 @Profile("prod | dev")
 public class FCMConfiguration {
 
@@ -23,6 +26,8 @@ public class FCMConfiguration {
 
     @Value("${fcm.key.scope}")
     private String fireBaseScope;
+
+    private final ResourceLoader resourceLoader;
 
     @Bean
     public FirebaseMessaging firebaseMessaging() throws IOException {
@@ -50,7 +55,10 @@ public class FCMConfiguration {
     }
 
     private GoogleCredentials createGoogleCredentials() throws IOException {
-        return GoogleCredentials.fromStream(new ClassPathResource(FCM_PRIVATE_KEY_PATH).getInputStream())
-                                .createScoped(List.of(fireBaseScope));
+        final Resource resource = resourceLoader.getResource(FCM_PRIVATE_KEY_PATH);
+        final List<String> scopes = List.of(fireBaseScope);
+
+        return GoogleCredentials.fromStream(resource.getInputStream())
+                                .createScoped(scopes);
     }
 }
