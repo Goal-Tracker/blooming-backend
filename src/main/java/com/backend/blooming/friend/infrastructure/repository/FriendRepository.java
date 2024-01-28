@@ -44,12 +44,11 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     List<Friend> findAllByUserIdAndIsFriends(final Long userId);
 
     @Query("""
-            SELECT EXISTS (
-                SELECT 1
+            SELECT COUNT (*)
                 FROM Friend f
-                WHERE (f.requestUser.id = :recentUserId AND f.requestedUser.id = :userId)
-                OR (f.requestUser.id = :userId AND f.requestedUser.id = :recentUserId)
-            ) as exist
+                WHERE (f.requestUser.id = :userId AND f.requestedUser.id = :friendId) IN :friendIds
+                OR (f.requestUser.id = :friendId AND f.requestedUser.id = :userId) IN :friendIds
+                AND f.isFriends = TRUE
             """)
-    boolean existsByFriendsAndIsFriends(final Long recentUserId, final Long userId);
+    Long countByUserIdAndFriendIdsAndIsFriends(final Long userId, final List<Long> friendIds);
 }

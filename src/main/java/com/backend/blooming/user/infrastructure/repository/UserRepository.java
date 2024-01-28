@@ -2,9 +2,11 @@ package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.user.domain.User;
+import org.hibernate.validator.constraints.URL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<User, Long> {
@@ -19,4 +21,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByIdAndDeletedIsFalse(final Long userId);
 
     boolean existsByIdAndDeletedIsFalse(final Long userId);
+
+    @Query("""
+            SELECT u
+            FROM User u
+            WHERE u.id IN :userIds AND u.deleted = FALSE
+            """)
+    List<User> findAllByUserIds(final List<Long> userIds);
 }

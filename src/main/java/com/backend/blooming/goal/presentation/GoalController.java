@@ -45,13 +45,4 @@ public class GoalController {
 
         return ResponseEntity.ok(response);
     }
-
-    @GetMapping(value = "/all", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(
-            @Authenticated final AuthenticatedUser authenticatedUser) {
-        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
-        final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
-
-        return ResponseEntity.ok(response);
-    }
 }

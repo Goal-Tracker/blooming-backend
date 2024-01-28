@@ -35,7 +35,7 @@ public class FriendRepositoryTestFixture {
     protected Friend 친구인_요청2;
     protected Friend 친구인_요청3;
     protected Long 현재_로그인한_사용자_아이디;
-    protected Long 친구인_사용자_아이디;
+    protected List<Long> 골_초대받은_사용자_아이디_목록;
 
     @BeforeEach
     void setUpFixture() {
@@ -113,6 +113,7 @@ public class FriendRepositoryTestFixture {
         친구인_요청3 = new Friend(친구_요청을_받은_사용자3, 친구인_사용자3);
 
         final Friend 현재_로그인한_사용자와_친구인_상태 = new Friend(친구인_사용자1, 친구인_사용자2);
+        final Friend 현재_로그인한_사용자와_친구인_상태2 = new Friend(친구인_사용자1, 친구인_사용자3);
         friendRepository.saveAll(List.of(
                 보낸_친구_요청1,
                 보낸_친구_요청2,
@@ -130,6 +131,6 @@ public class FriendRepositoryTestFixture {
         친구인_요청3.acceptRequest();
 
         현재_로그인한_사용자_아이디 = 친구인_사용자1.getId();
-        친구인_사용자_아이디 = 친구인_사용자2.getId();
+        골_초대받은_사용자_아이디_목록.addAll(List.of(친구인_사용자2.getId(), 친구인_사용자3.getId()));
     }
 }

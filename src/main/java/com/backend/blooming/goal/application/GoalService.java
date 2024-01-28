@@ -34,10 +34,9 @@ public class GoalService {
 
     private Goal persistGoal(final CreateGoalDto createGoalDto) {
         final User user = getUser(createGoalDto.managerId());
-        final List<User> users = createGoalDto.teamUserIds()
-                                              .stream()
-                                              .map(userId -> validateIsFriend(createGoalDto.managerId(), userId))
-                                              .toList();
+        validateIsFriend(user.getId(), createGoalDto.teamUserIds());
+
+        final List<User> users = getUsers(createGoalDto.teamUserIds());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
@@ -56,12 +55,15 @@ public class GoalService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private User validateIsFriend(final Long managerId, final Long userId) {
-        if (!managerId.equals(userId) && !friendRepository.existsByFriendsAndIsFriends(managerId, userId)) {
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
+    }
+
+    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
+        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
+        if (!countFriends.equals((long) teamUserIds.size()-1)){
             throw new InvalidGoalException.InvalidInvalidUserToParticipate();
         }
-
-        return getUser(userId);
     }
 
     @Transactional(readOnly = true)
@@ -70,12 +72,5 @@ public class GoalService {
                                         .orElseThrow(NotFoundGoalException::new);
 
         return ReadGoalDetailDto.from(goal);
-    }
-
-    @Transactional(readOnly = true)
-    public ReadAllGoalDto readAllGoalByUserId(final Long userId) {
-        final List<Goal> goals = goalRepository.findAllByUserIdAndDeletedIsFalse(userId);
-
-        return ReadAllGoalDto.from(goals);
     }
 }

@@ -96,11 +96,11 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
     }
 
     @Test
-    void 현재_로그인한_사용자와_입력받은_아이디의_사용자가_서로_친구_관계일_경우_참을_반환한다() {
+    void 입력받은_아이디_목록_중_현재_로그인한_사용자와_서로_친구_관계인_사용자_수를_반환한다() {
         // when
-        final boolean actual = friendRepository.existsByFriendsAndIsFriends(현재_로그인한_사용자_아이디, 친구인_사용자_아이디);
+        final Long actual = friendRepository.countByUserIdAndFriendIdsAndIsFriends(현재_로그인한_사용자_아이디, 골_초대받은_사용자_아이디_목록);
 
         // then
-        assertThat(actual).isTrue();
+        assertThat(actual).isEqualTo(2);
     }
 }

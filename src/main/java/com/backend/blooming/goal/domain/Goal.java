@@ -84,7 +84,7 @@ public class Goal extends BaseTimeEntity {
     }
 
     private void validateUsersSize(final List<User> users) {
-        if (users.size() > 5) {
+        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }

@@ -7,6 +7,7 @@ import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
@@ -24,6 +25,7 @@ public class UserRepositoryTestFixture {
     protected Long 사용자_아이디;
     protected Long 삭제된_사용자_아이디;
     protected Long 존재하지_않는_사용자_아이디 = 9999L;
+    protected List<Long> 사용자_아이디_목록 = new ArrayList<>();
 
     @BeforeEach
     void setUpFixture() {
@@ -53,5 +55,6 @@ public class UserRepositoryTestFixture {
 
         사용자_아이디 = 사용자.getId();
         삭제된_사용자_아이디 = 삭제된_사용자.getId();
+        사용자_아이디_목록.addAll(List.of(사용자_아이디, 사용자2.getId()));
     }
 }
