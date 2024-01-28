@@ -22,7 +22,8 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
             LocalDate startDate,
             LocalDate endDate,
             long days,
-            List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfos) {
+            List<GoalTeamWithUserInfoResponse> teams
+    ) {
 
         public static GoalInfoResponse from(final ReadAllGoalDto.GoalInfoDto goalInfoDto) {
             final List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfoResponses = goalInfoDto.goalTeamWithUserInfoDtos()

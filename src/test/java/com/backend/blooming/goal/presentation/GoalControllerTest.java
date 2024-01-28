@@ -190,11 +190,11 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.endDate", is(유효한_골_응답_dto.endDate().toString()), String.class),
                 jsonPath("$.days", is(유효한_골_응답_dto.days()), long.class),
                 jsonPath("$.managerId", is(유효한_골_응답_dto.managerId()), Long.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].id", is(유효한_골_응답_dto.goalTeamWithUserInfo().get(0).id()), Long.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].name", is(유효한_골_응답_dto.goalTeamWithUserInfo().get(0).name()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].colorCode", is(유효한_골_응답_dto.goalTeamWithUserInfo().get(0).colorCode()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[0].statusMessage", is(유효한_골_응답_dto.goalTeamWithUserInfo().get(0).statusMessage()), String.class),
-                jsonPath("$.goalTeamWithUserInfo.[1].id", is(유효한_골_응답_dto.goalTeamWithUserInfo().get(1).id()), Long.class)
+                jsonPath("$.goalTeamWithUserInfo.[0].id", is(유효한_골_응답_dto.teams().get(0).id()), Long.class),
+                jsonPath("$.goalTeamWithUserInfo.[0].name", is(유효한_골_응답_dto.teams().get(0).name()), String.class),
+                jsonPath("$.goalTeamWithUserInfo.[0].colorCode", is(유효한_골_응답_dto.teams().get(0).colorCode()), String.class),
+                jsonPath("$.goalTeamWithUserInfo.[0].statusMessage", is(유효한_골_응답_dto.teams().get(0).statusMessage()), String.class),
+                jsonPath("$.goalTeamWithUserInfo.[1].id", is(유효한_골_응답_dto.teams().get(1).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
