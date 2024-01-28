@@ -39,7 +39,7 @@ public class AuthenticationService {
         final OAuthClient oAuthClient = oAuthClientComposite.findOAuthClient(oAuthType);
         final UserInformationDto userInformationDto = oAuthClient.findUserInformation(loginDto.oAuthAccessToken());
         final LoginUserInformationDto userInformation = findOrPersistUserInformation(userInformationDto, oAuthType);
-        deviceTokenService.saveOrActive(userInformation.user().getId(), loginDto.deviceToken());
+        saveOrActiveToken(userInformation.user(), loginDto.deviceToken());
 
         return new LoginInformationDto(convertToTokenDto(userInformation.user()), userInformation.isSignUp());
     }
@@ -84,6 +84,12 @@ public class AuthenticationService {
         final String refreshToken = tokenProvider.createToken(TokenType.REFRESH, userId);
 
         return new TokenDto(accessToken, refreshToken);
+    }
+
+    private void saveOrActiveToken(final User user, final String deviceToken) {
+        if (deviceToken != null && !deviceToken.isEmpty()) {
+            deviceTokenService.saveOrActive(user.getId(), deviceToken);
+        }
     }
 
     @Transactional(readOnly = true)
