@@ -1,3 +1,8 @@
 spring:
   profiles:
     default: local
+
+  config:
+    import: "classpath:/blooming-backend-submodule/application-dev.yml"
+    activate:
+      on-profile: dev
