@@ -543,7 +543,8 @@ Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 
 {
-  "accessToken" : "social_access_token"
+  "accessToken" : "social_access_token",
+  "deviceToken" : "device_token"
 }</code></pre>
 </div>
 </div>
@@ -602,6 +603,11 @@ X-API-VERSION: 1
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>accessToken</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">소셜 access token</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>deviceToken</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">디바이스 token</p></td>
 </tr>
 </tbody>
 </table>
@@ -1877,8 +1883,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-01-26",
-  "endDate" : "2024-03-06",
+  "startDate" : "2024-01-28",
+  "endDate" : "2024-03-08",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -2050,8 +2056,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-01-26",
-  "endDate" : "2024-02-05",
+  "startDate" : "2024-01-28",
+  "endDate" : "2024-02-07",
   "days" : 11,
   "managerId" : 1,
   "goalTeamWithUserInfo" : [ {
@@ -2077,8 +2083,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-01-26",
-  "endDate" : "2024-02-05",
+  "startDate" : "2024-01-28",
+  "endDate" : "2024-02-07",
   "days" : 11,
   "managerId" : 1,
   "goalTeamWithUserInfo" : [ {
@@ -2225,8 +2231,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-01-26",
-    "endDate" : "2024-02-05",
+    "startDate" : "2024-01-28",
+    "endDate" : "2024-02-07",
     "days" : 11,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2240,8 +2246,8 @@ Content-Type: application/json
   }, {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-01-26",
-    "endDate" : "2024-02-15",
+    "startDate" : "2024-01-28",
+    "endDate" : "2024-02-17",
     "days" : 21,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2265,8 +2271,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-01-26",
-    "endDate" : "2024-02-05",
+    "startDate" : "2024-01-28",
+    "endDate" : "2024-02-07",
     "days" : 11,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2280,8 +2286,8 @@ Content-Type: application/json
   }, {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-01-26",
-    "endDate" : "2024-02-15",
+    "startDate" : "2024-01-28",
+    "endDate" : "2024-02-17",
     "days" : 21,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
