@@ -40,7 +40,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
         willReturn(첫_로그인_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(oauth_타입, 소셜_액세스_토큰);
+        final LoginInformationDto actual = authenticationService.login(oauth_타입, 로그인_정보);
 
         // then
         assertSoftly(softAssertions -> {
@@ -56,7 +56,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
         willReturn(oauthid가_50자를_초과하는_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(oauth_타입, 소셜_액세스_토큰);
+        final LoginInformationDto actual = authenticationService.login(oauth_타입, 로그인_정보);
 
         // then
         final User savedUser = userRepository.findByOAuthIdAndOAuthType(
@@ -80,7 +80,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
         willReturn(기존_사용자_소셜_정보).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
 
         // when
-        final LoginInformationDto actual = authenticationService.login(oauth_타입, 소셜_액세스_토큰);
+        final LoginInformationDto actual = authenticationService.login(oauth_타입, 로그인_정보);
 
         // then
         assertSoftly(softAssertions -> {
@@ -93,7 +93,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     @Test
     void 로그인시_oauth_타입이_null인_경우_예외를_반환한다() {
         // when & then
-        assertThatThrownBy(() -> authenticationService.login(null, 소셜_액세스_토큰))
+        assertThatThrownBy(() -> authenticationService.login(null, 로그인_정보))
                 .isInstanceOf(UnsupportedOAuthTypeException.class);
     }
 
@@ -103,7 +103,7 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
         willThrow(OAuthException.class).given(oAuthClient).findUserInformation(소셜_액세스_토큰);
 
         // when & then
-        assertThatThrownBy(() -> authenticationService.login(oauth_타입, 소셜_액세스_토큰))
+        assertThatThrownBy(() -> authenticationService.login(oauth_타입, 로그인_정보))
                 .isInstanceOf(OAuthException.class);
     }
 

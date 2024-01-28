@@ -11,14 +11,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 class DeviceTokenTest {
 
     @Test
-    void 디바이스_토큰을_삭제한다() {
+    void 디바이스_토큰을_활성화한다() {
+        // given
+        final DeviceToken deviceToken = new DeviceToken(1L, "token");
+        deviceToken.deactivate();
+
+        // when
+        deviceToken.activate();
+
+        // then
+        assertThat(deviceToken.isActive()).isTrue();
+    }
+
+    @Test
+    void 디바이스_토큰을_비활성화한다() {
         // given
         final DeviceToken deviceToken = new DeviceToken(1L, "token");
 
         // when
-        deviceToken.delete();
+        deviceToken.deactivate();
 
         // then
-        assertThat(deviceToken.isDeleted()).isTrue();
+        assertThat(deviceToken.isActive()).isFalse();
     }
 }

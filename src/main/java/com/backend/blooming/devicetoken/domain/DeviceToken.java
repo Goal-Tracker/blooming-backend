@@ -31,14 +31,18 @@ public class DeviceToken {
     private String token;
 
     @Column(name = "is_active", nullable = false)
-    private boolean active = false;
+    private boolean active = true;
 
     public DeviceToken(final Long userId, final String token) {
         this.userId = userId;
         this.token = token;
     }
 
-    public void deactivate() {
+    public void activate() {
         this.active = true;
+    }
+
+    public void deactivate() {
+        this.active = false;
     }
 }

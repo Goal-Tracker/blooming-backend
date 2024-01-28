@@ -44,7 +44,7 @@ class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
     @Test
     void 사용자에게_알림을_보낼때_성공적이라면_아무_로그도_출력되지_않는다() throws FirebaseMessagingException {
         // given
-        given(deviceTokenRepository.readAllByUserIdAndDeletedIsFalse(사용자_아이디)).willReturn(디바이스_토큰들);
+        given(deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디)).willReturn(디바이스_토큰들);
         given(batchResponse.getFailureCount()).willReturn(0);
         given(firebaseMessaging.sendAll(anyList())).willReturn(batchResponse);
 
@@ -58,7 +58,7 @@ class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
     @Test
     void 사용자에게_알림을_보낼때_알림요청이_실패한_것이_하나라도_있다면_경고_로그가_수행된다() throws FirebaseMessagingException {
         // given
-        given(deviceTokenRepository.readAllByUserIdAndDeletedIsFalse(사용자_아이디)).willReturn(디바이스_토큰들);
+        given(deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디)).willReturn(디바이스_토큰들);
         given(batchResponse.getFailureCount()).willReturn(1);
         given(sendResponse.isSuccessful()).willReturn(true, false);
         given(batchResponse.getResponses()).willReturn(List.of(sendResponse));

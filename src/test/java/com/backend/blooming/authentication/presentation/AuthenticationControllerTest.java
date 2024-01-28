@@ -57,7 +57,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @Test
     void oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다() throws Exception {
         // given
-        given(authenticationService.login(oauth_타입, 소셜_액세스_토큰)).willReturn(소셜_로그인_사용자_정보);
+        given(authenticationService.login(oauth_타입, 로그인_정보)).willReturn(소셜_로그인_사용자_정보);
 
         // when & then
         mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
@@ -73,7 +73,8 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                 requestHeaders(headerWithName("X-API-VERSION").description("요청 버전")),
                 pathParameters(parameterWithName("oAuthType").description("소셜 로그인 타입")),
                 requestFields(
-                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("소셜 access token")
+                        fieldWithPath("accessToken").type(JsonFieldType.STRING).description("소셜 access token"),
+                        fieldWithPath("deviceToken").type(JsonFieldType.STRING).description("디바이스 token")
                 ),
                 responseFields(
                         fieldWithPath("token.accessToken").type(JsonFieldType.STRING).description("서비스 access token"),
@@ -86,7 +87,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @Test
     void oauth_access_token을_통해_로그인시_기존_회원이라면_회원가입_여부를_거짓으로_반환한다() throws Exception {
         // given
-        given(authenticationService.login(oauth_타입, 소셜_액세스_토큰)).willReturn(소셜_로그인_기존_사용자_정보);
+        given(authenticationService.login(oauth_타입, 로그인_정보)).willReturn(소셜_로그인_기존_사용자_정보);
 
         // when & then
         mockMvc.perform(post("/auth/login/oauth/{oAuthType}", oauth_타입.name().toLowerCase())
@@ -104,7 +105,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @Test
     void oauth_access_token을_통해_로그인시_유효하지_않은_토큰이라면_403을_반환한다() throws Exception {
         // given
-        given(authenticationService.login(oauth_타입, 유효하지_않은_소셜_액세스_토큰))
+        given(authenticationService.login(oauth_타입, 유효하지_않은_소셜_액세스_토큰을_가진_로그인_정보))
                 .willThrow(new OAuthException.InvalidAuthorizationTokenException());
 
         // when & then
@@ -121,7 +122,7 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
     @Test
     void oauth_access_token을_통해_로그인시_해당_소셜_서버에_문제가_생겼다면_503을_반환한다() throws Exception {
         // given
-        given(authenticationService.login(oauth_타입, 소셜_액세스_토큰))
+        given(authenticationService.login(oauth_타입, 로그인_정보))
                 .willThrow(new OAuthException.KakaoServerUnavailableException());
 
         // when & then
