@@ -71,6 +71,7 @@ public class GoalTerm {
     public void updateEndDate(final LocalDate endDate) {
         validateEndDate(endDate);
         this.endDate = endDate;
+        this.days = getValidGoalDays(this.startDate, endDate);
     }
 
     private void validateEndDate(final LocalDate updateDate) {

@@ -6,8 +6,10 @@ import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
+import com.backend.blooming.goal.presentation.dto.request.UpdateGoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +34,7 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadGoalResponse> createGoal(
+    public ResponseEntity<Long> createGoal(
             @RequestBody @Valid final CreateGoalRequest request,
             @Authenticated final AuthenticatedUser authenticatedUser) {
         final CreateGoalDto createGoalDto = CreateGoalDto.of(request, authenticatedUser.userId());
@@ -69,9 +72,22 @@ public class GoalController {
     @DeleteMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> delete(
             @PathVariable("goalId") final Long goalId,
-            @Authenticated final AuthenticatedUser authenticatedUser) {
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
         goalService.delete(authenticatedUser.userId(), goalId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
+    public ResponseEntity<Long> update(
+            @PathVariable("goalId") final Long goalId,
+            @RequestBody @Valid final UpdateGoalRequest request,
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
+        final UpdateGoalDto updateGoalDto = UpdateGoalDto.from(request);
+        final ReadGoalDetailDto response = goalService.update(authenticatedUser.userId(), goalId, updateGoalDto);
+
+        return ResponseEntity.created(URI.create("/goals/" + response.id())).build();
     }
 }
