@@ -2,6 +2,7 @@ package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.configuration.JpaConfiguration;
 import com.backend.blooming.user.domain.User;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -103,16 +104,17 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
     }
 
     @Test
-    void 입력받은_사용자_아이디_목록에_포함된_모든_사용자를_반환한다() {
+    void 요청한_사용자_아이디_리스트에_포함된_모든_사용자를_조회한다() {
         // when
-        final List<User> actual = userRepository.findAllByUserIds(사용자_아이디_목록);
+        final List<User> actual = userRepository.findAllByIdsAndDeletedIsFalse(사용자_아이디_리스트);
 
         // then
         assertSoftly(SoftAssertions -> {
-            assertThat(actual).hasSize(3);
+            assertThat(actual).hasSize(2);
             assertThat(actual.get(0).getId()).isEqualTo(사용자_아이디);
+            assertThat(actual.get(0).getName()).isEqualTo(사용자.getName());
             assertThat(actual.get(1).getId()).isEqualTo(사용자2.getId());
-            assertThat(actual.get(2).getId()).isEqualTo(삭제된_사용자_아이디);
+            assertThat(actual.get(1).getName()).isEqualTo(사용자2.getName());
         });
     }
 }

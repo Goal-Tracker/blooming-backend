@@ -1,12 +1,20 @@
 package com.backend.blooming.goal.domain;
 
+import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.user.domain.User;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -61,19 +69,81 @@ class GoalTest extends GoalTestFixture {
     @Test
     void 골을_삭제한다() {
         // given
-        final Goal goal = Goal.builder()
-                              .name(골_제목)
-                              .memo("골 메모")
-                              .startDate(골_시작일)
-                              .endDate(골_종료일)
-                              .managerId(골_관리자_아이디)
-                              .users(골_참여자_목록)
-                              .build();
+        final Goal goal = 유효한_골;
 
         // when
         goal.updateDeleted(골_관리자_아이디);
 
         // then
         assertThat(goal.isDeleted()).isTrue();
+    }
+
+    @Test
+    void 골_제목을_수정한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateName("골 제목 테스트");
+
+        // then
+        assertThat(goal.getName()).isEqualTo("골 제목 테스트");
+    }
+
+    @Test
+    void 골_메모를_수정한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateMemo("골 메모 테스트");
+
+        // then
+        assertThat(goal.getMemo()).isEqualTo("골 메모 테스트");
+    }
+
+    @Test
+    void 골_종료날짜를_수정한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateEndDate(LocalDate.now().plusDays(20));
+
+        // then
+        assertThat(goal.getGoalTerm().getEndDate()).isEqualTo(LocalDate.now().plusDays(20));
+    }
+
+    @Test
+    void 골_팀_목록을_수정한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateTeams(수정_요청한_골_참여자_목록);
+
+        // then
+        assertSoftly(softAssertions -> {
+            final List<GoalTeam> teams = goal.getTeams();
+            assertThat(teams).hasSize(3);
+            assertThat(teams.get(0).getUser().getId()).isEqualTo(기존_골_참여자.getId());
+            assertThat(teams.get(0).getUser().getName()).isEqualTo(기존_골_참여자.getName());
+            assertThat(teams.get(1).getUser().getId()).isEqualTo(기존_골_참여자2.getId());
+            assertThat(teams.get(1).getUser().getName()).isEqualTo(기존_골_참여자2.getName());
+            assertThat(teams.get(2).getUser().getId()).isEqualTo(추가된_골_참여_사용자.getId());
+            assertThat(teams.get(2).getUser().getName()).isEqualTo(추가된_골_참여_사용자.getName());
+        });
+    }
+
+    @Test
+    void 요청한_골_제목_글자수가_50자_이상인_경우_50자까지_글자를_제한한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateName("testtesttesttesttesttesttesttesttesttesttesttesttest");
+
+        // then
+        assertThat(goal.getName()).hasSize(50);
     }
 }

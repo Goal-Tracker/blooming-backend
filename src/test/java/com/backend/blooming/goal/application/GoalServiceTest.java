@@ -4,15 +4,21 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
@@ -127,5 +133,42 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 삭제_요청한_사용자가_관리자가_아닌_경우_예외를_발생한다() {
         assertThatThrownBy(() -> goalService.delete(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디)).isInstanceOf(DeleteGoalForbiddenException.class);
+    }
+
+    @Test
+    void 골을_요청받은_내용으로_수정한다() {
+        // when
+        final ReadGoalDetailDto result = goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 수정_요청한_골_dto);
+
+        // then
+        assertSoftly(SoftAssertions -> {
+            final List<ReadGoalDetailDto.GoalTeamWithUserInfoDto> goalTeamWithUserInfoDto = result.GoalTeamWithUserInfo();
+            assertThat(result.name()).isEqualTo(수정한_제목);
+            assertThat(result.memo()).isEqualTo(수정한_메모);
+            assertThat(result.endDate()).isEqualTo(수정한_종료날짜);
+            assertThat(goalTeamWithUserInfoDto).hasSize(3);
+            assertThat(goalTeamWithUserInfoDto.get(0).name()).isEqualTo(유효한_사용자.getName());
+            assertThat(goalTeamWithUserInfoDto.get(1).name()).isEqualTo(유효한_사용자2.getName());
+            assertThat(goalTeamWithUserInfoDto.get(2).name()).isEqualTo(유효한_사용자3.getName());
+        });
+    }
+
+    @Test
+    void 골_수정을_요청한_사용자가_존재하지_않을시_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.update(존재하지_않는_사용자_아이디, 유효한_골_아이디, 수정_요청한_골_dto))
+                .isInstanceOf(NotFoundUserException.class);
+    }
+
+    @Test
+    void 골_수정을_요청한_사용자가_권한이_없을시_예외를_발생한다() {
+        assertThatThrownBy(() -> goalService.update(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디, 수정_요청한_골_dto))
+                .isInstanceOf(UpdateGoalForbiddenException.ForbiddenUserToUpdate.class);
+    }
+
+    @Test
+    void 수정_요청한_골이_존재하지_않을시_예외를_발생한다() {
+        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효하지_않은_골_아이디, 수정_요청한_골_dto))
+                .isInstanceOf(NotFoundGoalException.class);
     }
 }
