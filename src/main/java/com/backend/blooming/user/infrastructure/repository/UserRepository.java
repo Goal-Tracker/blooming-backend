@@ -2,7 +2,6 @@ package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.user.domain.User;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
