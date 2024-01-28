@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Random;
 
 @Configuration
 @RequiredArgsConstructor
+@Profile("!test")
 public class InitializationUserConfiguration implements ApplicationRunner {
 
     private final UserRepository userRepository;

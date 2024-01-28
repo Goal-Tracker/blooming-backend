@@ -42,7 +42,20 @@ class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
     private SendResponse sendResponse;
 
     @Test
-    void 사용자에게_알림을_보낼때_성공적이라면_아무_로그도_출력되지_않는다() throws FirebaseMessagingException {
+    void 사용자에게_알림을_보낼때_해당_사용자의_디바이스_토큰이_없다면_아무것도_수행되지_않는다() {
+        // given
+        given(deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디)).willReturn(List.of());
+
+        // when
+        fcmNotificationService.sendNotification(알림);
+
+        // then
+        verify(sendResponse, never()).isSuccessful();
+        verify(batchResponse, never()).getFailureCount();
+    }
+
+    @Test
+    void 사용자에게_알림을_보낼때_성공적이라면_아무_각_알림_전송에_대한_성공_여부를_호출하지_않는다() throws FirebaseMessagingException {
         // given
         given(deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디)).willReturn(디바이스_토큰들);
         given(batchResponse.getFailureCount()).willReturn(0);
@@ -56,7 +69,7 @@ class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
     }
 
     @Test
-    void 사용자에게_알림을_보낼때_알림요청이_실패한_것이_하나라도_있다면_경고_로그가_수행된다() throws FirebaseMessagingException {
+    void 사용자에게_알림을_보낼때_알림요청이_실패한_것이_하나라도_있다면_각_알림_전송에_대한_성공_여부를_한번이상_호출한다() throws FirebaseMessagingException {
         // given
         given(deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디)).willReturn(디바이스_토큰들);
         given(batchResponse.getFailureCount()).willReturn(1);
