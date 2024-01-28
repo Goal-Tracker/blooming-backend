@@ -27,18 +27,18 @@ public class DeviceToken {
     @Column(nullable = false)
     private Long userId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String token;
 
-    @Column(name = "is_deleted", nullable = false)
-    private boolean deleted = false;
+    @Column(name = "is_active", nullable = false)
+    private boolean active = false;
 
     public DeviceToken(final Long userId, final String token) {
         this.userId = userId;
         this.token = token;
     }
 
-    public void delete() {
-        this.deleted = true;
+    public void deactivate() {
+        this.active = true;
     }
 }

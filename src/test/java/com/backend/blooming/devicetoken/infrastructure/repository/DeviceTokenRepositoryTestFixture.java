@@ -15,15 +15,15 @@ public class DeviceTokenRepositoryTestFixture {
     protected Long 사용자_아이디 = 1L;
     protected DeviceToken 디바이스_토큰1;
     protected DeviceToken 디바이스_토큰2;
-    protected DeviceToken 삭제된_디바이스_토큰;
+    protected DeviceToken 비활성화된_디바이스_토큰;
 
     @BeforeEach
     void setUpFixture() {
         디바이스_토큰1 = new DeviceToken(사용자_아이디, "token1");
         디바이스_토큰2 = new DeviceToken(사용자_아이디, "token2");
-        삭제된_디바이스_토큰 = new DeviceToken(사용자_아이디, "token3");
-        삭제된_디바이스_토큰.delete();
+        비활성화된_디바이스_토큰 = new DeviceToken(사용자_아이디, "token3");
+        비활성화된_디바이스_토큰.deactivate();
 
-        deviceTokenRepository.saveAll(List.of(디바이스_토큰1, 디바이스_토큰2, 삭제된_디바이스_토큰));
+        deviceTokenRepository.saveAll(List.of(디바이스_토큰1, 디바이스_토큰2, 비활성화된_디바이스_토큰));
     }
 }

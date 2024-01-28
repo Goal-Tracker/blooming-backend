@@ -22,9 +22,9 @@ class DeviceTokenRepositoryTest extends DeviceTokenRepositoryTestFixture {
     private DeviceTokenRepository deviceTokenRepository;
 
     @Test
-    void 사용자의_삭제되지_않은_모든_디바이스_토큰_목록을_조회한다() {
+    void 사용자의_활성화되어_있는_모든_디바이스_토큰_목록을_조회한다() {
         // when
-        final List<DeviceToken> actual = deviceTokenRepository.readAllByUserIdAndDeletedIsFalse(사용자_아이디);
+        final List<DeviceToken> actual = deviceTokenRepository.readAllByUserIdAndActiveIsFalse(사용자_아이디);
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
@@ -33,7 +33,7 @@ class DeviceTokenRepositoryTest extends DeviceTokenRepositoryTestFixture {
             softAssertions.assertThat(actual.get(0).getToken()).isEqualTo(디바이스_토큰1.getToken());
             softAssertions.assertThat(actual.get(1).getId()).isEqualTo(디바이스_토큰2.getId());
             softAssertions.assertThat(actual.get(1).getToken()).isEqualTo(디바이스_토큰2.getToken());
-            softAssertions.assertThat(actual).doesNotContain(삭제된_디바이스_토큰);
+            softAssertions.assertThat(actual).doesNotContain(비활성화된_디바이스_토큰);
         });
     }
 }
