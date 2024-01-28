@@ -4,7 +4,7 @@ spring:
 
   config:
     import:
-      - "classpath:/blooming-backend-submodule/application-dev.yml"
-      - "classpath:/blooming-backend-submodule/blooming-firebase-adminsdk.json"
+      - "classpath:blooming-backend-submodule/application-dev.yml"
+      - "classpath:blooming-backend-submodule/blooming-firebase-adminsdk.json"
     activate:
       on-profile: dev
