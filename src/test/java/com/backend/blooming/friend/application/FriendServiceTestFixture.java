@@ -148,7 +148,7 @@ public class FriendServiceTestFixture {
         final ReadFriendsDto 요청한_친구_목록_dto = ReadFriendsDto.of(
                 List.of(보낸_친구_요청1, 보낸_친구_요청2, 보낸_친구_요청3),
                 친구_요청을_보낸_사용자,
-                FriendType.FRIENDS);
+                FriendType.REQUEST);
         친구_요청_사용자_정보_dto1 = 요청한_친구_목록_dto.friends().get(0);
         친구_요청_사용자_정보_dto2 = 요청한_친구_목록_dto.friends().get(1);
         친구_요청_사용자_정보_dto3 = 요청한_친구_목록_dto.friends().get(2);
@@ -156,7 +156,7 @@ public class FriendServiceTestFixture {
         final ReadFriendsDto 요청_받은_친구_목록_dto = ReadFriendsDto.of(
                 List.of(받은_친구_요청1, 받은_친구_요청2, 받은_친구_요청3),
                 사용자,
-                FriendType.FRIENDS);
+                FriendType.REQUESTED);
         친구_요청을_받은_사용자_정보_dto1 = 요청_받은_친구_목록_dto.friends().get(0);
         친구_요청을_받은_사용자_정보_dto2 = 요청_받은_친구_목록_dto.friends().get(1);
         친구_요청을_받은_사용자_정보_dto3 = 요청_받은_친구_목록_dto.friends().get(2);
