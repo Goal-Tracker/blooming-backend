@@ -5,14 +5,14 @@ import com.backend.blooming.user.domain.User;
 
 import java.util.List;
 
-public record ReadFriendsDto(List<FriendDto> friends) {
+public record ReadFriendsDto(List<FriendDto> friends, String friendsStatus) {
 
-    public static ReadFriendsDto of(final List<Friend> requestUsers, final User user) {
+    public static ReadFriendsDto of(final List<Friend> requestUsers, final User user, final FriendType friendType) {
         final List<FriendDto> friendDtos = requestUsers.stream()
                                                        .map(friend -> FriendDto.of(friend, user))
                                                        .toList();
 
-        return new ReadFriendsDto(friendDtos);
+        return new ReadFriendsDto(friendDtos, friendType.name());
     }
 
     public record FriendDto(Long id, UserDto friend, boolean isFriends) {

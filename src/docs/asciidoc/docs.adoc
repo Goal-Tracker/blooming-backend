@@ -33,6 +33,9 @@ include::user.adoc[]
 == 테마 색상
 include::themecolor.adoc[]
 
+== 알림
+include::user.adoc[]
+
 == 친구
 include::friend.adoc[]
 

@@ -34,6 +34,10 @@ public class ProdFCMNotificationService implements FCMNotificationService {
 
     public void sendNotification(final Notification notification) {
         final List<String> deviceTokens = getDeviceTokens(notification.getReceiver());
+        if (deviceTokens.isEmpty()) {
+            return;
+        }
+
         final List<Message> messages = createMessages(notification, deviceTokens);
 
         try {
@@ -45,7 +49,7 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     }
 
     private List<String> getDeviceTokens(final User receiver) {
-        return deviceTokenRepository.readAllByUserIdAndDeletedIsFalse(receiver.getId())
+        return deviceTokenRepository.findAllByUserIdAndActiveIsTrue(receiver.getId())
                                     .stream()
                                     .map(DeviceToken::getToken)
                                     .toList();

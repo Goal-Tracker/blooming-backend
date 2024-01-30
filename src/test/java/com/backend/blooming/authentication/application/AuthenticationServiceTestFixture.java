@@ -1,5 +1,6 @@
 package com.backend.blooming.authentication.application;
 
+import com.backend.blooming.authentication.application.dto.LoginDto;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
@@ -23,6 +24,9 @@ public class AuthenticationServiceTestFixture {
 
     protected OAuthType oauth_타입 = OAuthType.KAKAO;
     protected String 소셜_액세스_토큰 = "social_access_token";
+    protected String 디바이스_토큰 = "device_token";
+    protected LoginDto 로그인_정보 = LoginDto.of(소셜_액세스_토큰, 디바이스_토큰);
+    protected LoginDto 디바이스_토큰이_없는_로그인_정보 = LoginDto.of(소셜_액세스_토큰, null);
     protected UserInformationDto 첫_로그인_사용자_소셜_정보 =
             new KakaoUserInformationDto("12345", new KakaoUserInformationDto.KakaoAccount("test@email.com"));
     protected UserInformationDto oauthid가_50자를_초과하는_사용자_소셜_정보 =

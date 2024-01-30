@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>전체 테마 색상 목록 조회</title>
+<title>알림 목록 조회</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,13 +441,14 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="_전체_테마_색상_목록_조회">전체 테마 색상 목록 조회</h3>
+<h3 id="_알림_목록_조회">알림 목록 조회</h3>
 <div class="sect3">
 <h4 id="_요청">요청</h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /theme-colors HTTP/1.1
-X-API-VERSION: 1</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /notifications HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -466,6 +467,10 @@ X-API-VERSION: 1</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -477,12 +482,18 @@ X-API-VERSION: 1</code></pre>
 Content-Type: application/json
 
 {
-  "themeColors" : [ {
-    "name" : "BEIGE",
-    "code" : "#f5f1f0"
+  "notifications" : [ {
+    "id" : 1,
+    "title" : "알림 1",
+    "content" : "알림 1에 대한 내용입니다.",
+    "type" : "REQUEST_FRIEND",
+    "requestId" : 2
   }, {
-    "name" : "BABY_PINK",
-    "code" : "#f8c8c4"
+    "id" : 2,
+    "title" : "알림 2",
+    "content" : "알림 2에 대한 내용입니다.",
+    "type" : "REQUEST_FRIEND",
+    "requestId" : 3
   } ]
 }</code></pre>
 </div>
@@ -502,19 +513,34 @@ Content-Type: application/json
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[]</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자의 알림 목록</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[].name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications.[].id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">알림 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[].code</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications.[].title</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">알림 제목</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications.[].content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">알림 내용</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications.[].type</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">알림 타입</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>notifications.[].requestId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">알림 수락 시 처리를 위한 아이디</p></td>
 </tr>
 </tbody>
 </table>
@@ -524,7 +550,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-01-28 21:29:55 +0900
+Last updated 2024-01-30 16:31:54 +0900
 </div>
 </div>
 </body>
