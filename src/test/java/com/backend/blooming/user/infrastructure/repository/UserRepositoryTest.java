@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -99,5 +100,19 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
 
         // then
         assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 입력받은_사용자_아이디_목록에_포함된_모든_사용자를_반환한다() {
+        // when
+        final List<User> actual = userRepository.findAllByUserIds(사용자_아이디_목록);
+
+        // then
+        assertSoftly(SoftAssertions -> {
+            assertThat(actual).hasSize(3);
+            assertThat(actual.get(0).getId()).isEqualTo(사용자_아이디);
+            assertThat(actual.get(1).getId()).isEqualTo(사용자2.getId());
+            assertThat(actual.get(2).getId()).isEqualTo(삭제된_사용자_아이디);
+        });
     }
 }

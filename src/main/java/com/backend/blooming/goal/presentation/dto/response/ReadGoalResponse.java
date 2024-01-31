@@ -19,7 +19,7 @@ public record ReadGoalResponse(
         LocalDate endDate,
         long days,
         Long managerId,
-        List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfo
+        List<GoalTeamWithUserInfoResponse> teams
 ) {
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {

@@ -10,10 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.List;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @DataJpaTest
 @Import(JpaConfiguration.class)
@@ -37,19 +34,5 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
         assertThat(result.getTeams()).hasSize(2);
-    }
-
-    @Test
-    void 요청한_사용자_아이디가_골_참여자로_있는_모든_골을_반환한다() {
-        // when
-        final List<Goal> result = goalRepository.findAllByUserIdAndDeletedIsFalse(골_관리자_사용자.getId());
-
-        // then
-        assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result).hasSize(사용자가_참여한_골_목록.size());
-            softAssertions.assertThat(result)
-                          .usingRecursiveComparison()
-                          .isEqualTo(사용자가_참여한_골_목록);
-        });
     }
 }

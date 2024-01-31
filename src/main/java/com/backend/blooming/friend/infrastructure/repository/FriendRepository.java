@@ -19,27 +19,36 @@ public interface FriendRepository extends JpaRepository<Friend, Long> {
     boolean existsByRequestFriend(final Long requestUserId, final Long requestedUserId);
 
     @Query("""
-        SELECT f
-        FROM Friend f
-        JOIN FETCH f.requestedUser
-        WHERE f.requestUser.id = :userId AND f.isFriends = FALSE
-    """)
+                SELECT f
+                FROM Friend f
+                JOIN FETCH f.requestedUser
+                WHERE f.requestUser.id = :userId AND f.isFriends = FALSE
+            """)
     List<Friend> findAllByRequestUserId(final Long userId);
 
     @Query("""
-        SELECT f
-        FROM Friend f
-        JOIN FETCH f.requestUser
-        WHERE f.requestedUser.id = :userId AND f.isFriends = FALSE
-    """)
+                SELECT f
+                FROM Friend f
+                JOIN FETCH f.requestUser
+                WHERE f.requestedUser.id = :userId AND f.isFriends = FALSE
+            """)
     List<Friend> findAllByRequestedUserId(final Long userId);
 
     @Query("""
-        SELECT f
-        FROM Friend f
-        JOIN FETCH f.requestUser
-        JOIN FETCH f.requestedUser
-        WHERE (f.requestUser.id = :userId OR f.requestedUser.id = :userId) AND f.isFriends = TRUE
-    """)
+                SELECT f
+                FROM Friend f
+                JOIN FETCH f.requestUser
+                JOIN FETCH f.requestedUser
+                WHERE (f.requestUser.id = :userId OR f.requestedUser.id = :userId) AND f.isFriends = TRUE
+            """)
     List<Friend> findAllByUserIdAndIsFriends(final Long userId);
+
+    @Query("""
+            SELECT COUNT (f)
+                FROM Friend f
+                WHERE (f.requestUser.id = :userId AND f.requestedUser.id IN :friendIds)
+                OR (f.requestUser.id IN :friendIds AND f.requestedUser.id = :userId)
+                AND f.isFriends = TRUE
+            """)
+    Long countByUserIdAndFriendIdsAndIsFriends(final Long userId, final List<Long> friendIds);
 }

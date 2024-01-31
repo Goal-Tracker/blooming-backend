@@ -4,10 +4,8 @@ import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
-import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,15 +40,6 @@ public class GoalController {
     public ResponseEntity<ReadGoalResponse> readGoalById(@PathVariable("goalId") final Long goalId) {
         final ReadGoalDetailDto readGoalDetailDto = goalService.readGoalDetailById(goalId);
         final ReadGoalResponse response = ReadGoalResponse.from(readGoalDetailDto);
-
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping(value = "/all", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadAllGoalResponse> readAllGoalUserAttend(
-            @Authenticated final AuthenticatedUser authenticatedUser) {
-        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserId(authenticatedUser.userId());
-        final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
         return ResponseEntity.ok(response);
     }

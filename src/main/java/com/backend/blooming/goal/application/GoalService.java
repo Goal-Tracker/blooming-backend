@@ -1,8 +1,9 @@
 package com.backend.blooming.goal.application;
 
+import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
-import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -22,19 +23,18 @@ public class GoalService {
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
+    private final FriendRepository friendRepository;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
-        final Goal goal = persistGoal(createGoalDto);
+        final List<User> users = getUsers(createGoalDto.teamUserIds());
+        final Goal goal = persistGoal(createGoalDto, users);
 
         return goal.getId();
     }
 
-    private Goal persistGoal(final CreateGoalDto createGoalDto) {
-        final User user = getValidUser(createGoalDto.managerId());
-        final List<User> users = createGoalDto.teamUserIds()
-                                              .stream()
-                                              .map(this::getValidUser)
-                                              .toList();
+    private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
+        final User user = getUser(createGoalDto.managerId());
+        validateIsFriend(user.getId(), createGoalDto.teamUserIds());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
@@ -48,9 +48,21 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    private User getValidUser(final Long userId) {
+    private User getUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
+    }
+
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
+    }
+
+    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
+        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
+
+        if (countFriends != ((long) teamUserIds.size() - 1)) {
+            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
+        }
     }
 
     @Transactional(readOnly = true)
@@ -59,12 +71,5 @@ public class GoalService {
                                         .orElseThrow(NotFoundGoalException::new);
 
         return ReadGoalDetailDto.from(goal);
-    }
-
-    @Transactional(readOnly = true)
-    public ReadAllGoalDto readAllGoalByUserId(final Long userId) {
-        final List<Goal> goals = goalRepository.findAllByUserIdAndDeletedIsFalse(userId);
-
-        return ReadAllGoalDto.from(goals);
     }
 }

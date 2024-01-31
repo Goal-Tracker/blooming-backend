@@ -30,8 +30,8 @@ import java.util.List;
 @ToString(exclude = "teams")
 public class Goal extends BaseTimeEntity {
 
-    private final static String MEMO_DEFAULT = "";
-    private final static int TEAMS_MAXIMUM_LENGTH = 5;
+    private static final String MEMO_DEFAULT = "";
+    private static final int TEAMS_MAXIMUM_LENGTH = 5;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +84,7 @@ public class Goal extends BaseTimeEntity {
     }
 
     private void validateUsersSize(final List<User> users) {
-        if (users.size() > 5) {
+        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }
