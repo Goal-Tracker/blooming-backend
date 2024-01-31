@@ -1,5 +1,6 @@
 package com.backend.blooming.authentication.application;
 
+import com.backend.blooming.authentication.application.dto.LoginDto;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.LoginUserInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
@@ -11,6 +12,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
+import com.backend.blooming.devicetoken.application.service.DeviceTokenService;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
@@ -31,11 +33,13 @@ public class AuthenticationService {
     private final OAuthClientComposite oAuthClientComposite;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
+    private final DeviceTokenService deviceTokenService;
 
-    public LoginInformationDto login(final OAuthType oAuthType, final String oAuthAccessToken) {
+    public LoginInformationDto login(final OAuthType oAuthType, final LoginDto loginDto) {
         final OAuthClient oAuthClient = oAuthClientComposite.findOAuthClient(oAuthType);
-        final UserInformationDto userInformationDto = oAuthClient.findUserInformation(oAuthAccessToken);
+        final UserInformationDto userInformationDto = oAuthClient.findUserInformation(loginDto.oAuthAccessToken());
         final LoginUserInformationDto userInformation = findOrPersistUserInformation(userInformationDto, oAuthType);
+        saveOrActiveToken(userInformation.user(), loginDto.deviceToken());
 
         return new LoginInformationDto(convertToTokenDto(userInformation.user()), userInformation.isSignUp());
     }
@@ -80,6 +84,12 @@ public class AuthenticationService {
         final String refreshToken = tokenProvider.createToken(TokenType.REFRESH, userId);
 
         return new TokenDto(accessToken, refreshToken);
+    }
+
+    private void saveOrActiveToken(final User user, final String deviceToken) {
+        if (deviceToken != null && !deviceToken.isEmpty()) {
+            deviceTokenService.saveOrActive(user.getId(), deviceToken);
+        }
     }
 
     @Transactional(readOnly = true)

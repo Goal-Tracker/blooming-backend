@@ -3,6 +3,7 @@ package com.backend.blooming.friend.presentation;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.friend.application.dto.FriendType;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 
@@ -52,13 +53,22 @@ public class FriendControllerTestFixture {
             사용자_정보_dto2,
             false
     );
-    protected ReadFriendsDto 친구_요청을_보낸_사용자들_정보_dto = new ReadFriendsDto(List.of(
-            친구_요청_정보_dto1,
-            친구_요청_정보_dto2
-    ));
+    protected ReadFriendsDto 친구_요청을_보낸_사용자들_정보_dto = new ReadFriendsDto(
+            List.of(
+                    친구_요청_정보_dto1,
+                    친구_요청_정보_dto2
+            ),
+            FriendType.REQUEST.name()
+    );
     protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto1 = 친구_요청_정보_dto1;
     protected ReadFriendsDto.FriendDto 받은_친구_요청_정보_dto2 = 친구_요청_정보_dto2;
-    protected ReadFriendsDto 친구_요청을_받은_사용자들_정보_dto = 친구_요청을_보낸_사용자들_정보_dto;
+    protected ReadFriendsDto 친구_요청을_받은_사용자들_정보_dto = new ReadFriendsDto(
+            List.of(
+                    친구_요청_정보_dto1,
+                    친구_요청_정보_dto2
+            ),
+            FriendType.REQUESTED.name()
+    );
     protected ReadFriendsDto.FriendDto 서로_친구인_친구_요청_정보_dto1 = new ReadFriendsDto.FriendDto(
             1L,
             사용자_정보_dto1,
@@ -69,8 +79,11 @@ public class FriendControllerTestFixture {
             사용자_정보_dto2,
             true
     );
-    protected ReadFriendsDto 서로_친구인_사용자들_정보_dto = new ReadFriendsDto(List.of(
-            서로_친구인_친구_요청_정보_dto1,
-            서로_친구인_친구_요청_정보_dto2
-    ));
+    protected ReadFriendsDto 서로_친구인_사용자들_정보_dto = new ReadFriendsDto(
+            List.of(
+                    서로_친구인_친구_요청_정보_dto1,
+                    서로_친구인_친구_요청_정보_dto2
+            ),
+            FriendType.FRIENDS.name()
+    );
 }

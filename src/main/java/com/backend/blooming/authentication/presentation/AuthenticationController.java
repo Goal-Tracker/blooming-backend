@@ -1,6 +1,7 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
+import com.backend.blooming.authentication.application.dto.LoginDto;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
@@ -30,7 +31,7 @@ public class AuthenticationController {
     ) {
         final LoginInformationDto loginInformationDto = authenticationService.login(
                 OAuthType.from(oAuthType),
-                loginRequest.accessToken()
+                LoginDto.of(loginRequest.accessToken(), loginRequest.deviceToken())
         );
 
         return ResponseEntity.ok(LoginInformationResponse.from(loginInformationDto));

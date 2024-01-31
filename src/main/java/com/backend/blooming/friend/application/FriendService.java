@@ -1,5 +1,6 @@
 package com.backend.blooming.friend.application;
 
+import com.backend.blooming.friend.application.dto.FriendType;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
 import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
@@ -55,7 +56,7 @@ public class FriendService {
         final User user = findUser(userId);
         final List<Friend> requestUsers = friendRepository.findAllByRequestUserId(userId);
 
-        return ReadFriendsDto.of(requestUsers, user);
+        return ReadFriendsDto.of(requestUsers, user, FriendType.REQUEST);
     }
 
     @Transactional(readOnly = true)
@@ -63,7 +64,7 @@ public class FriendService {
         final User user = findUser(userId);
         final List<Friend> requestedUser = friendRepository.findAllByRequestedUserId(userId);
 
-        return ReadFriendsDto.of(requestedUser, user);
+        return ReadFriendsDto.of(requestedUser, user, FriendType.REQUESTED);
     }
 
     @Transactional(readOnly = true)
@@ -71,7 +72,7 @@ public class FriendService {
         final User user = findUser(userId);
         final List<Friend> friends = friendRepository.findAllByUserIdAndIsFriends(userId);
 
-        return ReadFriendsDto.of(friends, user);
+        return ReadFriendsDto.of(friends, user, FriendType.FRIENDS);
     }
 
     public void accept(final Long userId, final Long requestId) {

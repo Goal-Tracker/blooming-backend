@@ -35,6 +35,7 @@ public class FCMNotificationServiceTestFixture {
                              .statusMessage("기존 상태 메시지")
                              .build();
         userRepository.save(사용자);
+        사용자_아이디 = 사용자.getId();
 
         final DeviceToken 디바이스_토큰1 = new DeviceToken(사용자.getId(), "token1");
         final DeviceToken 디바이스_토큰2 = new DeviceToken(사용자.getId(), "token2");
