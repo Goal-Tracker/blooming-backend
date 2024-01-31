@@ -26,16 +26,15 @@ public class GoalService {
     private final FriendRepository friendRepository;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
-        final Goal goal = persistGoal(createGoalDto);
+        final List<User> users = getUsers(createGoalDto.teamUserIds());
+        final Goal goal = persistGoal(createGoalDto, users);
 
         return goal.getId();
     }
 
-    private Goal persistGoal(final CreateGoalDto createGoalDto) {
+    private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
         final User user = getUser(createGoalDto.managerId());
         validateIsFriend(user.getId(), createGoalDto.teamUserIds());
-
-        final List<User> users = getUsers(createGoalDto.teamUserIds());
 
         final Goal goal = Goal.builder()
                               .name(createGoalDto.name())
@@ -61,7 +60,7 @@ public class GoalService {
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
-        if (!countFriends.equals((long) teamUserIds.size() - 1)) {
+        if (countFriends != ((long) teamUserIds.size() - 1)) {
             throw new InvalidGoalException.InvalidInvalidUserToParticipate();
         }
     }
