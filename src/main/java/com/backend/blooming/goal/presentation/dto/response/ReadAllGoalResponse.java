@@ -37,7 +37,8 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
                     goalInfoDto.startDate(),
                     goalInfoDto.endDate(),
                     goalInfoDto.days(),
-                    teams);
+                    teams
+            );
         }
     }
 
@@ -51,7 +52,8 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
             return new GoalTeamResponse(
                     teams.id(),
                     teams.name(),
-                    teams.color().getCode());
+                    teams.color().getCode()
+            );
         }
     }
 }

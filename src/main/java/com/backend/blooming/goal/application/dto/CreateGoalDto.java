@@ -16,7 +16,8 @@ public record CreateGoalDto(
 
     public static CreateGoalDto of(
             final CreateGoalRequest request,
-            final Long managerId) {
+            final Long managerId
+    ) {
         return new CreateGoalDto(
                 request.name(),
                 request.memo(),

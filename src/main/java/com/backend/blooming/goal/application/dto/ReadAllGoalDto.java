@@ -23,7 +23,8 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
             LocalDate startDate,
             LocalDate endDate,
             long days,
-            List<GoalTeamDto> teams) {
+            List<GoalTeamDto> teams
+    ) {
 
         public static GoalInfoDto from(final Goal goal) {
             final List<GoalTeamDto> teams = goal.getTeams()

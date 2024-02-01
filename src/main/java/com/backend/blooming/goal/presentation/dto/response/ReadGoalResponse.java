@@ -53,7 +53,8 @@ public record ReadGoalResponse(
                     goalTeamDto.id(),
                     goalTeamDto.name(),
                     goalTeamDto.color().getCode(),
-                    goalTeamDto.statusMessage());
+                    goalTeamDto.statusMessage()
+            );
         }
     }
 }
