@@ -488,6 +488,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_단일_골_정보_조회">단일 골 정보 조회</a></li>
 <li><a href="#_현재_로그인한_사용자가_참여한_현재_진행중인_모든_골_조회">현재 로그인한 사용자가 참여한 현재 진행중인 모든 골 조회</a></li>
 <li><a href="#_현재_로그인한_사용자가_참여한_종료된_모든_골_조회">현재 로그인한 사용자가 참여한 종료된 모든 골 조회</a></li>
+<li><a href="#_골_삭제">골 삭제</a></li>
+<li><a href="#_골_수정">골 수정</a></li>
 </ul>
 </li>
 </ul>
@@ -2381,14 +2383,6 @@ Location: /goals/1</code></pre>
 </div>
 </div>
 </div>
-<div class="sect4">
-<h5 id="_응답_16_response_body"><a class="link" href="#_응답_16_response_body">Response body</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-none hljs"></code></pre>
-</div>
-</div>
-</div>
 </div>
 </div>
 <div class="sect2">
@@ -2897,6 +2891,163 @@ Content-Type: application/json
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_골_삭제"><a class="link" href="#_골_삭제">골 삭제</a></h3>
+<div class="sect3">
+<h4 id="_요청_18"><a class="link" href="#_요청_18">요청</a></h4>
+<div class="sect4">
+<h5 id="_요청_18_http_request"><a class="link" href="#_요청_18_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">DELETE /goals/1 HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_18_path_parameters"><a class="link" href="#_요청_18_path_parameters">Path parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /goals/{goalId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">조회할 골 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_18_request_headers"><a class="link" href="#_요청_18_request_headers">Request headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_18"><a class="link" href="#_응답_18">응답</a></h4>
+<div class="sect4">
+<h5 id="_응답_18_http_response"><a class="link" href="#_응답_18_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_골_수정"><a class="link" href="#_골_수정">골 수정</a></h3>
+<div class="sect3">
+<h4 id="_요청_19"><a class="link" href="#_요청_19">요청</a></h4>
+<div class="sect4">
+<h5 id="_요청_19_http_request"><a class="link" href="#_요청_19_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PUT /goals/1 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+X-API-VERSION: 1
+Authorization: Bearer access_token
+
+{
+  "name" : "수정된 테스트 골1",
+  "memo" : "수정된 테스트 골 메모1",
+  "endDate" : "2024-02-21",
+  "teamUserIds" : [ 1, 2, 3 ]
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_19_path_parameters"><a class="link" href="#_요청_19_path_parameters">Path parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /goals/{goalId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">조회할 골 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_19_request_headers"><a class="link" href="#_요청_19_request_headers">Request headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_19"><a class="link" href="#_응답_19">응답</a></h4>
+<div class="sect4">
+<h5 id="_응답_19_http_response"><a class="link" href="#_응답_19_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
+Location: /goals/1</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
