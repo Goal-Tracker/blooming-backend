@@ -142,14 +142,14 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
         // then
         assertSoftly(SoftAssertions -> {
-            final List<ReadGoalDetailDto.GoalTeamWithUserInfoDto> goalTeamWithUserInfoDto = result.GoalTeamWithUserInfo();
+            final List<ReadGoalDetailDto.GoalTeamWithUserInfoDto> teams = result.teams();
             assertThat(result.name()).isEqualTo(수정한_제목);
             assertThat(result.memo()).isEqualTo(수정한_메모);
             assertThat(result.endDate()).isEqualTo(수정한_종료날짜);
-            assertThat(goalTeamWithUserInfoDto).hasSize(3);
-            assertThat(goalTeamWithUserInfoDto.get(0).name()).isEqualTo(유효한_사용자.getName());
-            assertThat(goalTeamWithUserInfoDto.get(1).name()).isEqualTo(유효한_사용자2.getName());
-            assertThat(goalTeamWithUserInfoDto.get(2).name()).isEqualTo(친구가_아닌_사용자.getName());
+            assertThat(teams).hasSize(3);
+            assertThat(teams.get(0).name()).isEqualTo(현재_로그인한_사용자.getName());
+            assertThat(teams.get(1).name()).isEqualTo(친구인_사용자.getName());
+            assertThat(teams.get(2).name()).isEqualTo(친구인_사용자2.getName());
         });
     }
 

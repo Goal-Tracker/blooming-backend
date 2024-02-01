@@ -16,7 +16,7 @@ public class GoalTestFixture {
 
     protected String 골_제목 = "골 제목";
     protected LocalDate 골_시작일 = LocalDate.now();
-    protected LocalDate 골_종료일 = LocalDate.now().plusDays(40);
+    protected LocalDate 골_종료일 = LocalDate.now().plusDays(10);
     protected Long 골_관리자_아이디 = 1L;
     protected List<User> 골_참여자_목록 = new ArrayList<>();
     protected List<User> 유효하지_않은_골_참여자_목록 = new ArrayList<>();
