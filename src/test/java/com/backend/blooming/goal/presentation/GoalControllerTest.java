@@ -22,6 +22,8 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
@@ -99,7 +101,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidUserToParticipate());
+        given(goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidUserToParticipate());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -118,7 +121,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
+        given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -137,7 +141,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
+        given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -156,7 +161,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
+        given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -232,5 +238,73 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 status().isNotFound(),
                 jsonPath("$.message").exists()
         ).andDo(print());
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_현재_진행중인_모든_골을_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readAllGoalByUserIdAndInProgress(사용자_토큰_정보.userId(), LocalDate.now()))
+                .willReturn(사용자가_참여한_현재_진행중인_골_목록_dto);
+
+        // when & then
+        mockMvc.perform(get("/goals/all/progress")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.goals.[0].id", is(사용자가_참여한_현재_진행중인_골_목록_응답_dto.goals().get(0).id()), Long.class),
+                jsonPath("$.goals.[0].name", is(사용자가_참여한_현재_진행중인_골_목록_응답_dto.goals().get(0).name()), String.class)
+        ).andDo(print()).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                responseFields(
+                        fieldWithPath("goals.[].id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("goals.[].name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("goals.[].startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("goals.[].endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("goals.[].days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("goals.[].teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("goals.[].teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("goals.[].teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
+                )
+        ));
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readAllGoalByUserIdAndFinished(사용자_토큰_정보.userId(), LocalDate.now()))
+                .willReturn(사용자가_참여한_종료된_골_목록_dto);
+
+        // when & then
+        mockMvc.perform(get("/goals/all/finished")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.goals.[0].id", is(사용자가_참여한_종료된_골_목록_응답_dto.goals().get(0).id()), Long.class),
+                jsonPath("$.goals.[0].name", is(사용자가_참여한_종료된_골_목록_응답_dto.goals().get(0).name()), String.class)
+        ).andDo(print()).andDo(restDocs.document(
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                responseFields(
+                        fieldWithPath("goals.[].id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("goals.[].name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("goals.[].startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("goals.[].endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("goals.[].days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("goals.[].teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("goals.[].teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("goals.[].teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
+                )
+        ));
     }
 }

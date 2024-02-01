@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,11 +61,11 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).id()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).id());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).name()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).name());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).color()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).color());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).statusMessage()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).statusMessage());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(1).id()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(1).id());
+            softAssertions.assertThat(result.teams().get(0).id()).isEqualTo(유효한_골_dto.teams().get(0).id());
+            softAssertions.assertThat(result.teams().get(0).name()).isEqualTo(유효한_골_dto.teams().get(0).name());
+            softAssertions.assertThat(result.teams().get(0).color()).isEqualTo(유효한_골_dto.teams().get(0).color());
+            softAssertions.assertThat(result.teams().get(0).statusMessage()).isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
+            softAssertions.assertThat(result.teams().get(1).id()).isEqualTo(유효한_골_dto.teams().get(1).id());
         });
     }
 
@@ -71,5 +74,35 @@ class GoalServiceTest extends GoalServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_골_중_현재_진행중인_모든_골_정보를_조회한다() {
+        // when
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndInProgress(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.goalInfos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfos().get(0).id()).isEqualTo(현재_진행중인_골1.getId());
+            softAssertions.assertThat(result.goalInfos().get(0).name()).isEqualTo(현재_진행중인_골1.getName());
+            softAssertions.assertThat(result.goalInfos().get(1).id()).isEqualTo(현재_진행중인_골2.getId());
+            softAssertions.assertThat(result.goalInfos().get(1).name()).isEqualTo(현재_진행중인_골2.getName());
+        });
+    }
+
+    @Test
+    void 현재_로그인한_사용자가_참여한_골_중_종료된_모든_골_정보를_조회한다() {
+        // when
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndFinished(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.goalInfos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfos().get(0).id()).isEqualTo(이미_종료된_골1.getId());
+            softAssertions.assertThat(result.goalInfos().get(0).name()).isEqualTo(이미_종료된_골1.getName());
+            softAssertions.assertThat(result.goalInfos().get(1).id()).isEqualTo(이미_종료된_골2.getId());
+            softAssertions.assertThat(result.goalInfos().get(1).name()).isEqualTo(이미_종료된_골2.getName());
+        });
     }
 }

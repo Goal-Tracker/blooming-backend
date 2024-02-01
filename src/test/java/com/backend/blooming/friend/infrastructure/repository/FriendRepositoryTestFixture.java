@@ -37,6 +37,8 @@ public class FriendRepositoryTestFixture {
     protected Friend 친구인_요청3;
     protected Long 현재_로그인한_사용자_아이디;
     protected List<Long> 골_초대받은_사용자_아이디_목록 = new ArrayList<>();
+    protected Long 친구인_사용자_아이디;
+    protected Long 친구가_아닌_사용자_아이디;
 
     @BeforeEach
     void setUpFixture() {
@@ -136,5 +138,7 @@ public class FriendRepositoryTestFixture {
 
         현재_로그인한_사용자_아이디 = 친구인_사용자1.getId();
         골_초대받은_사용자_아이디_목록.addAll(List.of(친구인_사용자2.getId(), 친구인_사용자3.getId()));
+        친구인_사용자_아이디 = 친구인_사용자2.getId();
+        친구가_아닌_사용자_아이디 = 친구인_사용자3.getId();
     }
 }
