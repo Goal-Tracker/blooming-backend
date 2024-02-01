@@ -9,7 +9,6 @@ import java.util.List;
 
 public record UpdateGoalRequest(
 
-        @NotEmpty(message = "제목을 입력해주세요.")
         String name,
         String memo,
 

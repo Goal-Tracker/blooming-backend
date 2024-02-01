@@ -36,7 +36,7 @@ public enum ExceptionMessage {
     FRIEND_ACCEPTANCE_FORBIDDEN("친구 요청을 수락할 권한이 없습니다."),
     DELETE_FRIEND_FORBIDDEN("친구를 삭제할 권한이 없습니다."),
 
-    // 골 추가
+    // 골
     GOAL_NOT_FOUND("골 정보를 찾을 수 없습니다."),
     GOAL_TEAM_NOT_FOUND("골 팀 정보를 찾을 수 없습니다."),
     INVALID_GOAL_START_DAY("시작 날짜가 현재 날짜 이전입니다."),
@@ -48,7 +48,7 @@ public enum ExceptionMessage {
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_END_DATE_FORBIDDEN("종료날짜는 기존 날짜보다 이전으로 수정 될 수 없습니다."),
-    UPDATE_TEAMS_FORBIDDEN("기존 사용자는 수정할 수 없습니다.");
+    UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다.");
 
     private final String message;
 }

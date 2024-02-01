@@ -98,7 +98,7 @@ public class Goal extends BaseTimeEntity {
     }
 
     public void updateMemo(final String memo) {
-        this.memo = memo;
+        this.memo = processDefaultMemo(memo);
     }
 
     public void updateEndDate(final LocalDate endDate) {
