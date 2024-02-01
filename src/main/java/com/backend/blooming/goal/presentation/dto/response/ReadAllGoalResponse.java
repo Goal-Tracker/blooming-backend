@@ -8,7 +8,7 @@ import java.util.List;
 public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
 
     public static ReadAllGoalResponse from(final ReadAllGoalDto readAllGoalDto) {
-        final List<GoalInfoResponse> goalInfoResponses = readAllGoalDto.goalInfoDtos()
+        final List<GoalInfoResponse> goalInfoResponses = readAllGoalDto.goalInfos()
                                                                        .stream()
                                                                        .map(GoalInfoResponse::from)
                                                                        .toList();
@@ -22,13 +22,14 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
             LocalDate startDate,
             LocalDate endDate,
             long days,
-            List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfos) {
+            List<GoalTeamResponse> teams
+    ) {
 
         public static GoalInfoResponse from(final ReadAllGoalDto.GoalInfoDto goalInfoDto) {
-            final List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfoResponses = goalInfoDto.goalTeamWithUserInfoDtos()
-                                                                                                .stream()
-                                                                                                .map(GoalTeamWithUserInfoResponse::from)
-                                                                                                .toList();
+            final List<GoalTeamResponse> teams = goalInfoDto.teams()
+                                                            .stream()
+                                                            .map(GoalTeamResponse::from)
+                                                            .toList();
 
             return new GoalInfoResponse(
                     goalInfoDto.id(),
@@ -36,20 +37,21 @@ public record ReadAllGoalResponse(List<GoalInfoResponse> goals) {
                     goalInfoDto.startDate(),
                     goalInfoDto.endDate(),
                     goalInfoDto.days(),
-                    goalTeamWithUserInfoResponses);
+                    teams);
         }
     }
 
-    public record GoalTeamWithUserInfoResponse(
+    public record GoalTeamResponse(
             Long id,
             String name,
-            String colorCode) {
+            String colorCode
+    ) {
 
-        public static GoalTeamWithUserInfoResponse from(final ReadAllGoalDto.GoalInfoDto.GoalTeamWithUserInfoDto goalTeamWithUserInfoDto) {
-            return new GoalTeamWithUserInfoResponse(
-                    goalTeamWithUserInfoDto.id(),
-                    goalTeamWithUserInfoDto.name(),
-                    goalTeamWithUserInfoDto.color().getCode());
+        public static GoalTeamResponse from(final ReadAllGoalDto.GoalInfoDto.GoalTeamDto teams) {
+            return new GoalTeamResponse(
+                    teams.id(),
+                    teams.name(),
+                    teams.color().getCode());
         }
     }
 }

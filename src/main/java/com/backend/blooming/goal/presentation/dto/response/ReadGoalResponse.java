@@ -19,15 +19,15 @@ public record ReadGoalResponse(
         LocalDate endDate,
         long days,
         Long managerId,
-        List<GoalTeamWithUserInfoResponse> teams
+        List<GoalTeamResponse> teams
 ) {
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
 
-        final List<GoalTeamWithUserInfoResponse> goalTeamWithUserInfoResponses = readGoalDetailDto.GoalTeamWithUserInfo()
-                                                                                                  .stream()
-                                                                                                  .map(GoalTeamWithUserInfoResponse::from)
-                                                                                                  .toList();
+        final List<GoalTeamResponse> goalTeamWithUserInfoResponses = readGoalDetailDto.teams()
+                                                                                      .stream()
+                                                                                      .map(GoalTeamResponse::from)
+                                                                                      .toList();
 
         return new ReadGoalResponse(
                 readGoalDetailDto.id(),
@@ -41,17 +41,19 @@ public record ReadGoalResponse(
         );
     }
 
-    public record GoalTeamWithUserInfoResponse(Long id, String name,
-                                               String colorCode,
-                                               String statusMessage) {
+    public record GoalTeamResponse(
+            Long id,
+            String name,
+            String colorCode,
+            String statusMessage
+    ) {
 
-        public static GoalTeamWithUserInfoResponse from(final ReadGoalDetailDto.GoalTeamWithUserInfoDto goalTeamWithUserInfoDto) {
-
-            return new GoalTeamWithUserInfoResponse(
-                    goalTeamWithUserInfoDto.id(),
-                    goalTeamWithUserInfoDto.name(),
-                    goalTeamWithUserInfoDto.color().getCode(),
-                    goalTeamWithUserInfoDto.statusMessage());
+        public static GoalTeamResponse from(final ReadGoalDetailDto.GoalTeamDto goalTeamDto) {
+            return new GoalTeamResponse(
+                    goalTeamDto.id(),
+                    goalTeamDto.name(),
+                    goalTeamDto.color().getCode(),
+                    goalTeamDto.statusMessage());
         }
     }
 }

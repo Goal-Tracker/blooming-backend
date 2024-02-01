@@ -15,14 +15,14 @@ public record ReadGoalDetailDto(
         LocalDate endDate,
         long days,
         Long managerId,
-        List<GoalTeamWithUserInfoDto> GoalTeamWithUserInfo
+        List<GoalTeamDto> teams
 ) {
 
     public static ReadGoalDetailDto from(final Goal goal) {
-        final List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos = goal.getTeams()
-                                                                           .stream()
-                                                                           .map(GoalTeamWithUserInfoDto::from)
-                                                                           .toList();
+        final List<GoalTeamDto> teams = goal.getTeams()
+                                            .stream()
+                                            .map(GoalTeamDto::from)
+                                            .toList();
 
         return new ReadGoalDetailDto(
                 goal.getId(),
@@ -32,14 +32,19 @@ public record ReadGoalDetailDto(
                 goal.getGoalTerm().getEndDate(),
                 goal.getGoalTerm().getDays(),
                 goal.getManagerId(),
-                goalTeamWithUserInfoDtos
+                teams
         );
     }
 
-    public record GoalTeamWithUserInfoDto(Long id, String name, ThemeColor color, String statusMessage) {
+    public record GoalTeamDto(
+            Long id,
+            String name,
+            ThemeColor color,
+            String statusMessage
+    ) {
 
-        public static GoalTeamWithUserInfoDto from(final GoalTeam goalTeam) {
-            return new GoalTeamWithUserInfoDto(
+        public static GoalTeamDto from(final GoalTeam goalTeam) {
+            return new GoalTeamDto(
                     goalTeam.getId(),
                     goalTeam.getUser().getName(),
                     goalTeam.getUser().getColor(),

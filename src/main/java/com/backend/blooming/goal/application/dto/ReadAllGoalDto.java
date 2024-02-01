@@ -7,14 +7,14 @@ import com.backend.blooming.themecolor.domain.ThemeColor;
 import java.time.LocalDate;
 import java.util.List;
 
-public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
+public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
 
     public static ReadAllGoalDto from(final List<Goal> goals) {
-        final List<GoalInfoDto> goalInfoDtos = goals.stream()
-                                                    .map(GoalInfoDto::from)
-                                                    .toList();
+        final List<GoalInfoDto> goalInfos = goals.stream()
+                                                 .map(GoalInfoDto::from)
+                                                 .toList();
 
-        return new ReadAllGoalDto(goalInfoDtos);
+        return new ReadAllGoalDto(goalInfos);
     }
 
     public record GoalInfoDto(
@@ -23,13 +23,13 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
             LocalDate startDate,
             LocalDate endDate,
             long days,
-            List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos) {
+            List<GoalTeamDto> teams) {
 
         public static GoalInfoDto from(final Goal goal) {
-            final List<GoalTeamWithUserInfoDto> goalTeamWithUserInfoDtos = goal.getTeams()
-                                                                               .stream()
-                                                                               .map(GoalTeamWithUserInfoDto::from)
-                                                                               .toList();
+            final List<GoalTeamDto> teams = goal.getTeams()
+                                                .stream()
+                                                .map(GoalTeamDto::from)
+                                                .toList();
 
             return new GoalInfoDto(
                     goal.getId(),
@@ -37,14 +37,14 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfoDtos) {
                     goal.getGoalTerm().getStartDate(),
                     goal.getGoalTerm().getEndDate(),
                     goal.getGoalTerm().getDays(),
-                    goalTeamWithUserInfoDtos
+                    teams
             );
         }
 
-        public record GoalTeamWithUserInfoDto(Long id, String name, ThemeColor color) {
+        public record GoalTeamDto(Long id, String name, ThemeColor color) {
 
-            public static GoalTeamWithUserInfoDto from(final GoalTeam goalTeam) {
-                return new GoalTeamWithUserInfoDto(
+            public static GoalTeamDto from(final GoalTeam goalTeam) {
+                return new GoalTeamDto(
                         goalTeam.getUser().getId(),
                         goalTeam.getUser().getName(),
                         goalTeam.getUser().getColor()

@@ -61,11 +61,11 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.endDate()).isEqualTo(골_종료일);
             softAssertions.assertThat(result.days()).isEqualTo(골_날짜수);
             softAssertions.assertThat(result.managerId()).isEqualTo(유효한_사용자_아이디);
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).id()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).id());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).name()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).name());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).color()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).color());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(0).statusMessage()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(0).statusMessage());
-            softAssertions.assertThat(result.GoalTeamWithUserInfo().get(1).id()).isEqualTo(유효한_골_dto.GoalTeamWithUserInfo().get(1).id());
+            softAssertions.assertThat(result.teams().get(0).id()).isEqualTo(유효한_골_dto.teams().get(0).id());
+            softAssertions.assertThat(result.teams().get(0).name()).isEqualTo(유효한_골_dto.teams().get(0).name());
+            softAssertions.assertThat(result.teams().get(0).color()).isEqualTo(유효한_골_dto.teams().get(0).color());
+            softAssertions.assertThat(result.teams().get(0).statusMessage()).isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
+            softAssertions.assertThat(result.teams().get(1).id()).isEqualTo(유효한_골_dto.teams().get(1).id());
         });
     }
 
@@ -83,11 +83,11 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result.goalInfoDtos()).hasSize(2);
-            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(현재_진행중인_골1.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(현재_진행중인_골1.getName());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(현재_진행중인_골2.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(현재_진행중인_골2.getName());
+            softAssertions.assertThat(result.goalInfos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfos().get(0).id()).isEqualTo(현재_진행중인_골1.getId());
+            softAssertions.assertThat(result.goalInfos().get(0).name()).isEqualTo(현재_진행중인_골1.getName());
+            softAssertions.assertThat(result.goalInfos().get(1).id()).isEqualTo(현재_진행중인_골2.getId());
+            softAssertions.assertThat(result.goalInfos().get(1).name()).isEqualTo(현재_진행중인_골2.getName());
         });
     }
 
@@ -98,11 +98,11 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result.goalInfoDtos()).hasSize(2);
-            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(이미_종료된_골1.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(이미_종료된_골1.getName());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(이미_종료된_골2.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(이미_종료된_골2.getName());
+            softAssertions.assertThat(result.goalInfos()).hasSize(2);
+            softAssertions.assertThat(result.goalInfos().get(0).id()).isEqualTo(이미_종료된_골1.getId());
+            softAssertions.assertThat(result.goalInfos().get(0).name()).isEqualTo(이미_종료된_골1.getName());
+            softAssertions.assertThat(result.goalInfos().get(1).id()).isEqualTo(이미_종료된_골2.getId());
+            softAssertions.assertThat(result.goalInfos().get(1).name()).isEqualTo(이미_종료된_골2.getName());
         });
     }
 }

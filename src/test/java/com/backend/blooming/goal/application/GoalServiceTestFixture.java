@@ -101,21 +101,21 @@ public class GoalServiceTestFixture {
         골_참여_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
 
         현재_진행중인_골1 = Goal.builder()
-                    .name(골_제목)
-                    .memo(골_메모)
-                    .startDate(골_시작일)
-                    .endDate(골_종료일)
-                    .managerId(유효한_사용자_아이디)
-                    .users(골_참여_사용자_목록)
-                    .build();
+                         .name(골_제목)
+                         .memo(골_메모)
+                         .startDate(골_시작일)
+                         .endDate(골_종료일)
+                         .managerId(유효한_사용자_아이디)
+                         .users(골_참여_사용자_목록)
+                         .build();
         현재_진행중인_골2 = Goal.builder()
-                        .name("골 제목2")
-                        .memo("골 메모2")
-                        .startDate(골_시작일)
-                        .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 + 1))
-                        .managerId(유효한_사용자_아이디)
-                        .users(골_참여_사용자_목록)
-                        .build();
+                         .name("골 제목2")
+                         .memo("골 메모2")
+                         .startDate(골_시작일)
+                         .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 + 1))
+                         .managerId(유효한_사용자_아이디)
+                         .users(골_참여_사용자_목록)
+                         .build();
         이미_종료된_골1 = Goal.builder()
                         .name("이미 종료된 골1")
                         .memo("이미 종료된 골1")

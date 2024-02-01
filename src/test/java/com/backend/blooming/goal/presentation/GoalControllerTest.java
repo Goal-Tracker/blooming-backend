@@ -101,7 +101,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidUserToParticipate());
+        given(goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidUserToParticipate());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -120,7 +121,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
+        given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -139,7 +141,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
+        given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -158,7 +161,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto)).willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
+        given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
 
         // when & then
         mockMvc.perform(post("/goals")
@@ -241,7 +245,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readAllGoalByUserIdAndInProgress(사용자_토큰_정보.userId(), LocalDate.now())).willReturn(사용자가_참여한_현재_진행중인_골_목록_dto);
+        given(goalService.readAllGoalByUserIdAndInProgress(사용자_토큰_정보.userId(), LocalDate.now()))
+                .willReturn(사용자가_참여한_현재_진행중인_골_목록_dto);
 
         // when & then
         mockMvc.perform(get("/goals/all/progress")
@@ -274,7 +279,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readAllGoalByUserIdAndFinished(사용자_토큰_정보.userId(), LocalDate.now())).willReturn(사용자가_참여한_종료된_골_목록_dto);
+        given(goalService.readAllGoalByUserIdAndFinished(사용자_토큰_정보.userId(), LocalDate.now()))
+                .willReturn(사용자가_참여한_종료된_골_목록_dto);
 
         // when & then
         mockMvc.perform(get("/goals/all/finished")
