@@ -84,10 +84,10 @@ class GoalServiceTest extends GoalServiceTestFixture {
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(result.goalInfoDtos()).hasSize(2);
-            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(유효한_골.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(유효한_골.getName());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(현재_진행중인_골.getId());
-            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(현재_진행중인_골.getName());
+            softAssertions.assertThat(result.goalInfoDtos().get(0).id()).isEqualTo(현재_진행중인_골1.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(0).name()).isEqualTo(현재_진행중인_골1.getName());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).id()).isEqualTo(현재_진행중인_골2.getId());
+            softAssertions.assertThat(result.goalInfoDtos().get(1).name()).isEqualTo(현재_진행중인_골2.getName());
         });
     }
 
