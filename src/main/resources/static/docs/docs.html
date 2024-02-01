@@ -2293,8 +2293,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-01-25",
-  "endDate" : "2024-03-05",
+  "startDate" : "2024-02-01",
+  "endDate" : "2024-03-12",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -2466,8 +2466,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-01-31",
-  "endDate" : "2024-02-10",
+  "startDate" : "2024-02-01",
+  "endDate" : "2024-02-11",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -2493,8 +2493,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-01-31",
-  "endDate" : "2024-02-10",
+  "startDate" : "2024-02-01",
+  "endDate" : "2024-02-11",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -2591,9 +2591,9 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_현재_로그인한_사용자가_참여한_현재_진행중인_모든_골_조회"><a class="link" href="#_현재_로그인한_사용자가_참여한_현재_진행중인_모든_골_조회">현재 로그인한 사용자가 참여한 현재 진행중인 모든 골 조회</a></h3>
 <div class="sect3">
-<h4 id="_요청_15"><a class="link" href="#_요청_15">요청</a></h4>
+<h4 id="_요청_18"><a class="link" href="#_요청_18">요청</a></h4>
 <div class="sect4">
-<h5 id="_요청_15_http_request"><a class="link" href="#_요청_15_http_request">HTTP request</a></h5>
+<h5 id="_요청_18_http_request"><a class="link" href="#_요청_18_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /goals/all/progress HTTP/1.1
@@ -2603,7 +2603,7 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_요청_15_request_headers"><a class="link" href="#_요청_15_request_headers">Request headers</a></h5>
+<h5 id="_요청_18_request_headers"><a class="link" href="#_요청_18_request_headers">Request headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2629,9 +2629,9 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_응답_15"><a class="link" href="#_응답_15">응답</a></h4>
+<h4 id="_응답_18"><a class="link" href="#_응답_18">응답</a></h4>
 <div class="sect4">
-<h5 id="_응답_15_http_response"><a class="link" href="#_응답_15_http_response">HTTP response</a></h5>
+<h5 id="_응답_18_http_response"><a class="link" href="#_응답_18_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -2641,8 +2641,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-01-25",
-    "endDate" : "2024-02-04",
+    "startDate" : "2024-02-01",
+    "endDate" : "2024-02-11",
     "days" : 11,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2659,15 +2659,15 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect4">
-<h5 id="_응답_15_response_body"><a class="link" href="#_응답_15_response_body">Response body</a></h5>
+<h5 id="_응답_18_response_body"><a class="link" href="#_응답_18_response_body">Response body</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">{
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-01-25",
-    "endDate" : "2024-02-04",
+    "startDate" : "2024-02-01",
+    "endDate" : "2024-02-11",
     "days" : 11,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2684,7 +2684,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect4">
-<h5 id="_응답_15_response_fields"><a class="link" href="#_응답_15_response_fields">Response fields</a></h5>
+<h5 id="_응답_18_response_fields"><a class="link" href="#_응답_18_response_fields">Response fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2747,9 +2747,9 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_현재_로그인한_사용자가_참여한_종료된_모든_골_조회"><a class="link" href="#_현재_로그인한_사용자가_참여한_종료된_모든_골_조회">현재 로그인한 사용자가 참여한 종료된 모든 골 조회</a></h3>
 <div class="sect3">
-<h4 id="_요청_16"><a class="link" href="#_요청_16">요청</a></h4>
+<h4 id="_요청_19"><a class="link" href="#_요청_19">요청</a></h4>
 <div class="sect4">
-<h5 id="_요청_16_http_request"><a class="link" href="#_요청_16_http_request">HTTP request</a></h5>
+<h5 id="_요청_19_http_request"><a class="link" href="#_요청_19_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /goals/all/finished HTTP/1.1
@@ -2759,7 +2759,7 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_요청_16_request_headers"><a class="link" href="#_요청_16_request_headers">Request headers</a></h5>
+<h5 id="_요청_19_request_headers"><a class="link" href="#_요청_19_request_headers">Request headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2785,9 +2785,9 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_응답_16"><a class="link" href="#_응답_16">응답</a></h4>
+<h4 id="_응답_19"><a class="link" href="#_응답_19">응답</a></h4>
 <div class="sect4">
-<h5 id="_응답_16_http_response"><a class="link" href="#_응답_16_http_response">HTTP response</a></h5>
+<h5 id="_응답_19_http_response"><a class="link" href="#_응답_19_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
@@ -2797,8 +2797,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-01-25",
-    "endDate" : "2024-01-30",
+    "startDate" : "2024-02-01",
+    "endDate" : "2024-02-06",
     "days" : 6,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2815,15 +2815,15 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect4">
-<h5 id="_응답_16_response_body"><a class="link" href="#_응답_16_response_body">Response body</a></h5>
+<h5 id="_응답_19_response_body"><a class="link" href="#_응답_19_response_body">Response body</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-json hljs" data-lang="json">{
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-01-25",
-    "endDate" : "2024-01-30",
+    "startDate" : "2024-02-01",
+    "endDate" : "2024-02-06",
     "days" : 6,
     "goalTeamWithUserInfos" : [ {
       "id" : 1,
@@ -2840,7 +2840,7 @@ Content-Type: application/json
 </div>
 </div>
 <div class="sect4">
-<h5 id="_응답_16_response_fields"><a class="link" href="#_응답_16_response_fields">Response fields</a></h5>
+<h5 id="_응답_19_response_fields"><a class="link" href="#_응답_19_response_fields">Response fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2906,7 +2906,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-01-31 16:59:21 +0900
+Last updated 2024-02-01 18:50:52 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>
