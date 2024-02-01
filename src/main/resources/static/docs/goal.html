@@ -456,8 +456,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-02-01",
-  "endDate" : "2024-03-12",
+  "startDate" : "2024-02-02",
+  "endDate" : "2024-03-13",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -544,6 +544,14 @@ Location: /goals/1</code></pre>
 </div>
 </div>
 </div>
+<div class="sect4">
+<h5 id="_응답_response_body">Response body</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code></code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -621,8 +629,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-02-01",
-  "endDate" : "2024-02-11",
+  "startDate" : "2024-02-02",
+  "endDate" : "2024-02-12",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -648,8 +656,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-02-01",
-  "endDate" : "2024-02-11",
+  "startDate" : "2024-02-02",
+  "endDate" : "2024-02-12",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -796,8 +804,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-02-01",
-    "endDate" : "2024-02-11",
+    "startDate" : "2024-02-02",
+    "endDate" : "2024-02-12",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -821,8 +829,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-02-01",
-    "endDate" : "2024-02-11",
+    "startDate" : "2024-02-02",
+    "endDate" : "2024-02-12",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -952,8 +960,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-02-01",
-    "endDate" : "2024-02-06",
+    "startDate" : "2024-02-02",
+    "endDate" : "2024-02-07",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -977,8 +985,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-02-01",
-    "endDate" : "2024-02-06",
+    "startDate" : "2024-02-02",
+    "endDate" : "2024-02-07",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -1058,9 +1066,9 @@ Content-Type: application/json
 <div class="sect2">
 <h3 id="_골_삭제">골 삭제</h3>
 <div class="sect3">
-<h4 id="_요청_3">요청</h4>
+<h4 id="_요청_5">요청</h4>
 <div class="sect4">
-<h5 id="_요청_3_http_request">HTTP request</h5>
+<h5 id="_요청_5_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /goals/1 HTTP/1.1
@@ -1070,7 +1078,7 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_요청_3_path_parameters">Path parameters</h5>
+<h5 id="_요청_5_path_parameters">Path parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /goals/{goalId}</caption>
 <colgroup>
@@ -1092,7 +1100,7 @@ Authorization: Bearer access_token</code></pre>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_요청_3_request_headers">Request headers</h5>
+<h5 id="_요청_5_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1118,9 +1126,9 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_응답_3">응답</h4>
+<h4 id="_응답_5">응답</h4>
 <div class="sect4">
-<h5 id="_응답_3_http_response">HTTP response</h5>
+<h5 id="_응답_5_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
@@ -1132,12 +1140,12 @@ Authorization: Bearer access_token</code></pre>
 <div class="sect2">
 <h3 id="_골_수정">골 수정</h3>
 <div class="sect3">
-<h4 id="_요청_4">요청</h4>
+<h4 id="_요청_6">요청</h4>
 <div class="sect4">
-<h5 id="_요청_4_http_request">HTTP request</h5>
+<h5 id="_요청_6_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /goals/1 HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /goals/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
@@ -1145,14 +1153,14 @@ Authorization: Bearer access_token
 {
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "endDate" : "2024-02-21",
+  "endDate" : "2024-02-22",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect4">
-<h5 id="_요청_4_path_parameters">Path parameters</h5>
+<h5 id="_요청_6_path_parameters">Path parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /goals/{goalId}</caption>
 <colgroup>
@@ -1174,7 +1182,7 @@ Authorization: Bearer access_token
 </table>
 </div>
 <div class="sect4">
-<h5 id="_요청_4_request_headers">Request headers</h5>
+<h5 id="_요청_6_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1200,9 +1208,9 @@ Authorization: Bearer access_token
 </div>
 </div>
 <div class="sect3">
-<h4 id="_응답_4">응답</h4>
+<h4 id="_응답_6">응답</h4>
 <div class="sect4">
-<h5 id="_응답_4_http_response">HTTP response</h5>
+<h5 id="_응답_6_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
@@ -1216,7 +1224,7 @@ Location: /goals/1</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-02-01 22:13:20 +0900
+Last updated 2024-02-01 23:25:41 +0900
 </div>
 </div>
 </body>
