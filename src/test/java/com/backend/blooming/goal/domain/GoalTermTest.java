@@ -17,16 +17,14 @@ class GoalTermTest extends GoalTermTestFixture {
     @Test
     void 골_시작날짜가_현재보다_이전인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> new GoalTerm(LocalDate.now().minusDays(2), LocalDate.now()
-                                                                                     .plusDays(2)))
+        assertThatThrownBy(() -> new GoalTerm(LocalDate.now().minusDays(2), LocalDate.now().plusDays(2)))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalStartDay.class);
     }
 
     @Test
     void 골_종료날짜가_시작날짜보다_이전인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> new GoalTerm(LocalDate.now().plusDays(5), LocalDate.now()
-                                                                                    .plusDays(2)))
+        assertThatThrownBy(() -> new GoalTerm(LocalDate.now().plusDays(5), LocalDate.now().plusDays(2)))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidGoalPeriod.class);
     }
 

@@ -17,14 +17,12 @@ import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("NonAsciiCharacters")
 @DirtiesContext
@@ -87,37 +85,37 @@ public class GoalServiceTestFixture {
         CreateGoalRequest 존재하지_않는_사용자가_관리자인_골_생성_요청_dto;
 
         현재_로그인한_사용자 = User.builder()
-                      .oAuthId("아이디")
-                      .oAuthType(OAuthType.KAKAO)
-                      .email(new Email("test@gmail.com"))
-                      .name(new Name("테스트"))
-                      .color(ThemeColor.BABY_BLUE)
-                      .statusMessage("상태메시지")
-                      .build();
+                          .oAuthId("아이디")
+                          .oAuthType(OAuthType.KAKAO)
+                          .email(new Email("test@gmail.com"))
+                          .name(new Name("테스트"))
+                          .color(ThemeColor.BABY_BLUE)
+                          .statusMessage("상태메시지")
+                          .build();
         친구인_사용자 = User.builder()
-                       .oAuthId("아이디2")
-                       .oAuthType(OAuthType.KAKAO)
-                       .email(new Email("test2@gmail.com"))
-                       .name(new Name("테스트2"))
-                       .color(ThemeColor.BABY_BLUE)
-                       .statusMessage("상태메시지2")
-                       .build();
-        친구가_아닌_사용자 = User.builder()
-                       .oAuthId("아이디3")
-                       .oAuthType(OAuthType.KAKAO)
-                       .email(new Email("test3@gmail.com"))
-                       .name(new Name("테스트3"))
-                       .color(ThemeColor.CORAL)
-                       .statusMessage("상태메시지3")
-                       .build();
-        친구인_사용자2 = User.builder()
-                      .oAuthId("아이디4")
+                      .oAuthId("아이디2")
                       .oAuthType(OAuthType.KAKAO)
-                      .email(new Email("test4@gmail.com"))
-                      .name(new Name("테스트4"))
-                      .color(ThemeColor.INDIGO)
-                      .statusMessage("상태메시지4")
+                      .email(new Email("test2@gmail.com"))
+                      .name(new Name("테스트2"))
+                      .color(ThemeColor.BABY_BLUE)
+                      .statusMessage("상태메시지2")
                       .build();
+        친구가_아닌_사용자 = User.builder()
+                         .oAuthId("아이디3")
+                         .oAuthType(OAuthType.KAKAO)
+                         .email(new Email("test3@gmail.com"))
+                         .name(new Name("테스트3"))
+                         .color(ThemeColor.CORAL)
+                         .statusMessage("상태메시지3")
+                         .build();
+        친구인_사용자2 = User.builder()
+                       .oAuthId("아이디4")
+                       .oAuthType(OAuthType.KAKAO)
+                       .email(new Email("test4@gmail.com"))
+                       .name(new Name("테스트4"))
+                       .color(ThemeColor.INDIGO)
+                       .statusMessage("상태메시지4")
+                       .build();
 
         userRepository.saveAll(List.of(현재_로그인한_사용자, 친구인_사용자, 친구가_아닌_사용자, 친구인_사용자2));
         유효한_사용자_아이디 = 현재_로그인한_사용자.getId();
@@ -168,8 +166,8 @@ public class GoalServiceTestFixture {
         goalRepository.saveAll(List.of(현재_진행중인_골1, 현재_진행중인_골2, 이미_종료된_골1, 이미_종료된_골2));
         유효한_골_아이디 = 현재_진행중인_골1.getId();
 
-        골_팀에_등록된_사용자_아이디_목록.addAll(List.of(유효한_사용자.getId(), 유효한_사용자_2.getId()));
-        List<Long> 친구가_아닌_사용자가_포함된_사용자_아이디_목록 = new ArrayList<>(List.of(유효한_사용자.getId(), 친구가_아닌_사용자.getId()));
+        골_팀에_등록된_사용자_아이디_목록.addAll(List.of(현재_로그인한_사용자.getId(), 친구인_사용자.getId()));
+        List<Long> 친구가_아닌_사용자가_포함된_사용자_아이디_목록 = new ArrayList<>(List.of(현재_로그인한_사용자.getId(), 친구가_아닌_사용자.getId()));
         참여한_골_목록.addAll(List.of(현재_진행중인_골1, 현재_진행중인_골2, 이미_종료된_골1, 이미_종료된_골2));
 
         유효한_골_생성_요청_dto = new CreateGoalRequest(

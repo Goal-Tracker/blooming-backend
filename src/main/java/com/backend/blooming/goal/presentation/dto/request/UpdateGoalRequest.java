@@ -15,12 +15,7 @@ public record UpdateGoalRequest(
 
         @DateTimeFormat(pattern = "yyyy-MM-dd")
         @FutureOrPresent
-        LocalDate startDate,
-
-        @DateTimeFormat(pattern = "yyyy-MM-dd")
-        @FutureOrPresent
         LocalDate endDate,
-        Long managerId,
         List<Long> teamUserIds
 ) {
 }

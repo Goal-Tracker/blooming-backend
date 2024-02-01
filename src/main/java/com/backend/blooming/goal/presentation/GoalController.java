@@ -8,14 +8,15 @@ import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
-import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.request.UpdateGoalRequest;
+import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,7 +55,10 @@ public class GoalController {
     @GetMapping(value = "/all/progress", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserInProgress(
             @Authenticated final AuthenticatedUser authenticatedUser) {
-        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndInProgress(authenticatedUser.userId(), LocalDate.now());
+        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndInProgress(
+                authenticatedUser.userId(),
+                LocalDate.now()
+        );
         final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
         return ResponseEntity.ok(response);
@@ -63,7 +67,10 @@ public class GoalController {
     @GetMapping(value = "/all/finished", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserFinished(
             @Authenticated final AuthenticatedUser authenticatedUser) {
-        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndFinished(authenticatedUser.userId(), LocalDate.now());
+        final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndFinished(
+                authenticatedUser.userId(),
+                LocalDate.now()
+        );
         final ReadAllGoalResponse response = ReadAllGoalResponse.from(readAllGoalDtos);
 
         return ResponseEntity.ok(response);
@@ -79,7 +86,7 @@ public class GoalController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
+    @PatchMapping (value = "/{goalId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Long> update(
             @PathVariable("goalId") final Long goalId,
             @RequestBody @Valid final UpdateGoalRequest request,

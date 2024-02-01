@@ -24,10 +24,10 @@ public record ReadGoalResponse(
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
 
-        final List<GoalTeamResponse> goalTeamWithUserInfoResponses = readGoalDetailDto.teams()
-                                                                                      .stream()
-                                                                                      .map(GoalTeamResponse::from)
-                                                                                      .toList();
+        final List<GoalTeamResponse> teams = readGoalDetailDto.teams()
+                                                              .stream()
+                                                              .map(GoalTeamResponse::from)
+                                                              .toList();
 
         return new ReadGoalResponse(
                 readGoalDetailDto.id(),
@@ -37,7 +37,7 @@ public record ReadGoalResponse(
                 readGoalDetailDto.endDate(),
                 readGoalDetailDto.days(),
                 readGoalDetailDto.managerId(),
-                goalTeamWithUserInfoResponses
+                teams
         );
     }
 

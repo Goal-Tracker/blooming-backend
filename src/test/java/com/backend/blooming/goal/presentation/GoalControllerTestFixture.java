@@ -95,6 +95,12 @@ public class GoalControllerTestFixture {
             ThemeColor.BABY_BLUE,
             "테스트 상태메시지2"
     );
+    protected ReadGoalDetailDto.GoalTeamDto 골_참여자3 = new ReadGoalDetailDto.GoalTeamDto(
+            3L,
+            "테스트 유저3",
+            ThemeColor.CORAL,
+            "테스트 상태메시지3"
+    );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답1 = new ReadGoalResponse.GoalTeamResponse(
             1L,
             "테스트 유저1",
@@ -183,4 +189,20 @@ public class GoalControllerTestFixture {
     protected ReadAllGoalDto 사용자가_참여한_종료된_골_목록_dto = new ReadAllGoalDto(List.of(종료된_골_정보_dto));
     protected ReadAllGoalResponse 사용자가_참여한_현재_진행중인_골_목록_응답_dto = new ReadAllGoalResponse(List.of(진행중인_골_정보_응답_dto));
     protected ReadAllGoalResponse 사용자가_참여한_종료된_골_목록_응답_dto = new ReadAllGoalResponse(List.of(종료된_골_정보_응답_dto));
+    protected UpdateGoalDto 수정_요청한_골_dto = new UpdateGoalDto(
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
+            LocalDate.now().plusDays(20),
+            List.of(1L, 2L, 3L)
+    );
+    protected ReadGoalDetailDto 수정_후_골_dto = new ReadGoalDetailDto(
+            1L,
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
+            LocalDate.now(),
+            LocalDate.now().plusDays(20),
+            20,
+            1L,
+            List.of(골_참여자1, 골_참여자2, 골_참여자3)
+    );
 }

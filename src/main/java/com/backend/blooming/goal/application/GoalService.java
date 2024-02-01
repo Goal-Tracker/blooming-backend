@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,19 +52,25 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
-        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
-
-        if (countFriends != ((long) teamUserIds.size() - 1)) {
-            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
-        }
-    }
-
     @Transactional(readOnly = true)
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
         final Goal goal = getGoal(goalId);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    @Transactional(readOnly = true)
+    public ReadAllGoalDto readAllGoalByUserIdAndInProgress(final Long userId, final LocalDate now) {
+        final List<Goal> goals = goalRepository.findAllByUserIdAndInProgress(userId, now);
+
+        return ReadAllGoalDto.from(goals);
+    }
+
+    @Transactional(readOnly = true)
+    public ReadAllGoalDto readAllGoalByUserIdAndFinished(final Long userId, final LocalDate now) {
+        final List<Goal> goals = goalRepository.findAllByUserIdAndFinished(userId, now);
+
+        return ReadAllGoalDto.from(goals);
     }
 
     @Transactional
@@ -75,9 +82,7 @@ public class GoalService {
     }
 
     @Transactional
-    public ReadGoalDetailDto update(
-            final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto
-    ) {
+    public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
         validateUserToUpdate(goal.getManagerId(), user.getId());
@@ -114,18 +119,12 @@ public class GoalService {
                              .orElseThrow(NotFoundGoalException::new);
     }
 
-    @Transactional(readOnly = true)
-    public ReadAllGoalDto readAllGoalByUserIdAndInProgress(final Long userId, final LocalDate now) {
-        final List<Goal> goals = goalRepository.findAllByUserIdAndInProgress(userId, now);
+    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
+        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
-        return ReadAllGoalDto.from(goals);
-    }
-
-    @Transactional(readOnly = true)
-    public ReadAllGoalDto readAllGoalByUserIdAndFinished(final Long userId, final LocalDate now) {
-        final List<Goal> goals = goalRepository.findAllByUserIdAndFinished(userId, now);
-
-        return ReadAllGoalDto.from(goals);
+        if (countFriends != ((long) teamUserIds.size() - 1)) {
+            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
+        }
     }
 
     private void validateUserToUpdate(final Long managerId, final Long userId) {

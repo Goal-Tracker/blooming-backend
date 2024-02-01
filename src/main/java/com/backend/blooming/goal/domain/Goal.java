@@ -3,7 +3,6 @@ package com.backend.blooming.goal.domain;
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
-import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,9 +22,7 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
-
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -69,7 +68,8 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.teams().get(0).id()).isEqualTo(유효한_골_dto.teams().get(0).id());
             softAssertions.assertThat(result.teams().get(0).name()).isEqualTo(유효한_골_dto.teams().get(0).name());
             softAssertions.assertThat(result.teams().get(0).color()).isEqualTo(유효한_골_dto.teams().get(0).color());
-            softAssertions.assertThat(result.teams().get(0).statusMessage()).isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
+            softAssertions.assertThat(result.teams().get(0).statusMessage())
+                          .isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
             softAssertions.assertThat(result.teams().get(1).id()).isEqualTo(유효한_골_dto.teams().get(1).id());
         });
     }
@@ -84,7 +84,10 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 현재_로그인한_사용자가_참여한_골_중_현재_진행중인_모든_골_정보를_조회한다() {
         // when
-        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndInProgress(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndInProgress(
+                유효한_사용자_아이디,
+                LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
+        );
 
         // then
         assertSoftly(softAssertions -> {
@@ -99,7 +102,10 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 현재_로그인한_사용자가_참여한_골_중_종료된_모든_골_정보를_조회한다() {
         // when
-        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndFinished(유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+        final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndFinished(
+                유효한_사용자_아이디,
+                LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
+        );
 
         // then
         assertSoftly(softAssertions -> {
@@ -119,17 +125,20 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
     @Test
     void 존재하지_않는_골_아이디를_삭제_요청했을_때_예외를_발생한다() {
-        assertThatThrownBy(() -> goalService.delete(유효한_사용자_아이디, 유효하지_않은_골_아이디)).isInstanceOf(NotFoundGoalException.class);
+        assertThatThrownBy(() -> goalService.delete(유효한_사용자_아이디, 유효하지_않은_골_아이디))
+                .isInstanceOf(NotFoundGoalException.class);
     }
 
     @Test
     void 존재하지_않는_사용자가_삭제를_요청했을_때_예외를_발생한다() {
-        assertThatThrownBy(() -> goalService.delete(존재하지_않는_사용자_아이디, 유효한_골_아이디)).isInstanceOf(NotFoundUserException.class);
+        assertThatThrownBy(() -> goalService.delete(존재하지_않는_사용자_아이디, 유효한_골_아이디))
+                .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
     void 삭제_요청한_사용자가_관리자가_아닌_경우_예외를_발생한다() {
-        assertThatThrownBy(() -> goalService.delete(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디)).isInstanceOf(DeleteGoalForbiddenException.class);
+        assertThatThrownBy(() -> goalService.delete(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디))
+                .isInstanceOf(DeleteGoalForbiddenException.class);
     }
 
     @Test
@@ -139,7 +148,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
         // then
         assertSoftly(SoftAssertions -> {
-            final List<ReadGoalDetailDto.GoalTeamWithUserInfoDto> teams = result.teams();
+            final List<ReadGoalDetailDto.GoalTeamDto> teams = result.teams();
             assertThat(result.name()).isEqualTo(수정한_제목);
             assertThat(result.memo()).isEqualTo(수정한_메모);
             assertThat(result.endDate()).isEqualTo(수정한_종료날짜);
