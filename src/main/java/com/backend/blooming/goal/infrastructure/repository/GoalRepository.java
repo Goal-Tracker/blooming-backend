@@ -2,6 +2,7 @@ package com.backend.blooming.goal.infrastructure.repository;
 
 import com.backend.blooming.goal.domain.Goal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
 import java.util.List;

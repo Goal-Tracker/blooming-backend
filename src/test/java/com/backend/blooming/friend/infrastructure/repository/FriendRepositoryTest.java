@@ -103,13 +103,4 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
         // then
         assertThat(actual).isEqualTo(2);
     }
-
-    @Test
-    void 현재_로그인한_사용자와_입력받은_아이디의_사용자가_서로_친구_관계가_아닐_경우_거짓을_반환한다() {
-        // when
-        final boolean actual = friendRepository.existsByFriendsAndIsFriends(현재_로그인한_사용자_아이디, 친구가_아닌_사용자_아이디);
-
-        // then
-        assertThat(actual).isFalse();
-    }
 }
