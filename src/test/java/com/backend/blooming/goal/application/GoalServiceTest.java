@@ -149,7 +149,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
             assertThat(goalTeamWithUserInfoDto).hasSize(3);
             assertThat(goalTeamWithUserInfoDto.get(0).name()).isEqualTo(유효한_사용자.getName());
             assertThat(goalTeamWithUserInfoDto.get(1).name()).isEqualTo(유효한_사용자2.getName());
-            assertThat(goalTeamWithUserInfoDto.get(2).name()).isEqualTo(유효한_사용자3.getName());
+            assertThat(goalTeamWithUserInfoDto.get(2).name()).isEqualTo(친구가_아닌_사용자.getName());
         });
     }
 

@@ -54,15 +54,6 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
-    private User getUser(final Long userId) {
-        return userRepository.findByIdAndDeletedIsFalse(userId)
-                             .orElseThrow(NotFoundUserException::new);
-    }
-
-    private List<User> getUsers(final List<Long> userIds) {
-        return userRepository.findAllByUserIds(userIds);
-    }
-
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
@@ -104,7 +95,7 @@ public class GoalService {
             goal.updateEndDate(updateGoalDto.endDate());
         }
         if (!updateGoalDto.teamUserIds().isEmpty()) {
-            final List<User> users = userRepository.findAllByIdsAndDeletedIsFalse(updateGoalDto.teamUserIds());
+            final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
             goal.updateTeams(users);
         }
         goalRepository.flush();
@@ -115,6 +106,10 @@ public class GoalService {
     private User getUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
+    }
+
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
     }
 
     private Goal getGoal(final Long id) {

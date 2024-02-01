@@ -106,7 +106,7 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
     @Test
     void 요청한_사용자_아이디_리스트에_포함된_모든_사용자를_조회한다() {
         // when
-        final List<User> actual = userRepository.findAllByIdsAndDeletedIsFalse(사용자_아이디_리스트);
+        final List<User> actual = userRepository.findAllByUserIds(사용자_아이디_목록);
 
         // then
         assertSoftly(SoftAssertions -> {
@@ -115,6 +115,8 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
             assertThat(actual.get(0).getName()).isEqualTo(사용자.getName());
             assertThat(actual.get(1).getId()).isEqualTo(사용자2.getId());
             assertThat(actual.get(1).getName()).isEqualTo(사용자2.getName());
+            assertThat(actual.get(2).getId()).isEqualTo(삭제된_사용자.getId());
+            assertThat(actual.get(2).getName()).isEqualTo(삭제된_사용자.getName());
         });
     }
 }

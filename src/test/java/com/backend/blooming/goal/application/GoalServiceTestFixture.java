@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
+import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.domain.Goal;
@@ -65,7 +66,6 @@ public class GoalServiceTestFixture {
     protected Long 유효한_골_아이디;
     protected List<User> 골_참여_사용자_목록 = new ArrayList<>();
     protected Long 유효하지_않은_골_아이디;
-    protected List<User> 유효한_사용자_목록 = new ArrayList<>();
     protected List<Goal> 참여한_골_목록 = new ArrayList<>();
     protected ReadAllGoalDto 사용자가_참여한_골_목록;
     protected UpdateGoalDto 수정_요청한_골_dto;
@@ -75,42 +75,18 @@ public class GoalServiceTestFixture {
     protected String 수정한_제목 = "골 제목 수정 테스트";
     protected String 수정한_메모 = "골 메모 수정 테스트";
     protected LocalDate 수정한_종료날짜 = LocalDate.now().plusDays(50);
-    protected User 유효한_사용자;
-    protected User 유효한_사용자2;
-    protected User 유효한_사용자3;
+    protected User 현재_로그인한_사용자;
+    protected User 친구인_사용자;
+    protected User 친구가_아닌_사용자;
+    protected User 친구인_사용자2;
 
     @BeforeEach
     void setUp() {
         Long 존재하지_않는_사용자_아이디 = 998L;
-        List<Long> 존재하지_않는_사용자가_있는_사용자_아이디_목록 = new ArrayList<>();
         CreateGoalRequest 유효한_골_생성_요청_dto;
         CreateGoalRequest 존재하지_않는_사용자가_관리자인_골_생성_요청_dto;
 
-        User 유효한_사용자 = User.builder()
-                           .oAuthId("아이디")
-                           .oAuthType(OAuthType.KAKAO)
-                           .email(new Email("test@gmail.com"))
-                           .name(new Name("테스트"))
-                           .color(ThemeColor.BABY_BLUE)
-                           .statusMessage("상태메시지")
-                           .build();
-        User 유효한_사용자_2 = User.builder()
-                             .oAuthId("아이디2")
-                             .oAuthType(OAuthType.KAKAO)
-                             .email(new Email("test2@gmail.com"))
-                             .name(new Name("테스트2"))
-                             .color(ThemeColor.BABY_BLUE)
-                             .statusMessage("상태메시지2")
-                             .build();
-        User 친구가_아닌_사용자 = User.builder()
-                              .oAuthId("아이디3")
-                              .oAuthType(OAuthType.KAKAO)
-                              .email(new Email("test3@gmail.com"))
-                              .name(new Name("테스트3"))
-                              .color(ThemeColor.CORAL)
-                              .statusMessage("상태메시지3")
-                              .build();
-        유효한_사용자 = User.builder()
+        현재_로그인한_사용자 = User.builder()
                       .oAuthId("아이디")
                       .oAuthType(OAuthType.KAKAO)
                       .email(new Email("test@gmail.com"))
@@ -118,8 +94,7 @@ public class GoalServiceTestFixture {
                       .color(ThemeColor.BABY_BLUE)
                       .statusMessage("상태메시지")
                       .build();
-
-        유효한_사용자2 = User.builder()
+        친구인_사용자 = User.builder()
                        .oAuthId("아이디2")
                        .oAuthType(OAuthType.KAKAO)
                        .email(new Email("test2@gmail.com"))
@@ -127,8 +102,7 @@ public class GoalServiceTestFixture {
                        .color(ThemeColor.BABY_BLUE)
                        .statusMessage("상태메시지2")
                        .build();
-
-        유효한_사용자3 = User.builder()
+        친구가_아닌_사용자 = User.builder()
                        .oAuthId("아이디3")
                        .oAuthType(OAuthType.KAKAO)
                        .email(new Email("test3@gmail.com"))
@@ -136,18 +110,27 @@ public class GoalServiceTestFixture {
                        .color(ThemeColor.CORAL)
                        .statusMessage("상태메시지3")
                        .build();
+        친구인_사용자2 = User.builder()
+                      .oAuthId("아이디4")
+                      .oAuthType(OAuthType.KAKAO)
+                      .email(new Email("test4@gmail.com"))
+                      .name(new Name("테스트4"))
+                      .color(ThemeColor.INDIGO)
+                      .statusMessage("상태메시지4")
+                      .build();
 
-        userRepository.saveAll(List.of(유효한_사용자, 유효한_사용자2, 유효한_사용자3));
-        유효한_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자2));
-        유효한_사용자_아이디 = 유효한_사용자.getId();
-        골_관리자가_아닌_사용자_아이디 = 유효한_사용자2.getId();
-        수정_요청한_골_참여자_아이디_목록.addAll(List.of(유효한_사용자_아이디, 골_관리자가_아닌_사용자_아이디, 유효한_사용자3.getId()));
+        userRepository.saveAll(List.of(현재_로그인한_사용자, 친구인_사용자, 친구가_아닌_사용자, 친구인_사용자2));
+        유효한_사용자_아이디 = 현재_로그인한_사용자.getId();
+        골_관리자가_아닌_사용자_아이디 = 친구인_사용자.getId();
+        수정_요청한_골_참여자_아이디_목록.addAll(List.of(유효한_사용자_아이디, 골_관리자가_아닌_사용자_아이디, 친구인_사용자2.getId()));
 
-        final Friend 유효한_친구 = new Friend(유효한_사용자, 유효한_사용자_2);
-        friendRepository.saveAll(List.of(유효한_친구));
+        final Friend 유효한_친구 = new Friend(현재_로그인한_사용자, 친구인_사용자);
+        final Friend 유효한_친구2 = new Friend(현재_로그인한_사용자, 친구인_사용자2);
+        friendRepository.saveAll(List.of(유효한_친구, 유효한_친구2));
         유효한_친구.acceptRequest();
+        유효한_친구2.acceptRequest();
 
-        골_참여_사용자_목록.addAll(List.of(유효한_사용자, 유효한_사용자_2));
+        골_참여_사용자_목록.addAll(List.of(현재_로그인한_사용자, 친구인_사용자));
 
         현재_진행중인_골1 = Goal.builder()
                          .name(골_제목)
@@ -255,7 +238,6 @@ public class GoalServiceTestFixture {
         );
 
         유효한_골_dto = ReadGoalDetailDto.from(현재_진행중인_골1);
-        유효한_골_dto = ReadGoalDetailDto.from(유효한_골);
 
         사용자가_참여한_골_목록 = ReadAllGoalDto.from(참여한_골_목록);
 
