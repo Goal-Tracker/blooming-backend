@@ -167,14 +167,23 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
+    void 수정_요청한_골이_존재하지_않을시_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 존재하지_않는_골_아이디, 수정_요청한_골_dto))
+                .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
     void 골_수정을_요청한_사용자가_권한이_없을시_예외를_발생한다() {
+        // when & then
         assertThatThrownBy(() -> goalService.update(골_관리자가_아닌_사용자_아이디, 유효한_골_아이디, 수정_요청한_골_dto))
                 .isInstanceOf(UpdateGoalForbiddenException.ForbiddenUserToUpdate.class);
     }
 
     @Test
-    void 수정_요청한_골이_존재하지_않을시_예외를_발생한다() {
-        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효하지_않은_골_아이디, 수정_요청한_골_dto))
+    void 수정_요청한_참여자_목록이_비어있거나_null인_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효하지_않은_골_아이디, 골_참여자_목록이_비어있는_수정_요청_골_dto))
                 .isInstanceOf(NotFoundGoalException.class);
     }
 }

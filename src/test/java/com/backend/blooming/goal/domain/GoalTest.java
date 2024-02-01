@@ -142,4 +142,16 @@ class GoalTest extends GoalTestFixture {
         // then
         assertThat(goal.getName()).hasSize(50);
     }
+
+    @Test
+    void 요청한_골_메모가_빈_값_또는_null인_경우_비어있는_값으로_저장한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        goal.updateMemo("");
+
+        // then
+        assertThat(goal.getMemo()).isEmpty();
+    }
 }

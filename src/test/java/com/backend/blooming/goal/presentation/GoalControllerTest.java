@@ -8,6 +8,7 @@ import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenExcept
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -36,7 +37,6 @@ import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuild
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.put;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
@@ -338,6 +338,23 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
+    void 삭제_요청한_아이디의_골이_존재하지_않는_경우_404_에러를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        willThrow(new NotFoundGoalException()).given(goalService).delete(유효한_골_아이디, 사용자_토큰_정보.userId());
+
+        // when & then
+        mockMvc.perform(delete("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
     void 현재_로그인한_사용자가_요청한_아이디의_골을_삭제할_권한이_없는_경우_403_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
@@ -386,6 +403,26 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
+    void 수정_요청한_골이_존재하지_않는_경우_404_에러를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 존재하지_않는_골_아이디, 수정_요청한_골_dto))
+                .willThrow(new NotFoundGoalException());
+
+        // when & then
+        mockMvc.perform(patch("/goals/{goalId}", 존재하지_않는_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
     void 현재_로그인한_사용자가_요청한_아이디의_골을_수정할_권한이_없는_경우_403_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
@@ -406,7 +443,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
-    void 수정_요청한_골의_종료날짜가_기존_종료날짜_보다_이전인_경우_403_에러를_발생한다() throws Exception {
+    void 수정_요청한_골의_종료날짜가_기존_종료날짜보다_이전인_경우_403_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
@@ -419,6 +456,26 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
+        ).andExpectAll(
+                status().isForbidden(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 수정_요청한_골_참여자_목록이_비어있거나_null인_경우_403_에러를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 골_참여자_목록이_비어있는_수정_요청_골_dto))
+                .willThrow(new UpdateGoalForbiddenException.ForbiddenTeamsToUpdate());
+
+        // when & then
+        mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(골_참여자_목록이_비어있는_수정_요청_골_dto))
         ).andExpectAll(
                 status().isForbidden(),
                 jsonPath("$.message").exists()

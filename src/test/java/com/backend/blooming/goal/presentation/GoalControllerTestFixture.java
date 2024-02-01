@@ -24,12 +24,13 @@ public class GoalControllerTestFixture {
     private LocalDate 골_종료일 = LocalDate.now().plusDays(40);
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
-    private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 999L));
+    private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 2L));
     private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
+    protected Long 존재하지_않는_골_아이디 = 999L;
     protected CreateGoalRequest 유효한_골_생성_요청_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
@@ -194,6 +195,12 @@ public class GoalControllerTestFixture {
             "수정된 테스트 골 메모1",
             LocalDate.now().plusDays(20),
             List.of(1L, 2L, 3L)
+    );
+    protected UpdateGoalDto 골_참여자_목록이_비어있는_수정_요청_골_dto = new UpdateGoalDto(
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
+            LocalDate.now().plusDays(20),
+            null
     );
     protected ReadGoalDetailDto 수정_후_골_dto = new ReadGoalDetailDto(
             1L,
