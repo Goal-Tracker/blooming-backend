@@ -267,9 +267,9 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("goals.[].startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
                         fieldWithPath("goals.[].endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
                         fieldWithPath("goals.[].days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
+                        fieldWithPath("goals.[].teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("goals.[].teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("goals.[].teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
                 )
         ));
     }
@@ -301,9 +301,9 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("goals.[].startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
                         fieldWithPath("goals.[].endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
                         fieldWithPath("goals.[].days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
-                        fieldWithPath("goals.[].goalTeamWithUserInfos.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
+                        fieldWithPath("goals.[].teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("goals.[].teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("goals.[].teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상")
                 )
         ));
     }
