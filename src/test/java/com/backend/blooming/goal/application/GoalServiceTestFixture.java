@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
-@DirtiesContext
 public class GoalServiceTestFixture {
 
     @Autowired
