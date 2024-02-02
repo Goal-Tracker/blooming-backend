@@ -181,9 +181,57 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
+    void 수정_요청한_골_제목이_비어있는_경우_제목은_수정하지_않는다() {
+        // when
+        final ReadGoalDetailDto result = goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 골_제목이_비어있는_수정_요청_골_dto);
+
+        // then
+        assertSoftly(SoftAssertions -> {
+            final List<ReadGoalDetailDto.GoalTeamDto> teams = result.teams();
+            assertThat(result.name()).isEqualTo(유효한_골_dto.name());
+            assertThat(result.memo()).isEqualTo(수정한_메모);
+            assertThat(result.endDate()).isEqualTo(수정한_종료날짜);
+            assertThat(teams).hasSize(3);
+            assertThat(teams.get(0).name()).isEqualTo(현재_로그인한_사용자.getName());
+        });
+    }
+
+    @Test
+    void 수정_요청한_골_메모가_비어있는_경우_빈값으로_저장한다() {
+        // when
+        final ReadGoalDetailDto result = goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 골_메모가_비어있는_수정_요청_골_dto);
+
+        // then
+        assertSoftly(SoftAssertions -> {
+            final List<ReadGoalDetailDto.GoalTeamDto> teams = result.teams();
+            assertThat(result.name()).isEqualTo(수정한_제목);
+            assertThat(result.memo()).isEmpty();
+            assertThat(result.endDate()).isEqualTo(수정한_종료날짜);
+            assertThat(teams).hasSize(3);
+            assertThat(teams.get(0).name()).isEqualTo(현재_로그인한_사용자.getName());
+        });
+    }
+
+    @Test
+    void 수정_요청한_골_종료날짜가_비어있는_경우_수정을_진행하지_않는다() {
+        // when
+        final ReadGoalDetailDto result = goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 골_종료날짜가_비어있는_수정_요청_골_dto);
+
+        // then
+        assertSoftly(SoftAssertions -> {
+            final List<ReadGoalDetailDto.GoalTeamDto> teams = result.teams();
+            assertThat(result.name()).isEqualTo(수정한_제목);
+            assertThat(result.memo()).isEqualTo(수정한_메모);
+            assertThat(result.endDate()).isEqualTo(유효한_골_dto.endDate());
+            assertThat(teams).hasSize(3);
+            assertThat(teams.get(0).name()).isEqualTo(현재_로그인한_사용자.getName());
+        });
+    }
+
+    @Test
     void 수정_요청한_참여자_목록이_비어있거나_null인_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효하지_않은_골_아이디, 골_참여자_목록이_비어있는_수정_요청_골_dto))
-                .isInstanceOf(NotFoundGoalException.class);
+        assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 골_참여자_목록이_비어있는_수정_요청_골_dto))
+                .isInstanceOf(UpdateGoalForbiddenException.ForbiddenTeamsToUpdate.class);
     }
 }

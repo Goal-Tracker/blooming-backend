@@ -67,10 +67,10 @@ public class GoalServiceTestFixture {
     protected List<Goal> 참여한_골_목록 = new ArrayList<>();
     protected ReadAllGoalDto 사용자가_참여한_골_목록;
     protected UpdateGoalDto 수정_요청한_골_dto;
+    protected UpdateGoalDto 골_제목이_비어있는_수정_요청_골_dto;
+    protected UpdateGoalDto 골_메모가_비어있는_수정_요청_골_dto;
+    protected UpdateGoalDto 골_종료날짜가_비어있는_수정_요청_골_dto;
     protected UpdateGoalDto 골_참여자_목록이_비어있는_수정_요청_골_dto;
-    protected UpdateGoalDto 골_제목이_50자_이상인_골_dto;
-    protected UpdateGoalDto 골_종료날짜가_기존_날짜보다_이전인_골_dto;
-    protected UpdateGoalDto 골_참여자_목록이_5명_초과인_골_dto;
     protected String 수정한_제목 = "골 제목 수정 테스트";
     protected String 수정한_메모 = "골 메모 수정 테스트";
     protected LocalDate 수정한_종료날짜 = LocalDate.now().plusDays(50);
@@ -246,29 +246,29 @@ public class GoalServiceTestFixture {
                 수정한_종료날짜,
                 수정_요청한_골_참여자_아이디_목록
         );
+        골_제목이_비어있는_수정_요청_골_dto = new UpdateGoalDto(
+                "",
+                수정한_메모,
+                수정한_종료날짜,
+                수정_요청한_골_참여자_아이디_목록
+        );
+        골_메모가_비어있는_수정_요청_골_dto = new UpdateGoalDto(
+                수정한_제목,
+                "",
+                수정한_종료날짜,
+                수정_요청한_골_참여자_아이디_목록
+        );
+        골_종료날짜가_비어있는_수정_요청_골_dto = new UpdateGoalDto(
+                수정한_제목,
+                수정한_메모,
+                null,
+                수정_요청한_골_참여자_아이디_목록
+        );
         골_참여자_목록이_비어있는_수정_요청_골_dto = new UpdateGoalDto(
                 수정한_제목,
                 수정한_메모,
                 수정한_종료날짜,
-                null
-        );
-        골_제목이_50자_이상인_골_dto = new UpdateGoalDto(
-                "testtesttesttesttesttesttesttesttesttesttesttesttest",
-                수정한_메모,
-                수정한_종료날짜,
-                수정_요청한_골_참여자_아이디_목록
-        );
-        골_종료날짜가_기존_날짜보다_이전인_골_dto = new UpdateGoalDto(
-                수정한_제목,
-                수정한_메모,
-                LocalDate.now().plusDays(30),
-                수정_요청한_골_참여자_아이디_목록
-        );
-        골_참여자_목록이_5명_초과인_골_dto = new UpdateGoalDto(
-                수정한_제목,
-                수정한_메모,
-                수정한_종료날짜,
-                new ArrayList<>(List.of())
+                new ArrayList<>()
         );
     }
 }

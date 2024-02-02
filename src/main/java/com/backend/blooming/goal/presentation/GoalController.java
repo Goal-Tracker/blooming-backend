@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,7 +85,7 @@ public class GoalController {
         return ResponseEntity.noContent().build();
     }
 
-    @PatchMapping (value = "/{goalId}", headers = "X-API-VERSION=1")
+    @PatchMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Long> update(
             @PathVariable("goalId") final Long goalId,
             @RequestBody @Valid final UpdateGoalRequest request,
