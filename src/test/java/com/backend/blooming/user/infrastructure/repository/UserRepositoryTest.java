@@ -113,9 +113,9 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
             assertThat(actual.get(0).getId()).isEqualTo(사용자.getId());
             assertThat(actual.get(0).getName()).isEqualTo(사용자.getName());
             assertThat(actual.get(1).getId()).isEqualTo(사용자2.getId());
-            assertThat(actual.get(0).getName()).isEqualTo(사용자2.getName());
+            assertThat(actual.get(1).getName()).isEqualTo(사용자2.getName());
             assertThat(actual.get(2).getId()).isEqualTo(삭제된_사용자.getId());
-            assertThat(actual.get(0).getName()).isEqualTo(삭제된_사용자.getName());
+            assertThat(actual.get(2).getName()).isEqualTo(삭제된_사용자.getName());
         });
     }
 }
