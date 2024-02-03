@@ -34,9 +34,10 @@ public class GoalController {
     private final GoalService goalService;
 
     @PostMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<Long> createGoal(
+    public ResponseEntity<Void> createGoal(
             @RequestBody @Valid final CreateGoalRequest request,
-            @Authenticated final AuthenticatedUser authenticatedUser) {
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
         final CreateGoalDto createGoalDto = CreateGoalDto.of(request, authenticatedUser.userId());
         final Long goalId = goalService.createGoal(createGoalDto);
 
@@ -53,7 +54,8 @@ public class GoalController {
 
     @GetMapping(value = "/all/progress", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserInProgress(
-            @Authenticated final AuthenticatedUser authenticatedUser) {
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
         final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndInProgress(
                 authenticatedUser.userId(),
                 LocalDate.now()
@@ -65,7 +67,8 @@ public class GoalController {
 
     @GetMapping(value = "/all/finished", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllGoalResponse> readAllGoalWithUserFinished(
-            @Authenticated final AuthenticatedUser authenticatedUser) {
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
         final ReadAllGoalDto readAllGoalDtos = goalService.readAllGoalByUserIdAndFinished(
                 authenticatedUser.userId(),
                 LocalDate.now()
@@ -86,7 +89,7 @@ public class GoalController {
     }
 
     @PatchMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<Long> update(
+    public ResponseEntity<Void> update(
             @PathVariable("goalId") final Long goalId,
             @RequestBody @Valid final UpdateGoalRequest request,
             @Authenticated final AuthenticatedUser authenticatedUser
