@@ -30,8 +30,8 @@ public class FriendService {
     public Long request(final Long userId, final Long friendId) {
         validateFriendStatus(userId, friendId);
 
-        final User user = findUser(userId);
-        final User friendUser = findUser(friendId);
+        final User user = getUser(userId);
+        final User friendUser = getUser(friendId);
         final Friend friend = new Friend(user, friendUser);
         friendRepository.save(friend);
 
@@ -46,14 +46,14 @@ public class FriendService {
         }
     }
 
-    private User findUser(final Long userId) {
+    private User getUser(final Long userId) {
         return userRepository.findByIdAndDeletedIsFalse(userId)
                              .orElseThrow(NotFoundUserException::new);
     }
 
     @Transactional(readOnly = true)
     public ReadFriendsDto readAllByRequestId(final Long userId) {
-        final User user = findUser(userId);
+        final User user = getUser(userId);
         final List<Friend> requestUsers = friendRepository.findAllByRequestUserId(userId);
 
         return ReadFriendsDto.of(requestUsers, user, FriendType.REQUEST);
@@ -61,7 +61,7 @@ public class FriendService {
 
     @Transactional(readOnly = true)
     public ReadFriendsDto readAllByRequestedId(final Long userId) {
-        final User user = findUser(userId);
+        final User user = getUser(userId);
         final List<Friend> requestedUser = friendRepository.findAllByRequestedUserId(userId);
 
         return ReadFriendsDto.of(requestedUser, user, FriendType.REQUESTED);
@@ -69,21 +69,21 @@ public class FriendService {
 
     @Transactional(readOnly = true)
     public ReadFriendsDto readAllMutualByUserId(final Long userId) {
-        final User user = findUser(userId);
+        final User user = getUser(userId);
         final List<Friend> friends = friendRepository.findAllByUserIdAndIsFriends(userId);
 
         return ReadFriendsDto.of(friends, user, FriendType.FRIENDS);
     }
 
     public void accept(final Long userId, final Long requestId) {
-        final User user = findUser(userId);
-        final Friend friend = findFriend(requestId);
+        final User user = getUser(userId);
+        final Friend friend = getFriend(requestId);
         validateRequestedUser(user, friend);
 
         friend.acceptRequest();
     }
 
-    private Friend findFriend(final Long requestId) {
+    private Friend getFriend(final Long requestId) {
         return friendRepository.findById(requestId)
                                .orElseThrow(NotFoundFriendRequestException::new);
     }
@@ -95,8 +95,8 @@ public class FriendService {
     }
 
     public void delete(final Long userId, final Long requestId) {
-        final User user = findUser(userId);
-        final Friend friend = findFriend(requestId);
+        final User user = getUser(userId);
+        final Friend friend = getFriend(requestId);
         validateCanDelete(user, friend);
 
         friendRepository.delete(friend);
