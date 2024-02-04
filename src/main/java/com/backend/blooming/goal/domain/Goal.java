@@ -111,7 +111,7 @@ public class Goal extends BaseTimeEntity {
                                                        .map(GoalTeam::getUser)
                                                        .toList();
         users.forEach(user -> {
-            if (!usersBeforeUpdate.contains(user) && this.getTeams().size() < TEAMS_MAXIMUM_LENGTH) {
+            if (!usersBeforeUpdate.contains(user)) {
                 new GoalTeam(user, this);
             }
         });
