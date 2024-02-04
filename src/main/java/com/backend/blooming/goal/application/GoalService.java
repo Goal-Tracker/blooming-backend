@@ -74,14 +74,6 @@ public class GoalService {
     }
 
     @Transactional
-    public void delete(final Long userId, final Long goalId) {
-        final User user = getUser(userId);
-        final Goal goal = getGoal(goalId);
-        goal.updateDeleted(user.getId());
-        goalRepository.flush();
-    }
-
-    @Transactional
     public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
@@ -100,6 +92,14 @@ public class GoalService {
         goalRepository.flush();
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    @Transactional
+    public void delete(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateDeleted(user.getId());
+        goalRepository.flush();
     }
 
     private User getUser(final Long userId) {
