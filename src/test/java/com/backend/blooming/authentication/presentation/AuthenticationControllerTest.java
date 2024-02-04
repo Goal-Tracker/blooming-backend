@@ -1,6 +1,7 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
+import com.backend.blooming.authentication.application.exception.AlreadyRegisterBlackListTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
@@ -26,6 +27,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -233,6 +235,26 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
                         )
                 )
         );
+    }
+
+    @Test
+    void 로그아웃을_수행시_이미_로그인했다면_400_예외를_반환한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(TokenType.ACCESS, 소셜_액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        willThrow(new AlreadyRegisterBlackListTokenException()).given(authenticationService)
+                                                               .logout(사용자_아이디, 로그아웃_정보_dto);
+
+        // when & then
+        mockMvc.perform(post("/auth/logout")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 소셜_액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(로그아웃_정보_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
     }
 
     @Test
