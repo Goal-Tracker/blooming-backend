@@ -55,7 +55,7 @@ jobs:
           host: ${{ secrets.DEV_PUBLIC_IP }}
           key: ${{ secrets.DEV_PRIVATE_KEY }}
           script: |
-            sudo /home/ubuntu/deploy.sh
+            sudo sh /home/ubuntu/deploy.sh
 
       - name: send result to slack
         if: always()
