@@ -20,6 +20,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.BDDMockito.willReturn;
@@ -188,6 +190,29 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     void 로그아웃시_리프레시_토큰이_유효하지_않다면_예외를_발생시킨다() {
         // when & then
         assertThatThrownBy(() -> authenticationService.logout(기존_사용자.getId(), 유효하지_않은_리프레시_토큰을_갖는_로그아웃_dto))
+                .isInstanceOf(InvalidTokenException.class);
+    }
+
+    @Test
+    void 로그아웃시_디바이스_토큰과_액세스_토큰을_비활성화하고_사용자의_삭제_여부를_참으로_변경한다() {
+        // when
+        authenticationService.withdraw(기존_사용자.getId(), 유효한_refresh_token);
+
+        // then
+        final User user = userRepository.findById(기존_사용자.getId()).get();
+        final BlackListToken blackListToken = blackListTokenRepository.findByToken(유효한_refresh_token).get();
+        final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(기존_사용자.getId());
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(user.isDeleted()).isTrue();
+            softAssertions.assertThat(blackListToken.getToken()).isEqualTo(유효한_refresh_token);
+            softAssertions.assertThat(deviceTokens).isEmpty();
+        });
+    }
+
+    @Test
+    void 탈퇴시_리프레시_토큰이_유효하지_않다면_예외를_발생시킨다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.withdraw(기존_사용자.getId(), 유효하지_않는_refresh_token))
                 .isInstanceOf(InvalidTokenException.class);
     }
 }

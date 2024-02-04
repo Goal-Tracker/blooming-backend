@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IsolateDatabase
@@ -69,5 +71,15 @@ class DeviceTokenServiceTest extends DeviceTokenServiceTestFixture {
         // then
         final DeviceToken actual = deviceTokenRepository.findByUserIdAndToken(사용자_아이디, 디바이스_토큰1.getToken()).get();
         assertThat(actual.isActive()).isFalse();
+    }
+
+    @Test
+    void 사용자의_모든_디바이스_토큰을_비활성화한다() {
+        // when
+        deviceTokenService.deactivateAllByUserId(사용자_아이디);
+
+        // then
+        final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디);
+        assertThat(deviceTokens).isEmpty();
     }
 }

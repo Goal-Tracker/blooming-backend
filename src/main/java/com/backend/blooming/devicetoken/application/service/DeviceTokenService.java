@@ -52,4 +52,9 @@ public class DeviceTokenService {
         final Optional<DeviceToken> deviceToken = deviceTokenRepository.findByUserIdAndToken(userId, token);
         deviceToken.ifPresent(DeviceToken::deactivate);
     }
+
+    public void deactivateAllByUserId(final Long userId) {
+        final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(userId);
+        deviceTokens.forEach(DeviceToken::deactivate);
+    }
 }

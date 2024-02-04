@@ -127,4 +127,13 @@ public class AuthenticationService {
         return userRepository.findById(userId)
                              .orElseThrow(NotFoundUserException::new);
     }
+
+    public void withdraw(final Long userId, final String refreshToken) {
+        final AuthClaims authClaims = tokenProvider.parseToken(TokenType.REFRESH, refreshToken);
+        final User user = validateAndGetUser(userId, authClaims);
+
+        user.delete();
+        blackListTokenService.register(refreshToken);
+        deviceTokenService.deactivateAllByUserId(user.getId());
+    }
 }
