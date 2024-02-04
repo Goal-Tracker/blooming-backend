@@ -10,6 +10,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.*;
+
 @DataJpaTest
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -28,5 +30,23 @@ class BlackListTokenRepositoryTest extends BlackListTokenRepositoryTestFixture {
             softAssertions.assertThat(actual).isPresent();
             softAssertions.assertThat(actual.get().getToken()).isEqualTo(블랙_리스트_토큰.getToken());
         });
+    }
+
+    @Test
+    void 블랙_리스트에_특정_토큰이_존재한다면_참을_반환한다() {
+        // when
+        final boolean actual = blackListTokenRepository.existsByToken(블랙_리스트_토큰.getToken());
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 블랙_리스트에_특정_토큰이_존재하지_않다면_거짓을_반환한다() {
+        // when
+        final boolean actual = blackListTokenRepository.existsByToken(존재하지_않는_토큰);
+
+        // then
+        assertThat(actual).isFalse();
     }
 }

@@ -4,8 +4,6 @@ import com.backend.blooming.authentication.domain.BlackListToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.LocalDateTime;
-
 @SuppressWarnings("NonAsciiCharacters")
 public class BlackListTokenRepositoryTestFixture {
 
@@ -13,10 +11,11 @@ public class BlackListTokenRepositoryTestFixture {
     private BlackListTokenRepository blackListTokenRepository;
 
     protected BlackListToken 블랙_리스트_토큰;
+    protected String 존재하지_않는_토큰 = "not exist token";
 
     @BeforeEach
     void setUpFixture() {
-        블랙_리스트_토큰 = new BlackListToken("black list token", LocalDateTime.now());
+        블랙_리스트_토큰 = new BlackListToken("black list token");
         blackListTokenRepository.save(블랙_리스트_토큰);
     }
 }
