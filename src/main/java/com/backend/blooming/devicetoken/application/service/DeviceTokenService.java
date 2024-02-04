@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -16,7 +17,7 @@ public class DeviceTokenService {
 
     private final DeviceTokenRepository deviceTokenRepository;
 
-    public Long saveOrActive(final Long userId, final String token) {
+    public Long saveOrActivate(final Long userId, final String token) {
         final DeviceToken deviceToken = findOrPersistDeviceToken(userId, token);
         activateIfInactive(deviceToken);
 
@@ -45,5 +46,10 @@ public class DeviceTokenService {
         final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(userId);
 
         return ReadDeviceTokensDto.from(deviceTokens);
+    }
+
+    public void deactivate(final Long userId, final String token) {
+        final Optional<DeviceToken> deviceToken = deviceTokenRepository.findByUserIdAndToken(userId, token);
+        deviceToken.ifPresent(DeviceToken::deactivate);
     }
 }

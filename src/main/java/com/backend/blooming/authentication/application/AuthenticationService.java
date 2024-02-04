@@ -88,7 +88,7 @@ public class AuthenticationService {
 
     private void saveOrActiveToken(final User user, final String deviceToken) {
         if (deviceToken != null && !deviceToken.isEmpty()) {
-            deviceTokenService.saveOrActive(user.getId(), deviceToken);
+            deviceTokenService.saveOrActivate(user.getId(), deviceToken);
         }
     }
 
@@ -107,4 +107,6 @@ public class AuthenticationService {
             throw new InvalidTokenException();
         }
     }
+
+
 }
