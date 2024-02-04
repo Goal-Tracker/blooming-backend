@@ -3,8 +3,12 @@ package com.backend.blooming.authentication.presentation;
 import com.backend.blooming.authentication.application.AuthenticationService;
 import com.backend.blooming.authentication.application.dto.LoginDto;
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
+import com.backend.blooming.authentication.application.dto.LogoutDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
+import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
+import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
+import com.backend.blooming.authentication.presentation.dto.LogoutRequest;
 import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
 import com.backend.blooming.authentication.presentation.dto.response.LoginInformationResponse;
 import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
@@ -44,5 +48,16 @@ public class AuthenticationController {
         final TokenDto tokenDto = authenticationService.reissueAccessToken(reissueRequest.refreshToken());
 
         return ResponseEntity.ok(TokenResponse.from(tokenDto));
+    }
+
+    @PostMapping(value = "/logout", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> logout(
+            @Authenticated final AuthenticatedUser authenticatedUser,
+            @RequestBody final LogoutRequest logoutRequest
+    ) {
+        authenticationService.logout(authenticatedUser.userId(), LogoutDto.from(logoutRequest));
+
+        return ResponseEntity.noContent()
+                             .build();
     }
 }
