@@ -46,7 +46,6 @@ public class UserService {
         final User user = userRepository.findById(userId)
                                         .orElseThrow(NotFoundUserException::new);
         updateUserByRequest(user, updateUserDto);
-        userRepository.flush();
 
         return ReadUserDto.from(user);
     }
