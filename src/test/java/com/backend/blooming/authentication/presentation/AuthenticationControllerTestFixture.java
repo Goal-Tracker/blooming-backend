@@ -7,6 +7,7 @@ import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.presentation.dto.LogoutRequest;
+import com.backend.blooming.authentication.presentation.dto.WithdrawRequest;
 import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
 import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
 
@@ -36,4 +37,5 @@ public class AuthenticationControllerTestFixture {
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(사용자_아이디);
     protected LogoutRequest 로그아웃_정보_요청 = new LogoutRequest(서비스_refresh_token, 디바이스_토큰);
     protected LogoutDto 로그아웃_정보_dto = new LogoutDto(서비스_refresh_token, 디바이스_토큰);
+    protected WithdrawRequest 탈퇴_정보_요청 = new WithdrawRequest(서비스_refresh_token);
 }

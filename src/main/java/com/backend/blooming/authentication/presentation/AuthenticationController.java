@@ -9,6 +9,7 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.authentication.presentation.dto.LogoutRequest;
+import com.backend.blooming.authentication.presentation.dto.WithdrawRequest;
 import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
 import com.backend.blooming.authentication.presentation.dto.response.LoginInformationResponse;
 import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
@@ -16,6 +17,7 @@ import com.backend.blooming.authentication.presentation.dto.response.TokenRespon
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -56,6 +58,17 @@ public class AuthenticationController {
             @RequestBody final LogoutRequest logoutRequest
     ) {
         authenticationService.logout(authenticatedUser.userId(), LogoutDto.from(logoutRequest));
+
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
+    @DeleteMapping(headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> withdraw(
+            @Authenticated final AuthenticatedUser authenticatedUser,
+            @RequestBody final WithdrawRequest withdrawRequest
+    ) {
+        authenticationService.withdraw(authenticatedUser.userId(), withdrawRequest.refreshToken());
 
         return ResponseEntity.noContent()
                              .build();
