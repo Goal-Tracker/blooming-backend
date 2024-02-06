@@ -96,6 +96,18 @@ class FriendRepositoryTest extends FriendRepositoryTestFixture {
     }
 
     @Test
+    void 친구_요청자와_친구_요청_수신자_아이디에_대한_친구_아이디를_반환한다() {
+        // when
+        final Long actual = friendRepository.findByRequestUserIdAndRequestedUserId(
+                친구가_있는_사용자.getId(),
+                친구인_사용자1.getId()
+        );
+
+        // then
+        assertThat(actual).isEqualTo(사용자와_친구요청1의_친구_아이디);
+    }
+
+    @Test
     void 입력받은_아이디_목록_중_현재_로그인한_사용자와_서로_친구_관계인_사용자_수를_반환한다() {
         // when
         final Long actual = friendRepository.countByUserIdAndFriendIdsAndIsFriends(현재_로그인한_사용자_아이디, 골_초대받은_사용자_아이디_목록);

@@ -1,14 +1,18 @@
 package com.backend.blooming.admin.controller;
 
 import com.backend.blooming.admin.application.AdminPageService;
+import com.backend.blooming.admin.controller.dto.UpdateFriendRequest;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.friend.application.FriendService;
+import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -17,9 +21,13 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.stream.Stream;
+
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -40,6 +48,9 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
 
     @MockBean
     private FriendService friendService;
+
+    @MockBean
+    private FriendRepository friendRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -73,9 +84,43 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
         given(friendService.request(친구_요청_하는_사용자_아이디, 친구_요청_받는_사용자_아이디)).willReturn(친구_생성_아이디);
 
         // when & then
-        mockMvc.perform(post("/admin/friend/request")
+        mockMvc.perform(post("/admin/friend")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(친구_요청))
         ).andExpect(status().isNoContent());
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void 친구_상태를_수정한다(final UpdateFriendRequest 친구_상태_수정_요청) throws Exception {
+        // given
+        given(friendRepository.findByRequestUserIdAndRequestedUserId(친구_요청_하는_사용자_아이디, 친구_요청_받는_사용자_아이디))
+                .willReturn(친구_아이디);
+
+        // when & then
+        mockMvc.perform(patch("/admin/friend")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(친구_상태_수정_요청))
+        ).andExpect(status().isNoContent());
+    }
+
+    public static Stream<UpdateFriendRequest> 친구_상태를_수정한다() {
+        return Stream.of(친구_상태_친구로_수정_요청, 친구_상태_요청_취소로_수정_요청, 친구_상태_거절로_수정_요청);
+    }
+
+    @Test
+    void 친구_상태_수정시_존재하지_않는_친구_사이라면_404_예외를_발생시킨다() throws Exception {
+        // given
+        given(friendRepository.findByRequestUserIdAndRequestedUserId(친구_요청_하는_사용자_아이디, 친구_요청_받는_사용자_아이디))
+                .willReturn(null);
+
+        // when & then
+        mockMvc.perform(patch("/admin/friend")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(친구_상태_친구로_수정_요청))
+        ).andExpectAll(
+                status().isNotFound(),
+                jsonPath("$.message").exists()
+        );
     }
 }
