@@ -3,6 +3,7 @@ package com.backend.blooming.admin.controller;
 import com.backend.blooming.admin.application.AdminPageService;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
+import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -37,6 +38,9 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
     @MockBean
     private AdminPageService adminPageService;
 
+    @MockBean
+    private FriendService friendService;
+
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -60,8 +64,18 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
         mockMvc.perform(post("/admin/user")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(사용자_생성_요청))
-        ).andExpectAll(
-                status().isOk()
-        );
+        ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    void 친구_신청한다() throws Exception {
+        // given
+        given(friendService.request(친구_요청_하는_사용자_아이디, 친구_요청_받는_사용자_아이디)).willReturn(친구_생성_아이디);
+
+        // when & then
+        mockMvc.perform(post("/admin/friend/request")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(친구_요청))
+        ).andExpect(status().isNoContent());
     }
 }

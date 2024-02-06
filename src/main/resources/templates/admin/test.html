@@ -11,42 +11,71 @@
 <div class="container">
     <h1 class="my-5 mb-5">블루밍 관리자 테스트 페이지</h1>
 
-    <h3>사용자 생성</h3>
-    <form class="row g-3" id="userCreateForm">
-        <div class="col-12">
-            <label for="inputName" class="form-label">닉네임</label>
-            <input type="text" class="form-control" id="inputName" name="name" required="true" placeholder="필수 입력">
-        </div>
-        <div class="col-12">
-            <label for="inputEmail" class="form-label">이메일</label>
-            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="미입력시 랜덤으로 부여됩니다">
-        </div>
-        <div class="col-md-6">
-            <label for="inputTheme" class="form-label">테마 색상</label>
-            <select class="form-select" id="inputTheme" name="theme">
-                <th:block th:each="theme : ${themes}">
-                    <option th:value="${theme}" th:text="${theme}">
-                    </option>
-                </th:block>
-            </select>
-        </div>
-        <div class="col-md-6">
-            <label for="inputStatusMessage" class="form-label">상태 메시지</label>
-            <input type="text" class="form-control" id="inputStatusMessage" name="statusMessage" placeholder="미입력시 공백">
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary">사용자 생성</button>
-        </div>
-    </form>
+    <div class="mb-5">
+        <h3>사용자 생성</h3>
+        <form class="row g-3" id="userCreateForm">
+            <div class="col-12">
+                <label for="inputName" class="form-label">닉네임</label>
+                <input type="text" class="form-control" id="inputName" name="name" required="true" placeholder="필수 입력">
+            </div>
+            <div class="col-12">
+                <label for="inputEmail" class="form-label">이메일</label>
+                <input type="text" class="form-control" id="inputEmail" name="email" placeholder="미입력시 랜덤으로 부여됩니다">
+            </div>
+            <div class="col-md-6">
+                <label for="inputTheme" class="form-label">테마 색상</label>
+                <select class="form-select" id="inputTheme" name="theme">
+                    <th:block th:each="theme : ${themes}">
+                        <option th:value="${theme}" th:text="${theme}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputStatusMessage" class="form-label">상태 메시지</label>
+                <input type="text" class="form-control" id="inputStatusMessage" name="statusMessage"
+                       placeholder="미입력시 공백">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">사용자 생성</button>
+            </div>
+        </form>
+    </div>
+    <div class="mb-5">
+        <h3>친구 요청 생성</h3>
+        <form class="row g-3" id="friendRequestForm">
+            <div class="col-md-6">
+                <label for="inputRequest" class="form-label">친구 요청 하는 사람</label>
+                <select class="form-select" id="inputRequest" name="requestUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputRequested" class="form-label">친구 요청 받는 사람</label>
+                <select class="form-select" id="inputRequested" name="requestedUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">친구 요청</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 <script>
-    const formElement = document.getElementById("userCreateForm");
-    formElement.addEventListener("submit", submitForm);
+    const userFormElement = document.getElementById("userCreateForm");
+    userFormElement.addEventListener("submit", submitUserForm);
 
-    function submitForm(e) {
+    function submitUserForm(e) {
         e.preventDefault()
-        const formData = new FormData(formElement);
+        const formData = new FormData(userFormElement);
         console.log(formData)
 
         fetch(`/admin/user`, {
@@ -61,8 +90,34 @@
             } else {
                 alert("사용자 생성 실패 : " + response.message)
             }
+            location.reload()
         }).catch(error => {
             alert("사용자 생성 실패 : " + error.message)
+        });
+    }
+
+    const formFriendRequestElement = document.getElementById("friendRequestForm");
+    formFriendRequestElement.addEventListener("submit", submitFriendRequestForm);
+
+    function submitFriendRequestForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formFriendRequestElement);
+        console.log(formData)
+
+        fetch(`/admin/friend/request`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("친구 요청 성공")
+            } else {
+                alert("친구 요청 실패 : " + response.message)
+            }
+        }).catch(error => {
+            alert("친구 요청 실패 : " + error.message)
         });
     }
 </script>

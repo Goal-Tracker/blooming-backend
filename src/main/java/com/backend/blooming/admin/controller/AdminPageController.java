@@ -2,7 +2,11 @@ package com.backend.blooming.admin.controller;
 
 import com.backend.blooming.admin.application.AdminPageService;
 import com.backend.blooming.admin.controller.dto.CreateUserRequest;
+import com.backend.blooming.admin.controller.dto.RequestFriendRequest;
+import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+import com.backend.blooming.user.domain.User;
+import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -24,10 +28,13 @@ import java.util.List;
 public class AdminPageController {
 
     private final AdminPageService adminPageService;
+    private final UserRepository userRepository;
+    private final FriendService friendService;
 
     @GetMapping
     public String adminPage(final Model model) {
         model.addAttribute("themes", getThemes());
+        model.addAttribute("users", getUsers());
 
         return "/admin/test";
     }
@@ -38,9 +45,21 @@ public class AdminPageController {
                      .toList();
     }
 
+    private List<User> getUsers() {
+        return userRepository.findAll();
+    }
+
     @PostMapping("/user")
-    public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequest createUserRequest) {
-        adminPageService.createUser(createUserRequest);
+    public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserRequest request) {
+        adminPageService.createUser(request);
+
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
+    @PostMapping("/friend/request")
+    public ResponseEntity<Void> requestFriend(@RequestBody RequestFriendRequest request) {
+        friendService.request(request.requestUser(), request.requestedUser());
 
         return ResponseEntity.noContent()
                              .build();
