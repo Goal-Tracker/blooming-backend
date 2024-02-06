@@ -18,6 +18,7 @@ import lombok.ToString;
 @ToString
 @Table
 public class BlackListToken {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
