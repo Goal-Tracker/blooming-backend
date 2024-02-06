@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>블루밍 어드민 테스트</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-5 mb-5">블루밍 관리자 테스트 페이지</h1>
+
+    <h3>사용자 생성</h3>
+    <form class="row g-3" id="userCreateForm">
+        <div class="col-12">
+            <label for="inputName" class="form-label">닉네임</label>
+            <input type="text" class="form-control" id="inputName" name="name" required="true" placeholder="필수 입력">
+        </div>
+        <div class="col-12">
+            <label for="inputEmail" class="form-label">이메일</label>
+            <input type="text" class="form-control" id="inputEmail" name="email" placeholder="미입력시 랜덤으로 부여됩니다">
+        </div>
+        <div class="col-md-6">
+            <label for="inputTheme" class="form-label">테마 색상</label>
+            <select class="form-select" id="inputTheme" name="theme">
+                <th:block th:each="theme : ${themes}">
+                    <option th:value="${theme}" th:text="${theme}">
+                    </option>
+                </th:block>
+            </select>
+        </div>
+        <div class="col-md-6">
+            <label for="inputStatusMessage" class="form-label">상태 메시지</label>
+            <input type="text" class="form-control" id="inputStatusMessage" name="statusMessage" placeholder="미입력시 공백">
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">사용자 생성</button>
+        </div>
+    </form>
+</div>
+</body>
+<script>
+    const formElement = document.getElementById("userCreateForm");
+    formElement.addEventListener("submit", submitForm);
+
+    function submitForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formElement);
+        console.log(formData)
+
+        fetch(`/admin/user`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("사용자 생성 성공")
+            } else {
+                alert("사용자 생성 실패 : " + response.message)
+            }
+        }).catch(error => {
+            alert("사용자 생성 실패 : " + error.message)
+        });
+    }
+</script>
+</html>
