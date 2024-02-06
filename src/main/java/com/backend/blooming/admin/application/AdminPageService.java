@@ -36,7 +36,7 @@ public class AdminPageService {
     }
 
     private Email processEmail(final String email) {
-        if (email.isEmpty()) {
+        if (email == null || email.isEmpty()) {
             return new Email(DEFAULT_EMAIL);
         }
 
