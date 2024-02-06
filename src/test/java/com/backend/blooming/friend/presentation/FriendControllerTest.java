@@ -5,9 +5,9 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.dto.FriendType;
-import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
+import com.backend.blooming.friend.application.exception.FriendRequestNotAllowedException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -106,11 +106,30 @@ class FriendControllerTest extends FriendControllerTestFixture {
     }
 
     @Test
+    void 본인에게_친구_요청시_400_예외를_발생시킨다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(friendService.request(사용자_아이디, 사용자_아이디))
+                .willThrow(new FriendRequestNotAllowedException.SelfRequestNotAllowedException());
+
+        // when & then
+        mockMvc.perform(post("/friends/{requestedUserId}", 사용자_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
     void 이미_친구인_사용자에게_친구_요청시_400_예외를_발생시킨다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
-        given(friendService.request(사용자_아이디, 이미_친구인_사용자_아이디)).willThrow(new AlreadyRequestedFriendException());
+        given(friendService.request(사용자_아이디, 이미_친구인_사용자_아이디))
+                .willThrow(new FriendRequestNotAllowedException.AlreadyRequestedFriendException());
 
         // when & then
         mockMvc.perform(post("/friends/{requestedUserId}", 이미_친구인_사용자_아이디)
@@ -161,10 +180,14 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 보낸 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
+                                                                        .description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
+                                                                       .description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
+                                                                        .description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
+                                                                                .description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )
@@ -210,10 +233,14 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 받은 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
+                                                                        .description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
+                                                                       .description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
+                                                                        .description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
+                                                                                .description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )
@@ -259,10 +286,14 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("서로 친구인 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
+                                                                        .description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
+                                                                       .description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
+                                                                        .description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
+                                                                                .description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )

@@ -2,16 +2,16 @@ package com.backend.blooming.friend.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
-import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
+import com.backend.blooming.friend.application.exception.FriendRequestNotAllowedException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
-import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -77,17 +77,24 @@ class FriendServiceTest extends FriendServiceTestFixture {
     }
 
     @Test
+    void 본인에게_친구_요청할_경우_예외가_발생한다() {
+        // when & than
+        assertThatThrownBy(() -> friendService.request(사용자_아이디, 사용자_아이디))
+                .isInstanceOf(FriendRequestNotAllowedException.SelfRequestNotAllowedException.class);
+    }
+
+    @Test
     void 이미_친구_요청을_보낸_사용자에게_다시_친구_요청할_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> friendService.request(사용자_아이디, 이미_친구_요청을_받은_사용자_아이디))
-                .isInstanceOf(AlreadyRequestedFriendException.class);
+                .isInstanceOf(FriendRequestNotAllowedException.AlreadyRequestedFriendException.class);
     }
 
     @Test
     void 이미_친구_요청이_온_사용자에게_친구_요청할_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> friendService.request(이미_친구_요청을_받은_사용자_아이디, 사용자_아이디))
-                .isInstanceOf(AlreadyRequestedFriendException.class);
+                .isInstanceOf(FriendRequestNotAllowedException.AlreadyRequestedFriendException.class);
     }
 
     @Test
