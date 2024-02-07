@@ -16,6 +16,9 @@ public enum ExceptionMessage {
     EXPIRED_TOKEN("기한이 만료된 토큰입니다."),
     UNSUPPORTED_OAUTH_TYPE("지원하지 않는 소셜 로그인 방식입니다."),
 
+    // 블랙 리스트 토큰
+    ALREADY_REGISTER_BLACK_LIST_TOKEN("이미 등록된 블랙 리스트 토큰입니다."),
+
     // 사용자
     NOT_FOUND_USER("사용자를 조회할 수 없습니다."),
     NULL_OR_EMPTY_EMAIL("이메일은 비어있을 수 없습니다."),

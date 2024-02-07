@@ -1,5 +1,6 @@
 package com.backend.blooming.exception;
 
+import com.backend.blooming.authentication.application.exception.AlreadyRegisterBlackListTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
@@ -168,6 +169,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(AlreadyRegisterBlackListTokenException.class)
+    public ResponseEntity<ExceptionResponse> handleAlreadyRegisterBlackListTokenException(
+            final AlreadyRegisterBlackListTokenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }
