@@ -25,6 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalService {
 
+    private static final int TEAMS_MAXIMUM_LENGTH = 5;
+
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
@@ -34,6 +36,10 @@ public class GoalService {
         final Goal goal = persistGoal(createGoalDto, users);
 
         return goal.getId();
+    }
+
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
@@ -52,11 +58,29 @@ public class GoalService {
         return goalRepository.save(goal);
     }
 
+    private User getUser(final Long userId) {
+        return userRepository.findByIdAndDeletedIsFalse(userId)
+                             .orElseThrow(NotFoundUserException::new);
+    }
+
+    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
+        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
+
+        if (countFriends != ((long) teamUserIds.size() - 1)) {
+            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
+        }
+    }
+
     @Transactional(readOnly = true)
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
         final Goal goal = getGoal(goalId);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    private Goal getGoal(final Long id) {
+        return goalRepository.findByIdAndDeletedIsFalse(id)
+                             .orElseThrow(NotFoundGoalException::new);
     }
 
     @Transactional(readOnly = true)
@@ -98,36 +122,6 @@ public class GoalService {
         return ReadGoalDetailDto.from(goal);
     }
 
-    @Transactional
-    public void delete(final Long userId, final Long goalId) {
-        final User user = getUser(userId);
-        final Goal goal = getGoal(goalId);
-        goal.updateDeleted(user.getId());
-        goalRepository.flush();
-    }
-
-    private User getUser(final Long userId) {
-        return userRepository.findByIdAndDeletedIsFalse(userId)
-                             .orElseThrow(NotFoundUserException::new);
-    }
-
-    private List<User> getUsers(final List<Long> userIds) {
-        return userRepository.findAllByUserIds(userIds);
-    }
-
-    private Goal getGoal(final Long id) {
-        return goalRepository.findByIdAndDeletedIsFalse(id)
-                             .orElseThrow(NotFoundGoalException::new);
-    }
-
-    private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
-        final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
-
-        if (countFriends != ((long) teamUserIds.size() - 1)) {
-            throw new InvalidGoalException.InvalidInvalidUserToParticipate();
-        }
-    }
-
     private void validateUserToUpdate(final Long managerId, final Long userId) {
         if (!managerId.equals(userId)) {
             throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
@@ -135,8 +129,15 @@ public class GoalService {
     }
 
     private void validateTeamsToUpdate(final List<Long> teamUserIds) {
-        if (teamUserIds.isEmpty()) {
-            throw new UpdateGoalForbiddenException.ForbiddenTeamsToUpdate();
+        if (teamUserIds.isEmpty() || teamUserIds.size() > TEAMS_MAXIMUM_LENGTH) {
+            throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
+    }
+
+    @Transactional
+    public void delete(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateDeleted(user.getId());
     }
 }
