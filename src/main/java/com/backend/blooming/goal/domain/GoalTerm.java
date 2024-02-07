@@ -46,10 +46,10 @@ public class GoalTerm {
         final LocalDate nowDate = LocalDate.now();
 
         if (startDate.isBefore(nowDate)) {
-            throw new InvalidGoalException.InvalidInvalidGoalStartDay();
+            throw new InvalidGoalException.InvalidInvalidGoalStartDate();
         }
         if (endDate.isBefore(nowDate)) {
-            throw new InvalidGoalException.InvalidInvalidGoalEndDay();
+            throw new InvalidGoalException.InvalidInvalidGoalEndDate();
         }
         if (endDate.isBefore(startDate)) {
             throw new InvalidGoalException.InvalidInvalidGoalPeriod();
@@ -76,7 +76,7 @@ public class GoalTerm {
 
     private void validateEndDate(final LocalDate updateDate) {
         if (updateDate.isBefore(this.endDate)) {
-            throw new UpdateGoalForbiddenException.ForbiddenEndDateToUpdate();
+            throw new InvalidGoalException.InvalidInvalidUpdateEndDate();
         }
     }
 }
