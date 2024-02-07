@@ -79,17 +79,21 @@ public class GoalService {
         final Goal goal = getGoal(goalId);
         validateUserToUpdate(goal.getManagerId(), user.getId());
 
-        if (!updateGoalDto.name().isEmpty()) {
+        if (updateGoalDto.name() != null) {
             goal.updateName(updateGoalDto.name());
         }
-        goal.updateMemo(updateGoalDto.memo());
+        if (updateGoalDto.memo() != null) {
+            goal.updateMemo(updateGoalDto.memo());
+        }
         if (updateGoalDto.endDate() != null) {
+            // TODO: 종료날짜의 경우 Json에서 null 값을 받아오면 LocalDate로 파싱할 수 없어 오류 발생하는 문제 해결해야함
             goal.updateEndDate(updateGoalDto.endDate());
         }
-        validateTeamsToUpdate(updateGoalDto.teamUserIds());
-        final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
-        goal.updateTeams(users);
-        goalRepository.flush();
+        if (updateGoalDto.teamUserIds() != null) {
+            validateTeamsToUpdate(updateGoalDto.teamUserIds());
+            final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
+            goal.getTeams().updateTeams(users, goal);
+        }
 
         return ReadGoalDetailDto.from(goal);
     }
