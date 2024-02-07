@@ -53,8 +53,8 @@ public class Goal extends BaseTimeEntity {
     @Column(nullable = false)
     private Long managerId;
 
-    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
+    @Embedded
+    private Teams teams;
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -72,7 +72,7 @@ public class Goal extends BaseTimeEntity {
         this.memo = processDefaultMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
-        createGoalTeams(users);
+        this.teams = new Teams(users, this);
     }
 
     private String processDefaultMemo(final String memo) {
@@ -80,17 +80,6 @@ public class Goal extends BaseTimeEntity {
             return MEMO_DEFAULT;
         }
         return memo;
-    }
-
-    private void createGoalTeams(final List<User> users) {
-        validateUsersSize(users);
-        users.forEach(user -> new GoalTeam(user, this));
-    }
-
-    private void validateUsersSize(final List<User> users) {
-        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
-            throw new InvalidGoalException.InvalidInvalidUsersSize();
-        }
     }
 
     public void updateName(final String name) {
@@ -113,18 +102,6 @@ public class Goal extends BaseTimeEntity {
         this.goalTerm.updateEndDate(endDate);
     }
 
-    public void updateTeams(final List<User> users) {
-        validateUsersSize(users);
-        final List<User> usersBeforeUpdate = this.teams.stream()
-                                                       .map(GoalTeam::getUser)
-                                                       .toList();
-        users.forEach(user -> {
-            if (!usersBeforeUpdate.contains(user)) {
-                new GoalTeam(user, this);
-            }
-        });
-    }
-
     public void updateDeleted(final Long userId) {
         validUserToDelete(userId);
         this.deleted = true;
@@ -134,13 +111,5 @@ public class Goal extends BaseTimeEntity {
         if (!this.getManagerId().equals(userId)) {
             throw new DeleteGoalForbiddenException();
         }
-    }
-
-    private String validateNameLength(final String name) {
-        if (name.length() > MAX_LENGTH_OF_NAME) {
-            return name.substring(START_INDEX_OF_NAME, END_INDEX_OF_NAME);
-        }
-
-        return name;
     }
 }
