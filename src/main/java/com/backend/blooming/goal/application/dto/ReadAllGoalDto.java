@@ -27,7 +27,7 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
     ) {
 
         public static GoalInfoDto from(final Goal goal) {
-            final List<GoalTeamDto> teams = goal.getTeams()
+            final List<GoalTeamDto> teams = goal.getTeams().getTeams()
                                                 .stream()
                                                 .map(GoalTeamDto::from)
                                                 .toList();
