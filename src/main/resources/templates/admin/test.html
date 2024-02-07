@@ -16,7 +16,7 @@
         <form class="row g-3" id="userCreateForm">
             <div class="col-12">
                 <label for="inputName" class="form-label">닉네임</label>
-                <input type="text" class="form-control" id="inputName" name="name" required="true" placeholder="필수 입력">
+                <input type="text" class="form-control" id="inputName" name="name" required placeholder="필수 입력">
             </div>
             <div class="col-12">
                 <label for="inputEmail" class="form-label">이메일</label>
@@ -101,9 +101,53 @@
             </div>
         </form>
     </div>
+
+    <div class="mb-5">
+        <h3>골 생성</h3>
+        <form class="row g-3" id="goalCreateForm">
+            <div class="col-12">
+                <label for="inputGoalName" class="form-label">골 이름</label>
+                <input type="text" class="form-control" id="inputGoalName" name="name" required placeholder="필수 입력">
+            </div>
+            <div class="col-12">
+                <label for="inputMemo" class="form-label">골 메모</label>
+                <input type="text" class="form-control" id="inputMemo" name="email" placeholder="미입력시 공백입니다">
+            </div>
+            <div class="col-md-6">
+                <label for="inputStartDate" class="form-label">시작 날짜</label>
+                <input type="date" class="form-control" id="inputStartDate" name="startDate" max="2099-12-31" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEndDate" class="form-label">종료 날짜</label>
+                <input type="date" class="form-control" id="inputEndDate" name="endDate" max="2099-12-31" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputManager" class="form-label">골 생성자 선택</label>
+                <select class="form-select" id="inputManager" name="manager" required>
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputTeam" class="form-label">팀원 선택 (한 명만)</label>
+                <select class="form-select" id="inputTeam" name="team" required>
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">골 생성</button>
+            </div>
+        </form>
+    </div>
 </div>
 </body>
 <script>
+    // 사용자 생성 관련 로직
     const userFormElement = document.getElementById("userCreateForm");
     userFormElement.addEventListener("submit", submitUserForm);
 
@@ -133,6 +177,7 @@
         });
     }
 
+    // 친구 신청 관련 로직
     const formFriendRequestElement = document.getElementById("friendRequestForm");
     formFriendRequestElement.addEventListener("submit", submitFriendRequestForm);
 
@@ -162,6 +207,7 @@
         });
     }
 
+    // 친구 상태 변경 관련 로직
     const formFriendStatusUpdateElement = document.getElementById("friendStatusUpdateForm");
     formFriendStatusUpdateElement.addEventListener("submit", submitFriendStatusUpdateForm);
 
@@ -188,6 +234,40 @@
             location.reload()
         }).catch(error => {
             alert("친구 상태 변경 실패 : " + error.message)
+        });
+    }
+
+    // 골 생성 관련 로직
+    var today = new Date();
+    document.getElementById('inputStartDate').value = today.toISOString().substring(0, 10);
+    document.getElementById('inputEndDate').value = new Date(today.setDate(today.getDate() + 5)).toISOString().substring(0, 10);
+
+    const formGoalCreateElement = document.getElementById("goalCreateForm");
+    formGoalCreateElement.addEventListener("submit", submitGoalCreateForm);
+
+    function submitGoalCreateForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formGoalCreateElement);
+
+        fetch(`/admin/goal`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("골 생성 성공")
+            } else {
+                response.json().then(data => {
+                    alert("골 생성 실패 : " + data.message);
+                }).catch(error => {
+                    alert("골 생성 실패 : " + error.message);
+                });
+            }
+            location.reload()
+        }).catch(error => {
+            alert("골 생성 실패 : " + error.message)
         });
     }
 </script>

@@ -1,6 +1,7 @@
 package com.backend.blooming.admin.controller;
 
 import com.backend.blooming.admin.application.AdminPageService;
+import com.backend.blooming.admin.controller.dto.CreateGoalRequest;
 import com.backend.blooming.admin.controller.dto.CreateUserRequest;
 import com.backend.blooming.admin.controller.dto.FriendStatus;
 import com.backend.blooming.admin.controller.dto.RequestFriendRequest;
@@ -9,6 +10,8 @@ import com.backend.blooming.admin.controller.exception.InvalidFriendStatusExcept
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.goal.application.GoalService;
+import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -37,6 +40,7 @@ public class AdminPageController {
     private final UserRepository userRepository;
     private final FriendService friendService;
     private final FriendRepository friendRepository;
+    private final GoalService goalService;
 
     @GetMapping
     public String adminPage(final Model model) {
@@ -111,5 +115,24 @@ public class AdminPageController {
         }
 
         throw new InvalidFriendStatusException();
+    }
+
+    @PostMapping("/goal")
+    public ResponseEntity<Void> createGoal(@RequestBody @Valid CreateGoalRequest request) {
+        goalService.createGoal(convertToDto(request));
+
+        return ResponseEntity.noContent()
+                             .build();
+    }
+
+    private CreateGoalDto convertToDto(final CreateGoalRequest request) {
+        return new CreateGoalDto(
+                request.name(),
+                request.memo(),
+                request.startDate(),
+                request.endDate(),
+                request.manager(),
+                List.of(request.manager(), request.team())
+        );
     }
 }

@@ -6,6 +6,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.friend.application.FriendService;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -35,7 +35,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(AdminPageController.class)
 @Import(AuthenticatedThreadLocal.class)
 @MockBean({TokenProvider.class, UserRepository.class})
-@AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class AdminPageControllerTest extends AdminPageControllerTestFixture {
@@ -51,6 +50,9 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
 
     @MockBean
     private FriendRepository friendRepository;
+
+    @MockBean
+    private GoalService goalService;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -120,6 +122,78 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
                 .content(objectMapper.writeValueAsString(친구_상태_친구로_수정_요청))
         ).andExpectAll(
                 status().isNotFound(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 골을_생성한다() throws Exception {
+        // given
+        given(goalService.createGoal(골_생성_요청_dto)).willReturn(골_아이디);
+
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(골_생성_요청))
+        ).andExpect(status().isNoContent());
+    }
+
+    @Test
+    void 골을_생성시_골_이름이_없다면_400_예외를_발생시킨다() throws Exception {
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(이름이_없는_골_생성_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 골을_생성시_시작_날짜가_없다면_400_예외를_발생시킨다() throws Exception {
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(시작_날짜가_없는_골_생성_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 골을_생성시_종료_날짜가_없다면_400_예외를_발생시킨다() throws Exception {
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(종료_날짜가_없는_골_생성_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 골을_생성시_생성자가_없다면_400_예외를_발생시킨다() throws Exception {
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(골_생성자_아이디가_없는_골_생성_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 골을_생성시_팀원이_없다면_400_예외를_발생시킨다() throws Exception {
+        // when & then
+        mockMvc.perform(post("/admin/goal")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(팀원_아이디가_없는_골_생성_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         );
     }

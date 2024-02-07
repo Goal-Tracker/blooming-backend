@@ -1,10 +1,15 @@
 package com.backend.blooming.admin.controller;
 
+import com.backend.blooming.admin.controller.dto.CreateGoalRequest;
 import com.backend.blooming.admin.controller.dto.CreateUserRequest;
 import com.backend.blooming.admin.controller.dto.FriendStatus;
 import com.backend.blooming.admin.controller.dto.RequestFriendRequest;
 import com.backend.blooming.admin.controller.dto.UpdateFriendRequest;
+import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AdminPageControllerTestFixture {
@@ -36,5 +41,61 @@ public class AdminPageControllerTestFixture {
             FriendStatus.DELETE_BY_REQUESTED.name()
     );
     protected Long 친구_아이디 = 1L;
-
+    protected CreateGoalRequest 골_생성_요청 = new CreateGoalRequest(
+            "골 이름",
+            "메모",
+            LocalDate.now(),
+            LocalDate.now().plusDays(2),
+            1L,
+            2L
+    );
+    protected CreateGoalDto 골_생성_요청_dto = new CreateGoalDto(
+            골_생성_요청.name(),
+            골_생성_요청.memo(),
+            골_생성_요청.startDate(),
+            골_생성_요청.endDate(),
+            골_생성_요청.manager(),
+            List.of(골_생성_요청.manager(), 골_생성_요청.team())
+    );
+    protected Long 골_아이디 = 1L;
+    protected CreateGoalRequest 이름이_없는_골_생성_요청 = new CreateGoalRequest(
+            null,
+            골_생성_요청.memo(),
+            골_생성_요청.startDate(),
+            골_생성_요청.endDate(),
+            골_생성_요청.manager(),
+            골_생성_요청.team()
+    );
+    protected CreateGoalRequest 시작_날짜가_없는_골_생성_요청 = new CreateGoalRequest(
+            골_생성_요청.name(),
+            골_생성_요청.memo(),
+            null,
+            골_생성_요청.endDate(),
+            골_생성_요청.manager(),
+            골_생성_요청.team()
+    );
+    protected CreateGoalRequest 종료_날짜가_없는_골_생성_요청 = new CreateGoalRequest(
+            골_생성_요청.name(),
+            골_생성_요청.memo(),
+            골_생성_요청.startDate(),
+            null,
+            골_생성_요청.manager(),
+            골_생성_요청.team()
+    );
+    protected CreateGoalRequest 골_생성자_아이디가_없는_골_생성_요청 = new CreateGoalRequest(
+            골_생성_요청.name(),
+            골_생성_요청.memo(),
+            골_생성_요청.startDate(),
+            골_생성_요청.endDate(),
+            null,
+            골_생성_요청.team()
+    );
+    protected CreateGoalRequest 팀원_아이디가_없는_골_생성_요청 = new CreateGoalRequest(
+            골_생성_요청.name(),
+            골_생성_요청.memo(),
+            골_생성_요청.startDate(),
+            골_생성_요청.endDate(),
+            골_생성_요청.manager(),
+            null
+    );
 }
