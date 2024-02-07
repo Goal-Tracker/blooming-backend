@@ -97,6 +97,14 @@ public class Goal extends BaseTimeEntity {
         this.name = validateNameLength(name);
     }
 
+    private String validateNameLength(final String name) {
+        if (name.isBlank() || name.length() > MAX_LENGTH_OF_NAME) {
+            throw new InvalidGoalException.InvalidInvalidGoalName();
+        }
+
+        return name;
+    }
+
     public void updateMemo(final String memo) {
         this.memo = processDefaultMemo(memo);
     }
