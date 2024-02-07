@@ -10,6 +10,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IsolateDatabase
@@ -26,7 +28,7 @@ class DeviceTokenServiceTest extends DeviceTokenServiceTestFixture {
     @Test
     void 디바이스_토큰을_저장한다() {
         // when
-        final Long actual = deviceTokenService.saveOrActive(사용자_아이디, 디바이스_토큰);
+        final Long actual = deviceTokenService.saveOrActivate(사용자_아이디, 디바이스_토큰);
 
         // then
         assertThat(actual).isPositive();
@@ -35,7 +37,7 @@ class DeviceTokenServiceTest extends DeviceTokenServiceTestFixture {
     @Test
     void 디바이스_토큰_저장시_비활성화된_동일한_토큰이_있다면_활성화한다() {
         // when
-        final Long actual = deviceTokenService.saveOrActive(사용자_아이디, 비활성화_디바이스_토큰.getToken());
+        final Long actual = deviceTokenService.saveOrActivate(사용자_아이디, 비활성화_디바이스_토큰.getToken());
 
         // then
         final DeviceToken deviceToken = deviceTokenRepository.findById(actual).get();
@@ -59,5 +61,25 @@ class DeviceTokenServiceTest extends DeviceTokenServiceTestFixture {
             softAssertions.assertThat(actual.deviceTokens().get(1).id()).isEqualTo(디바이스_토큰2.getId());
             softAssertions.assertThat(actual.deviceTokens().get(1).deviceToken()).isEqualTo(디바이스_토큰2.getToken());
         });
+    }
+
+    @Test
+    void 사용자의_특정_디바이스_토큰을_비활성화한다() {
+        // when
+        deviceTokenService.deactivate(사용자_아이디, 디바이스_토큰1.getToken());
+
+        // then
+        final DeviceToken actual = deviceTokenRepository.findByUserIdAndToken(사용자_아이디, 디바이스_토큰1.getToken()).get();
+        assertThat(actual.isActive()).isFalse();
+    }
+
+    @Test
+    void 사용자의_모든_디바이스_토큰을_비활성화한다() {
+        // when
+        deviceTokenService.deactivateAllByUserId(사용자_아이디);
+
+        // then
+        final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(사용자_아이디);
+        assertThat(deviceTokens).isEmpty();
     }
 }

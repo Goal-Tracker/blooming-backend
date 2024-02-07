@@ -21,7 +21,6 @@ public class AuthenticationWebMvcConfiguration implements WebMvcConfigurer {
     public void addInterceptors(final InterceptorRegistry registry) {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/auth/**")
                 .excludePathPatterns("/admin/**");
     }
 
