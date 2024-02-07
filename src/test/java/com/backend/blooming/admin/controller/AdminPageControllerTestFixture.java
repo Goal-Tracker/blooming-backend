@@ -58,44 +58,4 @@ public class AdminPageControllerTestFixture {
             List.of(골_생성_요청.manager(), 골_생성_요청.team())
     );
     protected Long 골_아이디 = 1L;
-    protected CreateGoalRequest 이름이_없는_골_생성_요청 = new CreateGoalRequest(
-            null,
-            골_생성_요청.memo(),
-            골_생성_요청.startDate(),
-            골_생성_요청.endDate(),
-            골_생성_요청.manager(),
-            골_생성_요청.team()
-    );
-    protected CreateGoalRequest 시작_날짜가_없는_골_생성_요청 = new CreateGoalRequest(
-            골_생성_요청.name(),
-            골_생성_요청.memo(),
-            null,
-            골_생성_요청.endDate(),
-            골_생성_요청.manager(),
-            골_생성_요청.team()
-    );
-    protected CreateGoalRequest 종료_날짜가_없는_골_생성_요청 = new CreateGoalRequest(
-            골_생성_요청.name(),
-            골_생성_요청.memo(),
-            골_생성_요청.startDate(),
-            null,
-            골_생성_요청.manager(),
-            골_생성_요청.team()
-    );
-    protected CreateGoalRequest 골_생성자_아이디가_없는_골_생성_요청 = new CreateGoalRequest(
-            골_생성_요청.name(),
-            골_생성_요청.memo(),
-            골_생성_요청.startDate(),
-            골_생성_요청.endDate(),
-            null,
-            골_생성_요청.team()
-    );
-    protected CreateGoalRequest 팀원_아이디가_없는_골_생성_요청 = new CreateGoalRequest(
-            골_생성_요청.name(),
-            골_생성_요청.memo(),
-            골_생성_요청.startDate(),
-            골_생성_요청.endDate(),
-            골_생성_요청.manager(),
-            null
-    );
 }
