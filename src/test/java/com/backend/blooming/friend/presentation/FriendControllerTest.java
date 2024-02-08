@@ -180,14 +180,10 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 보낸 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
-                                                                        .description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
-                                                                       .description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
-                                                                        .description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
-                                                                                .description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )
@@ -233,14 +229,10 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("친구 요청을 받은 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
-                                                                        .description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
-                                                                       .description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
-                                                                        .description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
-                                                                                .description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )
@@ -286,14 +278,10 @@ class FriendControllerTest extends FriendControllerTestFixture {
                                 fieldWithPath("friends").type(JsonFieldType.ARRAY).description("서로 친구인 사용자 목록"),
                                 fieldWithPath("friends.[].id").type(JsonFieldType.NUMBER).description("친구 요청 아이디"),
                                 fieldWithPath("friends.[].friend.id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
-                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING)
-                                                                        .description("사용자 이메일"),
-                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING)
-                                                                       .description("사용자 이름"),
-                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING)
-                                                                        .description("사용자 테마 색상"),
-                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING)
-                                                                                .description("사용자 상태 메시지"),
+                                fieldWithPath("friends.[].friend.email").type(JsonFieldType.STRING).description("사용자 이메일"),
+                                fieldWithPath("friends.[].friend.name").type(JsonFieldType.STRING).description("사용자 이름"),
+                                fieldWithPath("friends.[].friend.color").type(JsonFieldType.STRING).description("사용자 테마 색상"),
+                                fieldWithPath("friends.[].friend.statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
                                 fieldWithPath("friends.[].isFriends").type(JsonFieldType.BOOLEAN).description("친구 여부")
                         )
                 )

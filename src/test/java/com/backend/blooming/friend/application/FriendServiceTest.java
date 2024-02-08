@@ -11,7 +11,7 @@ import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
-import org.assertj.core.api.*;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
