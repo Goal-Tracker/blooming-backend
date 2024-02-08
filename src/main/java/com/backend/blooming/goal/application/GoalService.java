@@ -102,7 +102,18 @@ public class GoalService {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
         validateUserToUpdate(goal.getManagerId(), user.getId());
+        updateGoal(updateGoalDto, goal);
 
+        return ReadGoalDetailDto.from(goal);
+    }
+
+    private void validateUserToUpdate(final Long managerId, final Long userId) {
+        if (!managerId.equals(userId)) {
+            throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
+        }
+    }
+    
+    private void updateGoal(final UpdateGoalDto updateGoalDto, final Goal goal) {
         if (updateGoalDto.name() != null) {
             goal.updateName(updateGoalDto.name());
         }
@@ -116,14 +127,6 @@ public class GoalService {
             validateTeamsToUpdate(updateGoalDto.teamUserIds());
             final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
             goal.updateTeams(users, goal);
-        }
-
-        return ReadGoalDetailDto.from(goal);
-    }
-
-    private void validateUserToUpdate(final Long managerId, final Long userId) {
-        if (!managerId.equals(userId)) {
-            throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
         }
     }
 
