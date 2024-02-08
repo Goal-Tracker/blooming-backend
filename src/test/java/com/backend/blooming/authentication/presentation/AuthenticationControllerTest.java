@@ -1,9 +1,11 @@
 package com.backend.blooming.authentication.presentation;
 
 import com.backend.blooming.authentication.application.AuthenticationService;
+import com.backend.blooming.authentication.application.exception.AlreadyRegisterBlackListTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
+import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -16,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -23,20 +26,23 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willThrow;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(AuthenticationController.class)
 @Import({RestDocsConfiguration.class, AuthenticatedThreadLocal.class})
-@MockBean({TokenProvider.class, UserRepository.class})
 @AutoConfigureRestDocs
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
@@ -47,6 +53,12 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
 
     @MockBean
     private AuthenticationService authenticationService;
+
+    @MockBean
+    private UserRepository userRepository;
+
+    @MockBean
+    private TokenProvider tokenProvider;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -193,6 +205,83 @@ class AuthenticationControllerTest extends AuthenticationControllerTestFixture {
         ).andExpectAll(
                 status().isUnauthorized(),
                 jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 로그아웃을_수행한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(TokenType.ACCESS, 소셜_액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        willDoNothing().given(authenticationService).logout(사용자_아이디, 로그아웃_정보_dto);
+
+        // when & then
+        mockMvc.perform(post("/auth/logout")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 소셜_액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(로그아웃_정보_요청))
+        ).andExpectAll(
+                status().isNoContent()
+        ).andDo(print()).andDo(
+                restDocs.document(
+                        requestHeaders(
+                                headerWithName("X-API-VERSION").description("요청 버전"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token"),
+                                fieldWithPath("deviceToken").type(JsonFieldType.STRING).description("서비스 device token")
+                        )
+                )
+        );
+    }
+
+    @Test
+    void 로그아웃을_수행시_이미_로그인했다면_400_예외를_반환한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(TokenType.ACCESS, 소셜_액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        willThrow(new AlreadyRegisterBlackListTokenException()).given(authenticationService)
+                                                               .logout(사용자_아이디, 로그아웃_정보_dto);
+
+        // when & then
+        mockMvc.perform(post("/auth/logout")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 소셜_액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(로그아웃_정보_요청))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 탈퇴를_수행한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(TokenType.ACCESS, 소셜_액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        willDoNothing().given(authenticationService).withdraw(사용자_아이디, 서비스_refresh_token);
+
+        // when & then
+        mockMvc.perform(delete("/auth")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 소셜_액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(탈퇴_정보_요청))
+        ).andExpectAll(
+                status().isNoContent()
+        ).andDo(print()).andDo(
+                restDocs.document(
+                        requestHeaders(
+                                headerWithName("X-API-VERSION").description("요청 버전"),
+                                headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                        ),
+                        requestFields(
+                                fieldWithPath("refreshToken").type(JsonFieldType.STRING).description("서비스 refresh token")
+                        )
+                )
         );
     }
 }

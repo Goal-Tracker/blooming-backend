@@ -73,11 +73,11 @@ public class User extends BaseTimeEntity {
         this.oAuthType = oAuthType;
         this.email = email;
         this.name = name;
-        this.color = processColor(color);
-        this.statusMessage = processStatusMessage(statusMessage);
+        this.color = processDefaultColor(color);
+        this.statusMessage = processDefaultStatusMessage(statusMessage);
     }
 
-    private ThemeColor processColor(final ThemeColor color) {
+    private ThemeColor processDefaultColor(final ThemeColor color) {
         if (color == null) {
             return DEFAULT_THEME_COLOR;
         }
@@ -85,7 +85,7 @@ public class User extends BaseTimeEntity {
         return color;
     }
 
-    private String processStatusMessage(final String statusMessage) {
+    private String processDefaultStatusMessage(final String statusMessage) {
         if (statusMessage == null) {
             return DEFAULT_STATUS_MESSAGE;
         }
