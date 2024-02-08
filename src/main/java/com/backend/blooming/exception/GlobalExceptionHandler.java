@@ -5,9 +5,9 @@ import com.backend.blooming.authentication.infrastructure.exception.InvalidToken
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.exception.dto.ExceptionResponse;
-import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
+import com.backend.blooming.friend.application.exception.FriendRequestNotAllowedException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -132,9 +132,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
-    @ExceptionHandler(AlreadyRequestedFriendException.class)
+    @ExceptionHandler(FriendRequestNotAllowedException.class)
     public ResponseEntity<ExceptionResponse> handleAlreadyRequestedFriendException(
-            final AlreadyRequestedFriendException exception
+            final FriendRequestNotAllowedException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 

@@ -26,6 +26,7 @@ public class FriendRepositoryTestFixture {
     protected User 친구_요청을_받은_사용자;
     protected User 친구_요청을_받은적_없는_사용자;
     protected User 친구가_있는_사용자;
+    protected User 친구인_사용자1;
     protected Friend 보낸_친구_요청1;
     protected Friend 보낸_친구_요청2;
     protected Friend 보낸_친구_요청3;
@@ -39,6 +40,7 @@ public class FriendRepositoryTestFixture {
     protected List<Long> 골_초대받은_사용자_아이디_목록 = new ArrayList<>();
     protected Long 친구인_사용자_아이디;
     protected Long 친구가_아닌_사용자_아이디;
+    protected Long 사용자와_친구요청1의_친구_아이디;
 
     @BeforeEach
     void setUpFixture() {
@@ -72,7 +74,7 @@ public class FriendRepositoryTestFixture {
                                         .name(new Name("사용자5"))
                                         .email(new Email("user5@email.com"))
                                         .build();
-        final User 친구인_사용자1 = User.builder()
+        친구인_사용자1 = User.builder()
                                   .oAuthId("23456")
                                   .oAuthType(OAuthType.KAKAO)
                                   .name(new Name("친구1"))
@@ -111,9 +113,9 @@ public class FriendRepositoryTestFixture {
         받은_친구_요청3 = new Friend(친구_요청을_받은_사용자3, 친구_요청을_받은_사용자);
 
         친구가_있는_사용자 = 친구_요청을_받은_사용자3;
-        친구인_요청1 = new Friend(친구_요청을_받은_사용자3, 친구인_사용자1);
-        친구인_요청2 = new Friend(친구인_사용자2, 친구_요청을_받은_사용자3);
-        친구인_요청3 = new Friend(친구_요청을_받은_사용자3, 친구인_사용자3);
+        친구인_요청1 = new Friend(친구가_있는_사용자, 친구인_사용자1);
+        친구인_요청2 = new Friend(친구인_사용자2, 친구가_있는_사용자);
+        친구인_요청3 = new Friend(친구가_있는_사용자, 친구인_사용자3);
 
         final Friend 현재_로그인한_사용자와_친구인_상태 = new Friend(친구인_사용자1, 친구인_사용자2);
         final Friend 현재_로그인한_사용자와_친구인_상태2 = new Friend(친구인_사용자1, 친구인_사용자3);
@@ -129,6 +131,7 @@ public class FriendRepositoryTestFixture {
                 현재_로그인한_사용자와_친구인_상태,
                 현재_로그인한_사용자와_친구인_상태2
         ));
+        사용자와_친구요청1의_친구_아이디 = 친구인_요청1.getId();
 
         친구인_요청1.acceptRequest();
         친구인_요청2.acceptRequest();
