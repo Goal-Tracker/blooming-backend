@@ -5,6 +5,7 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.domain.Stamp;
+import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;
@@ -34,7 +35,6 @@ public class StampServiceTestFixture {
     protected CreateStampDto 골_참여자가_아닌_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 이미_존재하는_스탬프_dto;
     protected Long 유효한_골_아이디;
-    protected Long 존재하지_않는_골_아이디 = 999L;
     protected Long 스탬프를_생성한_사용자_아이디1;
     protected Long 스탬프를_생성한_사용자_아이디2;
     protected Long 골_참여자가_아닌_사용자_아이디;

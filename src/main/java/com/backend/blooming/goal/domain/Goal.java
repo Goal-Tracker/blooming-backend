@@ -52,10 +52,10 @@ public class Goal extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
-    
-    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
-    private List<Stamp> stamps;
-    
+
+    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    private List<Stamp> stamps = new ArrayList<>();
+
     @Column(nullable = false)
     private boolean deleted = false;
 
@@ -73,6 +73,7 @@ public class Goal extends BaseTimeEntity {
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
         createGoalTeams(users);
+        this.stamps = new ArrayList<>((int) this.goalTerm.getDays());
     }
 
     private String processDefaultMemo(final String memo) {
