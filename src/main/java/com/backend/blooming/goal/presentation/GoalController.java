@@ -86,6 +86,7 @@ public class GoalController {
     ) {
         final UpdateGoalDto updateGoalDto = UpdateGoalDto.from(request);
         final ReadGoalDetailDto response = goalService.update(authenticatedUser.userId(), goalId, updateGoalDto);
+        System.out.println(response);
 
         return ResponseEntity.created(URI.create("/goals/" + response.id())).build();
     }

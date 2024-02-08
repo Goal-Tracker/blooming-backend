@@ -103,7 +103,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
     
     @Test
-    void 골_생성시_관리자와_친구가_아닌_사용자가_참여자로_있는_경우_403_예외를_발생시킨다() throws Exception {
+    void 골_생성시_관리자와_친구가_아닌_사용자가_참여자로_있는_경우_400_예외를_발생시킨다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
@@ -117,13 +117,13 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(친구가_아닌_사용자가_참여자로_있는_골_생성_dto))
         ).andExpectAll(
-                status().isForbidden(),
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
     
     @Test
-    void 골_종료날짜가_시작날짜보다_이전인_경우_403_예외를_발생한다() throws Exception {
+    void 골_종료날짜가_시작날짜보다_이전인_경우_400_예외를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
@@ -137,13 +137,13 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
         ).andExpectAll(
-                status().isForbidden(),
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
     
     @Test
-    void 골_날짜가_100_초과인_경우_403_예외를_발생한다() throws Exception {
+    void 골_날짜가_100_초과인_경우_400_예외를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
@@ -157,13 +157,13 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_날짜수가_100_초과인_골_생성_dto))
         ).andExpectAll(
-                status().isForbidden(),
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
     
     @Test
-    void 골_생성시_사용자_리스트가_5명_초과인_경우_403_예외를_발생한다() throws Exception {
+    void 골_생성시_사용자_리스트가_5명_초과인_경우_400_예외를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
@@ -177,7 +177,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(참여자_리스트가_5명_초과인_골_생성_dto))
         ).andExpectAll(
-                status().isForbidden(),
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
@@ -467,14 +467,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 골_종료날짜가_null인_골_dto))
-                .willReturn(골_종료날짜가_비어있는_수정_후_골_dto);
+                .willReturn(골_종료날짜가_null인_수정_후_골_dto);
         
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(골_종료날짜가_비어있는_수정_요청_골_dto))
+                .content(objectMapper.writeValueAsString(골_종료날짜가_null인_수정_요청_골_dto))
         ).andExpectAll(
                 status().isCreated(),
                 redirectedUrl("/goals/" + 유효한_골_아이디)
@@ -487,7 +487,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 requestFields(
                         fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
                         fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
-                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.NULL).description("수정할 골 종료날짜"),
                         fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
                 )
         ));
@@ -520,7 +520,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
                         fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
                         fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
-                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                        fieldWithPath("teamUserIds").type(JsonFieldType.NULL).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
                 )
         ));
     }

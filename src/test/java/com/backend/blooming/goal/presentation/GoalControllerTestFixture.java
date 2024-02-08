@@ -198,18 +198,18 @@ public class GoalControllerTestFixture {
             List.of(1L, 2L, 3L)
     );
     protected UpdateGoalDto 골_종료날짜가_null인_골_dto = new UpdateGoalDto(
-            "수정된 테스트 골1",
-            "수정된 테스트 골 메모1",
+            "수정된 테스트 골2",
+            "수정된 테스트 골 메모2",
             null,
             List.of(1L, 2L, 3L)
     );
     protected UpdateGoalDto 골_참여자_목록이_null인_골_dto = new UpdateGoalDto(
-            "수정된 테스트 골1",
-            "수정된 테스트 골 메모1",
+            "수정된 테스트 골3",
+            "수정된 테스트 골 메모3",
             LocalDate.now().plusDays(20),
             null
     );
-    protected UpdateGoalRequest 골_종료날짜가_비어있는_수정_요청_골_dto = new UpdateGoalRequest(
+    protected UpdateGoalRequest 골_종료날짜가_null인_수정_요청_골_dto = new UpdateGoalRequest(
             "수정된 테스트 골2",
             "수정된 테스트 골 메모2",
             null,
@@ -231,7 +231,7 @@ public class GoalControllerTestFixture {
             1L,
             List.of(골_참여자1, 골_참여자2, 골_참여자3)
     );
-    protected ReadGoalDetailDto 골_종료날짜가_비어있는_수정_후_골_dto = new ReadGoalDetailDto(
+    protected ReadGoalDetailDto 골_종료날짜가_null인_수정_후_골_dto = new ReadGoalDetailDto(
             1L,
             "수정된 테스트 골2",
             "수정된 테스트 골 메모2",
@@ -243,8 +243,8 @@ public class GoalControllerTestFixture {
     );
     protected ReadGoalDetailDto 골_참여자가_null인_수정_후_골_dto = new ReadGoalDetailDto(
             1L,
-            "수정된 테스트 골2",
-            "수정된 테스트 골 메모2",
+            "수정된 테스트 골3",
+            "수정된 테스트 골 메모3",
             골_시작일,
             LocalDate.now().plusDays(20),
             20,
