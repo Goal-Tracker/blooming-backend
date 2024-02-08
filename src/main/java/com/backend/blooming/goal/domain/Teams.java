@@ -7,8 +7,10 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Embeddable
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
 @ToString
 public class Teams {
@@ -25,9 +28,6 @@ public class Teams {
     @Column(nullable = false)
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> goalTeams = new ArrayList<>();
-    
-    public Teams() {
-    }
     
     public Teams(final List<User> users, final Goal goal) {
         validateUsersSize(users);
