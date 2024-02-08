@@ -1,6 +1,5 @@
 package com.backend.blooming.goal.presentation.dto.request;
 
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.FutureOrPresent;
 import org.springframework.format.annotation.DateTimeFormat;
 
