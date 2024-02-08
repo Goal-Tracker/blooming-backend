@@ -8,7 +8,6 @@ import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenExcept
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
-import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -53,32 +52,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class GoalControllerTest extends GoalControllerTestFixture {
-
+    
     @Autowired
     private MockMvc mockMvc;
-
+    
     @Autowired
     private ObjectMapper objectMapper;
-
+    
     @MockBean
     private GoalService goalService;
-
+    
     @Autowired
     private RestDocumentationResultHandler restDocs;
-
+    
     @MockBean
     private TokenProvider tokenProvider;
-
+    
     @MockBean
     private UserRepository userRepository;
-
+    
     @Test
     void 골_생성을_요청하면_새로운_골을_생성한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.createGoal(유효한_골_생성_dto)).willReturn(유효한_골_아이디);
-
+        
         // when & then
         mockMvc.perform(post("/goals")
                 .header("X-API-VERSION", 1)
@@ -102,7 +101,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 골_생성시_관리자와_친구가_아닌_사용자가_참여자로_있는_경우_403_예외를_발생시킨다() throws Exception {
         // given
@@ -110,7 +109,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto))
                 .willThrow(new InvalidGoalException.InvalidInvalidUserToParticipate());
-
+        
         // when & then
         mockMvc.perform(post("/goals")
                 .header("X-API-VERSION", 1)
@@ -122,7 +121,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 골_종료날짜가_시작날짜보다_이전인_경우_403_예외를_발생한다() throws Exception {
         // given
@@ -130,7 +129,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.createGoal(골_종료날짜가_시작날짜보다_이전인_골_생성_dto))
                 .willThrow(new InvalidGoalException.InvalidInvalidGoalPeriod());
-
+        
         // when & then
         mockMvc.perform(post("/goals")
                 .header("X-API-VERSION", 1)
@@ -142,7 +141,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 골_날짜가_100_초과인_경우_403_예외를_발생한다() throws Exception {
         // given
@@ -150,7 +149,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.createGoal(골_날짜수가_100_초과인_골_생성_dto))
                 .willThrow(new InvalidGoalException.InvalidInvalidGoalDays());
-
+        
         // when & then
         mockMvc.perform(post("/goals")
                 .header("X-API-VERSION", 1)
@@ -162,7 +161,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 골_생성시_사용자_리스트가_5명_초과인_경우_403_예외를_발생한다() throws Exception {
         // given
@@ -170,7 +169,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.createGoal(참여자_리스트가_5명_초과인_골_생성_dto))
                 .willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
-
+        
         // when & then
         mockMvc.perform(post("/goals")
                 .header("X-API-VERSION", 1)
@@ -182,14 +181,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 골_아이디로_조회하면_해당_골의_정보를_반환한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.readGoalDetailById(유효한_골_아이디)).willReturn(유효한_골_dto);
-
+        
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -229,14 +228,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 존재하지_않는_골을_조회했을_때_404_예외를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.readGoalDetailById(유효한_골_아이디)).willThrow(new NotFoundGoalException());
-
+        
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -246,7 +245,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 현재_로그인한_사용자가_참여한_현재_진행중인_모든_골을_조회한다() throws Exception {
         // given
@@ -254,7 +253,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.readAllGoalByUserIdAndInProgress(사용자_토큰_정보.userId(), LocalDate.now()))
                 .willReturn(사용자가_참여한_현재_진행중인_골_목록_dto);
-
+        
         // when & then
         mockMvc.perform(get("/goals/all/progress")
                 .header("X-API-VERSION", 1)
@@ -280,7 +279,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다() throws Exception {
         // given
@@ -288,7 +287,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.readAllGoalByUserIdAndFinished(사용자_토큰_정보.userId(), LocalDate.now()))
                 .willReturn(사용자가_참여한_종료된_골_목록_dto);
-
+        
         // when & then
         mockMvc.perform(get("/goals/all/finished")
                 .header("X-API-VERSION", 1)
@@ -314,14 +313,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 요청한_아이디의_골을_삭제한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         willDoNothing().given(goalService).delete(유효한_골_아이디, 사용자_토큰_정보.userId());
-
+        
         // when & then
         mockMvc.perform(delete("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -336,14 +335,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 삭제_요청한_아이디의_골이_존재하지_않는_경우_404_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         willThrow(new NotFoundGoalException()).given(goalService).delete(유효한_골_아이디, 사용자_토큰_정보.userId());
-
+        
         // when & then
         mockMvc.perform(delete("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -353,14 +352,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 현재_로그인한_사용자가_요청한_아이디의_골을_삭제할_권한이_없는_경우_403_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         willThrow(new DeleteGoalForbiddenException()).given(goalService).delete(유효한_골_아이디, 사용자_토큰_정보.userId());
-
+        
         // when & then
         mockMvc.perform(delete("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -370,14 +369,14 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 요청한_내용으로_골을_수정한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto)).willReturn(수정_후_골_dto);
-
+        
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -401,7 +400,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 )
         ));
     }
-
+    
     @Test
     void 수정_요청한_골이_존재하지_않는_경우_404_에러를_발생한다() throws Exception {
         // given
@@ -409,7 +408,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.update(사용자_토큰_정보.userId(), 존재하지_않는_골_아이디, 수정_요청한_골_dto))
                 .willThrow(new NotFoundGoalException());
-
+        
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 존재하지_않는_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -421,7 +420,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
     void 현재_로그인한_사용자가_요청한_아이디의_골을_수정할_권한이_없는_경우_403_에러를_발생한다() throws Exception {
         // given
@@ -429,7 +428,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto))
                 .willThrow(new UpdateGoalForbiddenException.ForbiddenUserToUpdate());
-
+        
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -441,15 +440,15 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
-    void 수정_요청한_골의_종료날짜가_기존_종료날짜보다_이전인_경우_403_에러를_발생한다() throws Exception {
+    void 수정_요청한_골의_종료날짜가_기존_종료날짜보다_이전인_경우_400_에러를_발생한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
         given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 수정_요청한_골_dto))
-                .willThrow(new UpdateGoalForbiddenException.ForbiddenEndDateToUpdate());
-
+                .willThrow(new InvalidGoalException.InvalidInvalidUpdateEndDate());
+        
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
@@ -457,28 +456,72 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
         ).andExpectAll(
-                status().isForbidden(),
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
-
+    
     @Test
-    void 수정_요청한_골_참여자_목록이_비어있거나_null인_경우_403_에러를_발생한다() throws Exception {
+    void 수정_요청한_골_종료날짜가_null인_경우_수정을_하지_않는다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 골_참여자_목록이_비어있는_수정_요청_골_dto))
-                .willThrow(new UpdateGoalForbiddenException.ForbiddenTeamsToUpdate());
-
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 골_종료날짜가_null인_골_dto))
+                .willReturn(골_종료날짜가_비어있는_수정_후_골_dto);
+        
         // when & then
         mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(골_참여자_목록이_비어있는_수정_요청_골_dto))
+                .content(objectMapper.writeValueAsString(골_종료날짜가_비어있는_수정_요청_골_dto))
         ).andExpectAll(
-                status().isForbidden(),
-                jsonPath("$.message").exists()
-        ).andDo(print());
+                status().isCreated(),
+                redirectedUrl("/goals/" + 유효한_골_아이디)
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
+                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                )
+        ));
+    }
+    
+    @Test
+    void 수정_요청한_골_참여자_목록이_null인_경우_수정을_하지_않는다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.update(사용자_토큰_정보.userId(), 유효한_골_아이디, 골_참여자_목록이_null인_골_dto))
+                .willReturn(골_참여자가_null인_수정_후_골_dto);
+        
+        // when & then
+        mockMvc.perform(patch("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(골_참여자_목록이_null인_수정_요청_골_dto))
+        ).andExpectAll(
+                status().isCreated(),
+                redirectedUrl("/goals/" + 유효한_골_아이디)
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                requestFields(
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
+                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                )
+        ));
     }
 }

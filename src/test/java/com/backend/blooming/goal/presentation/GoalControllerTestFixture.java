@@ -7,6 +7,7 @@ import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.goal.presentation.dto.request.UpdateGoalRequest;
 import com.backend.blooming.goal.presentation.dto.response.ReadAllGoalResponse;
 import com.backend.blooming.goal.presentation.dto.response.ReadGoalResponse;
 import com.backend.blooming.themecolor.domain.ThemeColor;
@@ -17,11 +18,11 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GoalControllerTestFixture {
-
+    
     private String 골_제목 = "골 제목";
     private String 골_메모 = "골 메모";
     private LocalDate 골_시작일 = LocalDate.now();
-    private LocalDate 골_종료일 = LocalDate.now().plusDays(40);
+    private LocalDate 골_종료일 = LocalDate.now().plusDays(10);
     private Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
     private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 2L));
@@ -38,9 +39,9 @@ public class GoalControllerTestFixture {
             골_종료일,
             골_팀에_등록된_사용자_아이디_목록
     );
-
+    
     protected CreateGoalDto 유효한_골_생성_dto = CreateGoalDto.of(유효한_골_생성_요청_dto, 골_관리자_아이디);
-
+    
     protected CreateGoalRequest 친구가_아닌_사용자가_참여자로_있는_골_생성_요청_dto = new CreateGoalRequest(
             골_제목,
             골_메모,
@@ -48,7 +49,7 @@ public class GoalControllerTestFixture {
             골_종료일,
             친구가_아닌_사용자가_있는_사용자_아이디_목록
     );
-
+    
     protected CreateGoalDto 친구가_아닌_사용자가_참여자로_있는_골_생성_dto = CreateGoalDto.of(
             친구가_아닌_사용자가_참여자로_있는_골_생성_요청_dto,
             골_관리자_아이디
@@ -196,9 +197,27 @@ public class GoalControllerTestFixture {
             LocalDate.now().plusDays(20),
             List.of(1L, 2L, 3L)
     );
-    protected UpdateGoalDto 골_참여자_목록이_비어있는_수정_요청_골_dto = new UpdateGoalDto(
+    protected UpdateGoalDto 골_종료날짜가_null인_골_dto = new UpdateGoalDto(
             "수정된 테스트 골1",
             "수정된 테스트 골 메모1",
+            null,
+            List.of(1L, 2L, 3L)
+    );
+    protected UpdateGoalDto 골_참여자_목록이_null인_골_dto = new UpdateGoalDto(
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
+            LocalDate.now().plusDays(20),
+            null
+    );
+    protected UpdateGoalRequest 골_종료날짜가_비어있는_수정_요청_골_dto = new UpdateGoalRequest(
+            "수정된 테스트 골2",
+            "수정된 테스트 골 메모2",
+            null,
+            List.of(1L, 2L, 3L)
+    );
+    protected UpdateGoalRequest 골_참여자_목록이_null인_수정_요청_골_dto = new UpdateGoalRequest(
+            "수정된 테스트 골3",
+            "수정된 테스트 골 메모3",
             LocalDate.now().plusDays(20),
             null
     );
@@ -206,10 +225,30 @@ public class GoalControllerTestFixture {
             1L,
             "수정된 테스트 골1",
             "수정된 테스트 골 메모1",
-            LocalDate.now(),
+            골_시작일,
             LocalDate.now().plusDays(20),
             20,
             1L,
             List.of(골_참여자1, 골_참여자2, 골_참여자3)
+    );
+    protected ReadGoalDetailDto 골_종료날짜가_비어있는_수정_후_골_dto = new ReadGoalDetailDto(
+            1L,
+            "수정된 테스트 골2",
+            "수정된 테스트 골 메모2",
+            골_시작일,
+            골_종료일,
+            10,
+            1L,
+            List.of(골_참여자1, 골_참여자2, 골_참여자3)
+    );
+    protected ReadGoalDetailDto 골_참여자가_null인_수정_후_골_dto = new ReadGoalDetailDto(
+            1L,
+            "수정된 테스트 골2",
+            "수정된 테스트 골 메모2",
+            골_시작일,
+            LocalDate.now().plusDays(20),
+            20,
+            1L,
+            List.of(골_참여자1, 골_참여자2)
     );
 }

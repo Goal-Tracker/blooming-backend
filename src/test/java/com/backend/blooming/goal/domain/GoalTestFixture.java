@@ -13,7 +13,7 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GoalTestFixture {
-
+    
     protected String 골_제목 = "골 제목";
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(10);
@@ -56,7 +56,7 @@ public class GoalTestFixture {
                                .managerId(골_관리자_아이디)
                                .users(골_참여자_목록)
                                .build();
-
+    
     @BeforeEach
     void setUp() {
         골_참여자_목록.addAll(List.of(기존_골_참여자, 기존_골_참여자2));
