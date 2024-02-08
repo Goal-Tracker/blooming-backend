@@ -33,7 +33,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
         
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
-        assertThat(result.getTeams().getTeams()).hasSize(2);
+        assertThat(result.getTeams().getGoalTeams()).hasSize(2);
     }
     
     @Test

@@ -15,7 +15,7 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     @Query("""
             SELECT g
             FROM Goal g
-            JOIN FETCH g.teams.teams gt
+            JOIN FETCH g.teams.goalTeams gt
             JOIN FETCH gt.user gtu
             WHERE (gtu.id = :userId AND g.deleted = FALSE)
             AND (g.goalTerm.endDate >= :now)
@@ -26,7 +26,7 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     @Query("""
             SELECT g
             FROM Goal g
-            JOIN FETCH g.teams.teams gt
+            JOIN FETCH g.teams.goalTeams gt
             JOIN FETCH gt.user gtu
             WHERE (gtu.id = :userId AND g.deleted = FALSE)
             AND (g.goalTerm.endDate < :now)

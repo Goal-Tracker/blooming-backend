@@ -42,6 +42,6 @@ public class GoalTeam extends BaseTimeEntity {
     public GoalTeam(final User user, final Goal goal, final Teams teams) {
         this.user = user;
         this.goal = goal;
-        teams.getTeams().add(this);
+        teams.getGoalTeams().add(this);
     }
 }

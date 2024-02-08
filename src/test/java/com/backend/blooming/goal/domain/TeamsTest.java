@@ -18,7 +18,7 @@ class TeamsTest extends TeamsTestFixture {
         final Teams teams = new Teams(골_참여_사용자_목록, 유효한_골);
         
         // then
-        assertThat(teams.getTeams()).hasSize(2);
+        assertThat(teams.getGoalTeams()).hasSize(2);
     }
     
     @Test

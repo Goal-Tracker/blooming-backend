@@ -46,7 +46,7 @@ class GoalTest extends GoalTestFixture {
                               .build();
         
         // then
-        assertThat(goal.getTeams().getTeams()).hasSize(2);
+        assertThat(goal.getTeams().getGoalTeams()).hasSize(2);
     }
     
     @Test
@@ -143,7 +143,7 @@ class GoalTest extends GoalTestFixture {
         
         // then
         assertSoftly(softAssertions -> {
-            final List<GoalTeam> teams = goal.getTeams().getTeams();
+            final List<GoalTeam> teams = goal.getTeams().getGoalTeams();
             assertThat(teams).hasSize(3);
             assertThat(teams.get(0).getUser().getId()).isEqualTo(기존_골_참여자.getId());
             assertThat(teams.get(0).getUser().getName()).isEqualTo(기존_골_참여자.getName());

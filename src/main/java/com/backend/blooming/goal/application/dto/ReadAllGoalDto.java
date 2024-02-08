@@ -8,15 +8,15 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
-
+    
     public static ReadAllGoalDto from(final List<Goal> goals) {
         final List<GoalInfoDto> goalInfos = goals.stream()
                                                  .map(GoalInfoDto::from)
                                                  .toList();
-
+        
         return new ReadAllGoalDto(goalInfos);
     }
-
+    
     public record GoalInfoDto(
             Long id,
             String name,
@@ -25,13 +25,14 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
             long days,
             List<GoalTeamDto> teams
     ) {
-
+        
         public static GoalInfoDto from(final Goal goal) {
-            final List<GoalTeamDto> teams = goal.getTeams().getTeams()
+            final List<GoalTeamDto> teams = goal.getTeams()
+                                                .getGoalTeams()
                                                 .stream()
                                                 .map(GoalTeamDto::from)
                                                 .toList();
-
+            
             return new GoalInfoDto(
                     goal.getId(),
                     goal.getName(),
@@ -41,9 +42,9 @@ public record ReadAllGoalDto(List<GoalInfoDto> goalInfos) {
                     teams
             );
         }
-
+        
         public record GoalTeamDto(Long id, String name, ThemeColor color) {
-
+            
             public static GoalTeamDto from(final GoalTeam goalTeam) {
                 return new GoalTeamDto(
                         goalTeam.getUser().getId(),

@@ -24,7 +24,7 @@ public class Teams {
     
     @Column(nullable = false)
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<GoalTeam> teams = new ArrayList<>();
+    private List<GoalTeam> goalTeams = new ArrayList<>();
     
     public Teams() {
     }
@@ -42,9 +42,9 @@ public class Teams {
     
     public void updateTeams(final List<User> users, final Goal goal) {
         validateUsersSize(users);
-        final List<User> usersBeforeUpdate = this.teams.stream()
-                                                       .map(GoalTeam::getUser)
-                                                       .toList();
+        final List<User> usersBeforeUpdate = this.goalTeams.stream()
+                                                           .map(GoalTeam::getUser)
+                                                           .toList();
         users.forEach(u -> {
             if (!usersBeforeUpdate.contains(u)) {
                 new GoalTeam(u, goal, this);
