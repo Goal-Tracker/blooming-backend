@@ -116,7 +116,7 @@ public class GoalService {
         if (updateGoalDto.teamUserIds() != null) {
             validateTeamsToUpdate(updateGoalDto.teamUserIds());
             final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
-            goal.getTeams().updateTeams(users, goal);
+            goal.updateTeams(users, goal);
         }
 
         return ReadGoalDetailDto.from(goal);
