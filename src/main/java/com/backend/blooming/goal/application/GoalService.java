@@ -110,7 +110,6 @@ public class GoalService {
             goal.updateMemo(updateGoalDto.memo());
         }
         if (updateGoalDto.endDate() != null) {
-            // TODO: 종료날짜의 경우 Json에서 null 값을 받아오면 LocalDate로 파싱할 수 없어 오류 발생하는 문제 해결해야함
             goal.updateEndDate(updateGoalDto.endDate());
         }
         if (updateGoalDto.teamUserIds() != null) {
