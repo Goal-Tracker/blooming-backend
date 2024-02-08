@@ -97,6 +97,10 @@ public class Goal extends BaseTimeEntity {
     public void updateEndDate(final LocalDate endDate) {
         this.goalTerm.updateEndDate(endDate);
     }
+    
+    public void updateTeams(final List<User> users, final Goal goal) {
+        this.teams.updateTeams(users, goal);
+    }
 
     public void updateDeleted(final Long userId) {
         validUserToDelete(userId);
