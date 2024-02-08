@@ -1,11 +1,14 @@
 package com.backend.blooming.authentication.application;
 
 import com.backend.blooming.authentication.application.dto.LoginDto;
+import com.backend.blooming.authentication.application.dto.LogoutDto;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.authentication.infrastructure.oauth.dto.UserInformationDto;
 import com.backend.blooming.authentication.infrastructure.oauth.kakao.dto.KakaoUserInformationDto;
+import com.backend.blooming.devicetoken.domain.DeviceToken;
+import com.backend.blooming.devicetoken.infrastructure.repository.DeviceTokenRepository;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
@@ -21,6 +24,9 @@ public class AuthenticationServiceTestFixture {
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private DeviceTokenRepository deviceTokenRepository;
 
     protected OAuthType oauth_타입 = OAuthType.KAKAO;
     protected String 소셜_액세스_토큰 = "social_access_token";
@@ -40,19 +46,28 @@ public class AuthenticationServiceTestFixture {
     protected String 존재하지_않는_사용자의_refresh_token;
     protected String 유효하지_않는_refresh_token = "Bearer invalid_refresh_token";
     protected String 유효하지_않는_타입의_refresh_token = "refresh_token";
+    protected User 기존_사용자;
+    protected LogoutDto 로그아웃_dto;
+    protected LogoutDto 유효하지_않은_리프레시_토큰을_갖는_로그아웃_dto;
 
     @BeforeEach
     void setUpFixture() {
-        final User 기존_사용자 = User.builder()
-                                .oAuthType(oauth_타입)
-                                .oAuthId(기존_사용자_소셜_정보.oAuthId())
-                                .name(new Name("기존 사용자"))
-                                .email(new Email(기존_사용자_소셜_정보.email()))
-                                .build();
-
+        기존_사용자 = User.builder()
+                     .oAuthType(oauth_타입)
+                     .oAuthId(기존_사용자_소셜_정보.oAuthId())
+                     .name(new Name("기존 사용자"))
+                     .email(new Email(기존_사용자_소셜_정보.email()))
+                     .build();
         userRepository.save(기존_사용자);
 
+        final DeviceToken 기존_사용자의_디바이스_토큰 = new DeviceToken(기존_사용자.getId(), "default_user_device_token");
+        deviceTokenRepository.save(기존_사용자의_디바이스_토큰);
+
         유효한_refresh_token = "Bearer " + tokenProvider.createToken(TokenType.REFRESH, 기존_사용자.getId());
+        final String 유효하지_않은_refresh_token = "Bearer " + tokenProvider.createToken(TokenType.REFRESH, 999L);
+
+        로그아웃_dto = new LogoutDto(유효한_refresh_token, 기존_사용자의_디바이스_토큰.getToken());
+        유효하지_않은_리프레시_토큰을_갖는_로그아웃_dto = new LogoutDto(유효하지_않은_refresh_token, 기존_사용자의_디바이스_토큰.getToken());
 
         final long 존재하지_않는_사용자_아이디 = 9999L;
         존재하지_않는_사용자의_refresh_token = "Bearer " + tokenProvider.createToken(TokenType.REFRESH, 존재하지_않는_사용자_아이디);

@@ -2,18 +2,25 @@ package com.backend.blooming.authentication.application;
 
 import com.backend.blooming.authentication.application.dto.LoginInformationDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
+import com.backend.blooming.authentication.domain.BlackListToken;
+import com.backend.blooming.authentication.infrastructure.blacklist.BlackListTokenRepository;
 import com.backend.blooming.authentication.infrastructure.exception.InvalidTokenException;
 import com.backend.blooming.authentication.infrastructure.exception.OAuthException;
 import com.backend.blooming.authentication.infrastructure.exception.UnsupportedOAuthTypeException;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthClient;
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.devicetoken.domain.DeviceToken;
+import com.backend.blooming.devicetoken.infrastructure.repository.DeviceTokenRepository;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.SpyBean;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -33,6 +40,12 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private DeviceTokenRepository deviceTokenRepository;
+
+    @Autowired
+    private BlackListTokenRepository blackListTokenRepository;
 
     @Test
     void 로그인시_존재하지_않는_사용자인_경우_해당_사용자를_저장후_토큰_정보를_반환한다() {
@@ -153,6 +166,53 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
     void 유효하지_않는_타입의_refresh_token으로_access_token_재발행시_예외를_반환한다() {
         // when & then
         assertThatThrownBy(() -> authenticationService.reissueAccessToken(유효하지_않는_타입의_refresh_token))
+                .isInstanceOf(InvalidTokenException.class);
+    }
+
+    @Test
+    void 로그아웃시_디바이스_토큰과_액세스_토큰을_비활성화한다() {
+        // when
+        authenticationService.logout(기존_사용자.getId(), 로그아웃_dto);
+
+        // then
+        final BlackListToken blackListToken = blackListTokenRepository.findByToken(로그아웃_dto.refreshToken()).get();
+        final DeviceToken deviceToken = deviceTokenRepository.findByUserIdAndToken(
+                기존_사용자.getId(),
+                로그아웃_dto.deviceToken()
+        ).get();
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(blackListToken.getToken()).isEqualTo(로그아웃_dto.refreshToken());
+            softAssertions.assertThat(deviceToken.isActive()).isFalse();
+        });
+    }
+
+    @Test
+    void 로그아웃시_리프레시_토큰이_유효하지_않다면_예외를_발생시킨다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.logout(기존_사용자.getId(), 유효하지_않은_리프레시_토큰을_갖는_로그아웃_dto))
+                .isInstanceOf(InvalidTokenException.class);
+    }
+
+    @Test
+    void 로그아웃시_디바이스_토큰과_액세스_토큰을_비활성화하고_사용자의_삭제_여부를_참으로_변경한다() {
+        // when
+        authenticationService.withdraw(기존_사용자.getId(), 유효한_refresh_token);
+
+        // then
+        final User user = userRepository.findById(기존_사용자.getId()).get();
+        final BlackListToken blackListToken = blackListTokenRepository.findByToken(유효한_refresh_token).get();
+        final List<DeviceToken> deviceTokens = deviceTokenRepository.findAllByUserIdAndActiveIsTrue(기존_사용자.getId());
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(user.isDeleted()).isTrue();
+            softAssertions.assertThat(blackListToken.getToken()).isEqualTo(유효한_refresh_token);
+            softAssertions.assertThat(deviceTokens).isEmpty();
+        });
+    }
+
+    @Test
+    void 탈퇴시_리프레시_토큰이_유효하지_않다면_예외를_발생시킨다() {
+        // when & then
+        assertThatThrownBy(() -> authenticationService.withdraw(기존_사용자.getId(), 유효하지_않는_refresh_token))
                 .isInstanceOf(InvalidTokenException.class);
     }
 }
