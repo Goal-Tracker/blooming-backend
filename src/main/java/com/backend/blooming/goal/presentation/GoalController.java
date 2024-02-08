@@ -78,16 +78,6 @@ public class GoalController {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<Void> delete(
-            @PathVariable("goalId") final Long goalId,
-            @Authenticated final AuthenticatedUser authenticatedUser
-    ) {
-        goalService.delete(authenticatedUser.userId(), goalId);
-
-        return ResponseEntity.noContent().build();
-    }
-
     @PatchMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> update(
             @PathVariable("goalId") final Long goalId,
@@ -98,5 +88,15 @@ public class GoalController {
         final ReadGoalDetailDto response = goalService.update(authenticatedUser.userId(), goalId, updateGoalDto);
 
         return ResponseEntity.created(URI.create("/goals/" + response.id())).build();
+    }
+
+    @DeleteMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> delete(
+            @PathVariable("goalId") final Long goalId,
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
+        goalService.delete(authenticatedUser.userId(), goalId);
+
+        return ResponseEntity.noContent().build();
     }
 }
