@@ -12,7 +12,7 @@ public record UpdateGoalRequest(
         String memo,
         
         @DateTimeFormat(pattern = "yyyy-MM-dd")
-        @FutureOrPresent
+        @FutureOrPresent(message = "종료날짜는 현재보다 과거일 수 없습니다.")
         LocalDate endDate,
         List<Long> teamUserIds
 ) {
