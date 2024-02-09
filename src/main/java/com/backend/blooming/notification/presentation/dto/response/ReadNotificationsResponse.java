@@ -1,4 +1,4 @@
-package com.backend.blooming.notification.presentation.dto;
+package com.backend.blooming.notification.presentation.dto.response;
 
 import com.backend.blooming.notification.application.dto.ReadNotificationsDto;
 
