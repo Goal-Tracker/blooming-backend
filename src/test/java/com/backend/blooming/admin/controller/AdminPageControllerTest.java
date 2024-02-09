@@ -63,8 +63,8 @@ class AdminPageControllerTest extends AdminPageControllerTestFixture {
         mockMvc.perform(get("/admin"))
                .andExpectAll(
                        status().isOk(),
-                       view().name("/admin/test"),
-                       model().attributeExists("themes")
+                       view().name("admin/test"),
+                       model().attributeExists("themes", "users")
                );
     }
 
