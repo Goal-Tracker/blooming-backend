@@ -96,8 +96,7 @@ public class GoalService {
 
         return ReadAllGoalDto.from(goals);
     }
-
-    @Transactional
+    
     public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
@@ -135,8 +134,7 @@ public class GoalService {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }
-
-    @Transactional
+    
     public void delete(final Long userId, final Long goalId) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
