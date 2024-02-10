@@ -5,6 +5,8 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -99,13 +101,14 @@ class GoalTest extends GoalTestFixture {
         assertThat(goal.getMemo()).isEqualTo("골 메모 테스트");
     }
     
-    @Test
-    void 요청한_골_메모가_빈_값인_경우_비어있는_값으로_저장한다() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 요청한_골_메모가_빈_값인_경우_비어있는_값으로_저장한다(final String emptyMemo) {
         // given
         final Goal goal = 유효한_골;
         
         // when
-        goal.updateMemo("");
+        goal.updateMemo(emptyMemo);
         
         // then
         assertThat(goal.getMemo()).isEmpty();
