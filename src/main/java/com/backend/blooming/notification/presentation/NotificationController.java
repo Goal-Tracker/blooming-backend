@@ -4,7 +4,7 @@ import com.backend.blooming.authentication.presentation.anotaion.Authenticated;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedUser;
 import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.notification.application.dto.ReadNotificationsDto;
-import com.backend.blooming.notification.presentation.dto.ReadNotificationsResponse;
+import com.backend.blooming.notification.presentation.dto.response.ReadNotificationsResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
