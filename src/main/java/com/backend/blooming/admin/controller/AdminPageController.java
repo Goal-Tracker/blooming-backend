@@ -47,7 +47,7 @@ public class AdminPageController {
         model.addAttribute("themes", getThemes());
         model.addAttribute("users", getUsers());
 
-        return "/admin/test";
+        return "admin/test";
     }
 
     private static List<String> getThemes() {
