@@ -34,6 +34,7 @@ public enum ExceptionMessage {
     NOT_FOUND_DEVICE_TOKEN("디바이스 토큰을 찾을 수 없습니다."),
 
     // 친구
+    SELF_REQUEST_NOT_ALLOWED("자신에게는 친구 요청할 수 없습니다."),
     ALREADY_REQUESTED_FRIEND("이미 친구를 요청한 사용자입니다."),
     NOT_FOUND_FRIEND_REQUEST("해당 친구 요청을 조회할 수 없습니다."),
     FRIEND_ACCEPTANCE_FORBIDDEN("친구 요청을 수락할 권한이 없습니다."),
@@ -52,7 +53,10 @@ public enum ExceptionMessage {
     INVALID_USER_TO_PARTICIPATE("골에 참여할 수 없는 사용자입니다. 골에는 친구인 사용자만 초대할 수 있습니다."),
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
-    UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다.");
+    UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
+
+    // 관리자 페이지
+    INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
 
     private final String message;
 }
