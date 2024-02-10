@@ -20,10 +20,6 @@ public class GoalTestFixture {
     protected LocalDate 수정_요청한_골_종료일 = LocalDate.now().plusDays(5);
     protected Long 골_관리자_아이디 = 1L;
     protected Long 골_관리자가_아닌_사용자_아이디 = 2L;
-    protected List<User> 골_참여자_목록 = new ArrayList<>();
-    protected List<User> 유효하지_않은_골_참여자_목록 = new ArrayList<>();
-    protected List<User> 수정_요청한_골_참여자_목록 = new ArrayList<>();
-    protected List<User> 기존_참여자가_포함되지_않은_수정_골_참여자_목록 = new ArrayList<>();
     protected User 기존_골_참여자 = User.builder()
                                   .oAuthId("아이디")
                                   .oAuthType(OAuthType.KAKAO)
@@ -48,6 +44,9 @@ public class GoalTestFixture {
                                       .color(ThemeColor.CORAL)
                                       .statusMessage("상태메시지3")
                                       .build();
+    protected List<User> 골_참여자_목록 = new ArrayList<>();
+    protected List<User> 유효하지_않은_골_참여자_목록 = new ArrayList<>();
+    protected List<User> 수정_요청한_골_참여자_목록 = new ArrayList<>();
     protected Goal 유효한_골 = Goal.builder()
                                .name(골_제목)
                                .memo("골 메모")
@@ -59,9 +58,8 @@ public class GoalTestFixture {
     
     @BeforeEach
     void setUp() {
-        골_참여자_목록.addAll(List.of(기존_골_참여자, 기존_골_참여자2));
-        유효하지_않은_골_참여자_목록.addAll(List.of(기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자));
-        수정_요청한_골_참여자_목록.addAll(List.of(기존_골_참여자, 기존_골_참여자2, 추가된_골_참여_사용자));
-        기존_참여자가_포함되지_않은_수정_골_참여자_목록.addAll(List.of(기존_골_참여자, 추가된_골_참여_사용자));
+        골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자2));
+        유효하지_않은_골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자));
+        수정_요청한_골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자2, 추가된_골_참여_사용자));
     }
 }
