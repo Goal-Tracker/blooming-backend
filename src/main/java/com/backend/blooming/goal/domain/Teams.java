@@ -35,7 +35,7 @@ public class Teams {
     }
     
     private void validateUsersSize(final List<User> users) {
-        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
+        if (users.isEmpty() || users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }

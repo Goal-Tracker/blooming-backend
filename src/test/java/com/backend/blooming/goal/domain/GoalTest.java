@@ -24,7 +24,7 @@ class GoalTest extends GoalTestFixture {
         // when
         final Goal goal = Goal.builder()
                               .name(골_제목)
-                              .memo("")
+                              .memo(null)
                               .startDate(골_시작일)
                               .endDate(골_종료일)
                               .managerId(골_관리자_아이디)
