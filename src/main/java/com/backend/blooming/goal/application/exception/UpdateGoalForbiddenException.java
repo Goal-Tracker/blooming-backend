@@ -5,7 +5,7 @@ import com.backend.blooming.exception.ExceptionMessage;
 
 public class UpdateGoalForbiddenException extends BloomingException {
 
-    public UpdateGoalForbiddenException(final ExceptionMessage exceptionMessage) {
+    private UpdateGoalForbiddenException(final ExceptionMessage exceptionMessage) {
         super(exceptionMessage);
     }
 
