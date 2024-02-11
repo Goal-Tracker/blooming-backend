@@ -4,7 +4,6 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.domain.Stamp;
-import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;

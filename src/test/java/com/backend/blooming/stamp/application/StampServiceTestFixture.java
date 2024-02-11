@@ -77,8 +77,8 @@ public class StampServiceTestFixture {
                 "스탬프 메시지"
         );
         골_참여자가_아닌_사용자가_생성한_스탬프_dto = new CreateStampDto(
+                스탬프를_생성할_골.getId(),
                 골_참여자가_아닌_사용자.getId(),
-                스탬프를_생성한_사용자.getId(),
                 1,
                 "스탬프 메시지"
         );
