@@ -58,7 +58,7 @@ class StampTest extends StampTestFixture {
                                       .day(스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우)
                                       .message("스탬프 인증 메시지")
                                       .build())
-                .isInstanceOf(InvalidStampException.InvalidStampToCreate.class);
+                .isInstanceOf(InvalidStampException.InvalidStampDayFuture.class);
     }
     
     @ParameterizedTest
