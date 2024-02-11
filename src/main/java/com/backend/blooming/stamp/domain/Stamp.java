@@ -72,7 +72,7 @@ public class Stamp extends BaseTimeEntity {
         final long nowStampDay = ChronoUnit.DAYS.between(goal.getGoalTerm().getStartDate(), LocalDate.now()) + 1;
 
         if (day > nowStampDay) {
-            throw new InvalidStampException.InvalidStampToCreate();
+            throw new InvalidStampException.InvalidStampDayFuture();
         }
         if (day > goal.getGoalTerm().getDays()) {
             throw new InvalidStampException.InvalidStampDay();
