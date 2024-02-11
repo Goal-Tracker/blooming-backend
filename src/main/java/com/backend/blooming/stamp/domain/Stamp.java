@@ -45,13 +45,13 @@ public class Stamp extends BaseTimeEntity {
     @JoinColumn(name = "user_id", foreignKey = @ForeignKey(name = "fk_stamp_user"), nullable = false)
     private User user;
 
-    @Column(nullable = false)
+    @Column(name = "stamp_day", nullable = false)
     private int day;
 
-    @Column(nullable = false)
+    @Column(columnDefinition = "text", nullable = false)
     private String message;
 
-    @Column(nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;
 
     @Builder
