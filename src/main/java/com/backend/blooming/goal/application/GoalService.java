@@ -96,7 +96,7 @@ public class GoalService {
 
         return ReadAllGoalDto.from(goals);
     }
-    
+
     public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
@@ -111,7 +111,7 @@ public class GoalService {
             throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
         }
     }
-    
+
     private void updateGoal(final UpdateGoalDto updateGoalDto, final Goal goal) {
         if (updateGoalDto.name() != null) {
             goal.updateName(updateGoalDto.name());
@@ -123,18 +123,11 @@ public class GoalService {
             goal.updateEndDate(updateGoalDto.endDate());
         }
         if (updateGoalDto.teamUserIds() != null) {
-            validateTeamsToUpdate(updateGoalDto.teamUserIds());
             final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
             goal.updateTeams(users, goal);
         }
     }
 
-    private void validateTeamsToUpdate(final List<Long> teamUserIds) {
-        if (teamUserIds.isEmpty() || teamUserIds.size() > TEAMS_MAXIMUM_LENGTH) {
-            throw new InvalidGoalException.InvalidInvalidUsersSize();
-        }
-    }
-    
     public void delete(final Long userId, final Long goalId) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);

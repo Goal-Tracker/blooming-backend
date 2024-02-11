@@ -22,24 +22,24 @@ import java.util.List;
 @EqualsAndHashCode
 @ToString
 public class Teams {
-    
+
     private static final int TEAMS_MAXIMUM_LENGTH = 5;
-    
+
     @Column(nullable = false)
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> goalTeams = new ArrayList<>();
-    
+
     public Teams(final List<User> users, final Goal goal) {
         validateUsersSize(users);
         users.forEach(user -> new GoalTeam(user, goal, this));
     }
-    
+
     private void validateUsersSize(final List<User> users) {
-        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
+        if (users.isEmpty() || users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }
-    
+
     public void updateTeams(final List<User> users, final Goal goal) {
         validateUsersSize(users);
         final List<User> usersBeforeUpdate = this.goalTeams.stream()
