@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>블루밍 어드민 테스트</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+          integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-5 mb-5">블루밍 관리자 테스트 페이지</h1>
+
+    <div class="mb-5">
+        <h3>사용자 생성</h3>
+        <form class="row g-3" id="userCreateForm">
+            <div class="col-12">
+                <label for="inputName" class="form-label">닉네임</label>
+                <input type="text" class="form-control" id="inputName" name="name" required placeholder="필수 입력">
+            </div>
+            <div class="col-12">
+                <label for="inputEmail" class="form-label">이메일</label>
+                <input type="text" class="form-control" id="inputEmail" name="email" placeholder="미입력시 랜덤으로 부여됩니다">
+            </div>
+            <div class="col-md-6">
+                <label for="inputTheme" class="form-label">테마 색상</label>
+                <select class="form-select" id="inputTheme" name="theme">
+                    <th:block th:each="theme : ${themes}">
+                        <option th:value="${theme}" th:text="${theme}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputStatusMessage" class="form-label">상태 메시지</label>
+                <input type="text" class="form-control" id="inputStatusMessage" name="statusMessage"
+                       placeholder="미입력시 공백">
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">사용자 생성</button>
+            </div>
+        </form>
+    </div>
+    <div class="mb-5">
+        <h3>친구 요청 생성</h3>
+        <form class="row g-3" id="friendRequestForm">
+            <div class="col-md-6">
+                <label for="inputRequest" class="form-label">친구 요청 하는 사람</label>
+                <select class="form-select" id="inputRequest" name="requestUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputRequested" class="form-label">친구 요청 받는 사람</label>
+                <select class="form-select" id="inputRequested" name="requestedUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">상태 변경</button>
+            </div>
+        </form>
+    </div>
+    <div class="mb-5">
+        <h3>친구 요청 상태 변경</h3>
+        <form class="row g-3" id="friendStatusUpdateForm">
+            <div class="col-md-6">
+                <label for="inputRequest2" class="form-label">친구 요청자</label>
+                <select class="form-select" id="inputRequest2" name="requestUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputRequested2" class="form-label">친구 요청 수신자</label>
+                <select class="form-select" id="inputRequested2" name="requestedUser">
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputStatus" class="form-label">친구 상태</label>
+                <select class="form-select" id="inputStatus" name="status">
+                    <option value="FRIEND">친구 수락</option>
+                    <option value="DELETE_BY_REQUESTED">친구 거절</option>
+                    <option value="DELETE_BY_REQUEST">친구 요청 취소</option>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">상태 변경</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mb-5">
+        <h3>골 생성</h3>
+        <form class="row g-3" id="goalCreateForm">
+            <div class="col-12">
+                <label for="inputGoalName" class="form-label">골 이름</label>
+                <input type="text" class="form-control" id="inputGoalName" name="name" required placeholder="필수 입력">
+            </div>
+            <div class="col-12">
+                <label for="inputMemo" class="form-label">골 메모</label>
+                <input type="text" class="form-control" id="inputMemo" name="email" placeholder="미입력시 공백입니다">
+            </div>
+            <div class="col-md-6">
+                <label for="inputStartDate" class="form-label">시작 날짜</label>
+                <input type="date" class="form-control" id="inputStartDate" name="startDate" max="2099-12-31" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputEndDate" class="form-label">종료 날짜</label>
+                <input type="date" class="form-control" id="inputEndDate" name="endDate" max="2099-12-31" required>
+            </div>
+            <div class="col-md-6">
+                <label for="inputManager" class="form-label">골 생성자 선택</label>
+                <select class="form-select" id="inputManager" name="manager" required>
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label for="inputTeam" class="form-label">팀원 선택 (한 명만)</label>
+                <select class="form-select" id="inputTeam" name="team" required>
+                    <th:block th:each="user : ${users}">
+                        <option th:value="${user.id}" th:text="${user.name}">
+                        </option>
+                    </th:block>
+                </select>
+            </div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">골 생성</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script>
+    // 사용자 생성 관련 로직
+    const userFormElement = document.getElementById("userCreateForm");
+    userFormElement.addEventListener("submit", submitUserForm);
+
+    function submitUserForm(e) {
+        e.preventDefault()
+        const formData = new FormData(userFormElement);
+
+        fetch(`/admin/user`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("사용자 생성 성공")
+            } else {
+                response.json().then(data => {
+                    alert("사용자 생성 실패 : " + data.message);
+                }).catch(error => {
+                    alert("사용자 생성 실패 : " + error.message);
+                });
+            }
+            location.reload()
+        }).catch(error => {
+            alert("사용자 생성 실패 : " + error.message)
+        });
+    }
+
+    // 친구 신청 관련 로직
+    const formFriendRequestElement = document.getElementById("friendRequestForm");
+    formFriendRequestElement.addEventListener("submit", submitFriendRequestForm);
+
+    function submitFriendRequestForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formFriendRequestElement);
+
+        fetch(`/admin/friend`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("친구 요청 성공")
+            } else {
+                response.json().then(data => {
+                    alert("친구 요청 실패 : " + data.message);
+                }).catch(error => {
+                    alert("친구 요청 실패 : " + error.message);
+                });
+            }
+            location.reload()
+        }).catch(error => {
+            alert("친구 요청 실패 : " + error.message)
+        });
+    }
+
+    // 친구 상태 변경 관련 로직
+    const formFriendStatusUpdateElement = document.getElementById("friendStatusUpdateForm");
+    formFriendStatusUpdateElement.addEventListener("submit", submitFriendStatusUpdateForm);
+
+    function submitFriendStatusUpdateForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formFriendStatusUpdateElement);
+
+        fetch(`/admin/friend`, {
+            method : 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("친구 상태 변경 성공")
+            } else {
+                response.json().then(data => {
+                    alert("친구 상태 변경 실패 : " + data.message);
+                }).catch(error => {
+                    alert("친구 상태 변경 실패 : " + error.message);
+                });
+            }
+            location.reload()
+        }).catch(error => {
+            alert("친구 상태 변경 실패 : " + error.message)
+        });
+    }
+
+    // 골 생성 관련 로직
+    var today = new Date();
+    document.getElementById('inputStartDate').value = today.toISOString().substring(0, 10);
+    document.getElementById('inputEndDate').value = new Date(today.setDate(today.getDate() + 5)).toISOString().substring(0, 10);
+
+    const formGoalCreateElement = document.getElementById("goalCreateForm");
+    formGoalCreateElement.addEventListener("submit", submitGoalCreateForm);
+
+    function submitGoalCreateForm(e) {
+        e.preventDefault()
+        const formData = new FormData(formGoalCreateElement);
+
+        fetch(`/admin/goal`, {
+            method : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body   : JSON.stringify(Object.fromEntries(formData))
+        }).then(response => {
+            if (response.ok) {
+                alert("골 생성 성공")
+            } else {
+                response.json().then(data => {
+                    alert("골 생성 실패 : " + data.message);
+                }).catch(error => {
+                    alert("골 생성 실패 : " + error.message);
+                });
+            }
+            location.reload()
+        }).catch(error => {
+            alert("골 생성 실패 : " + error.message)
+        });
+    }
+</script>
+</html>

@@ -1,6 +1,6 @@
 package com.backend.blooming.authentication.application.dto;
 
-import com.backend.blooming.authentication.presentation.dto.LogoutRequest;
+import com.backend.blooming.authentication.presentation.dto.request.LogoutRequest;
 
 public record LogoutDto(String refreshToken, String deviceToken) {
 

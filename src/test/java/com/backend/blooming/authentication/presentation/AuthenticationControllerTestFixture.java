@@ -6,10 +6,10 @@ import com.backend.blooming.authentication.application.dto.LogoutDto;
 import com.backend.blooming.authentication.application.dto.TokenDto;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
-import com.backend.blooming.authentication.presentation.dto.LogoutRequest;
-import com.backend.blooming.authentication.presentation.dto.WithdrawRequest;
+import com.backend.blooming.authentication.presentation.dto.request.LogoutRequest;
+import com.backend.blooming.authentication.presentation.dto.request.WithdrawRequest;
 import com.backend.blooming.authentication.presentation.dto.request.ReissueAccessTokenRequest;
-import com.backend.blooming.authentication.presentation.dto.response.SocialLoginRequest;
+import com.backend.blooming.authentication.presentation.dto.request.SocialLoginRequest;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class AuthenticationControllerTestFixture {
