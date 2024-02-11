@@ -53,7 +53,7 @@ public class Goal extends BaseTimeEntity {
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
     
-    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
     private List<Stamp> stamps = new ArrayList<>();
     
     @Column(nullable = false)
