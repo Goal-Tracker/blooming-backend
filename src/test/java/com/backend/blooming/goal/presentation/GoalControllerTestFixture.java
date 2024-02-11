@@ -115,6 +115,12 @@ public class GoalControllerTestFixture {
             "#a1b3d7",
             "테스트 상태메시지2"
     );
+    protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답3 = new ReadGoalResponse.GoalTeamResponse(
+            3L,
+            "테스트 유저3",
+            "f69b94",
+            "테스트 상태메시지3"
+    );
     protected ReadGoalDetailDto 유효한_골_dto = new ReadGoalDetailDto(
             1L,
             "테스트 골1",
@@ -231,10 +237,20 @@ public class GoalControllerTestFixture {
             1L,
             List.of(골_참여자1, 골_참여자2, 골_참여자3)
     );
+    protected ReadGoalResponse 수정_후_골_응답_dto = new ReadGoalResponse(
+            1L,
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
+            골_시작일,
+            LocalDate.now().plusDays(20),
+            20,
+            1L,
+            List.of(골_참여자_응답1, 골_참여자_응답2, 골_참여자_응답3)
+    );
     protected ReadGoalDetailDto 골_종료날짜가_null인_수정_후_골_dto = new ReadGoalDetailDto(
             1L,
-            "수정된 테스트 골2",
-            "수정된 테스트 골 메모2",
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
             골_시작일,
             골_종료일,
             10,
@@ -243,8 +259,8 @@ public class GoalControllerTestFixture {
     );
     protected ReadGoalDetailDto 골_참여자가_null인_수정_후_골_dto = new ReadGoalDetailDto(
             1L,
-            "수정된 테스트 골3",
-            "수정된 테스트 골 메모3",
+            "수정된 테스트 골1",
+            "수정된 테스트 골 메모1",
             골_시작일,
             LocalDate.now().plusDays(20),
             20,

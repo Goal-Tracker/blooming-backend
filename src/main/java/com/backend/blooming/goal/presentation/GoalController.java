@@ -79,15 +79,16 @@ public class GoalController {
     }
 
     @PatchMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<Void> update(
+    public ResponseEntity<ReadGoalResponse> update(
             @PathVariable("goalId") final Long goalId,
             @RequestBody @Valid final UpdateGoalRequest request,
             @Authenticated final AuthenticatedUser authenticatedUser
     ) {
         final UpdateGoalDto updateGoalDto = UpdateGoalDto.from(request);
-        final ReadGoalDetailDto response = goalService.update(authenticatedUser.userId(), goalId, updateGoalDto);
+        final ReadGoalDetailDto readGoalDetailDto = goalService.update(authenticatedUser.userId(), goalId, updateGoalDto);
+        final ReadGoalResponse response = ReadGoalResponse.from(readGoalDetailDto);
 
-        return ResponseEntity.created(URI.create("/goals/" + response.id())).build();
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(value = "/{goalId}", headers = "X-API-VERSION=1")

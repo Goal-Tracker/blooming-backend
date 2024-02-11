@@ -384,19 +384,38 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(수정_요청한_골_dto))
         ).andExpectAll(
-                status().isCreated(),
-                redirectedUrl("/goals/" + 유효한_골_아이디)
+                status().isOk(),
+                jsonPath("$.id", is(수정_후_골_응답_dto.id()), Long.class),
+                jsonPath("$.name", is(수정_후_골_응답_dto.name()), String.class),
+                jsonPath("$.memo", is(수정_후_골_응답_dto.memo()), String.class),
+                jsonPath("$.startDate", is(수정_후_골_응답_dto.startDate().toString()), String.class),
+                jsonPath("$.endDate", is(수정_후_골_응답_dto.endDate().toString()), String.class),
+                jsonPath("$.days", is(수정_후_골_응답_dto.days()), long.class),
+                jsonPath("$.managerId", is(수정_후_골_응답_dto.managerId()), Long.class),
+                jsonPath("$.teams.[0].id", is(수정_후_골_응답_dto.teams().get(0).id()), Long.class),
+                jsonPath("$.teams.[0].name", is(수정_후_골_응답_dto.teams().get(0).name()), String.class),
+                jsonPath("$.teams.[0].colorCode", is(수정_후_골_응답_dto.teams().get(0).colorCode()), String.class),
+                jsonPath("$.teams.[0].statusMessage", is(수정_후_골_응답_dto.teams().get(0).statusMessage()), String.class),
+                jsonPath("$.teams.[1].id", is(수정_후_골_응답_dto.teams().get(1).id()), Long.class),
+                jsonPath("$.teams.[2].id", is(수정_후_골_응답_dto.teams().get(2).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
-                requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
-                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
-                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
-                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("골 메모"),
+                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
+                        fieldWithPath("teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
+                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
                 )
         ));
     }
@@ -476,19 +495,35 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_종료날짜가_null인_수정_요청_골_dto))
         ).andExpectAll(
-                status().isCreated(),
-                redirectedUrl("/goals/" + 유효한_골_아이디)
+                status().isOk(),
+                jsonPath("$.id", is(수정_후_골_응답_dto.id()), Long.class),
+                jsonPath("$.name", is(수정_후_골_응답_dto.name()), String.class),
+                jsonPath("$.memo", is(수정_후_골_응답_dto.memo()), String.class),
+                jsonPath("$.startDate", is(수정_후_골_응답_dto.startDate().toString()), String.class),
+                jsonPath("$.endDate", is(골_종료날짜가_null인_수정_후_골_dto.endDate().toString()), String.class),
+                jsonPath("$.days", is(골_종료날짜가_null인_수정_후_골_dto.days()), long.class),
+                jsonPath("$.managerId", is(수정_후_골_응답_dto.managerId()), Long.class),
+                jsonPath("$.teams.[0].id", is(수정_후_골_응답_dto.teams().get(0).id()), Long.class),
+                jsonPath("$.teams.[1].id", is(수정_후_골_응답_dto.teams().get(1).id()), Long.class),
+                jsonPath("$.teams.[2].id", is(수정_후_골_응답_dto.teams().get(2).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
-                requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
-                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
-                        fieldWithPath("endDate").type(JsonFieldType.NULL).description("수정할 골 종료날짜"),
-                        fieldWithPath("teamUserIds").type(JsonFieldType.ARRAY).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("골 메모"),
+                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
+                        fieldWithPath("teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
+                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
                 )
         ));
     }
@@ -508,19 +543,34 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(골_참여자_목록이_null인_수정_요청_골_dto))
         ).andExpectAll(
-                status().isCreated(),
-                redirectedUrl("/goals/" + 유효한_골_아이디)
+                status().isOk(),
+                jsonPath("$.id", is(수정_후_골_응답_dto.id()), Long.class),
+                jsonPath("$.name", is(수정_후_골_응답_dto.name()), String.class),
+                jsonPath("$.memo", is(수정_후_골_응답_dto.memo()), String.class),
+                jsonPath("$.startDate", is(수정_후_골_응답_dto.startDate().toString()), String.class),
+                jsonPath("$.endDate", is(수정_후_골_응답_dto.endDate().toString()), String.class),
+                jsonPath("$.days", is(수정_후_골_응답_dto.days()), long.class),
+                jsonPath("$.managerId", is(수정_후_골_응답_dto.managerId()), Long.class),
+                jsonPath("$.teams.[0].id", is(수정_후_골_응답_dto.teams().get(0).id()), Long.class),
+                jsonPath("$.teams.[1].id", is(수정_후_골_응답_dto.teams().get(1).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
-                requestFields(
-                        fieldWithPath("name").type(JsonFieldType.STRING).description("수정할 골 제목"),
-                        fieldWithPath("memo").type(JsonFieldType.STRING).description("수정할 골 메모"),
-                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("수정할 골 종료날짜"),
-                        fieldWithPath("teamUserIds").type(JsonFieldType.NULL).description("수정할 골 팀 사용자 아이디(기존 사용자 포함)")
+                responseFields(
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("name").type(JsonFieldType.STRING).description("골 제목"),
+                        fieldWithPath("memo").type(JsonFieldType.STRING).description("골 메모"),
+                        fieldWithPath("startDate").type(JsonFieldType.STRING).description("골 시작날짜"),
+                        fieldWithPath("endDate").type(JsonFieldType.STRING).description("골 종료날짜"),
+                        fieldWithPath("days").type(JsonFieldType.NUMBER).description("골 날짜 수"),
+                        fieldWithPath("managerId").type(JsonFieldType.NUMBER).description("골 관리자 아이디"),
+                        fieldWithPath("teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
+                        fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
+                        fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
+                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
                 )
         ));
     }
