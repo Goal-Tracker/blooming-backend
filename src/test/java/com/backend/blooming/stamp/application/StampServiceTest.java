@@ -3,6 +3,8 @@ package com.backend.blooming.stamp.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
+import com.backend.blooming.goal.application.exception.ReadStampForbiddenException;
+import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -11,6 +13,9 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -63,5 +68,35 @@ class StampServiceTest extends StampServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> stampService.createStamp(이미_존재하는_스탬프_dto))
                 .isInstanceOf(InvalidStampException.InvalidStampToCreate.class);
+    }
+
+    @Test
+    void 요청한_골_아이디에_대한_모든_스탬프를_조회한다() {
+        // when
+        final ReadAllStampDto result = stampService.readAllByGoalId(유효한_골_아이디, 스탬프를_생성한_사용자_아이디1);
+
+        // then
+        assertSoftly(softAssertions -> {
+            final List<ReadAllStampDto.StampDto> stamps = result.stamps().get(1);
+            softAssertions.assertThat(stamps).hasSize(2);
+            softAssertions.assertThat(stamps.get(0).userId()).isEqualTo(스탬프를_생성한_사용자_아이디1);
+            softAssertions.assertThat(stamps.get(1).userId()).isEqualTo(스탬프를_생성한_사용자_아이디2);
+            softAssertions.assertThat(stamps.get(0).userColor()).isEqualTo(스탬프를_생성한_사용자_컬러1);
+            softAssertions.assertThat(stamps.get(1).userColor()).isEqualTo(스탬프를_생성한_사용자_컬러2);
+        });
+    }
+
+    @Test
+    void 스탬프_조회시_존재하지_않는_골의_스탬프를_조회할_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> stampService.readAllByGoalId(존재하지_않는_골_아이디, 스탬프를_생성한_사용자_아이디1))
+                .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 스탬프_조회시_골_참여자가_아닌_사용자가_스탬프를_조회할_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
+                .isInstanceOf(ReadStampForbiddenException.class);
     }
 }
