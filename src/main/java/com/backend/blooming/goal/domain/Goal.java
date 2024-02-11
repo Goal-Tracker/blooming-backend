@@ -2,6 +2,7 @@ package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -51,7 +52,10 @@ public class Goal extends BaseTimeEntity {
 
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
-
+    
+    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.REFRESH)
+    private List<Stamp> stamps = new ArrayList<>();
+    
     @Column(nullable = false)
     private boolean deleted = false;
 
