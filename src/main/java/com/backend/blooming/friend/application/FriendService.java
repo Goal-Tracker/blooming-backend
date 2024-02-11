@@ -2,9 +2,9 @@ package com.backend.blooming.friend.application;
 
 import com.backend.blooming.friend.application.dto.FriendType;
 import com.backend.blooming.friend.application.dto.ReadFriendsDto;
-import com.backend.blooming.friend.application.exception.AlreadyRequestedFriendException;
 import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
+import com.backend.blooming.friend.application.exception.FriendRequestNotAllowedException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
@@ -28,7 +28,7 @@ public class FriendService {
     private final NotificationService notificationService;
 
     public Long request(final Long userId, final Long friendId) {
-        validateFriendStatus(userId, friendId);
+        validateRequestFriend(userId, friendId);
 
         final User user = getUser(userId);
         final User friendUser = getUser(friendId);
@@ -40,9 +40,12 @@ public class FriendService {
         return friend.getId();
     }
 
-    private void validateFriendStatus(final Long userId, final Long friendId) {
+    private void validateRequestFriend(final Long userId, final Long friendId) {
+        if (userId.equals(friendId)) {
+            throw new FriendRequestNotAllowedException.SelfRequestNotAllowedException();
+        }
         if (friendRepository.existsByRequestFriend(userId, friendId)) {
-            throw new AlreadyRequestedFriendException();
+            throw new FriendRequestNotAllowedException.AlreadyRequestedFriendException();
         }
     }
 
