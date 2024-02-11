@@ -16,6 +16,20 @@ public class InvalidStampException extends BloomingException {
         }
     }
     
+    public static class InvalidStampDayFuture extends InvalidStampException {
+        
+        public InvalidStampDayFuture() {
+            super(ExceptionMessage.INVALID_STAMP_TO_CREATE);
+        }
+    }
+    
+    public static class InvalidStampToCreate extends InvalidStampException {
+        
+        public InvalidStampToCreate() {
+            super(ExceptionMessage.INVALID_STAMP_TO_CREATE);
+        }
+    }
+    
     public static class InvalidStampMessage extends InvalidStampException {
         
         public InvalidStampMessage() {

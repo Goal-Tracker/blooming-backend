@@ -28,7 +28,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString(exclude = "teams")
+@ToString(exclude = {"teams", "stamps"})
 public class Goal extends BaseTimeEntity {
     
     private static final String MEMO_DEFAULT = "";
