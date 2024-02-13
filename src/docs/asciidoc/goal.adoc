@@ -32,4 +32,4 @@ operation::goal-controller-test/요청한_아이디의_골을_삭제한다[snipp
 ==== 요청
 operation::goal-controller-test/요청한_내용으로_골을_수정한다[snippets='http-request,path-parameters,request-headers']
 ==== 응답
-operation::goal-controller-test/요청한_내용으로_골을_수정한다[snippets='http-response']
+operation::goal-controller-test/요청한_내용으로_골을_수정한다[snippets='http-response,response-body,response-fields']
