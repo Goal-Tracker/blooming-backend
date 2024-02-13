@@ -68,7 +68,7 @@ public class Goal extends BaseTimeEntity {
         this.memo = processDefaultMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
-        this.teams = new Teams(users, this);
+        this.teams = Teams.create(users, this);
     }
 
     private String processDefaultMemo(final String memo) {
@@ -99,7 +99,7 @@ public class Goal extends BaseTimeEntity {
     }
     
     public void updateTeams(final List<User> users, final Goal goal) {
-        this.teams.updateTeams(users, goal);
+        this.teams.update(users, goal);
     }
 
     public void updateDeleted(final Long userId) {

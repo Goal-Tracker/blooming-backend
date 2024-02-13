@@ -29,26 +29,33 @@ public class Teams {
     @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     private List<GoalTeam> goalTeams = new ArrayList<>();
 
-    public Teams(final List<User> users, final Goal goal) {
-        validateUsersSize(users);
-        users.forEach(user -> new GoalTeam(user, goal, this));
+    private Teams(final List<GoalTeam> goalTeams) {
+        this.goalTeams.addAll(goalTeams);
     }
 
-    private void validateUsersSize(final List<User> users) {
+    public static Teams create(final List<User> users, final Goal goal) {
+        validateUsersSize(users);
+        final List<GoalTeam> goalTeams = users.stream()
+                                              .map(user -> new GoalTeam(user, goal))
+                                              .toList();
+        return new Teams(goalTeams);
+    }
+
+    private static void validateUsersSize(final List<User> users) {
         if (users.isEmpty() || users.size() > TEAMS_MAXIMUM_LENGTH) {
             throw new InvalidGoalException.InvalidInvalidUsersSize();
         }
     }
 
-    public void updateTeams(final List<User> users, final Goal goal) {
+    public void update(final List<User> users, final Goal goal) {
         validateUsersSize(users);
         final List<User> usersBeforeUpdate = this.goalTeams.stream()
                                                            .map(GoalTeam::getUser)
                                                            .toList();
-        users.forEach(u -> {
-            if (!usersBeforeUpdate.contains(u)) {
-                new GoalTeam(u, goal, this);
-            }
-        });
+        final List<GoalTeam> updatedUsers = users.stream()
+                                                 .filter(user -> !usersBeforeUpdate.contains(user))
+                                                 .map(user -> new GoalTeam(user, goal))
+                                                 .toList();
+        this.goalTeams.addAll(updatedUsers);
     }
 }

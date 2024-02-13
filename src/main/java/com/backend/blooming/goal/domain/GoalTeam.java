@@ -39,9 +39,8 @@ public class GoalTeam extends BaseTimeEntity {
     @Column(nullable = false)
     private boolean deleted = false;
 
-    public GoalTeam(final User user, final Goal goal, final Teams teams) {
+    public GoalTeam(final User user, final Goal goal) {
         this.user = user;
         this.goal = goal;
-        teams.getGoalTeams().add(this);
     }
 }
