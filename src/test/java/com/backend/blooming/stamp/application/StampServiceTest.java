@@ -53,9 +53,6 @@ class StampServiceTest extends StampServiceTestFixture {
 
     @Test
     void 스탬프를_생성하려는_날짜의_스탬프가_이미_존재할_경우_예외를_발생한다() {
-        // given
-        stampService.createStamp(이미_존재하는_스탬프_dto);
-
         // when & then
         assertThatThrownBy(() -> stampService.createStamp(이미_존재하는_스탬프_dto))
                 .isInstanceOf(InvalidStampException.InvalidStampToCreate.class);
