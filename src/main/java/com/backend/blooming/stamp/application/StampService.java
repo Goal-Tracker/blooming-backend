@@ -1,9 +1,7 @@
 package com.backend.blooming.stamp.application;
 
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.goal.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
-import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
@@ -84,17 +82,10 @@ public class StampService {
     @Transactional(readOnly = true)
     public ReadAllStampDto readAllByGoalId(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
-        final User user = getUser(userId);
-        validateUserToRead(goal, user);
-        final List<Stamp> stamps= stampRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
+        getUser(userId);
+
+        final List<Stamp> stamps = stampRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
 
         return ReadAllStampDto.from(stamps);
-    }
-
-    private void validateUserToRead(final Goal goal, final User user) {
-        final List<User> users = goal.getTeams().stream().map(GoalTeam::getUser).toList();
-        if (!users.contains(user)) {
-            throw new ReadStampForbiddenException();
-        }
     }
 }

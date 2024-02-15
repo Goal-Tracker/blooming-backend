@@ -77,7 +77,7 @@ class StampServiceTest extends StampServiceTestFixture {
 
         // then
         assertSoftly(softAssertions -> {
-            final List<ReadAllStampDto.StampDto> stamps = result.stamps().get(1);
+            final List<ReadAllStampDto.StampDto> stamps = result.stamps();
             softAssertions.assertThat(stamps).hasSize(2);
             softAssertions.assertThat(stamps.get(0).userId()).isEqualTo(스탬프를_생성한_사용자_아이디1);
             softAssertions.assertThat(stamps.get(1).userId()).isEqualTo(스탬프를_생성한_사용자_아이디2);
@@ -91,12 +91,5 @@ class StampServiceTest extends StampServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> stampService.readAllByGoalId(존재하지_않는_골_아이디, 스탬프를_생성한_사용자_아이디1))
                 .isInstanceOf(NotFoundGoalException.class);
-    }
-
-    @Test
-    void 스탬프_조회시_골_참여자가_아닌_사용자가_스탬프를_조회할_경우_예외를_발생한다() {
-        // when & then
-        assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
-                .isInstanceOf(ReadStampForbiddenException.class);
     }
 }
