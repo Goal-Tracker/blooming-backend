@@ -540,8 +540,117 @@ Content-Type: application/json
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_요청한_골에_대한_모든_스탬프_조회">요청한 골에 대한 모든 스탬프 조회</h3>
+<div class="sect3">
+<h4 id="_요청_2">요청</h4>
 <div class="sect4">
-<h5 id="_응답_response_fields">Response fields</h5>
+<h5 id="_요청_2_http_request">HTTP request</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /stamps/1 HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_2_request_headers">Request headers</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_2">응답</h4>
+<div class="sect4">
+<h5 id="_응답_2_http_response">HTTP response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "stamps" : {
+    "1" : [ {
+      "userId" : 1,
+      "name" : "사용자1",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지1",
+      "day" : 1
+    } ],
+    "2" : [ {
+      "userId" : 1,
+      "name" : "사용자1",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지2",
+      "day" : 2
+    }, {
+      "userId" : 2,
+      "name" : "사용자1",
+      "color" : "#7175a5",
+      "message" : "스탬프 메시지3",
+      "day" : 2
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_2_response_body">Response body</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
+  "stamps" : {
+    "1" : [ {
+      "userId" : 1,
+      "name" : "사용자1",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지1",
+      "day" : 1
+    } ],
+    "2" : [ {
+      "userId" : 1,
+      "name" : "사용자1",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지2",
+      "day" : 2
+    }, {
+      "userId" : 2,
+      "name" : "사용자1",
+      "color" : "#7175a5",
+      "message" : "스탬프 메시지3",
+      "day" : 2
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_응답_2_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -557,29 +666,54 @@ Content-Type: application/json
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.1.[].userId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">골 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.1.[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 이름</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 이름</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userColor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.1.[].color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 테마 색상코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.1.[].message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.1.[].day</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 날짜</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 날짜</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.2.[].userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.2.[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 메시지</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.2.[].color</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.2.[].message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.2.[].day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 날짜</p></td>
 </tr>
 </tbody>
 </table>
@@ -590,7 +724,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-02-17 00:19:23 +0900
+Last updated 2024-02-15 16:23:54 +0900
 </div>
 </div>
 </body>
