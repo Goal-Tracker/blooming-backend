@@ -31,7 +31,7 @@ import java.time.temporal.ChronoUnit;
 public class Stamp extends BaseTimeEntity {
 
     private static final int STAMP_DAY_MINIMUM = 1;
-    private static final int STAMP_MESSAGE_MAXIMUM = 50;
+    private static final int STAMP_MESSAGE_MAXIMUM = 30;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,7 +48,7 @@ public class Stamp extends BaseTimeEntity {
     @Column(name = "stamp_day", nullable = false)
     private int day;
 
-    @Column(columnDefinition = "text", nullable = false)
+    @Column(columnDefinition = "text", nullable = false, length = 30)
     private String message;
 
     @Column(name = "is_deleted", nullable = false)
