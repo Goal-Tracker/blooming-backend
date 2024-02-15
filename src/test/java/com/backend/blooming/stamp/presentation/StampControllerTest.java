@@ -27,10 +27,14 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -154,6 +158,59 @@ class StampControllerTest extends StampControllerTestFixture {
                 .content(objectMapper.writeValueAsString(이미_존재하는_스탬프_생성_요청_dto))
         ).andExpectAll(
                 status().isBadRequest(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 요청한_골_아이디에_대한_모든_스탬프를_조회한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(stampService.readAllByGoalId(유효한_골_아이디, 사용자_토큰_정보.userId())).willReturn(유효한_스탬프_목록_dto);
+
+        // when & then
+        mockMvc.perform(get("/stamps/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isOk(),
+                jsonPath("$.stamps.1.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).userId()), Long.class),
+                jsonPath("$.stamps.1.[0].userColor", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).userColor()), String.class),
+                jsonPath("$.stamps.1.[0].day", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).day()), Integer.class),
+                jsonPath("$.stamps.2.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(0).userId()), Long.class),
+                jsonPath("$.stamps.2.[1].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(1).userId()), Long.class)
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("스탬프를 조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
+                ),
+                responseFields(
+                        fieldWithPath("stamps.1.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
+                        fieldWithPath("stamps.1.[].userColor").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상"),
+                        fieldWithPath("stamps.1.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜"),
+                        fieldWithPath("stamps.2.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
+                        fieldWithPath("stamps.2.[].userColor").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상"),
+                        fieldWithPath("stamps.2.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜")
+                )
+        ));
+    }
+
+    @Test
+    void 스탬프_조회시_존재하지_않는_골의_스탬프를_조회할_경우_404_예외를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(stampService.readAllByGoalId(존재하지_않는_골_아이디, 사용자_토큰_정보.userId()))
+                .willThrow(new NotFoundGoalException());
+
+        // when & then
+        mockMvc.perform(get("/stamps/{goalId}", 존재하지_않는_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNotFound(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }
