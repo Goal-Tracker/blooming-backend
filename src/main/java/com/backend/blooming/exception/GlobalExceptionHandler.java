@@ -9,8 +9,10 @@ import com.backend.blooming.friend.application.exception.DeleteFriendForbiddenEx
 import com.backend.blooming.friend.application.exception.FriendAcceptanceForbiddenException;
 import com.backend.blooming.friend.application.exception.FriendRequestNotAllowedException;
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
+import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
@@ -46,7 +48,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
-        final String message = exception.getFieldErrors().get(METHOD_ARGUMENT_FIRST_ERROR_INDEX).getDefaultMessage();
+        final String message = exception.getFieldErrors()
+                                        .get(METHOD_ARGUMENT_FIRST_ERROR_INDEX)
+                                        .getDefaultMessage();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(message));
@@ -118,7 +122,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
@@ -165,6 +169,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DeleteFriendForbiddenException.class)
     public ResponseEntity<ExceptionResponse> handleDeleteFriendForbiddenException(
             final DeleteFriendForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(DeleteGoalForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleDeleteGoalForbiddenException(
+            final DeleteGoalForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UpdateGoalForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleUpdateGoalForbiddenException(
+            final UpdateGoalForbiddenException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 

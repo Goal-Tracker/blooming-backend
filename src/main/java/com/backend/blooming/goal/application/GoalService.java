@@ -4,8 +4,10 @@ import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
+import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -23,6 +25,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalService {
 
+    private static final int TEAMS_MAXIMUM_LENGTH = 5;
+
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
@@ -32,6 +36,10 @@ public class GoalService {
         final Goal goal = persistGoal(createGoalDto, users);
 
         return goal.getId();
+    }
+
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
@@ -55,10 +63,6 @@ public class GoalService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private List<User> getUsers(final List<Long> userIds) {
-        return userRepository.findAllByUserIds(userIds);
-    }
-
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
@@ -69,10 +73,14 @@ public class GoalService {
 
     @Transactional(readOnly = true)
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
-        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                                        .orElseThrow(NotFoundGoalException::new);
+        final Goal goal = getGoal(goalId);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    private Goal getGoal(final Long id) {
+        return goalRepository.findByIdAndDeletedIsFalse(id)
+                             .orElseThrow(NotFoundGoalException::new);
     }
 
     @Transactional(readOnly = true)
@@ -87,5 +95,42 @@ public class GoalService {
         final List<Goal> goals = goalRepository.findAllByUserIdAndFinished(userId, now);
 
         return ReadAllGoalDto.from(goals);
+    }
+
+    public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        validateUserToUpdate(goal.getManagerId(), user.getId());
+        updateGoal(updateGoalDto, goal);
+
+        return ReadGoalDetailDto.from(goal);
+    }
+
+    private void validateUserToUpdate(final Long managerId, final Long userId) {
+        if (!managerId.equals(userId)) {
+            throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
+        }
+    }
+
+    private void updateGoal(final UpdateGoalDto updateGoalDto, final Goal goal) {
+        if (updateGoalDto.name() != null) {
+            goal.updateName(updateGoalDto.name());
+        }
+        if (updateGoalDto.memo() != null) {
+            goal.updateMemo(updateGoalDto.memo());
+        }
+        if (updateGoalDto.endDate() != null) {
+            goal.updateEndDate(updateGoalDto.endDate());
+        }
+        if (updateGoalDto.teamUserIds() != null) {
+            final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
+            goal.updateTeams(users);
+        }
+    }
+
+    public void delete(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateDeleted(user.getId());
     }
 }

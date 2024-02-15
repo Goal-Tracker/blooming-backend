@@ -40,15 +40,20 @@ public enum ExceptionMessage {
     FRIEND_ACCEPTANCE_FORBIDDEN("친구 요청을 수락할 권한이 없습니다."),
     DELETE_FRIEND_FORBIDDEN("친구를 삭제할 권한이 없습니다."),
 
-    // 골 추가
+    // 골
     GOAL_NOT_FOUND("골 정보를 찾을 수 없습니다."),
     GOAL_TEAM_NOT_FOUND("골 팀 정보를 찾을 수 없습니다."),
-    INVALID_GOAL_START_DAY("시작 날짜가 현재 날짜 이전입니다."),
-    INVALID_GOAL_END_DAY("종료 날짜가 현재 날짜 이전입니다."),
+    INVALID_GOAL_NAME("골 제목은 비어있거나 50자가 넘을 수 없습니다."),
+    INVALID_GOAL_START_DATE("시작 날짜가 현재 날짜 이전입니다."),
+    INVALID_GOAL_END_DATE("종료 날짜가 현재 날짜 이전입니다."),
+    INVALID_UPDATE_END_DATE("종료날짜는 기존 날짜보다 이전으로 수정 될 수 없습니다."),
     INVALID_GOAL_PERIOD("시작 날짜가 종료 날짜 이후입니다."),
     INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)"),
-    INVALID_USERS_SIZE("골에 참여하는 친구가 5명 초과입니다."),
+    INVALID_USERS_SIZE("골 참여자 수가 범위 밖입니다.(범위: 1~5명)"),
     INVALID_USER_TO_PARTICIPATE("골에 참여할 수 없는 사용자입니다. 골에는 친구인 사용자만 초대할 수 있습니다."),
+    DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
+    UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
+    UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");

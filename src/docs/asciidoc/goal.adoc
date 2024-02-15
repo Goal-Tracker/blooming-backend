@@ -21,3 +21,15 @@ operation::goal-controller-test/현재_로그인한_사용자가_참여한_현�
 operation::goal-controller-test/현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다[snippets='http-request,request-headers']
 ==== 응답
 operation::goal-controller-test/현재_로그인한_사용자가_참여한_종료된_모든_골을_조회한다[snippets='http-response,response-body,response-fields']
+
+=== 골 삭제
+==== 요청
+operation::goal-controller-test/요청한_아이디의_골을_삭제한다[snippets='http-request,path-parameters,request-headers']
+==== 응답
+operation::goal-controller-test/요청한_아이디의_골을_삭제한다[snippets='http-response']
+
+=== 골 수정
+==== 요청
+operation::goal-controller-test/요청한_내용으로_골을_수정한다[snippets='http-request,path-parameters,request-headers']
+==== 응답
+operation::goal-controller-test/요청한_내용으로_골을_수정한다[snippets='http-response,response-body,response-fields']
