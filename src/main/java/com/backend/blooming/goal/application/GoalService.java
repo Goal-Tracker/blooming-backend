@@ -124,7 +124,7 @@ public class GoalService {
         }
         if (updateGoalDto.teamUserIds() != null) {
             final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
-            goal.updateTeams(users, goal);
+            goal.updateTeams(users);
         }
     }
 

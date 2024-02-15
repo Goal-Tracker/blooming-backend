@@ -142,7 +142,7 @@ class GoalTest extends GoalTestFixture {
         final Goal goal = 유효한_골;
         
         // when
-        goal.updateTeams(수정_요청한_골_참여자_목록, goal);
+        goal.updateTeams(수정_요청한_골_참여자_목록);
         
         // then
         assertSoftly(softAssertions -> {

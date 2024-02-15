@@ -41,7 +41,8 @@ public class GoalController {
         final CreateGoalDto createGoalDto = CreateGoalDto.of(request, authenticatedUser.userId());
         final Long goalId = goalService.createGoal(createGoalDto);
 
-        return ResponseEntity.created(URI.create("/goals/" + goalId)).build();
+        return ResponseEntity.created(URI.create("/goals/" + goalId))
+                             .build();
     }
 
     @GetMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
@@ -98,6 +99,7 @@ public class GoalController {
     ) {
         goalService.delete(authenticatedUser.userId(), goalId);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.noContent()
+                             .build();
     }
 }
