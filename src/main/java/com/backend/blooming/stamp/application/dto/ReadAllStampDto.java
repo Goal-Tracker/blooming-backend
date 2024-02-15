@@ -13,14 +13,18 @@ public record ReadAllStampDto(List<StampDto> stamps) {
 
     public record StampDto(
             Long userId,
-            ThemeColor userColor,
+            String name,
+            ThemeColor color,
+            String message,
             int day
     ) {
 
         public static StampDto from(final Stamp stamp) {
             return new StampDto(
                     stamp.getUser().getId(),
+                    stamp.getUser().getName(),
                     stamp.getUser().getColor(),
+                    stamp.getMessage(),
                     stamp.getDay()
             );
         }

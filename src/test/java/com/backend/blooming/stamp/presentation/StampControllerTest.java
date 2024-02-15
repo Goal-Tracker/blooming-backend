@@ -176,7 +176,9 @@ class StampControllerTest extends StampControllerTestFixture {
         ).andExpectAll(
                 status().isOk(),
                 jsonPath("$.stamps.1.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).userId()), Long.class),
-                jsonPath("$.stamps.1.[0].userColor", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).userColor()), String.class),
+                jsonPath("$.stamps.1.[0].name", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).name()), String.class),
+                jsonPath("$.stamps.1.[0].color", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).color()), String.class),
+                jsonPath("$.stamps.1.[0].message", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).message()), String.class),
                 jsonPath("$.stamps.1.[0].day", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).day()), Integer.class),
                 jsonPath("$.stamps.2.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(0).userId()), Long.class),
                 jsonPath("$.stamps.2.[1].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(1).userId()), Long.class)
@@ -188,10 +190,14 @@ class StampControllerTest extends StampControllerTestFixture {
                 ),
                 responseFields(
                         fieldWithPath("stamps.1.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
-                        fieldWithPath("stamps.1.[].userColor").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상"),
+                        fieldWithPath("stamps.1.[].name").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 이름"),
+                        fieldWithPath("stamps.1.[].color").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
+                        fieldWithPath("stamps.1.[].message").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
                         fieldWithPath("stamps.1.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜"),
                         fieldWithPath("stamps.2.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
-                        fieldWithPath("stamps.2.[].userColor").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상"),
+                        fieldWithPath("stamps.2.[].name").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 이름"),
+                        fieldWithPath("stamps.2.[].color").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
+                        fieldWithPath("stamps.2.[].message").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
                         fieldWithPath("stamps.2.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜")
                 )
         ));

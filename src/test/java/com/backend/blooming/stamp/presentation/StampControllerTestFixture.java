@@ -86,33 +86,45 @@ public class StampControllerTestFixture {
     );
     private ReadAllStampDto.StampDto 유효한_스탬프_dto = new ReadAllStampDto.StampDto(
             1L,
+            "사용자1",
             ThemeColor.BABY_BLUE,
+            "스탬프 메시지1",
             1
     );
     private ReadAllStampDto.StampDto 유효한_스탬프_dto2 = new ReadAllStampDto.StampDto(
             1L,
+            "사용자1",
             ThemeColor.BABY_BLUE,
+            "스탬프 메시지2",
             2
     );
     private ReadAllStampDto.StampDto 유효한_스탬프_dto3 = new ReadAllStampDto.StampDto(
             2L,
+            "사용자1",
             ThemeColor.INDIGO,
+            "스탬프 메시지3",
             2
     );
     protected ReadAllStampDto 유효한_스탬프_목록_dto = new ReadAllStampDto(List.of(유효한_스탬프_dto, 유효한_스탬프_dto2, 유효한_스탬프_dto3));
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보1 = new ReadAllStampResponse.StampInfoResponse(
             1L,
+            "사용자1",
             ThemeColor.BABY_BLUE.getCode(),
+            "스탬프 메시지1",
             1
     );
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보2 = new ReadAllStampResponse.StampInfoResponse(
             1L,
+            "사용자1",
             ThemeColor.BABY_BLUE.getCode(),
+            "스탬프 메시지2",
             2
     );
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보3 = new ReadAllStampResponse.StampInfoResponse(
             2L,
+            "사용자1",
             ThemeColor.INDIGO.getCode(),
+            "스탬프 메시지3",
             2
     );
     protected ReadAllStampResponse 유효한_스탬프_목록_응답 = new ReadAllStampResponse(

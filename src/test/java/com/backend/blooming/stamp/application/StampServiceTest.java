@@ -81,8 +81,8 @@ class StampServiceTest extends StampServiceTestFixture {
             softAssertions.assertThat(stamps).hasSize(2);
             softAssertions.assertThat(stamps.get(0).userId()).isEqualTo(스탬프를_생성한_사용자_아이디1);
             softAssertions.assertThat(stamps.get(1).userId()).isEqualTo(스탬프를_생성한_사용자_아이디2);
-            softAssertions.assertThat(stamps.get(0).userColor()).isEqualTo(스탬프를_생성한_사용자_컬러1);
-            softAssertions.assertThat(stamps.get(1).userColor()).isEqualTo(스탬프를_생성한_사용자_컬러2);
+            softAssertions.assertThat(stamps.get(0).name()).isEqualTo(스탬프를_생성한_사용자_이름1);
+            softAssertions.assertThat(stamps.get(1).name()).isEqualTo(스탬프를_생성한_사용자_이름2);
         });
     }
 
