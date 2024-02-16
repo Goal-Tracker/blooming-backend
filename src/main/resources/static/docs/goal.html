@@ -637,12 +637,14 @@ Content-Type: application/json
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -664,12 +666,14 @@ Content-Type: application/json
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -745,6 +749,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].statusMessage</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자의 오늘의 스탬프 업로드 여부</p></td>
 </tr>
 </tbody>
 </table>
