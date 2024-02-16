@@ -206,6 +206,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 jsonPath("$.teams.[0].name", is(유효한_골_응답_dto.teams().get(0).name()), String.class),
                 jsonPath("$.teams.[0].colorCode", is(유효한_골_응답_dto.teams().get(0).colorCode()), String.class),
                 jsonPath("$.teams.[0].statusMessage", is(유효한_골_응답_dto.teams().get(0).statusMessage()), String.class),
+                jsonPath("$.teams.[0].uploadedTodayStamp", is(유효한_골_응답_dto.teams().get(0).uploadedTodayStamp()), boolean.class),
                 jsonPath("$.teams.[1].id", is(유효한_골_응답_dto.teams().get(1).id()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
@@ -224,7 +225,8 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("teams.[].id").type(JsonFieldType.NUMBER).description("골 참여자 아이디"),
                         fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
                         fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
-                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
+                        fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지"),
+                        fieldWithPath("teams.[].uploadedTodayStamp").type(JsonFieldType.BOOLEAN).description("골 참여자의 오늘의 스탬프 업로드 여부")
                 )
         ));
     }

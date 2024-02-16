@@ -89,13 +89,15 @@ public class GoalControllerTestFixture {
             1L,
             "테스트 유저1",
             ThemeColor.BABY_PINK,
-            "테스트 상태메시지1"
+            "테스트 상태메시지1",
+            true
     );
     protected ReadGoalDetailDto.GoalTeamDto 골_참여자2 = new ReadGoalDetailDto.GoalTeamDto(
             2L,
             "테스트 유저2",
             ThemeColor.BABY_BLUE,
-            "테스트 상태메시지2"
+            "테스트 상태메시지2",
+            false
     );
     protected ReadGoalDetailDto.GoalTeamDto 골_참여자3 = new ReadGoalDetailDto.GoalTeamDto(
             3L,
@@ -107,13 +109,15 @@ public class GoalControllerTestFixture {
             1L,
             "테스트 유저1",
             "#f8c8c4",
-            "테스트 상태메시지1"
+            "테스트 상태메시지1",
+            true
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답2 = new ReadGoalResponse.GoalTeamResponse(
             2L,
             "테스트 유저2",
             "#a1b3d7",
-            "테스트 상태메시지2"
+            "테스트 상태메시지2",
+            false
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답3 = new ReadGoalResponse.GoalTeamResponse(
             3L,
