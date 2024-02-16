@@ -172,4 +172,42 @@ class UserTest extends UserTestFixture {
         // then
         assertThat(actual).isEqualTo(ThemeColor.BEIGE.getCode());
     }
+
+    @Test
+    void 사용자의_이름과_동일하다면_참을_반환한다() {
+        // given
+        final String userName = "사용자";
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name(new Name(userName))
+                              .email(new Email("user@email.com"))
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        final boolean actual = user.isSameName(new Name(userName));
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 사용자의_이름과_다르다면_거짓을_반환한다() {
+        // given
+        final String differentName = "다름";
+        final User user = User.builder()
+                              .oAuthId("12345")
+                              .oAuthType(OAuthType.KAKAO)
+                              .name(new Name("사용자"))
+                              .email(new Email("user@email.com"))
+                              .color(ThemeColor.BEIGE)
+                              .build();
+
+        // when
+        final boolean actual = user.isSameName(new Name(differentName));
+
+        // then
+        assertThat(actual).isFalse();
+    }
 }

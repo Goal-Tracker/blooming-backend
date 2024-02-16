@@ -34,4 +34,8 @@ public class Name {
             throw new MemberException.LongerThanMaximumNameLengthException();
         }
     }
+
+    public boolean isSame(final Name value) {
+        return this.equals(value);
+    }
 }

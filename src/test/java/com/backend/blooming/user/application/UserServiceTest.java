@@ -3,6 +3,7 @@ package com.backend.blooming.user.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
+import com.backend.blooming.user.application.exception.DuplicateUserNameExcpetion;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.dto.FriendsStatus;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -96,6 +97,26 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
         });
+    }
+
+    @Test
+    void 사용자가_동일한_이름으로_수정시_예외없이_수정한다() {
+        // when
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 기존_이름으로_수정한_dto);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
+            softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+        });
+    }
+
+    @Test
+    void 사용자_이름_수정시_이미_존재하는_이름이라면_예외를_반환한다() {
+        // when & then
+        assertThatThrownBy(() -> userService.updateById(사용자_아이디, 이미_존재하는_이름으로_수정한_dto))
+                .isInstanceOf(DuplicateUserNameExcpetion.class);
     }
 
     @Test

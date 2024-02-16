@@ -14,6 +14,7 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
+import com.backend.blooming.user.application.exception.DuplicateUserNameExcpetion;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -199,6 +200,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AlreadyRegisterBlackListTokenException.class)
     public ResponseEntity<ExceptionResponse> handleAlreadyRegisterBlackListTokenException(
             final AlreadyRegisterBlackListTokenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateUserNameExcpetion.class)
+    public ResponseEntity<ExceptionResponse> handleDuplicateUserNameExcpetion(
+            final DuplicateUserNameExcpetion exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 

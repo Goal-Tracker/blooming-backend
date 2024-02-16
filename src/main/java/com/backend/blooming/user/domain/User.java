@@ -113,6 +113,10 @@ public class User extends BaseTimeEntity {
         this.newAlarm = newAlarm;
     }
 
+    public boolean isSameName(final Name name) {
+        return this.name.isSame(name);
+    }
+
     public String getEmail() {
         return email.getValue();
     }
