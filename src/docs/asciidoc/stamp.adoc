@@ -1,0 +1,5 @@
+=== 새로운 스탬프 추가
+==== 요청
+operation::stamp-controller-test/스탬프_생성을_요청하면_새로운_스탬프를_생성한다[snippets='http-request,request-headers,request-fields']
+==== 응답
+operation::stamp-controller-test/스탬프_생성을_요청하면_새로운_스탬프를_생성한다[snippets='http-response,response-fields']
