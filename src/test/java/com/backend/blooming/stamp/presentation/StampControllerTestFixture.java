@@ -3,7 +3,9 @@ package com.backend.blooming.stamp.presentation;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
+import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.presentation.dto.request.CreateStampRequest;
+import com.backend.blooming.stamp.presentation.dto.response.ReadStampResponse;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class StampControllerTestFixture {
@@ -12,7 +14,6 @@ public class StampControllerTestFixture {
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
-    protected Long 유효한_스탬프_아이디 = 1L;
 
     protected CreateStampDto 유효한_스탬프_생성_dto = new CreateStampDto(
             1L,
@@ -54,6 +55,16 @@ public class StampControllerTestFixture {
             "스탬프 메시지"
     );
     protected CreateStampRequest 이미_존재하는_스탬프_생성_요청_dto = new CreateStampRequest(
+            1L,
+            1,
+            "스탬프 메시지"
+    );
+    protected ReadStampDto 유효한_스탬프_dto = new ReadStampDto(
+            1L,
+            1,
+            "스탬프 메시지"
+    );
+    protected ReadStampResponse 유효한_스탬프_응답_dto = new ReadStampResponse(
             1L,
             1,
             "스탬프 메시지"

@@ -23,12 +23,14 @@ import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -63,7 +65,7 @@ class StampControllerTest extends StampControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(stampService.createStamp(유효한_스탬프_생성_dto)).willReturn(유효한_스탬프_아이디);
+        given(stampService.createStamp(유효한_스탬프_생성_dto)).willReturn(유효한_스탬프_dto);
 
         // when & then
         mockMvc.perform(post("/stamps")
@@ -72,13 +74,21 @@ class StampControllerTest extends StampControllerTestFixture {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(유효한_스탬프_생성_요청_dto))
         ).andExpectAll(
-                status().isNoContent()
+                status().isOk(),
+                jsonPath("$.goalId", is(유효한_스탬프_응답_dto.goalId()), Long.class),
+                jsonPath("$.day", is(유효한_스탬프_응답_dto.day()), int.class),
+                jsonPath("$.message", is(유효한_스탬프_응답_dto.message()), String.class)
         ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
                 requestFields(
+                        fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("day").type(JsonFieldType.NUMBER).description("스탬프 날짜"),
+                        fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")
+                ),
+                responseFields(
                         fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
                         fieldWithPath("day").type(JsonFieldType.NUMBER).description("스탬프 날짜"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")

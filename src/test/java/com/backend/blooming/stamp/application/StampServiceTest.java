@@ -2,6 +2,7 @@ package com.backend.blooming.stamp.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -10,8 +11,8 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -24,10 +25,14 @@ class StampServiceTest extends StampServiceTestFixture {
     @Test
     void 새로운_스탬프를_생성한다() {
         // when
-        final Long result = stampService.createStamp(유효한_스탬프_dto);
+        final ReadStampDto result = stampService.createStamp(유효한_스탬프_dto);
 
         // then
-        assertThat(result).isPositive();
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.goalId()).isEqualTo(유효한_스탬프_dto.goalId());
+            softAssertions.assertThat(result.day()).isEqualTo(유효한_스탬프_dto.day());
+            softAssertions.assertThat(result.message()).isEqualTo(유효한_스탬프_dto.message());
+        });
     }
 
     @Test
