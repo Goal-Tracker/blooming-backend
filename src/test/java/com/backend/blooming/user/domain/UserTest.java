@@ -6,6 +6,8 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -14,14 +16,16 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @SuppressWarnings("NonAsciiCharacters")
 class UserTest extends UserTestFixture {
 
-    @Test
-    void 사용자_생성시_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다() {
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 사용자_생성시_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다(final String statusMessage) {
         // when
         final User actual = User.builder()
                                 .oAuthId("12345")
                                 .oAuthType(OAuthType.KAKAO)
                                 .email(new Email("user@email.com"))
                                 .name(new Name("test"))
+                                .statusMessage(statusMessage)
                                 .build();
 
         // then
