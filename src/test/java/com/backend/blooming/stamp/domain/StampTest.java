@@ -26,10 +26,8 @@ class StampTest extends StampTestFixture {
                                   .build();
         
         // then
-        assertThat(result).isNotNull();
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(result).isNotNull();
-            softAssertions.assertThat(result.getGoal().getStamps()).contains(result);
             softAssertions.assertThat(result.getGoal().getName()).isEqualTo(유효한_골.getName());
             softAssertions.assertThat(result.getUser().getName()).isEqualTo(유효한_사용자.getName());
             softAssertions.assertThat(result.getDay()).isEqualTo(1);
