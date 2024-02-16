@@ -9,17 +9,17 @@ public class InvalidGoalException extends BloomingException {
         super(exceptionMessage);
     }
 
-    public static class InvalidInvalidGoalStartDay extends InvalidGoalException {
+    public static class InvalidInvalidGoalStartDate extends InvalidGoalException {
 
-        public InvalidInvalidGoalStartDay() {
-            super(ExceptionMessage.INVALID_GOAL_START_DAY);
+        public InvalidInvalidGoalStartDate() {
+            super(ExceptionMessage.INVALID_GOAL_START_DATE);
         }
     }
 
-    public static class InvalidInvalidGoalEndDay extends InvalidGoalException {
+    public static class InvalidInvalidGoalEndDate extends InvalidGoalException {
 
-        public InvalidInvalidGoalEndDay() {
-            super(ExceptionMessage.INVALID_GOAL_END_DAY);
+        public InvalidInvalidGoalEndDate() {
+            super(ExceptionMessage.INVALID_GOAL_END_DATE);
         }
     }
 
@@ -40,7 +40,7 @@ public class InvalidGoalException extends BloomingException {
     public static class InvalidInvalidUsersSize extends InvalidGoalException {
 
         public InvalidInvalidUsersSize() {
-            super(ExceptionMessage.INVALID_GOAL_DAYS);
+            super(ExceptionMessage.INVALID_USERS_SIZE);
         }
     }
 
@@ -48,6 +48,20 @@ public class InvalidGoalException extends BloomingException {
 
         public InvalidInvalidUserToParticipate() {
             super(ExceptionMessage.INVALID_USER_TO_PARTICIPATE);
+        }
+    }
+
+    public static class InvalidInvalidGoalName extends InvalidGoalException {
+
+        public InvalidInvalidGoalName() {
+            super(ExceptionMessage.INVALID_GOAL_NAME);
+        }
+    }
+
+    public static class InvalidInvalidUpdateEndDate extends InvalidGoalException {
+
+        public InvalidInvalidUpdateEndDate() {
+            super(ExceptionMessage.INVALID_UPDATE_END_DATE);
         }
     }
 }
