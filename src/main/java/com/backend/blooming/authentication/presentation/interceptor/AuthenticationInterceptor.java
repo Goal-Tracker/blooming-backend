@@ -41,7 +41,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     }
 
     private boolean isNotExist(final String accessToken) {
-        return accessToken == null || accessToken.isEmpty();
+        return accessToken == null || accessToken.isBlank();
     }
 
     private void validateExistUser(final Long userId) {
