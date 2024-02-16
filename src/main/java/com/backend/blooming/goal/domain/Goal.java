@@ -1,17 +1,15 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
+import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.user.domain.User;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -20,7 +18,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,6 +29,9 @@ public class Goal extends BaseTimeEntity {
 
     private static final String MEMO_DEFAULT = "";
     private static final int TEAMS_MAXIMUM_LENGTH = 5;
+    private static final int MAX_LENGTH_OF_NAME = 50;
+    private static final int START_INDEX_OF_NAME = 0;
+    private static final int END_INDEX_OF_NAME = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,8 +49,8 @@ public class Goal extends BaseTimeEntity {
     @Column(nullable = false)
     private Long managerId;
 
-    @OneToMany(mappedBy = "goal", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-    private List<GoalTeam> teams = new ArrayList<>(TEAMS_MAXIMUM_LENGTH);
+    @Embedded
+    private Teams teams;
 
     @Column(nullable = false)
     private boolean deleted = false;
@@ -68,24 +68,48 @@ public class Goal extends BaseTimeEntity {
         this.memo = processDefaultMemo(memo);
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
-        createGoalTeams(users);
+        this.teams = Teams.create(users, this);
     }
 
     private String processDefaultMemo(final String memo) {
-        if (memo == null || memo.isEmpty()) {
+        if (memo == null) {
             return MEMO_DEFAULT;
         }
         return memo;
     }
 
-    private void createGoalTeams(final List<User> users) {
-        validateUsersSize(users);
-        users.forEach(user -> new GoalTeam(user, this));
+    public void updateName(final String name) {
+        this.name = validateNameLength(name);
     }
 
-    private void validateUsersSize(final List<User> users) {
-        if (users.size() > TEAMS_MAXIMUM_LENGTH) {
-            throw new InvalidGoalException.InvalidInvalidUsersSize();
+    private String validateNameLength(final String name) {
+        if (name.isBlank() || name.length() > MAX_LENGTH_OF_NAME) {
+            throw new InvalidGoalException.InvalidInvalidGoalName();
+        }
+
+        return name;
+    }
+
+    public void updateMemo(final String memo) {
+        this.memo = processDefaultMemo(memo);
+    }
+
+    public void updateEndDate(final LocalDate endDate) {
+        this.goalTerm.updateEndDate(endDate);
+    }
+    
+    public void updateTeams(final List<User> users) {
+        this.teams.update(users, this);
+    }
+
+    public void updateDeleted(final Long userId) {
+        validUserToDelete(userId);
+        this.deleted = true;
+    }
+
+    private void validUserToDelete(final Long userId) {
+        if (!this.getManagerId().equals(userId)) {
+            throw new DeleteGoalForbiddenException();
         }
     }
 }
