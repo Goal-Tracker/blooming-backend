@@ -73,7 +73,7 @@ public class Goal extends BaseTimeEntity {
         this.goalTerm = new GoalTerm(startDate, endDate);
         this.managerId = managerId;
         createGoalTeams(users);
-        this.stamps = new ArrayList<>((int) this.goalTerm.getDays());
+        this.stamps = new ArrayList<>();
     }
 
     private String processDefaultMemo(final String memo) {
