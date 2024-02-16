@@ -23,7 +23,6 @@ public record ReadGoalResponse(
 ) {
 
     public static ReadGoalResponse from(final ReadGoalDetailDto readGoalDetailDto) {
-
         final List<GoalTeamResponse> teams = readGoalDetailDto.teams()
                                                               .stream()
                                                               .map(GoalTeamResponse::from)
@@ -45,7 +44,8 @@ public record ReadGoalResponse(
             Long id,
             String name,
             String colorCode,
-            String statusMessage
+            String statusMessage,
+            boolean uploadedTodayStamp
     ) {
 
         public static GoalTeamResponse from(final ReadGoalDetailDto.GoalTeamDto goalTeamDto) {
@@ -53,7 +53,8 @@ public record ReadGoalResponse(
                     goalTeamDto.id(),
                     goalTeamDto.name(),
                     goalTeamDto.color().getCode(),
-                    goalTeamDto.statusMessage()
+                    goalTeamDto.statusMessage(),
+                    goalTeamDto.uploadedTodayStamp()
             );
         }
     }

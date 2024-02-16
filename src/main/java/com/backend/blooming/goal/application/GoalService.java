@@ -10,6 +10,8 @@ import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.stamp.domain.Stamp;
+import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
@@ -25,21 +28,19 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalService {
 
+    private static final int COUNT_GOAL_DAYS = 1;
     private static final int TEAMS_MAXIMUM_LENGTH = 5;
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
+    private final StampRepository stampRepository;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
         final List<User> users = getUsers(createGoalDto.teamUserIds());
         final Goal goal = persistGoal(createGoalDto, users);
 
         return goal.getId();
-    }
-
-    private List<User> getUsers(final List<Long> userIds) {
-        return userRepository.findAllByUserIds(userIds);
     }
 
     private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
@@ -63,6 +64,10 @@ public class GoalService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
+    }
+
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
@@ -73,9 +78,14 @@ public class GoalService {
 
     @Transactional(readOnly = true)
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
-        final Goal goal = getGoal(goalId);
+        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
+                                        .orElseThrow(NotFoundGoalException::new);
+        final long nowGoalDay = ChronoUnit.DAYS.between(goal.getGoalTerm()
+                                                            .getStartDate(), LocalDate.now()) + COUNT_GOAL_DAYS;
+        final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
+        final List<Long> usersUploadedStamp = todayStamps.stream().map(stamp -> stamp.getUser().getId()).toList();
 
-        return ReadGoalDetailDto.from(goal);
+        return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
     private Goal getGoal(final Long id) {

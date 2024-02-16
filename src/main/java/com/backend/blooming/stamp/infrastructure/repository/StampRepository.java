@@ -25,4 +25,13 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
             WHERE (sg.id = :goalId) AND s.deleted = FALSE
             """)
     List<Stamp> findAllByGoalIdAndDeletedIsFalse(final Long goalId);
+
+    @Query("""
+            SELECT s
+            FROM Stamp s
+            JOIN FETCH s.user
+            JOIN FETCH s.goal
+            WHERE s.day = :day AND s.deleted = FALSE
+            """)
+    List<Stamp> findAllByDayAndDeletedIsFalse(final Long day);
 }

@@ -18,11 +18,11 @@ public record ReadGoalDetailDto(
         List<GoalTeamDto> teams
 ) {
 
-    public static ReadGoalDetailDto from(final Goal goal) {
+    public static ReadGoalDetailDto of(final Goal goal, final List<Long> usersUploadedStamp) {
         final List<GoalTeamDto> teams = goal.getTeams()
                                             .getGoalTeams()
                                             .stream()
-                                            .map(GoalTeamDto::from)
+                                            .map(goalTeam -> GoalTeamDto.of(goalTeam, usersUploadedStamp))
                                             .toList();
 
         return new ReadGoalDetailDto(
@@ -41,15 +41,19 @@ public record ReadGoalDetailDto(
             Long id,
             String name,
             ThemeColor color,
-            String statusMessage
+            String statusMessage,
+            boolean uploadedTodayStamp
     ) {
 
-        public static GoalTeamDto from(final GoalTeam goalTeam) {
+        public static GoalTeamDto of(final GoalTeam goalTeam, final List<Long> usersUploadedStamp) {
+            boolean uploadedTodayStamp = usersUploadedStamp.contains(goalTeam.getUser().getId());
+
             return new GoalTeamDto(
                     goalTeam.getUser().getId(),
                     goalTeam.getUser().getName(),
                     goalTeam.getUser().getColor(),
-                    goalTeam.getUser().getStatusMessage()
+                    goalTeam.getUser().getStatusMessage(),
+                    uploadedTodayStamp
             );
         }
     }
