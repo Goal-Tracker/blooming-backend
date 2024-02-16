@@ -37,7 +37,7 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
     @Query("""
             SELECT g
             FROM Goal g
-            JOIN FETCH g.teams gt
+            JOIN FETCH g.teams.goalTeams gt
             JOIN FETCH gt.user gtu
             WHERE g.id = :goalId AND g.deleted = FALSE
             """)
