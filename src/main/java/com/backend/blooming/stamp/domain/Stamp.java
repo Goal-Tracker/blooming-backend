@@ -48,7 +48,7 @@ public class Stamp extends BaseTimeEntity {
     @Column(name = "stamp_day", nullable = false)
     private int day;
 
-    @Column(columnDefinition = "text", nullable = false, length = 30)
+    @Column(columnDefinition = "text", nullable = false, length = STAMP_MESSAGE_MAXIMUM)
     private String message;
 
     @Column(name = "is_deleted", nullable = false)
@@ -65,7 +65,6 @@ public class Stamp extends BaseTimeEntity {
         this.user = user;
         this.day = validateDay(goal, day);
         this.message = validateMessage(message);
-        this.goal.getStamps().add(this);
     }
 
     private int validateDay(final Goal goal, final int day) {
