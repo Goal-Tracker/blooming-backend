@@ -55,12 +55,12 @@ public class Stamp extends BaseTimeEntity {
     private Stamp(
             final Goal goal,
             final User user,
-            final int day,
-            final String message
+            final Day day,
+            final Message message
     ) {
         this.goal = goal;
         this.user = user;
-        this.day = new Day(goal, day);
-        this.message = new Message(message);
+        this.day = day;
+        this.message = message;
     }
 }

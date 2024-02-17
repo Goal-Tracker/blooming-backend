@@ -4,6 +4,8 @@ import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
+import com.backend.blooming.stamp.domain.Day;
+import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
@@ -69,13 +71,13 @@ public class StampServiceTestFixture {
                                  .statusMessage("상태메시지")
                                  .build();
         스탬프를_생성할_사용자 = User.builder()
-                                .oAuthId("아이디4")
-                                .oAuthType(OAuthType.KAKAO)
-                                .email(new Email("test4@gmail.com"))
-                                .name(new Name("테스트4"))
-                                .color(ThemeColor.BABY_PINK)
-                                .statusMessage("상태메시지")
-                                .build();
+                           .oAuthId("아이디4")
+                           .oAuthType(OAuthType.KAKAO)
+                           .email(new Email("test4@gmail.com"))
+                           .name(new Name("테스트4"))
+                           .color(ThemeColor.BABY_PINK)
+                           .statusMessage("상태메시지")
+                           .build();
         userRepository.saveAll(List.of(스탬프를_생성한_사용자1, 스탬프를_생성한_사용자2, 골_참여자가_아닌_사용자, 스탬프를_생성할_사용자));
         스탬프를_생성한_사용자_아이디1 = 스탬프를_생성한_사용자1.getId();
         스탬프를_생성한_사용자_아이디2 = 스탬프를_생성한_사용자2.getId();
@@ -97,14 +99,14 @@ public class StampServiceTestFixture {
         Stamp 유효한_스탬프1 = Stamp.builder()
                               .goal(스탬프를_생성할_골)
                               .user(스탬프를_생성한_사용자1)
-                              .day(1)
-                              .message("스탬프 메시지")
+                              .day(new Day(스탬프를_생성할_골, 1))
+                              .message(new Message("스탬프 메시지"))
                               .build();
         Stamp 유효한_스탬프2 = Stamp.builder()
                               .goal(스탬프를_생성할_골)
                               .user(스탬프를_생성한_사용자2)
-                              .day(1)
-                              .message("스탬프 메시지2")
+                              .day(new Day(스탬프를_생성할_골, 1))
+                              .message(new Message("스탬프 메시지2"))
                               .build();
         stampRepository.saveAll(List.of(유효한_스탬프1, 유효한_스탬프2));
 

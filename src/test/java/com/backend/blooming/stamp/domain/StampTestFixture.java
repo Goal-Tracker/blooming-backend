@@ -49,6 +49,5 @@ public class StampTestFixture {
                                                   .users(골_참여_사용자_목록)
                                                   .build();
     protected static int 스탬프_날짜가_골_시작일_이전인_경우 = 0;
-    protected static int 스탬프_날짜가_골_종료일_이후인_경우 = 2;
     protected static int 스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우 = 2;
 }

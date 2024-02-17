@@ -3,6 +3,8 @@ package com.backend.blooming.stamp.infrastructure.repository;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.stamp.domain.Day;
+import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
@@ -56,8 +58,8 @@ public class StampRepositoryTestFixture {
         Stamp 유효한_스탬프 = Stamp.builder()
                              .goal(유효한_골)
                              .user(골_관리자_사용자)
-                             .day(1)
-                             .message("스탬프 메시지")
+                             .day(new Day(유효한_골, 1))
+                             .message(new Message("스탬프 메시지"))
                              .build();
         stampRepository.saveAll(List.of(유효한_스탬프));
     }
