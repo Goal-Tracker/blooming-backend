@@ -6,6 +6,7 @@ import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.presentation.dto.request.CreateStampRequest;
 import com.backend.blooming.stamp.presentation.dto.response.ReadStampResponse;
+import com.backend.blooming.themecolor.domain.ThemeColor;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class StampControllerTestFixture {
@@ -61,11 +62,15 @@ public class StampControllerTestFixture {
     );
     protected ReadStampDto 유효한_스탬프_dto = new ReadStampDto(
             1L,
+            "스탬프 추가한 사용자",
+            ThemeColor.BABY_BLUE,
             1,
             "스탬프 메시지"
     );
     protected ReadStampResponse 유효한_스탬프_응답_dto = new ReadStampResponse(
             1L,
+            "스탬프 추가한 사용자",
+            ThemeColor.BABY_BLUE.getCode(),
             1,
             "스탬프 메시지"
     );

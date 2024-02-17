@@ -3,14 +3,18 @@ package com.backend.blooming.stamp.presentation.dto.response;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
 
 public record ReadStampResponse(
-        Long goalId,
+        Long id,
+        String userName,
+        String userColor,
         int day,
         String message
 ) {
 
     public static ReadStampResponse from(final ReadStampDto stamp) {
         return new ReadStampResponse(
-                stamp.goalId(),
+                stamp.id(),
+                stamp.userName(),
+                stamp.userColor().getCode(),
                 stamp.day(),
                 stamp.message()
         );

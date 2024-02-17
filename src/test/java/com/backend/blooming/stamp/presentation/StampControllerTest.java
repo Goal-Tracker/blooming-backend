@@ -75,7 +75,9 @@ class StampControllerTest extends StampControllerTestFixture {
                 .content(objectMapper.writeValueAsString(유효한_스탬프_생성_요청_dto))
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.goalId", is(유효한_스탬프_응답_dto.goalId()), Long.class),
+                jsonPath("$.id", is(유효한_스탬프_응답_dto.id()), Long.class),
+                jsonPath("$.userName", is(유효한_스탬프_응답_dto.userName()), String.class),
+                jsonPath("$.userColor", is(유효한_스탬프_응답_dto.userColor()), String.class),
                 jsonPath("$.day", is(유효한_스탬프_응답_dto.day()), int.class),
                 jsonPath("$.message", is(유효한_스탬프_응답_dto.message()), String.class)
         ).andDo(print()).andDo(restDocs.document(
@@ -89,7 +91,9 @@ class StampControllerTest extends StampControllerTestFixture {
                         fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")
                 ),
                 responseFields(
-                        fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("userName").type(JsonFieldType.STRING).description("스탬프를 추가한 사용자 이름"),
+                        fieldWithPath("userColor").type(JsonFieldType.STRING).description("스탬프를 추가한 사용자 테마 색상코드"),
                         fieldWithPath("day").type(JsonFieldType.NUMBER).description("스탬프 날짜"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")
                 )

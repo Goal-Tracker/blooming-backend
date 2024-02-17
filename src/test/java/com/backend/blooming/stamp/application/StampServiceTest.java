@@ -29,7 +29,9 @@ class StampServiceTest extends StampServiceTestFixture {
 
         // then
         assertSoftly(softAssertions -> {
-            softAssertions.assertThat(result.goalId()).isEqualTo(유효한_스탬프_dto.goalId());
+            softAssertions.assertThat(result.id()).isPositive();
+            softAssertions.assertThat(result.userName()).isEqualTo(스탬프를_생성할_사용자.getName());
+            softAssertions.assertThat(result.userColor()).isEqualTo(스탬프를_생성할_사용자.getColor());
             softAssertions.assertThat(result.day()).isEqualTo(유효한_스탬프_dto.day());
             softAssertions.assertThat(result.message()).isEqualTo(유효한_스탬프_dto.message());
         });

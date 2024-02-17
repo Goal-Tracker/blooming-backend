@@ -40,6 +40,7 @@ public class StampServiceTestFixture {
     protected Long 골_참여자가_아닌_사용자_아이디;
     protected ThemeColor 스탬프를_생성한_사용자_컬러1;
     protected ThemeColor 스탬프를_생성한_사용자_컬러2;
+    protected User 스탬프를_생성할_사용자;
 
     @BeforeEach
     void setUp() {
@@ -67,7 +68,7 @@ public class StampServiceTestFixture {
                                  .color(ThemeColor.CORAL)
                                  .statusMessage("상태메시지")
                                  .build();
-        User 스탬프를_생성할_사용자 = User.builder()
+        스탬프를_생성할_사용자 = User.builder()
                                 .oAuthId("아이디4")
                                 .oAuthType(OAuthType.KAKAO)
                                 .email(new Email("test4@gmail.com"))
