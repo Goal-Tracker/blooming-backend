@@ -58,4 +58,9 @@ public class Teams {
                                                  .toList();
         this.goalTeams.addAll(updatedUsers);
     }
+
+    public boolean isTeam(final User user) {
+        return goalTeams.stream()
+                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user));
+    }
 }

@@ -112,4 +112,8 @@ public class Goal extends BaseTimeEntity {
             throw new DeleteGoalForbiddenException();
         }
     }
+
+    public boolean isTeam(final User user) {
+        return teams.isTeam(user);
+    }
 }

@@ -61,4 +61,28 @@ class TeamsTest extends TeamsTestFixture {
         assertThatThrownBy(() -> teams.update(크기가_5보다_큰_골_참여_사용자_목록, 유효한_골))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidUsersSize.class);
     }
+
+    @Test
+    void 골_팀_목록에_포함된_사용자라면_참을_반환한다() {
+        // given
+        final Teams teams = Teams.create(골_참여_사용자_목록, 유효한_골);
+
+        // when
+        final boolean actual = teams.isTeam(골_참여자);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 골_팀_목록에_포함된_사용자가_아니라면_거짓을_반환한다() {
+        // given
+        final Teams teams = Teams.create(골_참여_사용자_목록, 유효한_골);
+
+        // when
+        final boolean actual = teams.isTeam(팀원이_아닌_사용자);
+
+        // then
+        assertThat(actual).isFalse();
+    }
 }

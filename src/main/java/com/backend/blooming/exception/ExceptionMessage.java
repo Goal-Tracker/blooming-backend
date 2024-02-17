@@ -55,6 +55,10 @@ public enum ExceptionMessage {
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
 
+    // 콕 찌르기
+    SENDER_NOT_IN_GOAL_TEAM("콕 찌르기 요청자가 해당 골의 팀원이 아닙니다."),
+    RECEIVER_NOT_IN_GOAL_TEAM("콕 찌르기 수신자가 해당 골의 팀원이 아닙니다."),
+
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
 

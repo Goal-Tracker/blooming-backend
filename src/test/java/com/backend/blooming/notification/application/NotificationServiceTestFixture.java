@@ -3,6 +3,8 @@ package com.backend.blooming.notification.application;
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.friend.domain.Friend;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
+import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.notification.infrastructure.repository.NotificationRepository;
 import com.backend.blooming.user.domain.Email;
@@ -12,6 +14,7 @@ import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
@@ -26,6 +29,9 @@ public class NotificationServiceTestFixture {
     private FriendRepository friendRepository;
 
     @Autowired
+    private GoalRepository goalRepository;
+
+    @Autowired
     private NotificationRepository notificationRepository;
 
     protected Friend 보낸_친구_요청;
@@ -35,6 +41,9 @@ public class NotificationServiceTestFixture {
     protected User 알림이_있는_사용자;
     protected Notification 친구_요청_알림1;
     protected Notification 친구_요청_알림2;
+    protected User 콕_찌르기_요청자;
+    protected User 콕_찌르기_수신자;
+    protected Goal 골;
 
     @BeforeEach
     void setUpFixture() {
@@ -75,19 +84,33 @@ public class NotificationServiceTestFixture {
 
         친구_요청_알림1 = Notification.builder()
                                 .receiver(알림이_있는_사용자)
-                                .title(REQUEST_FRIEND.getTitle())
+                                .title(REQUEST_FRIEND.getTitleByFormat(null))
                                 .content(REQUEST_FRIEND.getContentByFormat(친구_요청을_보낸_사용자1.getName()))
                                 .type(REQUEST_FRIEND)
                                 .requestId(친구_요청을_보낸_사용자1.getId())
                                 .build();
         친구_요청_알림2 = Notification.builder()
                                 .receiver(알림이_있는_사용자)
-                                .title(REQUEST_FRIEND.getTitle())
+                                .title(REQUEST_FRIEND.getTitleByFormat(null))
                                 .content(REQUEST_FRIEND.getContentByFormat(친구_요청을_보낸_사용자2.getName()))
                                 .type(REQUEST_FRIEND)
                                 .requestId(친구_요청을_보낸_사용자2.getId())
                                 .build();
+        알림이_있는_사용자.updateNewAlarm(true);
 
         notificationRepository.saveAll(List.of(친구_요청_알림1, 친구_요청_알림2));
+
+        콕_찌르기_요청자 = 친구_요청을_보낸_사용자;
+        콕_찌르기_수신자 = 친구_요청을_받은_사용자;
+        final List<User> 골_참여_사용자_목록 = List.of(콕_찌르기_요청자, 콕_찌르기_수신자);
+        골 = Goal.builder()
+                .name("골 제목")
+                .memo("골 메모")
+                .startDate(LocalDate.now())
+                .endDate(LocalDate.now().plusDays(20))
+                .managerId(콕_찌르기_요청자.getId())
+                .users(골_참여_사용자_목록)
+                .build();
+        goalRepository.save(골);
     }
 }
