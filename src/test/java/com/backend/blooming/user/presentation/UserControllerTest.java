@@ -296,7 +296,6 @@ class UserControllerTest extends UserControllerTestFixture {
         );
     }
 
-
     @Test
     void 존재하지_않는_사용자_정보_수정시_400을_반환한다() throws Exception {
         // given
@@ -317,9 +316,8 @@ class UserControllerTest extends UserControllerTestFixture {
         );
     }
 
-
     @Test
-    void 이미_존재하는_이름으로_사용자_정보_수정시_404를_반환한다() throws Exception {
+    void 이미_존재하는_이름으로_사용자_정보_수정시_400를_반환한다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
