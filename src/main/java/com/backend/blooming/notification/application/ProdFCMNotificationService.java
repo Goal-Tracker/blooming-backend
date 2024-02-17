@@ -8,7 +8,6 @@ import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.SendResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -73,10 +72,14 @@ public class ProdFCMNotificationService implements FCMNotificationService {
 
     private void checkAllSuccess(final BatchResponse batchResponse) {
         if (batchResponse.getFailureCount() > 0) {
-            final List<SendResponse> failResponses = batchResponse.getResponses()
-                                                                  .stream()
-                                                                  .filter(sendResponse -> !sendResponse.isSuccessful())
-                                                                  .toList();
+            final List<String> failResponses = batchResponse.getResponses()
+                                                            .stream()
+                                                            .filter(sendResponse -> !sendResponse.isSuccessful())
+                                                            .map(sendResponse ->
+                                                                    sendResponse.getException()
+                                                                                .getMessage()
+                                                            )
+                                                            .toList();
 
             log.warn("알림 보내기에 실패 요청이 있습니다. 실패 개수: {}, {}", batchResponse.getFailureCount(), failResponses);
         }
