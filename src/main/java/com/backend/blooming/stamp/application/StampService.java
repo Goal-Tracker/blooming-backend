@@ -6,6 +6,8 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.domain.Day;
+import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
@@ -69,8 +71,8 @@ public class StampService {
         final Stamp stamp = Stamp.builder()
                                  .goal(goal)
                                  .user(user)
-                                 .day(createStampDto.day())
-                                 .message(createStampDto.message())
+                                 .day(new Day(goal, createStampDto.day()))
+                                 .message(new Message(createStampDto.message()))
                                  .build();
 
         return stampRepository.save(stamp);
