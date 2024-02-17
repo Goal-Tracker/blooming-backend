@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
+import static com.backend.blooming.notification.domain.NotificationType.ACCEPT_FRIEND;
 import static com.backend.blooming.notification.domain.NotificationType.POKE;
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -60,7 +61,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
     @Test
     void 친구_요청에_대한_알림을_저장한다() {
         // when
-        final Long actual = notificationService.sendRequestFriendNotification(보낸_친구_요청);
+        final Long actual = notificationService.sendRequestFriendNotification(친구_요청에_대한_친구);
 
         // then
         final Notification notification = notificationRepository.findById(actual).get();
@@ -72,6 +73,24 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
             softAssertions.assertThat(notification.getType()).isEqualTo(REQUEST_FRIEND);
             softAssertions.assertThat(notification.getRequestId()).isEqualTo(친구_요청을_보낸_사용자.getId());
             softAssertions.assertThat(친구_요청을_받은_사용자.isNewAlarm()).isTrue();
+        });
+    }
+
+    @Test
+    void 친구_수락에_대한_알림을_저장한다() {
+        // when
+        final Long actual = notificationService.sendAcceptFriendNotification(친구_수락에_대한_친구);
+
+        // then
+        final Notification notification = notificationRepository.findById(actual).get();
+        SoftAssertions.assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual).isPositive();
+            softAssertions.assertThat(notification.getReceiver().getId()).isEqualTo(친구_요청을_보낸_사용자.getId());
+            softAssertions.assertThat(notification.getTitle()).isEqualTo(ACCEPT_FRIEND.getTitleByFormat(null));
+            softAssertions.assertThat(notification.getContent()).contains(친구_요청을_수락한_사용자.getName());
+            softAssertions.assertThat(notification.getType()).isEqualTo(ACCEPT_FRIEND);
+            softAssertions.assertThat(notification.getRequestId()).isEqualTo(친구_요청을_수락한_사용자.getId());
+            softAssertions.assertThat(친구_요청을_보낸_사용자.isNewAlarm()).isTrue();
         });
     }
 

@@ -34,9 +34,11 @@ public class NotificationServiceTestFixture {
     @Autowired
     private NotificationRepository notificationRepository;
 
-    protected Friend 보낸_친구_요청;
+    protected Friend 친구_요청에_대한_친구;
+    protected Friend 친구_수락에_대한_친구;
     protected User 친구_요청을_보낸_사용자;
     protected User 친구_요청을_받은_사용자;
+    protected User 친구_요청을_수락한_사용자;
     protected Long 존재하지_않는_사용자_아이디 = 999L;
     protected User 알림이_있는_사용자;
     protected Notification 친구_요청_알림1;
@@ -59,28 +61,35 @@ public class NotificationServiceTestFixture {
                             .name(new Name("사용자2"))
                             .email(new Email("user2@email.com"))
                             .build();
+        친구_요청을_수락한_사용자 = User.builder()
+                            .oAuthId("12347")
+                            .oAuthType(OAuthType.KAKAO)
+                            .name(new Name("사용자3"))
+                            .email(new Email("user3@email.com"))
+                            .build();
         final User 친구_요청을_보낸_사용자1 = User.builder()
-                                        .oAuthId("12347")
-                                        .oAuthType(OAuthType.KAKAO)
-                                        .name(new Name("사용자3"))
-                                        .email(new Email("user3@email.com"))
-                                        .build();
-        final User 친구_요청을_보낸_사용자2 = User.builder()
                                         .oAuthId("12348")
                                         .oAuthType(OAuthType.KAKAO)
                                         .name(new Name("사용자4"))
                                         .email(new Email("user4@email.com"))
                                         .build();
+        final User 친구_요청을_보낸_사용자2 = User.builder()
+                                        .oAuthId("12349")
+                                        .oAuthType(OAuthType.KAKAO)
+                                        .name(new Name("사용자5"))
+                                        .email(new Email("user5@email.com"))
+                                        .build();
 
-        userRepository.saveAll(List.of(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자, 친구_요청을_보낸_사용자1, 친구_요청을_보낸_사용자2));
+        userRepository.saveAll(List.of(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자, 친구_요청을_수락한_사용자, 친구_요청을_보낸_사용자1, 친구_요청을_보낸_사용자2));
 
-        보낸_친구_요청 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자);
+        친구_요청에_대한_친구 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자);
+        친구_수락에_대한_친구 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_수락한_사용자);
 
         알림이_있는_사용자 = 친구_요청을_보낸_사용자;
         final Friend 보낸_친구_요청1 = new Friend(친구_요청을_보낸_사용자1, 알림이_있는_사용자);
         final Friend 보낸_친구_요청2 = new Friend(친구_요청을_보낸_사용자2, 알림이_있는_사용자);
 
-        friendRepository.saveAll(List.of(보낸_친구_요청, 보낸_친구_요청1, 보낸_친구_요청2));
+        friendRepository.saveAll(List.of(친구_요청에_대한_친구, 친구_수락에_대한_친구, 보낸_친구_요청1, 보낸_친구_요청2));
 
         친구_요청_알림1 = Notification.builder()
                                 .receiver(알림이_있는_사용자)

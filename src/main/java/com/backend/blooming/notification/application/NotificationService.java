@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.backend.blooming.notification.domain.NotificationType.ACCEPT_FRIEND;
 import static com.backend.blooming.notification.domain.NotificationType.POKE;
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
 
@@ -71,6 +72,15 @@ public class NotificationService {
 
     public Long sendPokeNotification(final Goal goal, final User sender, final User receiver) {
         final Notification notification = persistNotification(POKE, goal.getName(), sender, receiver);
+        sendNotification(receiver, notification);
+
+        return notification.getId();
+    }
+
+    public Long sendAcceptFriendNotification(final Friend friend) {
+        final User sender = friend.getRequestedUser();
+        final User receiver = friend.getRequestUser();
+        final Notification notification = persistNotification(ACCEPT_FRIEND, null, sender, receiver);
         sendNotification(receiver, notification);
 
         return notification.getId();
