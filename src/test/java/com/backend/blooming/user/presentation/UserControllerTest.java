@@ -4,7 +4,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.user.application.UserService;
-import com.backend.blooming.user.application.exception.DuplicateUserNameExcpetion;
+import com.backend.blooming.user.application.exception.DuplicateUserNameException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -324,7 +324,7 @@ class UserControllerTest extends UserControllerTestFixture {
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
         given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto))
-                .willThrow(new DuplicateUserNameExcpetion());
+                .willThrow(new DuplicateUserNameException());
 
         // when & then
         mockMvc.perform(patch("/users")
