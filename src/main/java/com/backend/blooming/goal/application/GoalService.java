@@ -10,6 +10,7 @@ import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
@@ -25,15 +26,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoalService {
 
-    private static final int TEAMS_MAXIMUM_LENGTH = 5;
-
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
+    private final NotificationService notificationService;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
         final List<User> users = getUsers(createGoalDto.teamUserIds());
         final Goal goal = persistGoal(createGoalDto, users);
+
+        notificationService.sendRequestGoalNotification(goal);
 
         return goal.getId();
     }

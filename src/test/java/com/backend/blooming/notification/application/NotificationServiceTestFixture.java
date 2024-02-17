@@ -38,6 +38,9 @@ public class NotificationServiceTestFixture {
     protected Friend 친구_수락에_대한_친구;
     protected User 친구_요청을_보낸_사용자;
     protected User 친구_요청을_받은_사용자;
+    protected User 골_관리자;
+    protected User 골_요청을_받은_사용자1;
+    protected User 골_요청을_받은_사용자2;
     protected User 친구_요청을_수락한_사용자;
     protected Long 존재하지_않는_사용자_아이디 = 999L;
     protected User 알림이_있는_사용자;
@@ -46,6 +49,8 @@ public class NotificationServiceTestFixture {
     protected User 콕_찌르기_요청자;
     protected User 콕_찌르기_수신자;
     protected Goal 골;
+    protected Goal 팀원에_관리자가_없는_골;
+    protected User 팀원에_없는_관리자;
 
     @BeforeEach
     void setUpFixture() {
@@ -62,11 +67,11 @@ public class NotificationServiceTestFixture {
                             .email(new Email("user2@email.com"))
                             .build();
         친구_요청을_수락한_사용자 = User.builder()
-                            .oAuthId("12347")
-                            .oAuthType(OAuthType.KAKAO)
-                            .name(new Name("사용자3"))
-                            .email(new Email("user3@email.com"))
-                            .build();
+                             .oAuthId("12347")
+                             .oAuthType(OAuthType.KAKAO)
+                             .name(new Name("사용자3"))
+                             .email(new Email("user3@email.com"))
+                             .build();
         final User 친구_요청을_보낸_사용자1 = User.builder()
                                         .oAuthId("12348")
                                         .oAuthType(OAuthType.KAKAO)
@@ -79,8 +84,24 @@ public class NotificationServiceTestFixture {
                                         .name(new Name("사용자5"))
                                         .email(new Email("user5@email.com"))
                                         .build();
+        골_요청을_받은_사용자2 = User.builder()
+                            .oAuthId("12350")
+                            .oAuthType(OAuthType.KAKAO)
+                            .name(new Name("사용자6"))
+                            .email(new Email("user6@email.com"))
+                            .build();
 
-        userRepository.saveAll(List.of(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자, 친구_요청을_수락한_사용자, 친구_요청을_보낸_사용자1, 친구_요청을_보낸_사용자2));
+        userRepository.saveAll(
+                List.of(
+                        친구_요청을_보낸_사용자,
+                        친구_요청을_받은_사용자,
+                        친구_요청을_수락한_사용자,
+                        친구_요청을_보낸_사용자1,
+                        친구_요청을_보낸_사용자2,
+                        골_요청을_받은_사용자2
+                )
+        );
+        골_요청을_받은_사용자1 = 친구_요청을_받은_사용자;
 
         친구_요청에_대한_친구 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_받은_사용자);
         친구_수락에_대한_친구 = new Friend(친구_요청을_보낸_사용자, 친구_요청을_수락한_사용자);
@@ -111,7 +132,8 @@ public class NotificationServiceTestFixture {
 
         콕_찌르기_요청자 = 친구_요청을_보낸_사용자;
         콕_찌르기_수신자 = 친구_요청을_받은_사용자;
-        final List<User> 골_참여_사용자_목록 = List.of(콕_찌르기_요청자, 콕_찌르기_수신자);
+        골_관리자 = 콕_찌르기_요청자;
+        final List<User> 골_참여_사용자_목록 = List.of(콕_찌르기_요청자, 콕_찌르기_수신자, 골_요청을_받은_사용자2);
         골 = Goal.builder()
                 .name("골 제목")
                 .memo("골 메모")
@@ -120,6 +142,16 @@ public class NotificationServiceTestFixture {
                 .managerId(콕_찌르기_요청자.getId())
                 .users(골_참여_사용자_목록)
                 .build();
-        goalRepository.save(골);
+
+        팀원에_없는_관리자 = 친구_요청을_보낸_사용자1;
+        팀원에_관리자가_없는_골 = Goal.builder()
+                            .name("골 제목")
+                            .memo("골 메모")
+                            .startDate(LocalDate.now())
+                            .endDate(LocalDate.now().plusDays(20))
+                            .managerId(팀원에_없는_관리자.getId())
+                            .users(골_참여_사용자_목록)
+                            .build();
+        goalRepository.saveAll(List.of(골, 팀원에_관리자가_없는_골));
     }
 }

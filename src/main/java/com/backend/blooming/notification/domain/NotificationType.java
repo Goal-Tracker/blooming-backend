@@ -9,6 +9,7 @@ public enum NotificationType {
 
     REQUEST_FRIEND("친구 신청", "%s님이 회원님에게 친구 신청을 요청했습니다."),
     ACCEPT_FRIEND("친구 수락", "%s님이 회원님의 친구 신청을 수락했습니다."),
+    REQUEST_GOAL("골 초대 - %s", "%s님이 회원님을 골에 초대했습니다."),
     POKE("콕 찌르기 - %s", "%s님이 회원님을 콕 찔렀습니다.");
 
     private final String title;
