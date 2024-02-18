@@ -41,3 +41,6 @@ include::friend.adoc[]
 
 == 골
 include::goal.adoc[]
+
+== 스탬프
+include::stamp.adoc[]
