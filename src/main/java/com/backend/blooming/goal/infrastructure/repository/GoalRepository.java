@@ -33,4 +33,13 @@ public interface GoalRepository extends JpaRepository<Goal, Long> {
             ORDER BY g.goalTerm.startDate DESC
             """)
     List<Goal> findAllByUserIdAndFinished(final Long userId, final LocalDate now);
+
+    @Query("""
+            SELECT g
+            FROM Goal g
+            JOIN FETCH g.teams.goalTeams gt
+            JOIN FETCH gt.user gtu
+            WHERE g.id = :goalId AND g.deleted = FALSE
+            """)
+    Optional<Goal> findByIdWithUserAndDeletedIsFalse(final Long goalId);
 }

@@ -3,6 +3,8 @@ package com.backend.blooming.goal.infrastructure.repository;
 import com.backend.blooming.configuration.JpaConfiguration;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.domain.GoalTeam;
+import com.backend.blooming.goal.domain.GoalTerm;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -12,6 +14,7 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -21,21 +24,21 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
 class GoalRepositoryTest extends GoalRepositoryTestFixture {
-    
+
     @Autowired
     private GoalRepository goalRepository;
-    
+
     @Test
     void 요청한_골_아이디에_해당하는_골_정보를_반환한다() {
         // when
         final Goal result = goalRepository.findByIdAndDeletedIsFalse(유효한_골.getId())
                                           .orElseThrow(NotFoundGoalException::new);
-        
+
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
         assertThat(result.getTeams().getGoalTeams()).hasSize(2);
     }
-    
+
     @Test
     void 요청한_사용자_아이디가_골_참여자로_있는_골_중_현재_진행중인_모든_골을_반환한다() {
         // when
@@ -43,7 +46,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
                 골_관리자_사용자.getId(),
                 LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
         );
-        
+
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(result).hasSize(사용자가_참여한_골_중_현재_진행중인_골_목록.size());
@@ -53,7 +56,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
             softAssertions.assertThat(result.get(1).getName()).isEqualTo(현재_진행중인_골.getName());
         });
     }
-    
+
     @Test
     void 요청한_사용자_아이디가_골_참여자로_있는_골_중_종료된_모든_골을_반환한다() {
         // when
@@ -61,7 +64,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
                 골_관리자_사용자.getId(),
                 LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
         );
-        
+
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(result).hasSize(사용자가_참여한_골_중_종료된_골_목록.size());
@@ -69,6 +72,22 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
             softAssertions.assertThat(result.get(0).getName()).isEqualTo(이미_종료된_골.getName());
             softAssertions.assertThat(result.get(1).getId()).isEqualTo(이미_종료된_골2.getId());
             softAssertions.assertThat(result.get(1).getName()).isEqualTo(이미_종료된_골2.getName());
+        });
+    }
+
+    @Test
+    void 요청한_아이디에_해당하는_골_정보를_사용자_아이디와_함께_조회한다() {
+        // when
+        final Goal result = goalRepository.findByIdWithUserAndDeletedIsFalse(유효한_골.getId())
+                                          .orElseThrow(NotFoundGoalException::new);
+
+        // then
+        assertSoftly(softAssertions -> {
+            final List<GoalTeam> goalTeams = result.getTeams().getGoalTeams();
+            softAssertions.assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
+            softAssertions.assertThat(goalTeams).hasSize(2);
+            softAssertions.assertThat(goalTeams.get(0).getUser().getId()).isEqualTo(골_관리자_사용자.getId());
+            softAssertions.assertThat(goalTeams.get(1).getUser().getId()).isEqualTo(골에_참여한_사용자.getId());
         });
     }
 }
