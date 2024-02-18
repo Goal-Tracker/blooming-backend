@@ -22,7 +22,6 @@ public class StampControllerTestFixture {
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
-    protected Long 유효한_스탬프_아이디 = 1L;
     protected Long 유효한_골_아이디 = 1L;
     protected Long 존재하지_않는_골_아이디 = 999L;
 
@@ -70,12 +69,33 @@ public class StampControllerTestFixture {
             1,
             "스탬프 메시지"
     );
-    protected ReadStampDto 유효한_스탬프_dto = new ReadStampDto(
+    protected ReadStampDto 추가한_스탬프_dto = new ReadStampDto(
             1L,
             "스탬프 추가한 사용자",
             ThemeColor.BABY_BLUE,
             1,
             "스탬프 메시지"
+    );
+    private ReadAllStampDto.StampDto 유효한_스탬프_dto = new ReadAllStampDto.StampDto(
+            1L,
+            "스탬프 추가한 사용자",
+            ThemeColor.BABY_BLUE,
+            "스탬프 메시지1",
+            1
+    );
+    private ReadAllStampDto.StampDto 유효한_스탬프_dto2 = new ReadAllStampDto.StampDto(
+            1L,
+            "스탬프 추가한 사용자",
+            ThemeColor.BABY_BLUE,
+            "스탬프 메시지2",
+            2
+    );
+    private ReadAllStampDto.StampDto 유효한_스탬프_dto3 = new ReadAllStampDto.StampDto(
+            2L,
+            "스탬프 추가한 사용자2",
+            ThemeColor.INDIGO,
+            "스탬프 메시지3",
+            2
     );
     protected ReadStampResponse 유효한_스탬프_응답_dto = new ReadStampResponse(
             1L,
@@ -84,45 +104,24 @@ public class StampControllerTestFixture {
             1,
             "스탬프 메시지"
     );
-    private ReadAllStampDto.StampDto 유효한_스탬프_dto = new ReadAllStampDto.StampDto(
-            1L,
-            "사용자1",
-            ThemeColor.BABY_BLUE,
-            "스탬프 메시지1",
-            1
-    );
-    private ReadAllStampDto.StampDto 유효한_스탬프_dto2 = new ReadAllStampDto.StampDto(
-            1L,
-            "사용자1",
-            ThemeColor.BABY_BLUE,
-            "스탬프 메시지2",
-            2
-    );
-    private ReadAllStampDto.StampDto 유효한_스탬프_dto3 = new ReadAllStampDto.StampDto(
-            2L,
-            "사용자1",
-            ThemeColor.INDIGO,
-            "스탬프 메시지3",
-            2
-    );
     protected ReadAllStampDto 유효한_스탬프_목록_dto = new ReadAllStampDto(List.of(유효한_스탬프_dto, 유효한_스탬프_dto2, 유효한_스탬프_dto3));
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보1 = new ReadAllStampResponse.StampInfoResponse(
             1L,
-            "사용자1",
+            "스탬프 추가한 사용자",
             ThemeColor.BABY_BLUE.getCode(),
             "스탬프 메시지1",
             1
     );
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보2 = new ReadAllStampResponse.StampInfoResponse(
             1L,
-            "사용자1",
+            "스탬프 추가한 사용자",
             ThemeColor.BABY_BLUE.getCode(),
             "스탬프 메시지2",
             2
     );
     protected ReadAllStampResponse.StampInfoResponse 유효한_스탬프_응답_정보3 = new ReadAllStampResponse.StampInfoResponse(
             2L,
-            "사용자1",
+            "스탬프 추가한 사용자2",
             ThemeColor.INDIGO.getCode(),
             "스탬프 메시지3",
             2

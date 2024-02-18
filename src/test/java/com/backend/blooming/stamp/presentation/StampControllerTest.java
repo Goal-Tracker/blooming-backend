@@ -69,7 +69,7 @@ class StampControllerTest extends StampControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(stampService.createStamp(유효한_스탬프_생성_dto)).willReturn(유효한_스탬프_dto);
+        given(stampService.createStamp(유효한_스탬프_생성_dto)).willReturn(추가한_스탬프_dto);
 
         // when & then
         mockMvc.perform(post("/stamps")

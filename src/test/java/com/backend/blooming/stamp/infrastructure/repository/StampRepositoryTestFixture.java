@@ -76,8 +76,8 @@ public class StampRepositoryTestFixture {
         유효한_스탬프2 = Stamp.builder()
                              .goal(유효한_골)
                              .user(골_참여_사용자1)
-                             .day(1)
-                             .message("스탬프 메시지2")
+                             .day(new Day(유효한_골.getGoalTerm(), 1))
+                             .message(new Message("스탬프 메시지2"))
                              .build();
         stampRepository.saveAll(List.of(유효한_스탬프, 유효한_스탬프2));
     }

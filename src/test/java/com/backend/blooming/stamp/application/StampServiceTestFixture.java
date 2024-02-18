@@ -37,11 +37,12 @@ public class StampServiceTestFixture {
     protected CreateStampDto 골_참여자가_아닌_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 이미_존재하는_스탬프_dto;
     protected Long 유효한_골_아이디;
+    protected Long 존재하지_않는_골_아이디 = 999L;
     protected Long 스탬프를_생성한_사용자_아이디1;
     protected Long 스탬프를_생성한_사용자_아이디2;
     protected Long 골_참여자가_아닌_사용자_아이디;
-    protected ThemeColor 스탬프를_생성한_사용자_컬러1;
-    protected ThemeColor 스탬프를_생성한_사용자_컬러2;
+    protected String 스탬프를_생성한_사용자_이름1;
+    protected String 스탬프를_생성한_사용자_이름2;
     protected User 스탬프를_생성할_사용자;
 
     @BeforeEach
@@ -82,8 +83,8 @@ public class StampServiceTestFixture {
         스탬프를_생성한_사용자_아이디1 = 스탬프를_생성한_사용자1.getId();
         스탬프를_생성한_사용자_아이디2 = 스탬프를_생성한_사용자2.getId();
         골_참여자가_아닌_사용자_아이디 = 골_참여자가_아닌_사용자.getId();
-        스탬프를_생성한_사용자_컬러1 = 스탬프를_생성한_사용자1.getColor();
-        스탬프를_생성한_사용자_컬러2 = 스탬프를_생성한_사용자2.getColor();
+        스탬프를_생성한_사용자_이름1 = 스탬프를_생성한_사용자1.getName();
+        스탬프를_생성한_사용자_이름2 = 스탬프를_생성한_사용자2.getName();
 
         Goal 스탬프를_생성할_골 = Goal.builder()
                               .name("골 제목")

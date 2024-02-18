@@ -80,10 +80,7 @@ public class GoalService {
     public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
         final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
                                         .orElseThrow(NotFoundGoalException::new);
-        final long nowGoalDay = ChronoUnit.DAYS.between(goal.getGoalTerm()
-                                                            .getStartDate(), LocalDate.now()) + COUNT_GOAL_DAYS;
-        final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
-        final List<Long> usersUploadedStamp = todayStamps.stream().map(stamp -> stamp.getUser().getId()).toList();
+        final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
         return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
@@ -91,6 +88,13 @@ public class GoalService {
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
+    }
+
+    private List<Long> getUsersUploadedStamp(final Goal goal){
+        final long nowGoalDay = ChronoUnit.DAYS.between(goal.getGoalTerm().getStartDate(), LocalDate.now()) + COUNT_GOAL_DAYS;
+        final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
+
+        return todayStamps.stream().map(stamp -> stamp.getUser().getId()).toList();
     }
 
     @Transactional(readOnly = true)
@@ -112,8 +116,9 @@ public class GoalService {
         final Goal goal = getGoal(goalId);
         validateUserToUpdate(goal.getManagerId(), user.getId());
         updateGoal(updateGoalDto, goal);
+        final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
-        return ReadGoalDetailDto.from(goal);
+        return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
     private void validateUserToUpdate(final Long managerId, final Long userId) {

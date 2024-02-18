@@ -103,7 +103,8 @@ public class GoalControllerTestFixture {
             3L,
             "테스트 유저3",
             ThemeColor.CORAL,
-            "테스트 상태메시지3"
+            "테스트 상태메시지3",
+            true
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답1 = new ReadGoalResponse.GoalTeamResponse(
             1L,
@@ -123,7 +124,8 @@ public class GoalControllerTestFixture {
             3L,
             "테스트 유저3",
             "f69b94",
-            "테스트 상태메시지3"
+            "테스트 상태메시지3",
+            true
     );
     protected ReadGoalDetailDto 유효한_골_dto = new ReadGoalDetailDto(
             1L,

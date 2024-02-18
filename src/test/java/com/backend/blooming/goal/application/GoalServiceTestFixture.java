@@ -10,6 +10,8 @@ import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.stamp.domain.Day;
+import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
@@ -182,9 +184,9 @@ public class GoalServiceTestFixture {
 
         Stamp 유효한_스탬프1 = Stamp.builder()
                               .goal(현재_진행중인_골1)
-                              .user(유효한_사용자)
-                              .day(1)
-                              .message("스탬프 메시지")
+                              .user(현재_로그인한_사용자)
+                              .day(new Day(현재_진행중인_골1.getGoalTerm(), 1))
+                              .message(new Message("스탬프 메시지"))
                               .build();
         stampRepository.saveAll(List.of(유효한_스탬프1));
 
@@ -248,7 +250,7 @@ public class GoalServiceTestFixture {
                 골_팀에_등록된_사용자_아이디_목록
         );
 
-        유효한_골_dto = ReadGoalDetailDto.of(현재_진행중인_골1, List.of(유효한_사용자.getId()));
+        유효한_골_dto = ReadGoalDetailDto.of(현재_진행중인_골1, List.of(현재_로그인한_사용자.getId()));
         사용자가_참여한_골_목록 = ReadAllGoalDto.from(참여한_골_목록);
 
         수정_요청한_골_dto = new UpdateGoalDto(
