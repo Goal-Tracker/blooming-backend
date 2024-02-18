@@ -1237,17 +1237,20 @@ Content-Type: application/json
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -1269,17 +1272,20 @@ Content-Type: application/json
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -1356,6 +1362,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1365,7 +1376,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-02-17 00:43:03 +0900
+Last updated 2024-02-18 13:48:10 +0900
 </div>
 </div>
 </body>

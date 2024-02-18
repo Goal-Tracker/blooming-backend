@@ -540,6 +540,50 @@ Content-Type: application/json
 </div>
 </div>
 </div>
+<div class="sect4">
+<h5 id="_응답_response_fields">Response fields</h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userColor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 테마 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 메시지</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -595,51 +639,20 @@ Content-Type: application/json
   "stamps" : {
     "1" : [ {
       "userId" : 1,
-      "name" : "사용자1",
+      "name" : "스탬프 추가한 사용자",
       "color" : "#a1b3d7",
       "message" : "스탬프 메시지1",
       "day" : 1
     } ],
     "2" : [ {
       "userId" : 1,
-      "name" : "사용자1",
+      "name" : "스탬프 추가한 사용자",
       "color" : "#a1b3d7",
       "message" : "스탬프 메시지2",
       "day" : 2
     }, {
       "userId" : 2,
-      "name" : "사용자1",
-      "color" : "#7175a5",
-      "message" : "스탬프 메시지3",
-      "day" : 2
-    } ]
-  }
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="_응답_2_response_body">Response body</h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-json" data-lang="json">{
-  "stamps" : {
-    "1" : [ {
-      "userId" : 1,
-      "name" : "사용자1",
-      "color" : "#a1b3d7",
-      "message" : "스탬프 메시지1",
-      "day" : 1
-    } ],
-    "2" : [ {
-      "userId" : 1,
-      "name" : "사용자1",
-      "color" : "#a1b3d7",
-      "message" : "스탬프 메시지2",
-      "day" : 2
-    }, {
-      "userId" : 2,
-      "name" : "사용자1",
+      "name" : "스탬프 추가한 사용자2",
       "color" : "#7175a5",
       "message" : "스탬프 메시지3",
       "day" : 2
@@ -724,7 +737,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-02-15 16:23:54 +0900
+Last updated 2024-02-18 13:58:42 +0900
 </div>
 </div>
 </body>
