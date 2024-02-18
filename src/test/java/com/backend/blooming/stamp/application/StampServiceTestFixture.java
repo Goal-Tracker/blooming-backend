@@ -99,13 +99,13 @@ public class StampServiceTestFixture {
         Stamp 유효한_스탬프1 = Stamp.builder()
                               .goal(스탬프를_생성할_골)
                               .user(스탬프를_생성한_사용자1)
-                              .day(new Day(스탬프를_생성할_골, 1))
+                              .day(new Day(스탬프를_생성할_골.getGoalTerm(), 1))
                               .message(new Message("스탬프 메시지"))
                               .build();
         Stamp 유효한_스탬프2 = Stamp.builder()
                               .goal(스탬프를_생성할_골)
                               .user(스탬프를_생성한_사용자2)
-                              .day(new Day(스탬프를_생성할_골, 1))
+                              .day(new Day(스탬프를_생성할_골.getGoalTerm(), 1))
                               .message(new Message("스탬프 메시지2"))
                               .build();
         stampRepository.saveAll(List.of(유효한_스탬프1, 유효한_스탬프2));

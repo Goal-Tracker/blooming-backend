@@ -27,9 +27,6 @@ import lombok.ToString;
 @ToString(exclude = {"goal", "user"})
 public class Stamp extends BaseTimeEntity {
 
-    private static final int STAMP_DAY_MINIMUM = 1;
-    private static final int STAMP_MESSAGE_MAXIMUM = 30;
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

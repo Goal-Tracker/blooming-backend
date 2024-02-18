@@ -71,7 +71,7 @@ public class StampService {
         final Stamp stamp = Stamp.builder()
                                  .goal(goal)
                                  .user(user)
-                                 .day(new Day(goal, createStampDto.day()))
+                                 .day(new Day(goal.getGoalTerm(), createStampDto.day()))
                                  .message(new Message(createStampDto.message()))
                                  .build();
 

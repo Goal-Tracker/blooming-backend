@@ -20,7 +20,7 @@ class StampTest extends StampTestFixture {
         final Stamp result = Stamp.builder()
                                   .goal(유효한_골)
                                   .user(유효한_사용자)
-                                  .day(new Day(유효한_골, 1))
+                                  .day(new Day(유효한_골.getGoalTerm(), 1))
                                   .message(new Message("테스트 메시지"))
                                   .build();
 
@@ -40,7 +40,7 @@ class StampTest extends StampTestFixture {
         assertThatThrownBy(() -> Stamp.builder()
                                       .goal(스탬프_생성날짜가_골_시작일_보다_이전인_골)
                                       .user(유효한_사용자)
-                                      .day(new Day(스탬프_생성날짜가_골_시작일_보다_이전인_골, 스탬프_날짜가_골_시작일_이전인_경우))
+                                      .day(new Day(스탬프_생성날짜가_골_시작일_보다_이전인_골.getGoalTerm(), 스탬프_날짜가_골_시작일_이전인_경우))
                                       .message(new Message("스탬프 인증 메시지"))
                                       .build())
                 .isInstanceOf(InvalidStampException.InvalidStampDay.class);
@@ -52,7 +52,7 @@ class StampTest extends StampTestFixture {
         assertThatThrownBy(() -> Stamp.builder()
                                       .goal(유효한_골)
                                       .user(유효한_사용자)
-                                      .day(new Day(유효한_골, 스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우))
+                                      .day(new Day(유효한_골.getGoalTerm(), 스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우))
                                       .message(new Message("스탬프 인증 메시지"))
                                       .build())
                 .isInstanceOf(InvalidStampException.InvalidStampDayFuture.class);
@@ -65,7 +65,7 @@ class StampTest extends StampTestFixture {
         assertThatThrownBy(() -> Stamp.builder()
                                       .goal(유효한_골)
                                       .user(유효한_사용자)
-                                      .day(new Day(유효한_골, 1))
+                                      .day(new Day(유효한_골.getGoalTerm(), 1))
                                       .message(new Message(emptyMessage))
                                       .build())
                 .isInstanceOf(InvalidStampException.InvalidStampMessage.class);
