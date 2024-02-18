@@ -54,6 +54,13 @@ public enum ExceptionMessage {
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
+    
+    // 스탬프
+    INVALID_STAMP_DAY("스탬프 날짜는 골 시작일 이전이거나 종료일 이후일 수 없습니다."),
+    INVALID_STAMP_DAY_FUTURE("오늘보다 이후의 스탬프는 추가할 수 없습니다."),
+    INVALID_STAMP_TO_CREATE("이미 해당 날짜의 스탬프가 존재합니다."),
+    CREATE_STAMP_FORBIDDEN("스탬프를 추가할 권한이 없습니다."),
+    INVALID_STAMP_MESSAGE("스탬프 인증 메시지는 비어있거나 50자 초과일 수 없습니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
