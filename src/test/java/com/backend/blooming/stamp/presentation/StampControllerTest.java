@@ -95,7 +95,7 @@ class StampControllerTest extends StampControllerTestFixture {
                         fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")
                 ),
                 responseFields(
-                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("골 아이디"),
+                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("스탬프 아이디"),
                         fieldWithPath("userName").type(JsonFieldType.STRING).description("스탬프를 추가한 사용자 이름"),
                         fieldWithPath("userColor").type(JsonFieldType.STRING).description("스탬프를 추가한 사용자 테마 색상코드"),
                         fieldWithPath("day").type(JsonFieldType.NUMBER).description("스탬프 날짜"),
