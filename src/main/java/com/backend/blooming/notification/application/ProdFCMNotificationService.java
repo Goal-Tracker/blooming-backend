@@ -5,6 +5,7 @@ import com.backend.blooming.devicetoken.infrastructure.repository.DeviceTokenRep
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.user.domain.User;
 import com.google.firebase.messaging.AndroidConfig;
+import com.google.firebase.messaging.AndroidNotification;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -17,9 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static com.backend.blooming.notification.application.util.NotificationKey.BODY;
 import static com.backend.blooming.notification.application.util.NotificationKey.REQUEST_ID;
-import static com.backend.blooming.notification.application.util.NotificationKey.TITLE;
 import static com.backend.blooming.notification.application.util.NotificationKey.TYPE;
 
 @Slf4j
@@ -59,32 +58,31 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     }
 
     private List<Message> createMessages(final Notification notification, final List<String> deviceTokens) {
-        final AndroidConfig androidConfig = createAndroidConfig();
-
         return deviceTokens.stream()
-                           .map(deviceToken -> createMessage(notification, deviceToken, androidConfig))
+                           .map(deviceToken -> createMessage(notification, deviceToken))
                            .toList();
     }
 
-    private static AndroidConfig createAndroidConfig() {
-        return AndroidConfig.builder()
-                            .setPriority(AndroidConfig.Priority.HIGH)
-                            .build();
-    }
-
-    private Message createMessage(
-            final Notification notification,
-            final String deviceToken,
-            final AndroidConfig androidConfig
-    ) {
+    private Message createMessage(final Notification notification, final String deviceToken) {
         return Message.builder()
-                      .setAndroidConfig(androidConfig)
                       .setToken(deviceToken)
-                      .putData(TITLE.getValue(), notification.getTitle())
-                      .putData(BODY.getValue(), notification.getContent())
+                      .setAndroidConfig(createAndroidConfig(notification))
                       .putData(TYPE.getValue(), notification.getType().name())
                       .putData(REQUEST_ID.getValue(), notification.getRequestId().toString())
                       .build();
+    }
+
+    private AndroidConfig createAndroidConfig(final Notification notification) {
+        return AndroidConfig.builder()
+                            .setNotification(createAndroidNotification(notification))
+                            .build();
+    }
+
+    private AndroidNotification createAndroidNotification(final Notification notification) {
+        return AndroidNotification.builder()
+                                  .setTitle(notification.getTitle())
+                                  .setBody(notification.getContent())
+                                  .build();
     }
 
     private void checkAllSuccess(final BatchResponse batchResponse) {
