@@ -16,7 +16,7 @@ import lombok.ToString;
 @ToString
 public class Content {
 
-    @Column(columnDefinition = "text", nullable = false)
+    @Column(columnDefinition = "text", name = "content", nullable = false)
     private String value;
 
     public Content(final String value) {
