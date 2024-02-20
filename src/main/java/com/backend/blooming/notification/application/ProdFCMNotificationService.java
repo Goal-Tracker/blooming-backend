@@ -4,6 +4,7 @@ import com.backend.blooming.devicetoken.domain.DeviceToken;
 import com.backend.blooming.devicetoken.infrastructure.repository.DeviceTokenRepository;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.user.domain.User;
+import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -58,13 +59,26 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     }
 
     private List<Message> createMessages(final Notification notification, final List<String> deviceTokens) {
+        final AndroidConfig androidConfig = createAndroidConfig();
+
         return deviceTokens.stream()
-                           .map(deviceToken -> createMessage(notification, deviceToken))
+                           .map(deviceToken -> createMessage(notification, deviceToken, androidConfig))
                            .toList();
     }
 
-    private Message createMessage(final Notification notification, final String deviceToken) {
+    private static AndroidConfig createAndroidConfig() {
+        return AndroidConfig.builder()
+                            .setPriority(AndroidConfig.Priority.HIGH)
+                            .build();
+    }
+
+    private Message createMessage(
+            final Notification notification,
+            final String deviceToken,
+            final AndroidConfig androidConfig
+    ) {
         return Message.builder()
+                      .setAndroidConfig(androidConfig)
                       .setToken(deviceToken)
                       .putData(TITLE.getValue(), notification.getTitle())
                       .putData(BODY.getValue(), notification.getContent())
