@@ -8,6 +8,8 @@ import lombok.Getter;
 @Getter
 public enum NotificationKey {
 
+    TITLE("title"),
+    BODY("body"),
     TYPE("type"),
     REQUEST_ID("requestId");
 
