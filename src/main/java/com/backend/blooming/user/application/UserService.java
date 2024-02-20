@@ -4,6 +4,7 @@ import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
+import com.backend.blooming.user.application.exception.DuplicateUserNameException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
@@ -53,6 +54,7 @@ public class UserService {
     private void updateUserByRequest(final User user, final UpdateUserDto updateUserDto) {
         if (updateUserDto.name() != null) {
             final Name updateName = new Name(updateUserDto.name());
+            validateDuplicateName(user, updateName);
             user.updateName(updateName);
         }
         if (updateUserDto.color() != null) {
@@ -61,6 +63,15 @@ public class UserService {
         }
         if (updateUserDto.statusMessage() != null) {
             user.updateStatusMessage(updateUserDto.statusMessage());
+        }
+    }
+
+    private void validateDuplicateName(final User user, final Name name) {
+        if (user.isSameName(name)) {
+            return;
+        }
+        if (userRepository.existsByNameAndDeletedIsFalse(name)) {
+            throw new DuplicateUserNameException();
         }
     }
 }
