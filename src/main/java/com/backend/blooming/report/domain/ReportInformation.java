@@ -21,12 +21,14 @@ import lombok.ToString;
 @ToString(exclude = {"reporter", "reportee"})
 public class ReportInformation {
 
+    // TODO: 2024-02-20 해당 클래스를 세 곳에서 사용하게 되면, 중복 생성되는 fk 이름의 문제로 예외가 발생합니다.
+    //  이떄, fk name을 포기하는 게 좋을 지, ReportInformation 필드들을 각각의 엔티티 클래스에 추가하여 각각의 다른 fk name을 설정하는 게 좋을지 잘 모르겠습니다.
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reporter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_report_reporter"))
+    @JoinColumn(name = "reporter_id", nullable = false)
     private User reporter;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reportee_id", nullable = false, foreignKey = @ForeignKey(name = "fk_report_reportee"))
+    @JoinColumn(name = "reportee_id", nullable = false)
     private User reportee;
 
     @Embedded
