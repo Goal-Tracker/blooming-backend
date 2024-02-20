@@ -30,7 +30,7 @@ public class Email {
     }
 
     private void validateValue(final String value) {
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.isBlank()) {
             throw new MemberException.NullOrEmptyEmailException();
         }
         if (value.length() > MAX_LENGTH) {

@@ -72,7 +72,7 @@ public class Goal extends BaseTimeEntity {
     }
 
     private String processDefaultMemo(final String memo) {
-        if (memo == null) {
+        if (memo == null || memo.isBlank()) {
             return MEMO_DEFAULT;
         }
         return memo;

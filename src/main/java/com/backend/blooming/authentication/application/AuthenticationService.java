@@ -90,7 +90,7 @@ public class AuthenticationService {
     }
 
     private void saveOrActiveToken(final User user, final String deviceToken) {
-        if (deviceToken != null && !deviceToken.isEmpty()) {
+        if (deviceToken != null && !deviceToken.isBlank()) {
             deviceTokenService.saveOrActivate(user.getId(), deviceToken);
         }
     }

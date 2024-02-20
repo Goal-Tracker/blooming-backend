@@ -86,7 +86,7 @@ public class User extends BaseTimeEntity {
     }
 
     private String processDefaultStatusMessage(final String statusMessage) {
-        if (statusMessage == null) {
+        if (statusMessage == null || statusMessage.isBlank()) {
             return DEFAULT_STATUS_MESSAGE;
         }
 

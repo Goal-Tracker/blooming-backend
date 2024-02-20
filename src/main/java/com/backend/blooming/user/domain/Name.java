@@ -27,7 +27,7 @@ public class Name {
     }
 
     private void validateValue(final String value) {
-        if (value == null || value.isEmpty()) {
+        if (value == null || value.isBlank()) {
             throw new MemberException.NullOrEmptyNameException();
         }
         if (value.length() > MAX_LENGTH) {
