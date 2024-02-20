@@ -1,5 +1,6 @@
 package com.backend.blooming.report.domain;
 
+import com.backend.blooming.report.domain.exception.InvalidReportException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
@@ -32,8 +33,16 @@ public class ReportInformation {
     private Content content;
 
     public ReportInformation(final User reporter, final User reportee, final Content content) {
+        validateReportee(reporter, reportee);
+
         this.reporter = reporter;
         this.reportee = reportee;
         this.content = content;
+    }
+
+    private void validateReportee(final User reporter, final User reportee) {
+        if (reporter.equals(reportee)) {
+            throw new InvalidReportException.SelfReportingNotAllowedException();
+        }
     }
 }

@@ -65,6 +65,7 @@ public enum ExceptionMessage {
 
     // 신고
     NULL_OR_EMPTY_CONTENT("신고 메시지는 비어있을 수 없습니다."),
+    SELF_REPORTING_NOT_ALLOWED("자신을 신고할 수 없습니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
