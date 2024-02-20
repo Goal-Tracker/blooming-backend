@@ -34,17 +34,14 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     public void sendNotification(final Notification notification) {
         final List<String> deviceTokens = getDeviceTokens(notification.getReceiver());
         if (deviceTokens.isEmpty()) {
-            log.debug("사용자 {} - device token이 없습니다.", notification.getReceiver().getName());
             return;
         }
 
         final List<Message> messages = createMessages(notification, deviceTokens);
-        log.debug("사용자 {} - 보낼 메시지: {}.", notification.getReceiver().getName(), messages.toString());
 
         try {
             final BatchResponse batchResponse = firebaseMessaging.sendAll(messages);
             checkAllSuccess(batchResponse);
-            log.debug("사용자 {} - 알림 보내기 성공.", notification.getReceiver().getName());
         } catch (FirebaseMessagingException exception) {
             log.warn("보낼 알림이 없거나, 알림 보내기에 실패했습니다. : ", exception);
         }
