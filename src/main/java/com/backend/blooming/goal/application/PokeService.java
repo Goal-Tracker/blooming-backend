@@ -25,7 +25,7 @@ public class PokeService {
     public void poke(final PokeDto pokeDto) {
         final User sender = getUser(pokeDto.senderId());
         final User receiver = getUser(pokeDto.receiverId());
-        final Goal goal = getGaol(pokeDto.goalId());
+        final Goal goal = getGoal(pokeDto.goalId());
 
         validateGoalTeams(goal, sender, receiver);
 
@@ -37,7 +37,7 @@ public class PokeService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private Goal getGaol(final Long goalId) {
+    private Goal getGoal(final Long goalId) {
         return goalRepository.findByIdWithUserAndDeletedIsFalse(goalId)
                              .orElseThrow(NotFoundGoalException::new);
     }
