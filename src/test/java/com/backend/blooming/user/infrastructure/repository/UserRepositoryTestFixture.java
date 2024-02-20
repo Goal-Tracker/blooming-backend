@@ -25,6 +25,9 @@ public class UserRepositoryTestFixture {
     protected Long 사용자_아이디;
     protected Long 삭제된_사용자_아이디;
     protected Long 존재하지_않는_사용자_아이디 = 9999L;
+    protected Name 존재하는_사용자_이름;
+    protected Name 삭제된_사용자_이름;
+    protected Name 존재하지_않는_사용자_이름 = new Name("없어요");
     protected List<Long> 사용자_아이디_목록 = new ArrayList<>();
 
     @BeforeEach
@@ -54,7 +57,9 @@ public class UserRepositoryTestFixture {
         유효한_oAuth_타입 = 사용자.getOAuthType();
 
         사용자_아이디 = 사용자.getId();
+        존재하는_사용자_이름 = new Name(사용자.getName());
         삭제된_사용자_아이디 = 삭제된_사용자.getId();
+        삭제된_사용자_이름 = new Name(삭제된_사용자.getName());
         사용자_아이디_목록.addAll(List.of(사용자_아이디, 사용자2.getId(), 삭제된_사용자_아이디));
     }
 }

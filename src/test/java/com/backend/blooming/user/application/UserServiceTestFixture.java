@@ -39,6 +39,8 @@ public class UserServiceTestFixture {
     protected String 기존_상태_메시지;
     protected UpdateUserDto 모든_사용자_정보를_수정한_dto = new UpdateUserDto(수정한_이름, 수정한_테마_색상.name(), 수정한_상태_메시지);
     protected UpdateUserDto 이름만_수정한_dto = new UpdateUserDto(수정한_이름, null, null);
+    protected UpdateUserDto 기존_이름으로_수정한_dto;
+    protected UpdateUserDto 이미_존재하는_이름으로_수정한_dto;
     protected UpdateUserDto 테마_색상만_수정한_dto = new UpdateUserDto(null, 수정한_테마_색상.name(), null);
     protected UpdateUserDto 상태_메시지만_수정한_dto = new UpdateUserDto(null, null, 수정한_상태_메시지);
 
@@ -79,6 +81,8 @@ public class UserServiceTestFixture {
         기존_이름 = 사용자.getName();
         기존_테마_색상 = 사용자.getColor();
         기존_상태_메시지 = 사용자.getStatusMessage();
+        기존_이름으로_수정한_dto = new UpdateUserDto(사용자.getName(), null, null);
+        이미_존재하는_이름으로_수정한_dto = new UpdateUserDto(친구인_사용자.getName(), null, null);
 
         final Friend 친구_요청 = new Friend(사용자, 친구인_사용자);
         친구_요청.acceptRequest();
