@@ -13,9 +13,12 @@ import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenExcept
 import com.backend.blooming.goal.application.exception.ForbiddenGoalToPokeException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.notification.application.exception.NotFoundGoalManagerException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
+import com.backend.blooming.user.application.exception.DuplicateUserNameException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -225,6 +228,36 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateUserNameException.class)
+    public ResponseEntity<ExceptionResponse> handleDuplicateUserNameExcpetion(
+            final DuplicateUserNameException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidStampException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidStampException(
+            final InvalidStampException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(CreateStampForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
+            final CreateStampForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 }

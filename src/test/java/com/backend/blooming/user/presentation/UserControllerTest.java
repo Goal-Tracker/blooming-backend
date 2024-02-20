@@ -4,6 +4,7 @@ import com.backend.blooming.authentication.infrastructure.jwt.TokenProvider;
 import com.backend.blooming.authentication.presentation.argumentresolver.AuthenticatedThreadLocal;
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.user.application.UserService;
+import com.backend.blooming.user.application.exception.DuplicateUserNameException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -295,7 +296,6 @@ class UserControllerTest extends UserControllerTestFixture {
         );
     }
 
-
     @Test
     void 존재하지_않는_사용자_정보_수정시_400을_반환한다() throws Exception {
         // given
@@ -312,6 +312,26 @@ class UserControllerTest extends UserControllerTestFixture {
                 .content(objectMapper.writeValueAsString(사용자의_모든_정보_수정_dto))
         ).andExpectAll(
                 status().isNotFound(),
+                jsonPath("$.message").exists()
+        );
+    }
+
+    @Test
+    void 이미_존재하는_이름으로_사용자_정보_수정시_400를_반환한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_아이디)).willReturn(true);
+        given(userService.updateById(사용자_아이디, 사용자의_모든_정보_수정_dto))
+                .willThrow(new DuplicateUserNameException());
+
+        // when & then
+        mockMvc.perform(patch("/users")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(사용자의_모든_정보_수정_dto))
+        ).andExpectAll(
+                status().isBadRequest(),
                 jsonPath("$.message").exists()
         );
     }

@@ -2,7 +2,6 @@ package com.backend.blooming.user.infrastructure.repository;
 
 import com.backend.blooming.configuration.JpaConfiguration;
 import com.backend.blooming.user.domain.User;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -98,6 +97,33 @@ class UserRepositoryTest extends UserRepositoryTestFixture {
     void 존재하지_않는_사용자_아이디_조회시_거짓을_반환한다() {
         // when
         final boolean actual = userRepository.existsByIdAndDeletedIsFalse(존재하지_않는_사용자_아이디);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 존재하는_사용자_이름_조회시_참을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByNameAndDeletedIsFalse(존재하는_사용자_이름);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 삭제된_사용자_이름_조회시_거짓을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByNameAndDeletedIsFalse(삭제된_사용자_이름);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 존재하지_않는_사용자_이름_조회시_거짓을_반환한다() {
+        // when
+        final boolean actual = userRepository.existsByNameAndDeletedIsFalse(존재하지_않는_사용자_이름);
 
         // then
         assertThat(actual).isFalse();
