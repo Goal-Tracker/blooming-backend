@@ -55,7 +55,12 @@ public enum ExceptionMessage {
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
-    
+    NOT_FOUND_MANAGER("골의 관리자를 찾을 수 없습니다."),
+
+    // 콕 찌르기
+    SENDER_NOT_IN_GOAL_TEAM("콕 찌르기 요청자가 해당 골의 팀원이 아닙니다."),
+    RECEIVER_NOT_IN_GOAL_TEAM("콕 찌르기 수신자가 해당 골의 팀원이 아닙니다."),
+
     // 스탬프
     INVALID_STAMP_DAY("스탬프 날짜는 골 시작일 이전이거나 종료일 이후일 수 없습니다."),
     INVALID_STAMP_DAY_FUTURE("오늘보다 이후의 스탬프는 추가할 수 없습니다."),

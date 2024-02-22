@@ -51,7 +51,6 @@ public class StampService {
 
     private void validateUserInGoalTeams(final Goal goal, final Long userId) {
         final List<Long> teamUserIds = goal.getTeams()
-                                           .getGoalTeams()
                                            .stream()
                                            .map(goalTeam -> goalTeam.getUser().getId())
                                            .toList();
