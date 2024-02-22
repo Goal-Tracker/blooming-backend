@@ -9,6 +9,7 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
@@ -35,7 +36,7 @@ public class GoalService {
         final List<User> users = getUsers(createGoalDto.teamUserIds());
         final Goal goal = persistGoal(createGoalDto, users);
 
-        notificationService.sendRequestGoalNotification(goal);
+        notificationService.sendRequestGoalNotification(goal, goal.getTeams());
 
         return goal.getId();
     }
@@ -126,7 +127,8 @@ public class GoalService {
         }
         if (updateGoalDto.teamUserIds() != null) {
             final List<User> users = userRepository.findAllByUserIds(updateGoalDto.teamUserIds());
-            goal.updateTeams(users);
+            final List<GoalTeam> updateTeams = goal.updateTeams(users);
+            notificationService.sendRequestGoalNotification(goal, updateTeams);
         }
     }
 

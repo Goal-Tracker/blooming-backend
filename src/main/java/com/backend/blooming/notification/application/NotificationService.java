@@ -99,9 +99,9 @@ public class NotificationService {
         return notification.getId();
     }
 
-    public List<Long> sendRequestGoalNotification(final Goal goal) {
+    public List<Long> sendRequestGoalNotification(final Goal goal, final List<GoalTeam> teams) {
         final User sender = getGoalManager(goal);
-        final List<User> receivers = getGoalTeams(goal);
+        final List<User> receivers = getTeamUsers(teams, goal.getManagerId());
         final List<Notification> notifications = persistNotifications(goal, sender, receivers);
         notifications.forEach(this::sendNotification);
 
@@ -111,7 +111,7 @@ public class NotificationService {
     }
 
     private User getGoalManager(final Goal goal) {
-        final List<GoalTeam> teams = goal.getTeams().getGoalTeams();
+        final List<GoalTeam> teams = goal.getTeams();
         final Long managerId = goal.getManagerId();
 
         return teams.stream()
@@ -121,10 +121,7 @@ public class NotificationService {
                     .orElseThrow(NotFoundGoalManagerException::new);
     }
 
-    private List<User> getGoalTeams(final Goal goal) {
-        final List<GoalTeam> teams = goal.getTeams().getGoalTeams();
-        final Long managerId = goal.getManagerId();
-
+    private List<User> getTeamUsers(final List<GoalTeam> teams, final Long managerId) {
         return teams.stream()
                     .map(GoalTeam::getUser)
                     .filter(user -> !user.getId().equals(managerId))
