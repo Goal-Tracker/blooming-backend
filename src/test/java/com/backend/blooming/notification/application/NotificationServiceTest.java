@@ -117,7 +117,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
     @Test
     void 골_초대_요청에_대한_알림을_저장한다() {
         // when
-        final List<Long> actuals = notificationService.sendRequestGoalNotification(골);
+        final List<Long> actuals = notificationService.sendRequestGoalNotification(골, 골.getTeams());
 
         // then
         actuals.forEach(actual -> {
@@ -140,7 +140,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
     @Test
     void 골_초대_요청시_팀원에_골_관리자가_없다면_예외를_발생시킨다() {
         // when & then
-        assertThatThrownBy(() -> notificationService.sendRequestGoalNotification(팀원에_관리자가_없는_골))
+        assertThatThrownBy(() -> notificationService.sendRequestGoalNotification(팀원에_관리자가_없는_골, 팀원에_관리자가_없는_골.getTeams()))
                 .isInstanceOf(NotFoundGoalManagerException.class);
     }
 }

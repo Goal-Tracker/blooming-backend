@@ -76,14 +76,14 @@ public class GoalRepositoryTestFixture {
                         .build();
         이미_종료된_골 = Goal.builder()
                        .name("이미 종료된 골1")
-                       .memo("이미 종료된 골2")
+                       .memo("이미 종료된 골1")
                        .startDate(LocalDate.now())
                        .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 - 1L))
                        .managerId(골_관리자_사용자.getId())
                        .users(골에_참여한_사용자_목록)
                        .build();
         이미_종료된_골2 = Goal.builder()
-                        .name("이미 종료된 골1")
+                        .name("이미 종료된 골2")
                         .memo("이미 종료된 골2")
                         .startDate(LocalDate.now())
                         .endDate(LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값 - 1L))
