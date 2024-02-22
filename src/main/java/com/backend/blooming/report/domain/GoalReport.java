@@ -23,22 +23,27 @@ import lombok.ToString;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
-@ToString(exclude = {"goal"})
+@ToString(exclude = {"reporter", "goal"})
 @Table
 public class GoalReport extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Embedded
-    private ReportInformation reportInformation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reporter_id", nullable = false, foreignKey = @ForeignKey(name = "fk_goal_report_reporter"))
+    private User reporter;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "goal_id", nullable = false, foreignKey = @ForeignKey(name = "fk_goal_report_goal"))
     private Goal goal;
 
-    public GoalReport(final ReportInformation reportInformation, Goal goal) {
-        this.reportInformation = reportInformation;
+    @Embedded
+    private Content content;
+
+    public GoalReport(final User reporter, final Goal goal, final Content content) {
+        this.reporter = reporter;
         this.goal = goal;
+        this.content = content;
     }
 }
