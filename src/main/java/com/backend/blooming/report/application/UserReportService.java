@@ -1,6 +1,7 @@
 package com.backend.blooming.report.application;
 
 import com.backend.blooming.report.application.dto.CreateUserReportDto;
+import com.backend.blooming.report.application.exception.AlreadyReportUserException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.UserReport;
 import com.backend.blooming.report.infrastructure.repository.UserReportRepository;
@@ -20,13 +21,21 @@ public class UserReportService {
     private final UserReportRepository userReportRepository;
 
     public Long create(final CreateUserReportDto userReportDto) {
+        validateReport(userReportDto.reporterId(), userReportDto.reporteeId());
         final User reporter = getUser(userReportDto.reporterId());
         final User reportee = getUser(userReportDto.reporteeId());
         final Content content = new Content(userReportDto.content());
+
         final UserReport userReport = new UserReport(reporter, reportee, content);
 
         return userReportRepository.save(userReport)
                                    .getId();
+    }
+
+    private void validateReport(final Long reporterId, final Long reporteeId) {
+        if (userReportRepository.existsByReporterIdAndReporteeId(reporterId, reporteeId)) {
+            throw new AlreadyReportUserException();
+        }
     }
 
     private User getUser(final Long userId) {

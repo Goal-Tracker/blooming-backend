@@ -55,7 +55,7 @@ public enum ExceptionMessage {
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
-    
+
     // 스탬프
     INVALID_STAMP_DAY("스탬프 날짜는 골 시작일 이전이거나 종료일 이후일 수 없습니다."),
     INVALID_STAMP_DAY_FUTURE("오늘보다 이후의 스탬프는 추가할 수 없습니다."),
@@ -66,6 +66,7 @@ public enum ExceptionMessage {
     // 신고
     NULL_OR_EMPTY_CONTENT("신고 메시지는 비어있을 수 없습니다."),
     SELF_REPORTING_NOT_ALLOWED("자신을 신고할 수 없습니다."),
+    ALREADY_REPORT_USER("이미 신고한 사용자입니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
