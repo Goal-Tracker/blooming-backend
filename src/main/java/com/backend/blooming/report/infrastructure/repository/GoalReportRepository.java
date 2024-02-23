@@ -4,4 +4,6 @@ import com.backend.blooming.report.domain.GoalReport;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GoalReportRepository extends JpaRepository<GoalReport, Long> {
+
+    boolean existsByReporterIdAndGoalId(final Long reporterId, final Long goalId);
 }

@@ -72,6 +72,8 @@ public enum ExceptionMessage {
     NULL_OR_EMPTY_CONTENT("신고 메시지는 비어있을 수 없습니다."),
     SELF_REPORTING_NOT_ALLOWED("자신을 신고할 수 없습니다."),
     ALREADY_REPORT_USER("이미 신고한 사용자입니다."),
+    ALREADY_REPORT_GOAL("이미 신고한 골입니다."),
+    GOAL_REPORT_FORBIDDEN("해당 골을 신고할 권한이 없습니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
