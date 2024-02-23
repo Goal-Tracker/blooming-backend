@@ -4,7 +4,6 @@ import com.backend.blooming.configuration.JpaConfiguration;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
-import com.backend.blooming.goal.domain.GoalTerm;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -14,7 +13,6 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -36,7 +34,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
 
         // then
         assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
-        assertThat(result.getTeams().getGoalTeams()).hasSize(2);
+        assertThat(result.getTeams()).hasSize(2);
     }
 
     @Test
@@ -83,7 +81,7 @@ class GoalRepositoryTest extends GoalRepositoryTestFixture {
 
         // then
         assertSoftly(softAssertions -> {
-            final List<GoalTeam> goalTeams = result.getTeams().getGoalTeams();
+            final List<GoalTeam> goalTeams = result.getTeams();
             softAssertions.assertThat(result).usingRecursiveComparison().isEqualTo(유효한_골);
             softAssertions.assertThat(goalTeams).hasSize(2);
             softAssertions.assertThat(goalTeams.get(0).getUser().getId()).isEqualTo(골_관리자_사용자.getId());

@@ -93,7 +93,6 @@ class AuthenticationServiceTest extends AuthenticationServiceTestFixture {
                                                      oauth_타입
                                              )
                                              .get();
-        System.out.println(savedUser);
 
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.token().accessToken()).isNotEmpty();

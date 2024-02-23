@@ -84,6 +84,7 @@ public class FriendService {
         validateRequestedUser(user, friend);
 
         friend.acceptRequest();
+        notificationService.sendAcceptFriendNotification(friend);
     }
 
     private Friend getFriend(final Long requestId) {
