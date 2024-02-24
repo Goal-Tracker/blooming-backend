@@ -2,6 +2,7 @@ package com.backend.blooming.report.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.report.application.exception.AlreadyReportUserException;
+import com.backend.blooming.report.application.exception.NotAllowedReportOwnUserException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -26,6 +27,13 @@ class UserReportServiceTest extends UserReportServiceTestFixture {
 
         // then
         assertThat(actual).isPositive();
+    }
+
+    @Test
+    void 자신을_신고하는_경우_예외가_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> userReportService.create(사용자_본인_신고_요청_dto))
+                .isInstanceOf(NotAllowedReportOwnUserException.class);
     }
 
     @Test

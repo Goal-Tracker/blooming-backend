@@ -24,6 +24,7 @@ public class UserReportServiceTestFixture {
     private UserReportRepository userReportRepository;
 
     protected CreateUserReportDto 사용자_신고_요청_dto;
+    protected CreateUserReportDto 사용자_본인_신고_요청_dto;
     protected CreateUserReportDto 이미_신고한_사용자_신고_요청_dto;
     protected CreateUserReportDto 존재하지_않는_사람의_사용자_신고_요청_dto;
     protected CreateUserReportDto 존재하지_않는_사람을_사용자_신고_요청_dto;
@@ -56,6 +57,7 @@ public class UserReportServiceTestFixture {
 
         final Long 존재하지_않는_사용자_아이디 = 999L;
         사용자_신고_요청_dto = new CreateUserReportDto(사용자.getId(), 사용자2.getId(), 신고_내용);
+        사용자_본인_신고_요청_dto = new CreateUserReportDto(사용자.getId(), 사용자.getId(), 신고_내용);
         이미_신고한_사용자_신고_요청_dto = new CreateUserReportDto(사용자.getId(), 이미_신고_받은_사용자.getId(), 신고_내용);
         존재하지_않는_사람의_사용자_신고_요청_dto = new CreateUserReportDto(존재하지_않는_사용자_아이디, 사용자2.getId(), 신고_내용);
         존재하지_않는_사람을_사용자_신고_요청_dto = new CreateUserReportDto(사용자.getId(), 존재하지_않는_사용자_아이디, 신고_내용);

@@ -1,6 +1,6 @@
 package com.backend.blooming.report.domain;
 
-import com.backend.blooming.report.domain.exception.InvalidReportException;
+import com.backend.blooming.report.domain.exception.NullOrEmptyContentException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -26,7 +26,7 @@ public class Content {
 
     private void validateValue(final String value) {
         if (value == null || value.isBlank()) {
-            throw new InvalidReportException.NullOrEmptyContentException();
+            throw new NullOrEmptyContentException();
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.backend.blooming.report.domain;
 
-import com.backend.blooming.report.domain.exception.InvalidReportException;
+import com.backend.blooming.report.domain.exception.NullOrEmptyContentException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,6 +17,6 @@ class ContentTest {
     void 신고_내용_생성시_내용이_null_혹은_빈값이라면_예외가_발생한다(final String value) {
         // when & then
         assertThatThrownBy(() -> new Content(value))
-                .isInstanceOf(InvalidReportException.NullOrEmptyContentException.class);
+                .isInstanceOf(NullOrEmptyContentException.class);
     }
 }
