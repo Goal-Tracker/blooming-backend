@@ -6,6 +6,7 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.report.application.dto.CreateGoalReportDto;
 import com.backend.blooming.report.application.exception.AlreadyReportGoalException;
 import com.backend.blooming.report.application.exception.GoalReportForbiddenException;
+import com.backend.blooming.report.application.exception.NotAllowedReportOwnGoalException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.GoalReport;
 import com.backend.blooming.report.infrastructure.repository.GoalReportRepository;
@@ -55,6 +56,9 @@ public class GoalReportService {
     }
 
     private void validateReporter(final User reporter, final Goal goal) {
+        if (goal.isManager(reporter.getId())) {
+            throw new NotAllowedReportOwnGoalException();
+        }
         if (!goal.isTeam(reporter)) {
             throw new GoalReportForbiddenException();
         }

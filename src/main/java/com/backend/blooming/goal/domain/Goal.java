@@ -117,6 +117,10 @@ public class Goal extends BaseTimeEntity {
         return teams.isTeam(user);
     }
 
+    public boolean isManager(final Long userId) {
+        return managerId.equals(userId);
+    }
+
     public List<GoalTeam> getTeams() {
         return teams.getGoalTeams();
     }

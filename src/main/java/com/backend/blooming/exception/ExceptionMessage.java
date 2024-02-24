@@ -74,6 +74,7 @@ public enum ExceptionMessage {
     NOT_ALLOWED_REPORT_OWN_USER("자신을 신고할 수 없습니다."),
     ALREADY_REPORT_USER("이미 신고한 사용자입니다."),
     ALREADY_REPORT_GOAL("이미 신고한 골입니다."),
+    NOT_ALLOWED_REPORT_OWN_GOAL("자신이 관리자인 골은 신고할 수 없습니다."),
     GOAL_REPORT_FORBIDDEN("해당 골을 신고할 권한이 없습니다."),
     ALREADY_REPORT_STAMP("이미 신고한 스탬프입니다."),
     NOT_ALLOWED_REPORT_OWN_STAMP("자신의 스탬프는 신고할 수 없습니다."),

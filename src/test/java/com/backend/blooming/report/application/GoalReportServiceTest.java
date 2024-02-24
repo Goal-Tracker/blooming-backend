@@ -4,6 +4,7 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.report.application.exception.AlreadyReportGoalException;
 import com.backend.blooming.report.application.exception.GoalReportForbiddenException;
+import com.backend.blooming.report.application.exception.NotAllowedReportOwnGoalException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -49,6 +50,13 @@ class GoalReportServiceTest extends GoalReportServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> goalReportService.create(존재하지_않는_골_신고_요청_dto))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 골_관리자인_사용자가_골을_신고하는_경우_예외가_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalReportService.create(관리자가_골_신고_요청_dto))
+                .isInstanceOf(NotAllowedReportOwnGoalException.class);
     }
 
     @Test
