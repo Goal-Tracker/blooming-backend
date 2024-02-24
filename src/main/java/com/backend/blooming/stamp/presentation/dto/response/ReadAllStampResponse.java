@@ -8,14 +8,17 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public record ReadAllStampResponse(Map<Integer, List<StampInfoResponse>> stamps) {
+
     public static ReadAllStampResponse from(final ReadAllStampDto readAllStampDto) {
         final List<StampInfoResponse> stampInfos = readAllStampDto.stamps()
                                                                   .stream()
                                                                   .map(StampInfoResponse::from)
                                                                   .toList();
+        final Map<Integer, List<StampInfoResponse>> stamps =
+                stampInfos.stream()
+                          .collect(Collectors.groupingBy(StampInfoResponse::day));
 
-        return new ReadAllStampResponse(stampInfos.stream()
-                                                  .collect(Collectors.groupingBy(StampInfoResponse::day)));
+        return new ReadAllStampResponse(stamps);
     }
 
     public record StampInfoResponse(

@@ -46,7 +46,7 @@ public record ReadGoalDetailDto(
     ) {
 
         public static GoalTeamDto of(final GoalTeam goalTeam, final List<Long> usersUploadedStamp) {
-            boolean uploadedTodayStamp = usersUploadedStamp.contains(goalTeam.getUser().getId());
+            final boolean uploadedTodayStamp = usersUploadedStamp.contains(goalTeam.getUser().getId());
 
             return new GoalTeamDto(
                     goalTeam.getUser().getId(),

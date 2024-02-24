@@ -29,7 +29,6 @@ import java.util.List;
 public class GoalService {
 
     private static final int COUNT_GOAL_DAYS = 1;
-    private static final int TEAMS_MAXIMUM_LENGTH = 5;
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
@@ -94,7 +93,9 @@ public class GoalService {
         final long nowGoalDay = ChronoUnit.DAYS.between(goal.getGoalTerm().getStartDate(), LocalDate.now()) + COUNT_GOAL_DAYS;
         final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
 
-        return todayStamps.stream().map(stamp -> stamp.getUser().getId()).toList();
+        return todayStamps.stream()
+                          .map(stamp -> stamp.getUser().getId())
+                          .toList();
     }
 
     @Transactional(readOnly = true)

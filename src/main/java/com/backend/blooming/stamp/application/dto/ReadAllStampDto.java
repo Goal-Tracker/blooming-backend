@@ -8,7 +8,9 @@ import java.util.List;
 public record ReadAllStampDto(List<StampDto> stamps) {
 
     public static ReadAllStampDto from(final List<Stamp> stamps) {
-        return new ReadAllStampDto(stamps.stream().map(StampDto::from).toList());
+        return new ReadAllStampDto(stamps.stream()
+                                         .map(StampDto::from)
+                                         .toList());
     }
 
     public record StampDto(
