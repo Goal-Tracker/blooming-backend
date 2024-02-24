@@ -1,9 +1,8 @@
 package com.backend.blooming.report.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
-import com.backend.blooming.report.application.exception.AlreadyReportStampException;
-import com.backend.blooming.report.application.exception.NotAllowedReporterOwnStampException;
-import com.backend.blooming.report.application.exception.StampReportForbiddenException;
+import com.backend.blooming.report.application.exception.InvalidStampReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.stamp.application.exception.NotFoundStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -35,7 +34,7 @@ class StampReportServiceTest extends StampReportServiceTestFixture {
     void 이미_신고한_사용자가_스탬프를_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> stampReportService.create(이미_신고한_사용자가_스탬프_신고_요청_dto))
-                .isInstanceOf(AlreadyReportStampException.class);
+                .isInstanceOf(InvalidStampReportException.AlreadyReportStampException.class);
     }
 
     @Test
@@ -56,13 +55,13 @@ class StampReportServiceTest extends StampReportServiceTestFixture {
     void 자신이_작성한_스탬프를_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> stampReportService.create(본인의_스탬프_신고_요청_dto))
-                .isInstanceOf(NotAllowedReporterOwnStampException.class);
+                .isInstanceOf(InvalidStampReportException.NotAllowedReportOwnStampException.class);
     }
 
     @Test
     void 팀원이_아닌_사용자가_스탬프를_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> stampReportService.create(팀원이_아닌_사용자가_스탬프_신고_요청_dto))
-                .isInstanceOf(StampReportForbiddenException.class);
+                .isInstanceOf(ReportForbiddenException.StampReportForbiddenException.class);
     }
 }

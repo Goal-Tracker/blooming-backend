@@ -4,9 +4,8 @@ import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.report.application.dto.CreateGoalReportDto;
-import com.backend.blooming.report.application.exception.AlreadyReportGoalException;
-import com.backend.blooming.report.application.exception.GoalReportForbiddenException;
-import com.backend.blooming.report.application.exception.NotAllowedReportOwnGoalException;
+import com.backend.blooming.report.application.exception.InvalidGoalReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.GoalReport;
 import com.backend.blooming.report.infrastructure.repository.GoalReportRepository;
@@ -41,7 +40,7 @@ public class GoalReportService {
 
     private void validateReport(final Long reporterId, final Long goalId) {
         if (goalReportRepository.existsByReporterIdAndGoalId(reporterId, goalId)) {
-            throw new AlreadyReportGoalException();
+            throw new InvalidGoalReportException.AlreadyReportGoalException();
         }
     }
 
@@ -57,10 +56,10 @@ public class GoalReportService {
 
     private void validateReporter(final User reporter, final Goal goal) {
         if (goal.isManager(reporter.getId())) {
-            throw new NotAllowedReportOwnGoalException();
+            throw new InvalidGoalReportException.NotAllowedReportOwnGoalException();
         }
         if (!goal.isTeam(reporter)) {
-            throw new GoalReportForbiddenException();
+            throw new ReportForbiddenException.GoalReportForbiddenException();
         }
     }
 }

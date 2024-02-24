@@ -1,8 +1,7 @@
 package com.backend.blooming.report.application;
 
 import com.backend.blooming.report.application.dto.CreateUserReportDto;
-import com.backend.blooming.report.application.exception.AlreadyReportUserException;
-import com.backend.blooming.report.application.exception.NotAllowedReportOwnUserException;
+import com.backend.blooming.report.application.exception.InvalidUserReportException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.UserReport;
 import com.backend.blooming.report.infrastructure.repository.UserReportRepository;
@@ -36,10 +35,10 @@ public class UserReportService {
     private void validateReport(final Long reporterId, final Long reporteeId) {
         // TODO: 2024-02-25 자신을 신고하지 못한다는 예외는 신고 객체가 생성될 때 수행되는 게 더 적절할까요?
         if (reporterId.equals(reporteeId)) {
-            throw new NotAllowedReportOwnUserException();
+            throw new InvalidUserReportException.NotAllowedReportOwnUserException();
         }
         if (userReportRepository.existsByReporterIdAndReporteeId(reporterId, reporteeId)) {
-            throw new AlreadyReportUserException();
+            throw new InvalidUserReportException.AlreadyReportUserException();
         }
     }
 

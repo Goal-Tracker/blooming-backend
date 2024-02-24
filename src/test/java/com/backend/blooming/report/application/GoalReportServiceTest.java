@@ -2,9 +2,8 @@ package com.backend.blooming.report.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.report.application.exception.AlreadyReportGoalException;
-import com.backend.blooming.report.application.exception.GoalReportForbiddenException;
-import com.backend.blooming.report.application.exception.NotAllowedReportOwnGoalException;
+import com.backend.blooming.report.application.exception.InvalidGoalReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -35,7 +34,7 @@ class GoalReportServiceTest extends GoalReportServiceTestFixture {
     void 이미_신고한_골을_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> goalReportService.create(이미_신고한_사용자가_다시_신고_요청_dto))
-                .isInstanceOf(AlreadyReportGoalException.class);
+                .isInstanceOf(InvalidGoalReportException.AlreadyReportGoalException.class);
     }
 
     @Test
@@ -56,13 +55,13 @@ class GoalReportServiceTest extends GoalReportServiceTestFixture {
     void 골_관리자인_사용자가_골을_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> goalReportService.create(관리자가_골_신고_요청_dto))
-                .isInstanceOf(NotAllowedReportOwnGoalException.class);
+                .isInstanceOf(InvalidGoalReportException.NotAllowedReportOwnGoalException.class);
     }
 
     @Test
     void 팀원이_아닌_사용자가_골을_신고하는_경우_예외가_발생한다() {
         // when & then
         assertThatThrownBy(() -> goalReportService.create(골_참여자가_아닌_사람을_골_신고_요청_dto))
-                .isInstanceOf(GoalReportForbiddenException.class);
+                .isInstanceOf(ReportForbiddenException.GoalReportForbiddenException.class);
     }
 }
