@@ -84,7 +84,7 @@ public class GoalReportServiceTestFixture {
         이미_신고한_사용자가_다시_신고_요청_dto = new CreateGoalReportDto(이미_신고한_팀원.getId(), 골.getId(), 신고_내용);
         존재하지_않는_사람의_골_신고_요청_dto = new CreateGoalReportDto(존재하지_않는_사용자_아이디, 골.getId(), 신고_내용);
         존재하지_않는_골_신고_요청_dto = new CreateGoalReportDto(사용자2.getId(), 존재하지_않는_골_아이디, 신고_내용);
-        관리자가_골_신고_요청_dto = new CreateGoalReportDto(사용자.getId(), 사용자.getId(), 신고_내용);
+        관리자가_골_신고_요청_dto = new CreateGoalReportDto(사용자.getId(), 골.getId(), 신고_내용);
         골_참여자가_아닌_사람을_골_신고_요청_dto = new CreateGoalReportDto(팀원이_아닌_사용자.getId(), 골.getId(), 신고_내용);
     }
 }

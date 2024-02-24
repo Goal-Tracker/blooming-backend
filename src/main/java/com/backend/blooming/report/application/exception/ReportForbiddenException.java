@@ -9,14 +9,14 @@ public class ReportForbiddenException extends BloomingException {
         super(exceptionMessage);
     }
 
-    public static class GoalReportForbiddenException extends BloomingException {
+    public static class GoalReportForbiddenException extends ReportForbiddenException {
 
         public GoalReportForbiddenException() {
             super(ExceptionMessage.GOAL_REPORT_FORBIDDEN);
         }
     }
 
-    public static class StampReportForbiddenException extends BloomingException {
+    public static class StampReportForbiddenException extends ReportForbiddenException {
 
         public StampReportForbiddenException() {
             super(ExceptionMessage.STAMP_REPORT_FORBIDDEN);
