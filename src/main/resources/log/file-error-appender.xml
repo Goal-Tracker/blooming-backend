@@ -13,12 +13,19 @@
                     <timeZone>KST</timeZone>
                     <pattern>yyyy-MM-dd HH:mm:ss.SSS</pattern>
                 </timestamp>
-                <mdc/>
+                <mdc>
+                    <includeMdcKeyName>version</includeMdcKeyName>
+                    <includeMdcKeyName>method</includeMdcKeyName>
+                    <includeMdcKeyName>uri</includeMdcKeyName>
+                </mdc>
                 <message/>
+                <mdc>
+                    <includeMdcKeyName>stacktrace</includeMdcKeyName>
+                </mdc>
             </providers>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>./log/error/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>./log/error/%d{yyyy-MM-dd}/%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <maxHistory>30</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
