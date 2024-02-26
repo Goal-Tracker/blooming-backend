@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration scan="true">
-    <springProfile name="local">
-        <include resource="log/console-appender.xml"/>
-        <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
-        </root>
-    </springProfile>
+    <include resource="log/console-appender.xml"/>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
     <springProfile name="dev, prod">
-        <include resource="log/console-appender.xml"/>
         <include resource="log/file-warn-appender.xml"/>
         <include resource="log/file-error-appender.xml"/>
         <root level="INFO">
-            <appender-ref ref="CONSOLE"/>
             <appender-ref ref="FILE-WARN"/>
             <appender-ref ref="FILE-ERROR"/>
         </root>
