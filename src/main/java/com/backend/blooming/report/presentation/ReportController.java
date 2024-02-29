@@ -31,7 +31,7 @@ public class ReportController {
     public ResponseEntity<Void> createUserReport(
             @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long userId,
-            @RequestBody @Valid CreateReportRequest request
+            @RequestBody @Valid final CreateReportRequest request
     ) {
         final CreateUserReportDto userReportDto = CreateUserReportDto.of(authenticatedUser.userId(), userId, request);
         userReportService.create(userReportDto);
@@ -44,7 +44,7 @@ public class ReportController {
     public ResponseEntity<Void> createGoalReport(
             @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long goalId,
-            @RequestBody @Valid CreateReportRequest request
+            @RequestBody @Valid final CreateReportRequest request
     ) {
         final CreateGoalReportDto goalReportDto = CreateGoalReportDto.of(authenticatedUser.userId(), goalId, request);
         goalReportService.create(goalReportDto);
@@ -57,7 +57,7 @@ public class ReportController {
     public ResponseEntity<Void> createStampReport(
             @Authenticated final AuthenticatedUser authenticatedUser,
             @PathVariable final Long stampId,
-            @RequestBody @Valid CreateReportRequest request
+            @RequestBody @Valid final CreateReportRequest request
     ) {
         final CreateStampReportDto stampReportDto = CreateStampReportDto.of(
                 authenticatedUser.userId(),
