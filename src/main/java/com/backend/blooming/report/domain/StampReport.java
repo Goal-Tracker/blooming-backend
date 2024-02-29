@@ -12,7 +12,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -24,7 +23,6 @@ import lombok.ToString;
 @Getter
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = {"reporter", "stamp"})
-@Table
 public class StampReport extends BaseTimeEntity {
 
     @Id
