@@ -25,6 +25,7 @@ import lombok.ToString;
 @ToString(exclude = {"reporter", "reportee"})
 @Table
 public class UserReport extends BaseTimeEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
