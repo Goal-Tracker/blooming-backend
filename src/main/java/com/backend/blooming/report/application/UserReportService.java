@@ -33,7 +33,6 @@ public class UserReportService {
     }
 
     private void validateReport(final Long reporterId, final Long reporteeId) {
-        // TODO: 2024-02-25 자신을 신고하지 못한다는 예외는 신고 객체가 생성될 때 수행되는 게 더 적절할까요?
         if (reporterId.equals(reporteeId)) {
             throw new InvalidUserReportException.NotAllowedReportOwnUserException();
         }
