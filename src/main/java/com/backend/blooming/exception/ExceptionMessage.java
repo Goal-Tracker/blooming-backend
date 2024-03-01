@@ -68,6 +68,10 @@ public enum ExceptionMessage {
     CREATE_STAMP_FORBIDDEN("스탬프를 추가할 권한이 없습니다."),
     INVALID_STAMP_MESSAGE("스탬프 인증 메시지는 비어있거나 50자 초과일 수 없습니다."),
 
+    // 이미지
+    UPLOAD_FILE_CONTROL("이미지 업로드 시 파일 처리에서 문제가 발생했습니다."),
+    UPLOAD_SDK("이미지 업로드 시 sdk에서 문제가 발생했습니다."),
+
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
 
