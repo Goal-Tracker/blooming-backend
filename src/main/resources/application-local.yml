@@ -25,3 +25,9 @@ jwt:
   refresh-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
   access-token-expire-hour: 12
   refresh-token-expire-hour: 1440
+
+cloud:
+  aws:
+    s3:
+      bucket: blooming-s3
+      path: local/
