@@ -190,16 +190,11 @@ class StampControllerTest extends StampControllerTestFixture {
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
                 responseFields(
-                        fieldWithPath("stamps.1.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
-                        fieldWithPath("stamps.1.[].name").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 이름"),
-                        fieldWithPath("stamps.1.[].color").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
-                        fieldWithPath("stamps.1.[].message").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
-                        fieldWithPath("stamps.1.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜"),
-                        fieldWithPath("stamps.2.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
-                        fieldWithPath("stamps.2.[].name").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 이름"),
-                        fieldWithPath("stamps.2.[].color").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
-                        fieldWithPath("stamps.2.[].message").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
-                        fieldWithPath("stamps.2.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜")
+                        fieldWithPath("stamps.*.[].userId").type(JsonFieldType.NUMBER).description("스탬프를 찍은 사용자 아이디"),
+                        fieldWithPath("stamps.*.[].name").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 이름"),
+                        fieldWithPath("stamps.*.[].color").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
+                        fieldWithPath("stamps.*.[].message").type(JsonFieldType.STRING).description("스탬프를 찍은 사용자 프로필 색상코드"),
+                        fieldWithPath("stamps.*.[].day").type(JsonFieldType.NUMBER).description("스탬프를 찍은 날짜")
                 )
         ));
     }
