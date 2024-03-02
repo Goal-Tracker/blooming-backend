@@ -9,6 +9,8 @@
 .idea/
 build/
 HELP.md
+log/warn/
+log/error/
 
 # User-specific stuff
 .idea/**/workspace.xml

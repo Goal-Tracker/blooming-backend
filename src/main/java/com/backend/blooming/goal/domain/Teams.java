@@ -47,7 +47,7 @@ public class Teams {
         }
     }
 
-    public void update(final List<User> users, final Goal goal) {
+    public List<GoalTeam> update(final List<User> users, final Goal goal) {
         validateUsersSize(users);
         final List<User> usersBeforeUpdate = this.goalTeams.stream()
                                                            .map(GoalTeam::getUser)
@@ -57,5 +57,12 @@ public class Teams {
                                                  .map(user -> new GoalTeam(user, goal))
                                                  .toList();
         this.goalTeams.addAll(updatedUsers);
+
+        return updatedUsers;
+    }
+
+    public boolean isTeam(final User user) {
+        return goalTeams.stream()
+                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user));
     }
 }
