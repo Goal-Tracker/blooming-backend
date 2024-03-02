@@ -113,15 +113,15 @@ public class GoalService {
     public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
-        validateUserToUpdate(goal.getManagerId(), user.getId());
+        validateUserToUpdate(goal, user.getId());
         updateGoal(updateGoalDto, goal);
         final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
         return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
-    private void validateUserToUpdate(final Long managerId, final Long userId) {
-        if (!managerId.equals(userId)) {
+    private void validateUserToUpdate(final Goal goal, final Long userId) {
+        if (!goal.isManager(userId)) {
             throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
         }
     }

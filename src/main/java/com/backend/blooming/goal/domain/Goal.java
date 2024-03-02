@@ -107,8 +107,12 @@ public class Goal extends BaseTimeEntity {
         this.deleted = true;
     }
 
+    public boolean isManager(final Long userId) {
+        return managerId.equals(userId);
+    }
+
     private void validUserToDelete(final Long userId) {
-        if (!this.getManagerId().equals(userId)) {
+        if (!isManager(userId)) {
             throw new DeleteGoalForbiddenException();
         }
     }
