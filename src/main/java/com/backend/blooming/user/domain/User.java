@@ -47,6 +47,9 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Name name;
 
+    @Embedded
+    private ProfileImageUrl profileImageUrl;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "theme_color", nullable = false)
     private ThemeColor color;
@@ -66,6 +69,7 @@ public class User extends BaseTimeEntity {
             final OAuthType oAuthType,
             final Email email,
             final Name name,
+            final ProfileImageUrl profileImageUrl,
             final ThemeColor color,
             final String statusMessage
     ) {
@@ -73,6 +77,7 @@ public class User extends BaseTimeEntity {
         this.oAuthType = oAuthType;
         this.email = email;
         this.name = name;
+        this.profileImageUrl = profileImageUrl;
         this.color = processDefaultColor(color);
         this.statusMessage = processDefaultStatusMessage(statusMessage);
     }
@@ -101,6 +106,10 @@ public class User extends BaseTimeEntity {
         this.name = name;
     }
 
+    public void updateProfileImageUrl(final ProfileImageUrl profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
     public void updateColor(final ThemeColor color) {
         this.color = color;
     }
@@ -123,6 +132,10 @@ public class User extends BaseTimeEntity {
 
     public String getName() {
         return name.getValue();
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl.getValue();
     }
 
     public String getColorName() {

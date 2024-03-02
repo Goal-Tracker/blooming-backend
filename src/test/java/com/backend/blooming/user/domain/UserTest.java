@@ -2,7 +2,7 @@ package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
-import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -61,6 +61,27 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(사용자.getOAuthId()).isEqualTo(기존_소셜_아이디);
             softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
             softAssertions.assertThat(사용자.getName()).isEqualTo(updateName);
+            softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo(기존_프로필_이미지_url);
+            softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
+            softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
+            softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(기존_상태_메시지);
+        });
+    }
+
+    @Test
+    void 사용자의_프로필_이미지_url을_수정한다() {
+        // given
+        final String updateProfileImageUrl = "https://update.profile.image";
+
+        // when
+        사용자.updateProfileImageUrl(new ProfileImageUrl(updateProfileImageUrl));
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(사용자.getOAuthId()).isEqualTo(기존_소셜_아이디);
+            softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
+            softAssertions.assertThat(사용자.getName()).isEqualTo(기존_이름);
+            softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo(updateProfileImageUrl);
             softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
             softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
             softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(기존_상태_메시지);
@@ -80,6 +101,7 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(사용자.getOAuthId()).isEqualTo(기존_소셜_아이디);
             softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
             softAssertions.assertThat(사용자.getName()).isEqualTo(기존_이름);
+            softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo(기존_프로필_이미지_url);
             softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
             softAssertions.assertThat(사용자.getColor()).isEqualTo(updateColor);
             softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(기존_상태_메시지);
@@ -99,6 +121,7 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(사용자.getOAuthId()).isEqualTo(기존_소셜_아이디);
             softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
             softAssertions.assertThat(사용자.getName()).isEqualTo(기존_이름);
+            softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo(기존_프로필_이미지_url);
             softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
             softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
             softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(updateStatusMessage);

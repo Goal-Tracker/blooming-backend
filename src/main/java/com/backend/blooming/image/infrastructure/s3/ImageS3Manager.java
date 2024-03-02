@@ -36,7 +36,7 @@ public class ImageS3Manager implements ImageManager {
         if (multipartFile == null || multipartFile.isEmpty()) {
             throw new UploadImageException.EmptyFileException();
         }
-        if (path == null || path.isEmpty()) {
+        if (path == null || path.isBlank()) {
             throw new UploadImageException.EmptyPathException();
         }
 

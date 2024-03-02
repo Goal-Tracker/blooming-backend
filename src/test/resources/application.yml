@@ -36,3 +36,5 @@ cloud:
       path: test/
     cloud-front:
       domain: cloud.front.domain/
+      default:
+        profile-image: https://cloud.front.domain/test/default
