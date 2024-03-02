@@ -9,6 +9,20 @@ public class UploadImageException extends BloomingException {
         super(exceptionMessage);
     }
 
+    public static class EmptyFileException extends UploadImageException {
+
+        public EmptyFileException() {
+            super(ExceptionMessage.EMPTY_IMAGE_FILE);
+        }
+    }
+
+    public static class EmptyPathException extends UploadImageException {
+
+        public EmptyPathException() {
+            super(ExceptionMessage.EMPTY_IMAGE_PATH);
+        }
+    }
+
     public static class FileControlException extends UploadImageException {
 
         public FileControlException() {

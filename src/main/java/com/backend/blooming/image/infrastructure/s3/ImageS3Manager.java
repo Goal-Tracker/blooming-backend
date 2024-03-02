@@ -13,6 +13,7 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 
 import java.io.IOException;
+import java.util.UUID;
 
 @Slf4j
 @Component
@@ -25,22 +26,40 @@ public class ImageS3Manager implements ImageManager {
     private String bucket;
 
     @Value("${cloud.aws.s3.path}")
-    private String path;
+    private String basicPath;
+
+    @Value("${cloud.aws.cloud-front.domain}")
+    private String domain;
 
     @Override
-    public String upload(final MultipartFile multipartFile) {
+    public String upload(final MultipartFile multipartFile, final String path) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            throw new UploadImageException.EmptyFileException();
+        }
+        if (path == null || path.isEmpty()) {
+            throw new UploadImageException.EmptyPathException();
+        }
+
+        return uploadImage(multipartFile, path);
+    }
+
+    private String uploadImage(final MultipartFile multipartFile, final String path) {
         try {
-            final String imagePath = path + multipartFile.getOriginalFilename();
+            final String imagePath = getImagePath(path);
             final PutObjectRequest request = getPutObjectRequest(imagePath);
             final RequestBody requestBody = getRequestBody(multipartFile);
             s3Client.putObject(request, requestBody);
 
-            return imagePath;
+            return domain + imagePath;
         } catch (final IOException exception) {
             throw new UploadImageException.FileControlException();
         } catch (final SdkException exception) {
             throw new UploadImageException.SdkException();
         }
+    }
+
+    private String getImagePath(final String path) {
+        return basicPath + path + UUID.randomUUID();
     }
 
     private PutObjectRequest getPutObjectRequest(final String filename) {

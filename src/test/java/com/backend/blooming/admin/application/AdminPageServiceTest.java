@@ -3,7 +3,7 @@ package com.backend.blooming.admin.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -16,6 +16,7 @@ class AdminPageServiceTest extends AdminPageServiceTestFixture {
 
     @Autowired
     private AdminPageService adminPageService;
+
     @Autowired
     private UserRepository userRepository;
 

@@ -69,6 +69,8 @@ public enum ExceptionMessage {
     INVALID_STAMP_MESSAGE("스탬프 인증 메시지는 비어있거나 50자 초과일 수 없습니다."),
 
     // 이미지
+    EMPTY_IMAGE_FILE("저장할 이미지 파일이 없습니다."),
+    EMPTY_IMAGE_PATH("이미지 저장 경로가 비어있습니다."),
     UPLOAD_FILE_CONTROL("이미지 업로드 시 파일 처리에서 문제가 발생했습니다."),
     UPLOAD_SDK("이미지 업로드 시 sdk에서 문제가 발생했습니다."),
 

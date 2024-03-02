@@ -29,5 +29,7 @@ jwt:
 cloud:
   aws:
     s3:
-      bucket: blooming-s3
+      bucket: local-s3
       path: local/
+    cloud-front:
+      domain: cloud.front.domain/
