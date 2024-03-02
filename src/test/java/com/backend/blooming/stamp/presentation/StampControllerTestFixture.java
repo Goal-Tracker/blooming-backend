@@ -34,7 +34,6 @@ public class StampControllerTestFixture {
             "스탬프 메시지"
     );
     protected CreateStampRequest 유효한_스탬프_생성_요청_dto = new CreateStampRequest(
-            1L,
             1,
             "스탬프 메시지"
     );
@@ -45,7 +44,6 @@ public class StampControllerTestFixture {
             "스탬프 메시지"
     );
     protected CreateStampRequest 존재하지_않는_골에서_요청한_스탬프_생성_dto = new CreateStampRequest(
-            999L,
             1,
             "스탬프 메시지"
     );
@@ -56,7 +54,6 @@ public class StampControllerTestFixture {
             "스탬프 메시지"
     );
     protected CreateStampRequest 권한이_없는_사용자가_생성_요청한_스탬프_dto = new CreateStampRequest(
-            1L,
             1,
             "스탬프 메시지"
     );
@@ -67,7 +64,6 @@ public class StampControllerTestFixture {
             "스탬프 메시지"
     );
     protected CreateStampRequest 이미_존재하는_스탬프_생성_요청_dto = new CreateStampRequest(
-            1L,
             1,
             "스탬프 메시지"
     );

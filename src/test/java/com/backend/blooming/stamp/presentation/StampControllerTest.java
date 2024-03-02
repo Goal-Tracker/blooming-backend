@@ -73,7 +73,7 @@ class StampControllerTest extends StampControllerTestFixture {
         given(stampService.createStamp(유효한_스탬프_생성_dto)).willReturn(추가한_스탬프_dto);
 
         // when & then
-        mockMvc.perform(post("/stamps")
+        mockMvc.perform(post("/goals/{goalId}/stamp", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -86,12 +86,12 @@ class StampControllerTest extends StampControllerTestFixture {
                 jsonPath("$.day", is(유효한_스탬프_응답_dto.day()), int.class),
                 jsonPath("$.message", is(유효한_스탬프_응답_dto.message()), String.class)
         ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("스탬프를 생성할 골 아이디")),
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 ),
                 requestFields(
-                        fieldWithPath("goalId").type(JsonFieldType.NUMBER).description("골 아이디"),
                         fieldWithPath("day").type(JsonFieldType.NUMBER).description("스탬프 날짜"),
                         fieldWithPath("message").type(JsonFieldType.STRING).description("스탬프 메시지")
                 ),
@@ -113,7 +113,7 @@ class StampControllerTest extends StampControllerTestFixture {
         given(stampService.createStamp(존재하지_않는_골에서_생성한_스탬프_dto)).willThrow(new NotFoundGoalException());
 
         // when & then
-        mockMvc.perform(post("/stamps")
+        mockMvc.perform(post("/goals/{goalId}/stamp", 존재하지_않는_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,7 +132,7 @@ class StampControllerTest extends StampControllerTestFixture {
         given(stampService.createStamp(권한이_없는_사용자가_생성한_스탬프_dto)).willThrow(new CreateStampForbiddenException());
 
         // when & then
-        mockMvc.perform(post("/stamps")
+        mockMvc.perform(post("/goals/{goalId}/stamp", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -152,7 +152,7 @@ class StampControllerTest extends StampControllerTestFixture {
                 .willThrow(new InvalidStampException.InvalidStampToCreate());
 
         // when & then
-        mockMvc.perform(post("/stamps")
+        mockMvc.perform(post("/goals/{goalId}/stamp", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -171,7 +171,7 @@ class StampControllerTest extends StampControllerTestFixture {
         given(stampService.readAllByGoalId(유효한_골_아이디, 사용자_토큰_정보.userId())).willReturn(유효한_스탬프_목록_dto);
 
         // when & then
-        mockMvc.perform(get("/stamps/{goalId}", 유효한_골_아이디)
+        mockMvc.perform(get("/goals/{goalId}/stamps", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -213,7 +213,7 @@ class StampControllerTest extends StampControllerTestFixture {
                 .willThrow(new NotFoundGoalException());
 
         // when & then
-        mockMvc.perform(get("/stamps/{goalId}", 존재하지_않는_골_아이디)
+        mockMvc.perform(get("/goals/{goalId}/stamps", 존재하지_않는_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -231,7 +231,7 @@ class StampControllerTest extends StampControllerTestFixture {
                 .willThrow(new ReadStampForbiddenException());
 
         // when & then
-        mockMvc.perform(get("/stamps/{goalId}", 유효한_골_아이디)
+        mockMvc.perform(get("/goals/{goalId}/stamps", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(

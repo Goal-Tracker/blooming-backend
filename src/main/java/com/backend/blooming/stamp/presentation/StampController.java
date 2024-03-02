@@ -20,25 +20,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/stamps")
+@RequestMapping("/goals")
 @RequiredArgsConstructor
 public class StampController {
 
     private final StampService stampService;
 
-    @PostMapping(headers = "X-API-VERSION=1")
+    @PostMapping(value = "/{goalId}/stamp", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadStampResponse> createStamp(
+            @PathVariable("goalId") final Long goalId,
             @RequestBody @Valid final CreateStampRequest request,
             @Authenticated final AuthenticatedUser authenticatedUser
     ) {
-        final CreateStampDto createStampDto = CreateStampDto.of(request, authenticatedUser.userId());
+        final CreateStampDto createStampDto = CreateStampDto.of(request, goalId, authenticatedUser.userId());
         final ReadStampDto stamp = stampService.createStamp(createStampDto);
         final ReadStampResponse response = ReadStampResponse.from(stamp);
 
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
+    @GetMapping(value = "/{goalId}/stamps", headers = "X-API-VERSION=1")
     public ResponseEntity<ReadAllStampResponse> readAllStampByGoalId(
             @PathVariable("goalId") final Long goalId,
             @Authenticated AuthenticatedUser authenticatedUser
