@@ -1,6 +1,6 @@
 package com.backend.blooming.image.infrastructure.s3;
 
-import com.backend.blooming.image.application.ImageStoragePath;
+import com.backend.blooming.image.application.util.ImageStoragePath;
 import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;

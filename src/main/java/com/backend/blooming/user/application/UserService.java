@@ -1,7 +1,7 @@
 package com.backend.blooming.user.application;
 
 import com.backend.blooming.image.application.ImageStorageManager;
-import com.backend.blooming.image.application.ImageStoragePath;
+import com.backend.blooming.image.application.util.ImageStoragePath;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;

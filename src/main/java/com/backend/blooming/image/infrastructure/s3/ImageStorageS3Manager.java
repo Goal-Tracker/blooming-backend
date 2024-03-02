@@ -1,7 +1,7 @@
 package com.backend.blooming.image.infrastructure.s3;
 
 import com.backend.blooming.image.application.ImageStorageManager;
-import com.backend.blooming.image.application.ImageStoragePath;
+import com.backend.blooming.image.application.util.ImageStoragePath;
 import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

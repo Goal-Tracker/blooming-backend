@@ -1,5 +1,6 @@
 package com.backend.blooming.image.application;
 
+import com.backend.blooming.image.application.util.ImageStoragePath;
 import org.springframework.web.multipart.MultipartFile;
 import org.testcontainers.shaded.com.google.common.net.MediaType;
 

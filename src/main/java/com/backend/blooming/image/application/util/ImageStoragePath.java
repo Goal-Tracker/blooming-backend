@@ -1,4 +1,4 @@
-package com.backend.blooming.image.application;
+package com.backend.blooming.image.application.util;
 
 
 import lombok.AccessLevel;
