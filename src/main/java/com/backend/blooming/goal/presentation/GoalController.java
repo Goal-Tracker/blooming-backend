@@ -46,8 +46,11 @@ public class GoalController {
     }
 
     @GetMapping(value = "/{goalId}", headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadGoalResponse> readGoalById(@PathVariable("goalId") final Long goalId) {
-        final ReadGoalDetailDto readGoalDetailDto = goalService.readGoalDetailById(goalId);
+    public ResponseEntity<ReadGoalResponse> readGoalById(
+            @PathVariable("goalId") final Long goalId,
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
+        final ReadGoalDetailDto readGoalDetailDto = goalService.readGoalDetailById(goalId, authenticatedUser.userId());
         final ReadGoalResponse response = ReadGoalResponse.from(readGoalDetailDto);
 
         return ResponseEntity.ok(response);

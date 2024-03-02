@@ -46,6 +46,7 @@ public class GoalServiceTestFixture {
     protected Long 유효한_사용자_아이디;
     protected Long 골_관리자가_아닌_사용자_아이디;
     protected Long 존재하지_않는_사용자_아이디 = 999L;
+    protected Long 골_참여자가_아닌_사용자_아이디;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
@@ -132,6 +133,7 @@ public class GoalServiceTestFixture {
         userRepository.saveAll(List.of(현재_로그인한_사용자, 친구인_사용자, 친구가_아닌_사용자, 친구인_사용자2));
         유효한_사용자_아이디 = 현재_로그인한_사용자.getId();
         골_관리자가_아닌_사용자_아이디 = 친구인_사용자.getId();
+        골_참여자가_아닌_사용자_아이디 = 친구가_아닌_사용자.getId();
         수정_요청한_골_참여자_아이디_목록.addAll(List.of(유효한_사용자_아이디, 골_관리자가_아닌_사용자_아이디, 친구인_사용자2.getId()));
 
         final Friend 유효한_친구 = new Friend(현재_로그인한_사용자, 친구인_사용자);

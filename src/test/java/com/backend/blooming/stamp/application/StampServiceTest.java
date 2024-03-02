@@ -3,7 +3,6 @@ package com.backend.blooming.stamp.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.goal.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;

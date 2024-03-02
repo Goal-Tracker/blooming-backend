@@ -7,6 +7,7 @@ import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
@@ -74,9 +75,11 @@ public class GoalService {
     }
 
     @Transactional(readOnly = true)
-    public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
-        final Goal goal = goalRepository.findByIdAndDeletedIsFalse(goalId)
-                                        .orElseThrow(NotFoundGoalException::new);
+    public ReadGoalDetailDto readGoalDetailById(final Long goalId, final Long userId) {
+        final Goal goal = getGoal(goalId);
+        final User user = getUser(userId);
+        validateUserInGoalTeams(goal, user.getId());
+
         final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
         return ReadGoalDetailDto.of(goal, usersUploadedStamp);
@@ -85,6 +88,17 @@ public class GoalService {
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
+    }
+
+    private void validateUserInGoalTeams(final Goal goal, final Long userId) {
+        final List<Long> teamUserIds = goal.getTeams()
+                                           .getGoalTeams()
+                                           .stream()
+                                           .map(goalTeam -> goalTeam.getUser().getId())
+                                           .toList();
+        if (!teamUserIds.contains(userId)) {
+            throw new ReadGoalForbiddenException();
+        }
     }
 
     private List<Long> getUsersUploadedStamp(final Goal goal) {

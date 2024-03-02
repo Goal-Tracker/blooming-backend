@@ -7,6 +7,7 @@ import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.stamp.domain.Day;
 import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -82,10 +84,22 @@ public class StampService {
     @Transactional(readOnly = true)
     public ReadAllStampDto readAllByGoalId(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
-        getUser(userId);
+        final User user = getUser(userId);
+        validateUserToRead(goal, user.getId());
 
         final List<Stamp> stamps = stampRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
 
         return ReadAllStampDto.from(stamps);
+    }
+
+    private void validateUserToRead(final Goal goal, final Long userId) {
+        final List<Long> teamUserIds = goal.getTeams()
+                                           .getGoalTeams()
+                                           .stream()
+                                           .map(goalTeam -> goalTeam.getUser().getId())
+                                           .toList();
+        if (!teamUserIds.contains(userId)) {
+            throw new ReadStampForbiddenException();
+        }
     }
 }

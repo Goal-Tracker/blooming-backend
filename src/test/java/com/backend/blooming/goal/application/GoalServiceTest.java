@@ -6,6 +6,7 @@ import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -55,7 +56,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디);
+        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디, 유효한_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -77,8 +78,15 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 존재하지_않는_골_아이디를_조회한_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
+        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디, 유효한_사용자_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 골_참여자가_아닌_사용자가_골_조회를_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
+                .isInstanceOf(ReadGoalForbiddenException.class);
     }
 
     @Test

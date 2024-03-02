@@ -187,7 +187,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readGoalDetailById(유효한_골_아이디)).willReturn(유효한_골_dto);
+        given(goalService.readGoalDetailById(유효한_골_아이디, 골_관리자_아이디)).willReturn(유효한_골_dto);
         
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
@@ -236,7 +236,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readGoalDetailById(유효한_골_아이디)).willThrow(new NotFoundGoalException());
+        given(goalService.readGoalDetailById(유효한_골_아이디, 골_관리자_아이디)).willThrow(new NotFoundGoalException());
         
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)

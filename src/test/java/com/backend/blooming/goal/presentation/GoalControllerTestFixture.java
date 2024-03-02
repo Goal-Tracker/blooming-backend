@@ -23,7 +23,7 @@ public class GoalControllerTestFixture {
     private String 골_메모 = "골 메모";
     private LocalDate 골_시작일 = LocalDate.now();
     private LocalDate 골_종료일 = LocalDate.now().plusDays(10);
-    private Long 골_관리자_아이디 = 1L;
+    protected Long 골_관리자_아이디 = 1L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
     private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 2L));
     private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
