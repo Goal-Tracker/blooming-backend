@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
+import org.testcontainers.shaded.com.google.common.net.MediaType;
 import software.amazon.awssdk.core.exception.SdkException;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.services.s3.S3Client;
@@ -45,7 +46,7 @@ public class ImageS3Manager implements ImageManager {
 
     private String uploadImage(final MultipartFile multipartFile, final String path) {
         try {
-            final String imagePath = getImagePath(path);
+            final String imagePath = getImagePath(path, multipartFile);
             final PutObjectRequest request = getPutObjectRequest(imagePath);
             final RequestBody requestBody = getRequestBody(multipartFile);
             s3Client.putObject(request, requestBody);
@@ -58,8 +59,17 @@ public class ImageS3Manager implements ImageManager {
         }
     }
 
-    private String getImagePath(final String path) {
-        return basicPath + path + UUID.randomUUID();
+    private String getImagePath(final String path, final MultipartFile multipartFile) {
+        return basicPath + path + UUID.randomUUID() + getExtension(multipartFile.getContentType());
+    }
+
+    private String getExtension(final String contentType) {
+        final MediaType mediaType = MediaType.parse(contentType);
+        if (!SUPPORTED_MEDIA_TYPE.contains(mediaType)) {
+            throw new UploadImageException.NotSupportedMediaTypeException();
+        }
+
+        return EXTENSION_DOT + mediaType.subtype();
     }
 
     private PutObjectRequest getPutObjectRequest(final String filename) {

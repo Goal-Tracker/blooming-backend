@@ -73,6 +73,7 @@ public enum ExceptionMessage {
     EMPTY_IMAGE_PATH("이미지 저장 경로가 비어있습니다."),
     UPLOAD_FILE_CONTROL("이미지 업로드 시 파일 처리에서 문제가 발생했습니다."),
     UPLOAD_SDK("이미지 업로드 시 sdk에서 문제가 발생했습니다."),
+    NOT_SUPPORTED_MEDIA_TYPE("지원하지 않는 이미지 확장자입니다."),
 
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");

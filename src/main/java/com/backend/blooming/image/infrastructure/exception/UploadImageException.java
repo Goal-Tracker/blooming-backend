@@ -36,4 +36,11 @@ public class UploadImageException extends BloomingException {
             super(ExceptionMessage.UPLOAD_SDK);
         }
     }
+
+    public static class NotSupportedMediaTypeException extends UploadImageException {
+
+        public NotSupportedMediaTypeException() {
+            super(ExceptionMessage.NOT_SUPPORTED_MEDIA_TYPE);
+        }
+    }
 }

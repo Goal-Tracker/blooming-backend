@@ -31,20 +31,21 @@ class ImageS3ManagerTest {
     void 파일을_S3_서버에_저장한다() {
         // given
         final String fileName = "image.png";
+        final MediaType mediaType = MediaType.PNG;
         final MockMultipartFile image = new MockMultipartFile(
                 "image",
                 fileName,
-                MediaType.PNG.toString(),
+                mediaType.toString(),
                 "image".getBytes()
         );
-        final String path = "profile";
+        final String path = "profile/";
 
         // when
         final String actual = imageS3Manager.upload(image, path);
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual).contains(domain, basicPath, path);
+            softAssertions.assertThat(actual).contains(domain, basicPath, path, mediaType.subtype());
             softAssertions.assertThat(actual).doesNotContain(fileName);
         });
     }
@@ -58,7 +59,7 @@ class ImageS3ManagerTest {
                 MediaType.PNG.toString(),
                 new byte[0]
         );
-        final String path = "profile";
+        final String path = "profile/";
 
         // when & then
         Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
@@ -79,5 +80,21 @@ class ImageS3ManagerTest {
         // when & then
         Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
                   .isInstanceOf(UploadImageException.EmptyPathException.class);
+    }
+
+    @Test
+    void 파일_저장시_지원하지_않는_확장자라면_예외가_발생한다() {
+        // given
+        final MockMultipartFile image = new MockMultipartFile(
+                "image",
+                "image.bmp",
+                MediaType.BMP.toString(),
+                "image".getBytes()
+        );
+        final String path = "profile/";
+
+        // when & then
+        Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
+                  .isInstanceOf(UploadImageException.NotSupportedMediaTypeException.class);
     }
 }
