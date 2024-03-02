@@ -34,6 +34,7 @@ public class StampRepositoryTestFixture {
     protected Long 유효한_골_아이디;
     protected Stamp 유효한_스탬프;
     protected Stamp 유효한_스탬프2;
+    protected int 유효한_스탬프_날짜;
 
     @BeforeEach
     void setUp() {
@@ -80,5 +81,6 @@ public class StampRepositoryTestFixture {
                              .message(new Message("스탬프 메시지2"))
                              .build();
         stampRepository.saveAll(List.of(유효한_스탬프, 유효한_스탬프2));
+        유효한_스탬프_날짜 = 유효한_스탬프.getDay().getDay();
     }
 }
