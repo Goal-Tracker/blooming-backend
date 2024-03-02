@@ -1,6 +1,7 @@
 package com.backend.blooming.image.infrastructure.s3;
 
-import com.backend.blooming.image.application.ImageManager;
+import com.backend.blooming.image.application.ImageStorageManager;
+import com.backend.blooming.image.application.ImageStoragePath;
 import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class ImageS3Manager implements ImageManager {
+public class ImageStorageS3Manager implements ImageStorageManager {
 
     private final S3Client s3Client;
 
@@ -33,18 +34,18 @@ public class ImageS3Manager implements ImageManager {
     private String domain;
 
     @Override
-    public String upload(final MultipartFile multipartFile, final String path) {
+    public String upload(final MultipartFile multipartFile, final ImageStoragePath path) {
         if (multipartFile == null || multipartFile.isEmpty()) {
             throw new UploadImageException.EmptyFileException();
         }
-        if (path == null || path.isBlank()) {
+        if (path == null) {
             throw new UploadImageException.EmptyPathException();
         }
 
         return uploadImage(multipartFile, path);
     }
 
-    private String uploadImage(final MultipartFile multipartFile, final String path) {
+    private String uploadImage(final MultipartFile multipartFile, final ImageStoragePath path) {
         try {
             final String imagePath = getImagePath(path, multipartFile);
             final PutObjectRequest request = getPutObjectRequest(imagePath);
@@ -59,8 +60,8 @@ public class ImageS3Manager implements ImageManager {
         }
     }
 
-    private String getImagePath(final String path, final MultipartFile multipartFile) {
-        return basicPath + path + UUID.randomUUID() + getExtension(multipartFile.getContentType());
+    private String getImagePath(final ImageStoragePath path, final MultipartFile multipartFile) {
+        return basicPath + path.getPath() + UUID.randomUUID() + getExtension(multipartFile.getContentType());
     }
 
     private String getExtension(final String contentType) {

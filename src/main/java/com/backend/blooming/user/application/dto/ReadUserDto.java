@@ -8,6 +8,7 @@ public record ReadUserDto(
         String oAuthType,
         String email,
         String name,
+        String profileImageUrl,
         String color,
         String statusMessage
 ) {
@@ -19,6 +20,7 @@ public record ReadUserDto(
                 user.getOAuthType().name(),
                 user.getEmail(),
                 user.getName(),
+                user.getProfileImageUrl(),
                 user.getColorCode(),
                 user.getStatusMessage()
         );

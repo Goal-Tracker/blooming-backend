@@ -5,10 +5,10 @@ import org.testcontainers.shaded.com.google.common.net.MediaType;
 
 import java.util.List;
 
-public interface ImageManager {
+public interface ImageStorageManager {
 
     List<MediaType> SUPPORTED_MEDIA_TYPE = List.of(MediaType.PNG, MediaType.JPEG, MediaType.parse("image/jpg"));
     String EXTENSION_DOT = ".";
 
-    String upload(final MultipartFile multipartFile, final String path);
+    String upload(final MultipartFile multipartFile, final ImageStoragePath path);
 }

@@ -1,12 +1,11 @@
 package com.backend.blooming.image.infrastructure.s3;
 
+import com.backend.blooming.image.application.ImageStoragePath;
 import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,10 +15,10 @@ import org.testcontainers.shaded.com.google.common.net.MediaType;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class ImageS3ManagerTest {
+class ImageStorageS3ManagerTest {
 
     @Autowired
-    private ImageS3Manager imageS3Manager;
+    private ImageStorageS3Manager imageStorageS3Manager;
 
     @Value("${cloud.aws.s3.path}")
     private String basicPath;
@@ -38,14 +37,14 @@ class ImageS3ManagerTest {
                 mediaType.toString(),
                 "image".getBytes()
         );
-        final String path = "profile/";
+        final ImageStoragePath path = ImageStoragePath.PROFILE;
 
         // when
-        final String actual = imageS3Manager.upload(image, path);
+        final String actual = imageStorageS3Manager.upload(image, path);
 
         // then
         SoftAssertions.assertSoftly(softAssertions -> {
-            softAssertions.assertThat(actual).contains(domain, basicPath, path, mediaType.subtype());
+            softAssertions.assertThat(actual).contains(domain, basicPath, path.getPath(), mediaType.subtype());
             softAssertions.assertThat(actual).doesNotContain(fileName);
         });
     }
@@ -59,16 +58,15 @@ class ImageS3ManagerTest {
                 MediaType.PNG.toString(),
                 new byte[0]
         );
-        final String path = "profile/";
+        final ImageStoragePath path = ImageStoragePath.PROFILE;
 
         // when & then
-        Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
+        Assertions.assertThatThrownBy(() -> imageStorageS3Manager.upload(image, path))
                   .isInstanceOf(UploadImageException.EmptyFileException.class);
     }
 
-    @ParameterizedTest
-    @NullAndEmptySource
-    void 파일_저장시_파일_저장_경로가_비어있다면_예외가_발생한다(final String path) {
+    @Test
+    void 파일_저장시_파일_저장_경로가_비어있다면_예외가_발생한다() {
         // given
         final MockMultipartFile image = new MockMultipartFile(
                 "image",
@@ -76,9 +74,10 @@ class ImageS3ManagerTest {
                 MediaType.PNG.toString(),
                 "image".getBytes()
         );
+        final ImageStoragePath path = null;
 
         // when & then
-        Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
+        Assertions.assertThatThrownBy(() -> imageStorageS3Manager.upload(image, path))
                   .isInstanceOf(UploadImageException.EmptyPathException.class);
     }
 
@@ -91,10 +90,10 @@ class ImageS3ManagerTest {
                 MediaType.BMP.toString(),
                 "image".getBytes()
         );
-        final String path = "profile/";
+        final ImageStoragePath path = ImageStoragePath.PROFILE;
 
         // when & then
-        Assertions.assertThatThrownBy(() -> imageS3Manager.upload(image, path))
+        Assertions.assertThatThrownBy(() -> imageStorageS3Manager.upload(image, path))
                   .isInstanceOf(UploadImageException.NotSupportedMediaTypeException.class);
     }
 }
