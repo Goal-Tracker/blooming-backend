@@ -176,12 +176,10 @@ class UserControllerTest extends UserControllerTestFixture {
                         fieldWithPath("users.[].id").type(JsonFieldType.NUMBER).description("사용자 아이디"),
                         fieldWithPath("users.[].email").type(JsonFieldType.STRING).description("사용자 이메일"),
                         fieldWithPath("users.[].name").type(JsonFieldType.STRING).description("사용자 이름"),
-                        fieldWithPath("users.[].profileImageUrl").type(JsonFieldType.STRING)
-                                                                 .description("사용자 프로필 이미지 url"),
+                        fieldWithPath("users.[].profileImageUrl").type(JsonFieldType.STRING).description("사용자 프로필 이미지 url"),
                         fieldWithPath("users.[].color").type(JsonFieldType.STRING).description("사용자 테마 색상 코드"),
                         fieldWithPath("users.[].statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
-                        fieldWithPath("users.[].friendsStatus").type(JsonFieldType.STRING)
-                                                               .description("로그인한 사용자와의 친구 상태")
+                        fieldWithPath("users.[].friendsStatus").type(JsonFieldType.STRING).description("로그인한 사용자와의 친구 상태")
                 )
         ));
     }
