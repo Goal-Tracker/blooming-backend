@@ -19,12 +19,13 @@ import java.util.Map;
 public class StampControllerTestFixture {
 
     private Long 골_관리자_아이디 = 1L;
+    protected Long 골_참여자가_아닌_사용자_아이디 = 999L;
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
+    protected AuthClaims 골_참여자가_아닌_사용자_토큰_정보 = new AuthClaims(골_참여자가_아닌_사용자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
     protected Long 존재하지_않는_골_아이디 = 999L;
-    protected Long 골_참여자가_아닌_사용자_아이디 = 999L;
 
     protected CreateStampDto 유효한_스탬프_생성_dto = new CreateStampDto(
             1L,

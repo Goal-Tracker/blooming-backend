@@ -231,7 +231,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ReadGoalForbiddenException.class)
-    public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
+    public ResponseEntity<ExceptionResponse> handleReadGoalForbiddenException(
             final ReadGoalForbiddenException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
@@ -241,7 +241,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(ReadStampForbiddenException.class)
-    public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
+    public ResponseEntity<ExceptionResponse> handleReadStampForbiddenException(
             final ReadStampForbiddenException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));

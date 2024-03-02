@@ -29,6 +29,7 @@ public class GoalControllerTestFixture {
     private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 2L));
     private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
+    protected AuthClaims 골_참여자가_아닌_사용자_토큰_정보 = new AuthClaims(골_참여자가_아닌_사용자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
