@@ -53,13 +53,18 @@ public class StampService {
     }
 
     private void validateUserInGoalTeams(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = goal.getTeams()
-                                           .stream()
-                                           .map(goalTeam -> goalTeam.getUser().getId())
-                                           .toList();
+        final List<Long> teamUserIds = getTeamUserIds(goal);
         if (!teamUserIds.contains(userId)) {
             throw new CreateStampForbiddenException();
         }
+    }
+
+    private List<Long> getTeamUserIds(final Goal goal) {
+        return goal.getTeams()
+                   .getGoalTeams()
+                   .stream()
+                   .map(goalTeam -> goalTeam.getUser().getId())
+                   .toList();
     }
 
     private void validateExistStamp(final Long userId, final int day) {
@@ -92,11 +97,7 @@ public class StampService {
     }
 
     private void validateUserToRead(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = goal.getTeams()
-                                           .getGoalTeams()
-                                           .stream()
-                                           .map(goalTeam -> goalTeam.getUser().getId())
-                                           .toList();
+        final List<Long> teamUserIds = getTeamUserIds(goal);
         if (!teamUserIds.contains(userId)) {
             throw new ReadStampForbiddenException();
         }
