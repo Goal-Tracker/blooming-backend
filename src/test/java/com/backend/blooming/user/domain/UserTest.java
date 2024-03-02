@@ -18,7 +18,7 @@ class UserTest extends UserTestFixture {
 
     @ParameterizedTest
     @NullAndEmptySource
-    void 사용자_생성시_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다(final String statusMessage) {
+    void 사용자_생성시_프로필_이미지_url_색상_상태메시지를_설정하지_않을시_기본값으로_설정한다(final String statusMessage) {
         // when
         final User actual = User.builder()
                                 .oAuthId("12345")
@@ -34,6 +34,8 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(actual.getOAuthType()).isEqualTo(OAuthType.KAKAO);
             softAssertions.assertThat(actual.getEmail()).isEqualTo("user@email.com");
             softAssertions.assertThat(actual.getName()).isEqualTo("test");
+            softAssertions.assertThat(actual.getProfileImageUrl())
+                          .isEqualTo("https://dp7ped0142moi.cloudfront.net/default/profile.png");
             softAssertions.assertThat(actual.getColor()).isEqualTo(ThemeColor.INDIGO);
             softAssertions.assertThat(actual.getStatusMessage()).isEqualTo("");
         });
@@ -74,7 +76,7 @@ class UserTest extends UserTestFixture {
         final String updateProfileImageUrl = "https://update.profile.image";
 
         // when
-        사용자.updateProfileImageUrl(new ProfileImageUrl(updateProfileImageUrl));
+        사용자.updateProfileImageUrl(updateProfileImageUrl);
 
         // then
         assertSoftly(softAssertions -> {

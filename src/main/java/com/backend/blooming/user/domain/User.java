@@ -27,6 +27,7 @@ import lombok.ToString;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
+    private static final String DEFAULT_PROFILE_IMAGE_URL = "https://dp7ped0142moi.cloudfront.net/default/profile.png";
     private static final String DEFAULT_STATUS_MESSAGE = "";
     private static final ThemeColor DEFAULT_THEME_COLOR = ThemeColor.INDIGO;
 
@@ -47,8 +48,8 @@ public class User extends BaseTimeEntity {
     @Embedded
     private Name name;
 
-    @Embedded
-    private ProfileImageUrl profileImageUrl;
+    @Column(nullable = false)
+    private String  profileImageUrl;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "theme_color", nullable = false)
@@ -57,7 +58,7 @@ public class User extends BaseTimeEntity {
     @Column(columnDefinition = "text", nullable = false)
     private String statusMessage;
 
-    @Column(name = "is_new_alarm", nullable = false)
+    @Column(name = "has_new_alarm", nullable = false)
     private boolean newAlarm = false;
 
     @Column(name = "is_deleted", nullable = false)
@@ -69,7 +70,7 @@ public class User extends BaseTimeEntity {
             final OAuthType oAuthType,
             final Email email,
             final Name name,
-            final ProfileImageUrl profileImageUrl,
+            final String  profileImageUrl,
             final ThemeColor color,
             final String statusMessage
     ) {
@@ -77,9 +78,17 @@ public class User extends BaseTimeEntity {
         this.oAuthType = oAuthType;
         this.email = email;
         this.name = name;
-        this.profileImageUrl = profileImageUrl;
+        this.profileImageUrl = processDefaultProfileImageUrl(profileImageUrl);
         this.color = processDefaultColor(color);
         this.statusMessage = processDefaultStatusMessage(statusMessage);
+    }
+
+    private String  processDefaultProfileImageUrl(final String profileImageUrl) {
+        if (profileImageUrl == null || profileImageUrl.isBlank()) {
+            return DEFAULT_PROFILE_IMAGE_URL;
+        }
+
+        return profileImageUrl;
     }
 
     private ThemeColor processDefaultColor(final ThemeColor color) {
@@ -106,8 +115,8 @@ public class User extends BaseTimeEntity {
         this.name = name;
     }
 
-    public void updateProfileImageUrl(final ProfileImageUrl profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
+    public void updateProfileImageUrl(final String profileImageUrl) {
+        this.profileImageUrl = processDefaultProfileImageUrl(profileImageUrl);
     }
 
     public void updateColor(final ThemeColor color) {
@@ -132,10 +141,6 @@ public class User extends BaseTimeEntity {
 
     public String getName() {
         return name.getValue();
-    }
-
-    public String getProfileImageUrl() {
-        return profileImageUrl.getValue();
     }
 
     public String getColorName() {
