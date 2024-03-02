@@ -30,8 +30,7 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
             SELECT s
             FROM Stamp s
             JOIN FETCH s.user
-            JOIN FETCH s.goal
             WHERE s.day.day = :day AND s.deleted = FALSE
             """)
-    List<Stamp> findAllByDayAndDeletedIsFalse(final Long day);
+    List<Stamp> findAllByDayAndDeletedIsFalse(final int day);
 }
