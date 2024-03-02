@@ -16,7 +16,7 @@ public record ReadStampDto(
                 stamp.getGoal().getId(),
                 stamp.getUser().getName(),
                 stamp.getUser().getColor(),
-                stamp.getDay().getDay(),
+                stamp.getDay().getValue(),
                 stamp.getMessage().getMessage()
         );
     }

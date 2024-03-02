@@ -1,6 +1,5 @@
 package com.backend.blooming.stamp.domain;
 
-import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTerm;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import jakarta.persistence.Column;
@@ -22,10 +21,10 @@ import java.time.temporal.ChronoUnit;
 public class Day {
 
     @Column(name = "stamp_day", nullable = false)
-    private int day;
+    private int value;
 
     public Day(final GoalTerm goalTerm, final int day) {
-        this.day = validateDay(goalTerm, day);
+        this.value = validateDay(goalTerm, day);
     }
 
     private int validateDay(final GoalTerm goalTerm, final int day) {

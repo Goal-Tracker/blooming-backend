@@ -12,7 +12,7 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
                 SELECT EXISTS(
                     SELECT 1
                     FROM Stamp s
-                    WHERE (s.user.id = :userId AND s.day.day = :day) AND s.deleted = FALSE
+                    WHERE (s.user.id = :userId AND s.day.value = :day) AND s.deleted = FALSE
                 ) as exist
             """)
     boolean existsByUserIdAndDayAndDeletedIsFalse(final Long userId, final int day);
@@ -30,7 +30,7 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
             SELECT s
             FROM Stamp s
             JOIN FETCH s.user
-            WHERE s.day.day = :day AND s.deleted = FALSE
+            WHERE s.day.value = :day AND s.deleted = FALSE
             """)
     List<Stamp> findAllByDayAndDeletedIsFalse(final int day);
 }

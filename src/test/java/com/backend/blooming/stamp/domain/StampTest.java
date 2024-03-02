@@ -29,7 +29,7 @@ class StampTest extends StampTestFixture {
             softAssertions.assertThat(result).isNotNull();
             softAssertions.assertThat(result.getGoal().getName()).isEqualTo(유효한_골.getName());
             softAssertions.assertThat(result.getUser().getName()).isEqualTo(유효한_사용자.getName());
-            softAssertions.assertThat(result.getDay().getDay()).isEqualTo(1);
+            softAssertions.assertThat(result.getDay().getValue()).isEqualTo(1);
             softAssertions.assertThat(result.getMessage().getMessage()).isEqualTo("테스트 메시지");
         });
     }
