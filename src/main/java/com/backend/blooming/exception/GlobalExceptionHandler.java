@@ -12,9 +12,11 @@ import com.backend.blooming.friend.application.exception.NotFoundFriendRequestEx
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
-import com.backend.blooming.stamp.domain.exception.InvalidStampException;
+import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
+import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.springframework.http.HttpHeaders;
@@ -221,6 +223,26 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CreateStampForbiddenException.class)
     public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
             final CreateStampForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(ReadGoalForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
+            final ReadGoalForbiddenException exception
+    ) {
+        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(ReadStampForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
+            final ReadStampForbiddenException exception
     ) {
         logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
 

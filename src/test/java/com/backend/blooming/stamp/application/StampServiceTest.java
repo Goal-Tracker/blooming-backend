@@ -2,9 +2,10 @@ package com.backend.blooming.stamp.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
+import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -14,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -90,5 +90,12 @@ class StampServiceTest extends StampServiceTestFixture {
         // when & then
         assertThatThrownBy(() -> stampService.readAllByGoalId(존재하지_않는_골_아이디, 스탬프를_생성한_사용자_아이디1))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 골_참여자가_아닌_사용자가_스탬프_조회를_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
+                .isInstanceOf(ReadStampForbiddenException.class);
     }
 }

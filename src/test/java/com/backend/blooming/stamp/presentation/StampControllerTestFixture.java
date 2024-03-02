@@ -24,6 +24,7 @@ public class StampControllerTestFixture {
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
     protected Long 존재하지_않는_골_아이디 = 999L;
+    protected Long 골_참여자가_아닌_사용자_아이디 = 999L;
 
     protected CreateStampDto 유효한_스탬프_생성_dto = new CreateStampDto(
             1L,
