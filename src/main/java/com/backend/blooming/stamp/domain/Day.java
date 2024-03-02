@@ -2,6 +2,7 @@ package com.backend.blooming.stamp.domain;
 
 import com.backend.blooming.goal.domain.GoalTerm;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
+import com.backend.blooming.utils.days.DayUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
@@ -11,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Embeddable
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -28,7 +28,7 @@ public class Day {
     }
 
     private int validateDay(final GoalTerm goalTerm, final int day) {
-        final long nowStampDay = ChronoUnit.DAYS.between(goalTerm.getStartDate(), LocalDate.now()) + 1;
+        final int nowStampDay = DayUtil.getNowDay(goalTerm.getStartDate());
 
         if (day > nowStampDay) {
             throw new InvalidStampException.InvalidStampDayFuture();

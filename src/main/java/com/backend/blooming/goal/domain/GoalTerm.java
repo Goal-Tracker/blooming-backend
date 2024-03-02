@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
+import com.backend.blooming.utils.days.DayUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;
@@ -8,7 +9,6 @@ import lombok.Getter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 
 @Embeddable
 @Getter
@@ -54,7 +54,7 @@ public class GoalTerm {
     }
 
     private long getValidGoalDays(final LocalDate startDate, final LocalDate endDate) {
-        final long goalDays = ChronoUnit.DAYS.between(startDate, endDate) + COUNT_GOAL_DAYS;
+        final int goalDays = DayUtil.getDays(startDate, endDate);
         
         if (goalDays < GOAL_DAYS_MINIMUM || goalDays > GOAL_DAYS_MAXIMUM) {
             throw new InvalidGoalException.InvalidInvalidGoalDays();

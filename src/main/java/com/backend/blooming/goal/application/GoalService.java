@@ -15,20 +15,18 @@ import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
+import com.backend.blooming.utils.days.DayUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class GoalService {
-
-    private static final int COUNT_GOAL_DAYS = 1;
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
@@ -89,8 +87,8 @@ public class GoalService {
                              .orElseThrow(NotFoundGoalException::new);
     }
 
-    private List<Long> getUsersUploadedStamp(final Goal goal){
-        final int nowGoalDay = (int) ChronoUnit.DAYS.between(goal.getGoalTerm().getStartDate(), LocalDate.now()) + COUNT_GOAL_DAYS;
+    private List<Long> getUsersUploadedStamp(final Goal goal) {
+        final int nowGoalDay = DayUtil.getNowDay(goal.getGoalTerm().getStartDate());
         final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
 
         return todayStamps.stream()
