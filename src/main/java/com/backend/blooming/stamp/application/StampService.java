@@ -61,7 +61,6 @@ public class StampService {
 
     private List<Long> getTeamUserIds(final Goal goal) {
         return goal.getTeams()
-                   .getGoalTeams()
                    .stream()
                    .map(goalTeam -> goalTeam.getUser().getId())
                    .toList();
