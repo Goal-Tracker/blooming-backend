@@ -6,10 +6,8 @@ import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
-import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
@@ -85,7 +83,7 @@ public class GoalService {
     public ReadGoalDetailDto readGoalDetailById(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
         final User user = getUser(userId);
-        validateUserInGoalTeams(goal, user);
+        validateUserToRead(user, goal);
 
         final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
@@ -101,12 +99,6 @@ public class GoalService {
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
-    }
-
-    private void validateUserInGoalTeams(final Goal goal, final User user) {
-        if (!goal.isTeam(user)) {
-            throw new ReadGoalForbiddenException();
-        }
     }
 
     private List<Long> getUsersUploadedStamp(final Goal goal) {

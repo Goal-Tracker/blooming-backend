@@ -8,7 +8,6 @@ import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadExcept
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -92,14 +90,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
-    void 골_참여자가_아닌_사용자가_골_조회를_요청한_경우_예외를_발생한다() {
-        // when & then
-        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
-                .isInstanceOf(ReadGoalForbiddenException.class);
-    }
-
-    @Test
-    void 골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
+    void 골_참여자가_아니거나_골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
         // when & then
         assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자.getId()))
                 .isInstanceOf(ForbiddenGoalToReadException.class);

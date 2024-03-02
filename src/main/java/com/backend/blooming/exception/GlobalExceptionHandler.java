@@ -15,7 +15,6 @@ import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadExcept
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
-import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import com.backend.blooming.notification.application.exception.NotFoundGoalManagerException;
@@ -268,16 +267,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(CreateStampForbiddenException.class)
     public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
             final CreateStampForbiddenException exception, final HttpServletRequest request
-    ) {
-        logWarn(exception, request);
-
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                             .body(new ExceptionResponse(exception.getMessage()));
-    }
-
-    @ExceptionHandler(ReadGoalForbiddenException.class)
-    public ResponseEntity<ExceptionResponse> handleReadGoalForbiddenException(
-            final ReadGoalForbiddenException exception, final HttpServletRequest request
     ) {
         logWarn(exception, request);
 
