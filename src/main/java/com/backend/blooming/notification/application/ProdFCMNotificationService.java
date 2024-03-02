@@ -43,6 +43,7 @@ public class ProdFCMNotificationService implements FCMNotificationService {
         try {
             final BatchResponse batchResponse = firebaseMessaging.sendAll(messages);
             checkAllSuccess(batchResponse);
+            log.info("알림 보내기에 성공했습니다.");
         } catch (FirebaseMessagingException exception) {
             log.warn("보낼 알림이 없거나, 알림 보내기에 실패했습니다. : ", exception);
         }
