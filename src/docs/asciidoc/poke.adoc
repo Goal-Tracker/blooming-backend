@@ -1,0 +1,5 @@
+=== 콕 찌르기 요청
+==== 요청
+operation::poke-controller-test/특정_골의_사용자에게_콕_찌르기를_한다[snippets='http-request,request-headers,path-parameters']
+==== 응답
+operation::poke-controller-test/특정_골의_사용자에게_콕_찌르기를_한다[snippets='http-response']

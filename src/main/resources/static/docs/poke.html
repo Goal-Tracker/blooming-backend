@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>전체 테마 색상 목록 조회</title>
+<title>콕 찌르기 요청</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -441,15 +441,22 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect2">
-<h3 id="_전체_테마_색상_목록_조회">전체 테마 색상 목록 조회</h3>
+<h3 id="_콕_찌르기_요청">콕 찌르기 요청</h3>
 <div class="sect3">
 <h4 id="_요청">요청</h4>
+<div class="sect4">
+<h5 id="_요청_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /theme-colors HTTP/1.1
-X-API-VERSION: 1</code></pre>
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /goals/1/poke/2 HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token
+Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_요청_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -466,65 +473,57 @@ X-API-VERSION: 1</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
 </tbody>
 </table>
 </div>
-<div class="sect3">
-<h4 id="_응답">응답</h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "themeColors" : [ {
-    "name" : "BEIGE",
-    "code" : "#f5f1f0"
-  }, {
-    "name" : "BABY_PINK",
-    "code" : "#f8c8c4"
-  } ]
-}</code></pre>
-</div>
-</div>
+<div class="sect4">
+<h5 id="_요청_path_parameters">Path parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /goals/{goalId}/poke/{userId}</caption>
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 50%;">
+<col style="width: 50%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Parameter</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[]</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 목록</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[].name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>themeColors.[].code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">테마 색상 코드</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">콕 찌를 사용자 아이디</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답">응답</h4>
+<div class="sect4">
+<h5 id="_응답_http_response">HTTP response</h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-01-28 21:29:55 +0900
+Last updated 2024-02-18 03:44:22 +0900
 </div>
 </div>
 </body>

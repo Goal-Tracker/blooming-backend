@@ -20,7 +20,6 @@ public record ReadGoalDetailDto(
 
     public static ReadGoalDetailDto of(final Goal goal, final List<Long> usersUploadedStamp) {
         final List<GoalTeamDto> teams = goal.getTeams()
-                                            .getGoalTeams()
                                             .stream()
                                             .map(goalTeam -> GoalTeamDto.of(goalTeam, usersUploadedStamp))
                                             .toList();

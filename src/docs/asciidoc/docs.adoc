@@ -44,3 +44,7 @@ include::goal.adoc[]
 
 == 스탬프
 include::stamp.adoc[]
+
+== 콕 찌르기
+include::poke.adoc[]
+

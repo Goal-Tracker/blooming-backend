@@ -44,6 +44,7 @@ public class TeamsTestFixture {
                               .color(ThemeColor.INDIGO)
                               .statusMessage("상태메시지3")
                               .build();
+    protected User 팀원이_아닌_사용자 = 추가된_골_참여자;
 
     @BeforeEach
     void setUp() {
