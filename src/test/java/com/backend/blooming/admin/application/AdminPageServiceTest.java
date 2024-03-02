@@ -3,11 +3,12 @@ package com.backend.blooming.admin.application;
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -27,7 +28,7 @@ class AdminPageServiceTest extends AdminPageServiceTestFixture {
 
         // then
         final User user = userRepository.findById(actual).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPositive();
             softAssertions.assertThat(user.getName()).isEqualTo(사용자_생성_요청.name());
             softAssertions.assertThat(user.getEmail()).isEqualTo(사용자_생성_요청.email());
@@ -43,7 +44,7 @@ class AdminPageServiceTest extends AdminPageServiceTestFixture {
 
         // then
         final User user = userRepository.findById(actual).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPositive();
             softAssertions.assertThat(user.getName()).isEqualTo(사용자_생성_요청.name());
             softAssertions.assertThat(user.getEmail()).isEqualTo("test@email.com");

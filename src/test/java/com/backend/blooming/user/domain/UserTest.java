@@ -2,7 +2,6 @@ package com.backend.blooming.user.domain;
 
 import com.backend.blooming.authentication.infrastructure.oauth.OAuthType;
 import com.backend.blooming.themecolor.domain.ThemeColor;
-import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ class UserTest extends UserTestFixture {
                                 .build();
 
         // then
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual.getOAuthId()).isEqualTo("12345");
             softAssertions.assertThat(actual.getOAuthType()).isEqualTo(OAuthType.KAKAO);
             softAssertions.assertThat(actual.getEmail()).isEqualTo("user@email.com");
