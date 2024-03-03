@@ -6,6 +6,8 @@ import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;
 import com.backend.blooming.user.domain.User;
+import org.junit.jupiter.api.BeforeEach;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class StampTestFixture {
-    
+
     protected User 유효한_사용자 = User.builder()
                                  .oAuthId("아이디")
                                  .oAuthType(OAuthType.KAKAO)
@@ -30,6 +32,7 @@ public class StampTestFixture {
                                 .color(ThemeColor.BABY_BLUE)
                                 .statusMessage("상태메시지2")
                                 .build();
+    protected User 작성자가_아닌_사용자 = 골_참여_사용자;
     private List<User> 골_참여_사용자_목록 = new ArrayList<>(List.of(유효한_사용자, 골_참여_사용자));
     protected Goal 유효한_골 = Goal.builder()
                                .name("골 제목")
@@ -39,7 +42,7 @@ public class StampTestFixture {
                                .managerId(1L)
                                .users(골_참여_사용자_목록)
                                .build();
-    
+
     protected Goal 스탬프_생성날짜가_골_시작일_보다_이전인_골 = Goal.builder()
                                                   .name("골 제목")
                                                   .memo("골 메모")
@@ -50,4 +53,10 @@ public class StampTestFixture {
                                                   .build();
     protected static int 스탬프_날짜가_골_시작일_이전인_경우 = 0;
     protected static int 스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우 = 2;
+
+    @BeforeEach
+    void setUpFixture() {
+        ReflectionTestUtils.setField(유효한_사용자, "id", 1L);
+        ReflectionTestUtils.setField(작성자가_아닌_사용자, "id", 2L);
+    }
 }

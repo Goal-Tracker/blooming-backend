@@ -4,6 +4,8 @@ import com.backend.blooming.stamp.domain.Stamp;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.Optional;
+
 public interface StampRepository extends JpaRepository<Stamp, Long> {
 
     @Query("""
@@ -14,4 +16,15 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
                 ) as exist
             """)
     boolean existsByUserIdAndDayAndDeletedIsFalse(final Long userId, final int day);
+
+    @Query("""
+                SELECT s
+                FROM Stamp s
+                JOIN FETCH s.user
+                JOIN FETCH s.goal g
+                JOIN FETCH g.teams.goalTeams gt
+                JOIN FETCH gt.user
+                WHERE s.id = :stampId
+            """)
+    Optional<Stamp> findByIdAndFetchGoalAndUser(final Long stampId);
 }

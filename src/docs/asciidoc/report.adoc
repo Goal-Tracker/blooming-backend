@@ -1,0 +1,17 @@
+=== 사용자 신고
+==== 요청
+operation::report-controller-test/사용자를_신고한다[snippets='http-request,request-headers,path-parameters,request-fields']
+==== 응답
+operation::report-controller-test/사용자를_신고한다[snippets='http-response']
+
+=== 골 신고
+==== 요청
+operation::report-controller-test/골을_신고한다[snippets='http-request,request-headers,path-parameters,request-fields']
+==== 응답
+operation::report-controller-test/골을_신고한다[snippets='http-response']
+
+=== 스탬프 신고
+==== 요청
+operation::report-controller-test/스탬프를_신고한다[snippets='http-request,request-headers,path-parameters,request-fields']
+==== 응답
+operation::report-controller-test/스탬프를_신고한다[snippets='http-response']
