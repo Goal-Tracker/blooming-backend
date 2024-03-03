@@ -33,13 +33,19 @@ public class GoalReportRepositoryTestFixture {
 
     @BeforeEach
     void setUpFixture() {
+        final User 골_관리자 = User.builder()
+                               .oAuthId("12345")
+                               .oAuthType(OAuthType.KAKAO)
+                               .name(new Name("사용자1"))
+                               .email(new Email("user1@email.com"))
+                               .build();
         final User 신고자 = User.builder()
-                             .oAuthId("12345")
+                             .oAuthId("12346")
                              .oAuthType(OAuthType.KAKAO)
-                             .name(new Name("사용자1"))
-                             .email(new Email("user1@email.com"))
+                             .name(new Name("사용자2"))
+                             .email(new Email("user2@email.com"))
                              .build();
-        userRepository.save(신고자);
+        userRepository.saveAll(List.of(골_관리자, 신고자));
         신고자_아이디 = 신고자.getId();
 
         final Goal 골 = Goal.builder()
@@ -47,16 +53,16 @@ public class GoalReportRepositoryTestFixture {
                            .memo("골 메모")
                            .startDate(LocalDate.now())
                            .endDate(LocalDate.now().plusDays(1))
-                           .managerId(신고자_아이디)
-                           .users(List.of(신고자))
+                           .managerId(골_관리자.getId())
+                           .users(List.of(골_관리자, 신고자))
                            .build();
         final Goal 이미_신고한_골 = Goal.builder()
                                   .name("골 제목2")
                                   .memo("골 메모2")
                                   .startDate(LocalDate.now())
                                   .endDate(LocalDate.now().plusDays(1))
-                                  .managerId(신고자_아이디)
-                                  .users(List.of(신고자))
+                                  .managerId(골_관리자.getId())
+                                  .users(List.of(골_관리자, 신고자))
                                   .build();
         goalRepository.saveAll(List.of(골, 이미_신고한_골));
         골_아이디 = 골.getId();

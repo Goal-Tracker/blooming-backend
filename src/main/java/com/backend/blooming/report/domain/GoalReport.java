@@ -2,6 +2,8 @@ package com.backend.blooming.report.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.report.application.exception.InvalidGoalReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -41,8 +43,19 @@ public class GoalReport extends BaseTimeEntity {
     private Content content;
 
     public GoalReport(final User reporter, final Goal goal, final Content content) {
+        validateReporter(reporter, goal);
+
         this.reporter = reporter;
         this.goal = goal;
         this.content = content;
+    }
+
+    private void validateReporter(final User reporter, final Goal goal) {
+        if (goal.isManager(reporter.getId())) {
+            throw new InvalidGoalReportException.NotAllowedReportOwnGoalException();
+        }
+        if (!goal.isTeam(reporter)) {
+            throw new ReportForbiddenException.GoalReportForbiddenException();
+        }
     }
 }

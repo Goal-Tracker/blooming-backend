@@ -19,7 +19,7 @@ public class InvalidGoalReportException extends BloomingException {
     public static class NotAllowedReportOwnGoalException extends InvalidGoalReportException {
 
         public NotAllowedReportOwnGoalException() {
-            super(ExceptionMessage.NOT_ALLOWED_REPORT_OWN_STAMP);
+            super(ExceptionMessage.NOT_ALLOWED_REPORT_OWN_GOAL);
         }
     }
 }

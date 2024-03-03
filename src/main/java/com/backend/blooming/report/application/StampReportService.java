@@ -2,7 +2,6 @@ package com.backend.blooming.report.application;
 
 import com.backend.blooming.report.application.dto.CreateStampReportDto;
 import com.backend.blooming.report.application.exception.InvalidStampReportException;
-import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.StampReport;
 import com.backend.blooming.report.infrastructure.repository.StampReportRepository;
@@ -29,7 +28,6 @@ public class StampReportService {
         validateReport(stampReportDto.reporterId(), stampReportDto.stampId());
         final User reporter = getUser(stampReportDto.reporterId());
         final Stamp stamp = getStamp(stampReportDto.stampId());
-        validateReporter(reporter, stamp);
 
         final Content content = new Content(stampReportDto.content());
         final StampReport stampReport = new StampReport(reporter, stamp, content);
@@ -52,14 +50,5 @@ public class StampReportService {
     private Stamp getStamp(final Long stampId) {
         return stampRepository.findByIdAndFetchGoalAndUser(stampId)
                               .orElseThrow(NotFoundStampException::new);
-    }
-
-    private void validateReporter(final User reporter, final Stamp stamp) {
-        if (stamp.isWriter(reporter)) {
-            throw new InvalidStampReportException.NotAllowedReportOwnStampException();
-        }
-        if (!stamp.getGoal().isTeam(reporter)) {
-            throw new ReportForbiddenException.StampReportForbiddenException();
-        }
     }
 }

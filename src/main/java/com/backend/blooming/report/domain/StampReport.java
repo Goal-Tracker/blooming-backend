@@ -1,6 +1,8 @@
 package com.backend.blooming.report.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
+import com.backend.blooming.report.application.exception.InvalidStampReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Embedded;
@@ -41,8 +43,19 @@ public class StampReport extends BaseTimeEntity {
     private Content content;
 
     public StampReport(final User reporter, final Stamp stamp, final Content content) {
+        validateReporter(reporter, stamp);
+
         this.reporter = reporter;
         this.stamp = stamp;
         this.content = content;
+    }
+
+    private void validateReporter(final User reporter, final Stamp stamp) {
+        if (stamp.isWriter(reporter)) {
+            throw new InvalidStampReportException.NotAllowedReportOwnStampException();
+        }
+        if (!stamp.getGoal().isTeam(reporter)) {
+            throw new ReportForbiddenException.StampReportForbiddenException();
+        }
     }
 }

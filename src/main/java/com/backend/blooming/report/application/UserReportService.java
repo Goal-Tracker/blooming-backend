@@ -24,8 +24,8 @@ public class UserReportService {
         validateReport(userReportDto.reporterId(), userReportDto.reporteeId());
         final User reporter = getUser(userReportDto.reporterId());
         final User reportee = getUser(userReportDto.reporteeId());
-        final Content content = new Content(userReportDto.content());
 
+        final Content content = new Content(userReportDto.content());
         final UserReport userReport = new UserReport(reporter, reportee, content);
 
         return userReportRepository.save(userReport)

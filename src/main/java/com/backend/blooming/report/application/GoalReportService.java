@@ -5,7 +5,6 @@ import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.report.application.dto.CreateGoalReportDto;
 import com.backend.blooming.report.application.exception.InvalidGoalReportException;
-import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.report.domain.Content;
 import com.backend.blooming.report.domain.GoalReport;
 import com.backend.blooming.report.infrastructure.repository.GoalReportRepository;
@@ -29,9 +28,8 @@ public class GoalReportService {
         validateReport(goalReportDto.reporterId(), goalReportDto.goalId());
         final User reporter = getUser(goalReportDto.reporterId());
         final Goal goal = getGoal(goalReportDto.goalId());
-        validateReporter(reporter, goal);
-        final Content content = new Content(goalReportDto.content());
 
+        final Content content = new Content(goalReportDto.content());
         final GoalReport goalReport = new GoalReport(reporter, goal, content);
 
         return goalReportRepository.save(goalReport)
@@ -52,14 +50,5 @@ public class GoalReportService {
     private Goal getGoal(final Long goalId) {
         return goalRepository.findByIdAndDeletedIsFalse(goalId)
                              .orElseThrow(NotFoundGoalException::new);
-    }
-
-    private void validateReporter(final User reporter, final Goal goal) {
-        if (goal.isManager(reporter.getId())) {
-            throw new InvalidGoalReportException.NotAllowedReportOwnGoalException();
-        }
-        if (!goal.isTeam(reporter)) {
-            throw new ReportForbiddenException.GoalReportForbiddenException();
-        }
     }
 }
