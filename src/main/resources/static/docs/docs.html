@@ -1043,6 +1043,18 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect4">
+<h5 id="_요청_5_httpie_request"><a class="link" href="#_요청_5_httpie_request">HTTPie request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http --multipart PATCH 'http://localhost:8080/users' \
+    'X-API-VERSION:1' \
+    'Authorization:Bearer access_token' \
+    'profileImage'@'image.png' \
+    'userRequest'='{"name":"수정한 이름","color":"BLUE","statusMessage":"수정한 상태 메시지"}'</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
 <h5 id="_요청_5_request_headers"><a class="link" href="#_요청_5_request_headers">Request headers</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
@@ -1507,6 +1519,18 @@ Content-Type: application/json
 Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 X-API-VERSION: 1
 Authorization: Bearer access_token</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_9_httpie_request"><a class="link" href="#_요청_9_httpie_request">HTTPie request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ http --multipart PATCH 'http://localhost:8080/users' \
+    'X-API-VERSION:1' \
+    'Authorization:Bearer access_token' \
+    'profileImage'@'image.png' \
+    'userRequest'='{"name":"수정한 이름","color":"BLUE","statusMessage":"수정한 상태 메시지"}'</code></pre>
 </div>
 </div>
 </div>

@@ -12,7 +12,7 @@ operation::user-controller-test/검색한_키워드가_이름에_포한된_사�
 
 === 사용자 정보 수정
 ==== 요청
-operation::user-controller-test/사용자의_모든_정보를_수정한다[snippets='http-request,request-headers,request-parts']
+operation::user-controller-test/사용자의_모든_정보를_수정한다[snippets='http-request,httpie-request,request-headers,request-parts']
 
 ==== 응답
 operation::user-controller-test/사용자의_모든_정보를_수정한다[snippets='http-response,response-fields']
