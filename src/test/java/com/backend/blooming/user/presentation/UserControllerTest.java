@@ -35,6 +35,7 @@ import static org.springframework.restdocs.request.RequestDocumentation.partWith
 import static org.springframework.restdocs.request.RequestDocumentation.queryParameters;
 import static org.springframework.restdocs.request.RequestDocumentation.requestParts;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -84,7 +85,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
-        ).andDo(restDocs.document(
+        ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
@@ -112,7 +113,7 @@ class UserControllerTest extends UserControllerTestFixture {
         mockMvc.perform(get("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
-        ).andExpectAll(
+        ).andDo(print()).andExpectAll(
                 status().isUnauthorized(),
                 jsonPath("$.message").exists()
         );
@@ -129,7 +130,7 @@ class UserControllerTest extends UserControllerTestFixture {
         mockMvc.perform(get("/users")
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
-        ).andExpectAll(
+        ).andDo(print()).andExpectAll(
                 status().isNotFound(),
                 jsonPath("$.message").exists()
         );
@@ -163,7 +164,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.users.[1].color", is(사용자_정보_dto2.color())),
                 jsonPath("$.users.[1].statusMessage", is(사용자_정보_dto2.statusMessage())),
                 jsonPath("$.users.[1].friendsStatus", is(사용자_정보_dto2.friendsStatus()))
-        ).andDo(restDocs.document(
+        ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
@@ -208,7 +209,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(모든_정보가_수정된_사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(모든_정보가_수정된_사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(모든_정보가_수정된_사용자_정보_dto.statusMessage()))
-        ).andDo(restDocs.document(
+        ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
                         headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
@@ -254,7 +255,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(테마_색상만_수정된_사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
-        );
+        ).andDo(print());
     }
 
     @Test
@@ -281,7 +282,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자의_상태_메시지만_수정_dto.statusMessage()))
-        );
+        ).andDo(print());
     }
 
     @Test
@@ -308,7 +309,7 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
-        );
+        ).andDo(print());
     }
 
     @Test
@@ -329,7 +330,7 @@ class UserControllerTest extends UserControllerTestFixture {
         ).andExpectAll(
                 status().isNotFound(),
                 jsonPath("$.message").exists()
-        );
+        ).andDo(print());
     }
 
     @Test
@@ -349,7 +350,7 @@ class UserControllerTest extends UserControllerTestFixture {
         ).andExpectAll(
                 status().isBadRequest(),
                 jsonPath("$.message").exists()
-        );
+        ).andDo(print());
     }
 
     @Test
@@ -376,6 +377,6 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.profileImageUrl", is(프로필_이미지만_수정된_사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
                 jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
-        );
+        ).andDo(print());
     }
 }
