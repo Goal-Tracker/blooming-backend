@@ -15,8 +15,6 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.notification.application.exception.NotFoundGoalManagerException;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
-import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.report.application.exception.InvalidGoalReportException;
 import com.backend.blooming.report.application.exception.InvalidStampReportException;
 import com.backend.blooming.report.application.exception.InvalidUserReportException;
