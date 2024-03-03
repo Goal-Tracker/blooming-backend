@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
-public class FCMNotificationServiceTestFixture {
+public class ProdFCMNotificationServiceTestFixture {
 
     @Autowired
     private UserRepository userRepository;

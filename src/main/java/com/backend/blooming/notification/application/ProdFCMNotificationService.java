@@ -4,11 +4,11 @@ import com.backend.blooming.devicetoken.domain.DeviceToken;
 import com.backend.blooming.devicetoken.infrastructure.repository.DeviceTokenRepository;
 import com.backend.blooming.notification.domain.Notification;
 import com.backend.blooming.user.domain.User;
+import com.google.firebase.messaging.AndroidConfig;
 import com.google.firebase.messaging.BatchResponse;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.SendResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
@@ -43,8 +43,9 @@ public class ProdFCMNotificationService implements FCMNotificationService {
         try {
             final BatchResponse batchResponse = firebaseMessaging.sendAll(messages);
             checkAllSuccess(batchResponse);
+            log.info("알림 보내기에 성공했습니다.");
         } catch (FirebaseMessagingException exception) {
-            log.error("보낼 알림이 없거나, 알림 보내기에 실패했습니다. : ", exception);
+            log.warn("보낼 알림이 없거나, 알림 보내기에 실패했습니다. : ", exception);
         }
     }
 
@@ -64,6 +65,7 @@ public class ProdFCMNotificationService implements FCMNotificationService {
     private Message createMessage(final Notification notification, final String deviceToken) {
         return Message.builder()
                       .setToken(deviceToken)
+                      .setAndroidConfig(createAndroidConfig())
                       .putData(TITLE.getValue(), notification.getTitle())
                       .putData(BODY.getValue(), notification.getContent())
                       .putData(TYPE.getValue(), notification.getType().name())
@@ -71,12 +73,22 @@ public class ProdFCMNotificationService implements FCMNotificationService {
                       .build();
     }
 
+    private AndroidConfig createAndroidConfig() {
+        return AndroidConfig.builder()
+                            .setPriority(AndroidConfig.Priority.HIGH)
+                            .build();
+    }
+
     private void checkAllSuccess(final BatchResponse batchResponse) {
         if (batchResponse.getFailureCount() > 0) {
-            final List<SendResponse> failResponses = batchResponse.getResponses()
-                                                                  .stream()
-                                                                  .filter(sendResponse -> !sendResponse.isSuccessful())
-                                                                  .toList();
+            final List<String> failResponses = batchResponse.getResponses()
+                                                            .stream()
+                                                            .filter(sendResponse -> !sendResponse.isSuccessful())
+                                                            .map(sendResponse ->
+                                                                    sendResponse.getException()
+                                                                                .getMessage()
+                                                            )
+                                                            .toList();
 
             log.warn("알림 보내기에 실패 요청이 있습니다. 실패 개수: {}, {}", batchResponse.getFailureCount(), failResponses);
         }
