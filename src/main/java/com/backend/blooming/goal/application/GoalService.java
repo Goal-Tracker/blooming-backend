@@ -5,6 +5,7 @@ import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
@@ -141,6 +142,16 @@ public class GoalService {
     public void acceptGoalRequest(final Long userId, final Long goalId) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
+        validateUserToAccept(user, goal);
         goal.updateAccepted(user.getId());
+    }
+
+    private void validateUserToAccept(final User user, final Goal goal) {
+        if (!goal.isTeam(user)) {
+            throw new InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal();
+        }
+        if (goal.isManager(user.getId())) {
+            throw new InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager();
+        }
     }
 }
