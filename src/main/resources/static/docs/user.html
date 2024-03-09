@@ -487,6 +487,7 @@ Content-Type: application/json
   "oAuthType" : "KAKAO",
   "email" : "test@email.com",
   "name" : "사용자",
+  "profileImageUrl" : "https://blooming.default.image.png",
   "color" : "#96b0e5",
   "statusMessage" : "반갑습니다."
 }</code></pre>
@@ -530,6 +531,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 프로필 이미지 url</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>color</code></p></td>
@@ -609,6 +615,7 @@ Content-Type: application/json
     "id" : 1,
     "email" : "teat1@email.com",
     "name" : "사용자1",
+    "profileImageUrl" : "https://blooming.default.image.png",
     "color" : "#96b0e5",
     "statusMessage" : "상태 메시지",
     "friendsStatus" : "SELF"
@@ -616,6 +623,7 @@ Content-Type: application/json
     "id" : 2,
     "email" : "teat2@email.com",
     "name" : "사용자2",
+    "profileImageUrl" : "https://blooming.default.image.png",
     "color" : "#f69b94",
     "statusMessage" : "상태 메시지",
     "friendsStatus" : "FRIENDS"
@@ -658,6 +666,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>users.[].profileImageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 프로필 이미지 url</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>users.[].color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 테마 색상 코드</p></td>
@@ -683,15 +696,9 @@ Content-Type: application/json
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /users HTTP/1.1
-Content-Type: application/json;charset=UTF-8
+Content-Type: multipart/form-data;charset=UTF-8; boundary=6o2knFse3p53ty9dmcQvWAIx1zInP11uCfbm
 X-API-VERSION: 1
-Authorization: Bearer access_token
-
-{
-  "name" : "수정한 이름",
-  "color" : "BLUE",
-  "statusMessage" : "수정한 상태 메시지"
-}</code></pre>
+Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
@@ -761,7 +768,8 @@ Content-Type: application/json
   "oAuthType" : "KAKAO",
   "email" : "test@email.com",
   "name" : "수정한 이름",
-  "color" : "#96b0e5",
+  "profileImageUrl" : "https://blooming.update.image.png",
+  "color" : "BLUE",
   "statusMessage" : "수정한 상태 메시지"
 }</code></pre>
 </div>
@@ -806,6 +814,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 이름</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>profileImageUrl</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">사용자 프로필 이미지 url</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>color</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">사용자 테마 색상</p></td>
@@ -823,7 +836,7 @@ Content-Type: application/json
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-01-28 21:29:55 +0900
+Last updated 2024-01-26 08:53:29 +0900
 </div>
 </div>
 </body>
