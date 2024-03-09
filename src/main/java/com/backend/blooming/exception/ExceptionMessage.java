@@ -67,6 +67,18 @@ public enum ExceptionMessage {
     INVALID_STAMP_TO_CREATE("이미 해당 날짜의 스탬프가 존재합니다."),
     CREATE_STAMP_FORBIDDEN("스탬프를 추가할 권한이 없습니다."),
     INVALID_STAMP_MESSAGE("스탬프 인증 메시지는 비어있거나 50자 초과일 수 없습니다."),
+    NOT_FOUND_STAMP("스탬프를 찾을 수 없습니다."),
+
+    // 신고
+    NULL_OR_EMPTY_CONTENT("신고 메시지는 비어있을 수 없습니다."),
+    NOT_ALLOWED_REPORT_OWN_USER("자신을 신고할 수 없습니다."),
+    ALREADY_REPORT_USER("이미 신고한 사용자입니다."),
+    ALREADY_REPORT_GOAL("이미 신고한 골입니다."),
+    NOT_ALLOWED_REPORT_OWN_GOAL("자신이 관리자인 골은 신고할 수 없습니다."),
+    GOAL_REPORT_FORBIDDEN("해당 골을 신고할 권한이 없습니다."),
+    ALREADY_REPORT_STAMP("이미 신고한 스탬프입니다."),
+    NOT_ALLOWED_REPORT_OWN_STAMP("자신의 스탬프는 신고할 수 없습니다."),
+    STAMP_REPORT_FORBIDDEN("해당 스탬프를 신고할 권한이 없습니다."),
 
     // 이미지
     EMPTY_IMAGE_FILE("저장할 이미지 파일이 없습니다."),

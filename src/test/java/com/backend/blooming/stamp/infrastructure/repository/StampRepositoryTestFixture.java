@@ -31,6 +31,8 @@ public class StampRepositoryTestFixture {
     private StampRepository stampRepository;
 
     protected User 골_관리자_사용자;
+    protected Goal 유효한_골;
+    protected Stamp 유효한_스탬프;
 
     @BeforeEach
     void setUp() {
@@ -45,7 +47,7 @@ public class StampRepositoryTestFixture {
         userRepository.saveAll(List.of(골_관리자_사용자));
         List<User> 골에_참여한_사용자_목록 = new ArrayList<>(List.of(골_관리자_사용자));
 
-        Goal 유효한_골 = Goal.builder()
+        유효한_골 = Goal.builder()
                          .name("골 제목")
                          .memo("골 메모")
                          .startDate(LocalDate.now())
@@ -55,7 +57,7 @@ public class StampRepositoryTestFixture {
                          .build();
         goalRepository.saveAll(List.of(유효한_골));
 
-        Stamp 유효한_스탬프 = Stamp.builder()
+        유효한_스탬프 = Stamp.builder()
                              .goal(유효한_골)
                              .user(골_관리자_사용자)
                              .day(new Day(유효한_골.getGoalTerm(), 1))
