@@ -4,6 +4,7 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
@@ -310,5 +311,19 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(acceptedGoalTeam.get(0).getUser().getId()).isEqualTo(유효한_사용자_아이디);
             softAssertions.assertThat(acceptedGoalTeam.get(1).getUser().getId()).isEqualTo(골_관리자가_아닌_사용자_아이디);
         });
+    }
+
+    @Test
+    void 골에_초대되지_않은_사람이_골_수락을_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.acceptGoalRequest(친구인_사용자2.getId(), 현재_진행중인_골1.getId()))
+                .isInstanceOf(InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal.class);
+    }
+
+    @Test
+    void 골_관리자가_골_수락을_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.acceptGoalRequest(유효한_사용자_아이디, 현재_진행중인_골1.getId()))
+                .isInstanceOf(InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager.class);
     }
 }
