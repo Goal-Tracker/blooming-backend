@@ -27,7 +27,7 @@ import lombok.ToString;
 @Table(name = "users")
 public class User extends BaseTimeEntity {
 
-    private static final String DEFAULT_PROFILE_IMAGE_URL = "https://dp7ped0142moi.cloudfront.net/default/profile.png";
+    private static final String DEFAULT_PROFILE_IMAGE_URL = "";
     private static final String DEFAULT_STATUS_MESSAGE = "";
     private static final ThemeColor DEFAULT_THEME_COLOR = ThemeColor.INDIGO;
 
@@ -117,6 +117,10 @@ public class User extends BaseTimeEntity {
 
     public void updateProfileImageUrl(final String profileImageUrl) {
         this.profileImageUrl = processDefaultProfileImageUrl(profileImageUrl);
+    }
+
+    public void deleteProfileImageUrl() {
+        this.profileImageUrl = DEFAULT_PROFILE_IMAGE_URL;
     }
 
     public void updateColor(final ThemeColor color) {

@@ -33,8 +33,7 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(actual.getOAuthType()).isEqualTo(OAuthType.KAKAO);
             softAssertions.assertThat(actual.getEmail()).isEqualTo("user@email.com");
             softAssertions.assertThat(actual.getName()).isEqualTo("test");
-            softAssertions.assertThat(actual.getProfileImageUrl())
-                          .isEqualTo("https://dp7ped0142moi.cloudfront.net/default/profile.png");
+            softAssertions.assertThat(actual.getProfileImageUrl()).isEqualTo("");
             softAssertions.assertThat(actual.getColor()).isEqualTo(ThemeColor.INDIGO);
             softAssertions.assertThat(actual.getStatusMessage()).isEqualTo("");
         });
@@ -83,6 +82,23 @@ class UserTest extends UserTestFixture {
             softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
             softAssertions.assertThat(사용자.getName()).isEqualTo(기존_이름);
             softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo(updateProfileImageUrl);
+            softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
+            softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
+            softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(기존_상태_메시지);
+        });
+    }
+
+    @Test
+    void 사용자의_프로필_이미지를_삭제하면_빈_값으로_수정한다() {
+        // when
+        사용자.deleteProfileImageUrl();
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(사용자.getOAuthId()).isEqualTo(기존_소셜_아이디);
+            softAssertions.assertThat(사용자.getOAuthType()).isEqualTo(기존_소셜_타입);
+            softAssertions.assertThat(사용자.getName()).isEqualTo(기존_이름);
+            softAssertions.assertThat(사용자.getProfileImageUrl()).isEqualTo("");
             softAssertions.assertThat(사용자.getEmail()).isEqualTo(기존_이메일);
             softAssertions.assertThat(사용자.getColor()).isEqualTo(기존_테마_색상);
             softAssertions.assertThat(사용자.getStatusMessage()).isEqualTo(기존_상태_메시지);
