@@ -37,10 +37,24 @@ public class GoalTeam extends BaseTimeEntity {
     private Goal goal;
 
     @Column(nullable = false)
+    private boolean accepted = false;
+
+    @Column(nullable = false)
     private boolean deleted = false;
 
     public GoalTeam(final User user, final Goal goal) {
         this.user = user;
         this.goal = goal;
+        validateUserIsManager(user, goal);
+    }
+
+    public void updateAccepted() {
+        this.accepted = true;
+    }
+
+    private void validateUserIsManager(final User user, final Goal goal) {
+        if (goal.getManagerId().equals(user.getId())) {
+            updateAccepted();
+        }
     }
 }

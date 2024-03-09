@@ -97,7 +97,7 @@ public class Goal extends BaseTimeEntity {
     public void updateEndDate(final LocalDate endDate) {
         this.goalTerm.updateEndDate(endDate);
     }
-    
+
     public List<GoalTeam> updateTeams(final List<User> users) {
         return this.teams.update(users, this);
     }
@@ -119,5 +119,9 @@ public class Goal extends BaseTimeEntity {
 
     public List<GoalTeam> getTeams() {
         return teams.getGoalTeams();
+    }
+
+    public void updateAccepted(final Long userId) {
+        teams.updateAccepted(userId);
     }
 }

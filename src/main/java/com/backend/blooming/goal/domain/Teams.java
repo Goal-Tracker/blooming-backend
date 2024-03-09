@@ -65,4 +65,12 @@ public class Teams {
         return goalTeams.stream()
                         .anyMatch(goalTeam -> goalTeam.getUser().equals(user));
     }
+
+    public void updateAccepted(final Long userId) {
+        this.goalTeams.forEach(goalTeam -> {
+            if (goalTeam.getUser().getId().equals(userId)) {
+                goalTeam.updateAccepted();
+            }
+        });
+    }
 }
