@@ -70,9 +70,9 @@ dependencies {
 	implementation 'software.amazon.awssdk:s3'
 	implementation "org.testcontainers:localstack:1.19.6"
 
-    // monitoring
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-    runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	// monitoring
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
 
 	// etc
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
