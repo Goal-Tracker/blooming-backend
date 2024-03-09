@@ -151,16 +151,6 @@ public class GoalService {
     public void acceptGoalRequest(final Long userId, final Long goalId) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
-        validateUserToAccept(user, goal);
-        goal.updateAccepted(user.getId());
-    }
-
-    private void validateUserToAccept(final User user, final Goal goal) {
-        if (!goal.isTeam(user)) {
-            throw new InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal();
-        }
-        if (goal.isManager(user.getId())) {
-            throw new InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager();
-        }
+        goal.updateAccepted(user);
     }
 }

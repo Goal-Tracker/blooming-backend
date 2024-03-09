@@ -2,6 +2,7 @@ package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
@@ -129,8 +130,18 @@ public class Goal extends BaseTimeEntity {
         return teams.getGoalTeams();
     }
 
-    public void updateAccepted(final Long userId) {
-        teams.updateAccepted(userId);
+    public void updateAccepted(final User user) {
+        validateUserToAccept(user);
+        teams.updateAccepted(user.getId());
+    }
+
+    private void validateUserToAccept(final User user) {
+        if (!this.isTeam(user)) {
+            throw new InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal();
+        }
+        if (this.isManager(user.getId())) {
+            throw new InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager();
+        }
     }
 
     public boolean isAccepted(final User user) {
