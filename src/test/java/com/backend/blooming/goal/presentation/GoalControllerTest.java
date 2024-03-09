@@ -5,6 +5,7 @@ import com.backend.blooming.authentication.presentation.argumentresolver.Authent
 import com.backend.blooming.common.RestDocsConfiguration;
 import com.backend.blooming.goal.application.GoalService;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -188,7 +189,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readGoalDetailById(유효한_골_아이디)).willReturn(유효한_골_dto);
+        given(goalService.readGoalDetailById(유효한_골_아이디, 사용자_토큰_정보.userId())).willReturn(유효한_골_dto);
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
@@ -235,7 +236,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
         given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
-        given(goalService.readGoalDetailById(유효한_골_아이디)).willThrow(new NotFoundGoalException());
+        given(goalService.readGoalDetailById(유효한_골_아이디, 사용자_토큰_정보.userId())).willThrow(new NotFoundGoalException());
 
         // when & then
         mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
@@ -243,6 +244,24 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isNotFound(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
+    void 골_참여자가_아닌_사용자_또는_골_초대를_수락하지_않은_사용자가_조회한_경우_403_예외를_발생한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.readGoalDetailById(유효한_골_아이디, 사용자_토큰_정보.userId()))
+                .willThrow(new ForbiddenGoalToReadException());
+
+        // when & then
+        mockMvc.perform(get("/goals/{goalId}", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isForbidden(),
                 jsonPath("$.message").exists()
         ).andDo(print());
     }

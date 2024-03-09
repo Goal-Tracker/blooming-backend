@@ -4,6 +4,7 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -58,7 +59,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디);
+        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디, 유효한_사용자_아이디);
 
         // then
         assertSoftly(softAssertions -> {
@@ -80,8 +81,22 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 존재하지_않는_골_아이디를_조회한_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
+        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디, 유효한_사용자_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
+    }
+
+    @Test
+    void 골_참여자가_아닌_사용자가_조회한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자2.getId()))
+                .isInstanceOf(ForbiddenGoalToReadException.class);
+    }
+
+    @Test
+    void 골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자.getId()))
+                .isInstanceOf(ForbiddenGoalToReadException.class);
     }
 
     @Test

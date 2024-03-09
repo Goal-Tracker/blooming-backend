@@ -73,4 +73,9 @@ public class Teams {
             }
         });
     }
+
+    public boolean isAccepted(final User user) {
+        return goalTeams.stream()
+                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user) && goalTeam.isAccepted());
+    }
 }

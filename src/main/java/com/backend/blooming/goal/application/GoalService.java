@@ -5,6 +5,7 @@ import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -76,10 +77,18 @@ public class GoalService {
     }
 
     @Transactional(readOnly = true)
-    public ReadGoalDetailDto readGoalDetailById(final Long goalId) {
+    public ReadGoalDetailDto readGoalDetailById(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
+        final User user = getUser(userId);
+        validateUserToRead(user, goal);
 
         return ReadGoalDetailDto.from(goal);
+    }
+
+    private void validateUserToRead(final User user, final Goal goal) {
+        if (!goal.isTeam(user) || !goal.isAccepted(user)) {
+            throw new ForbiddenGoalToReadException();
+        }
     }
 
     private Goal getGoal(final Long id) {

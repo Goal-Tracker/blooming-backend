@@ -58,6 +58,7 @@ public enum ExceptionMessage {
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
     MANAGER_GOAL_ACCEPT_INVALID("골 관리자는 골 수락을 할 수 없습니다."),
     NOT_FOUND_MANAGER("골의 관리자를 찾을 수 없습니다."),
+    FORBIDDEN_USER_TO_READ_GOAL("골을 조회할 권한이 없습니다."),
 
     // 콕 찌르기
     SENDER_NOT_IN_GOAL_TEAM("콕 찌르기 요청자가 해당 골의 팀원이 아닙니다."),
