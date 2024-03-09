@@ -67,6 +67,9 @@ public class UserService {
         if (updateUserDto.statusMessage() != null) {
             user.updateStatusMessage(updateUserDto.statusMessage());
         }
+        if (updateUserDto.changeToDefaultProfile()) {
+            user.deleteProfileImageUrl();
+        }
         if (updateUserDto.profileImage() != null && !updateUserDto.profileImage().isEmpty()) {
             final String profileImageUrl = imageStorageManager.upload(
                     updateUserDto.profileImage(),

@@ -46,13 +46,14 @@ public class UserServiceTestFixture {
     protected ThemeColor 기존_테마_색상;
     protected String 기존_상태_메시지;
     protected String 기존_프로필_이미지_url;
-    protected UpdateUserDto 모든_사용자_정보를_수정한_dto = new UpdateUserDto(수정한_이름, 수정한_테마_색상.name(), 수정한_상태_메시지, 수정한_프로필_이미지);
-    protected UpdateUserDto 이름만_수정한_dto = new UpdateUserDto(수정한_이름, null, null, null);
+    protected UpdateUserDto 모든_사용자_정보를_수정한_dto = new UpdateUserDto(수정한_이름, 수정한_테마_색상.name(), 수정한_상태_메시지, false, 수정한_프로필_이미지);
+    protected UpdateUserDto 이름만_수정한_dto = new UpdateUserDto(수정한_이름, null, null, false, null);
     protected UpdateUserDto 기존_이름으로_수정한_dto;
     protected UpdateUserDto 이미_존재하는_이름으로_수정한_dto;
-    protected UpdateUserDto 테마_색상만_수정한_dto = new UpdateUserDto(null, 수정한_테마_색상.name(), null, null);
-    protected UpdateUserDto 상태_메시지만_수정한_dto = new UpdateUserDto(null, null, 수정한_상태_메시지, null);
-    protected UpdateUserDto 프로필_이미지만_수정한_dto = new UpdateUserDto(null, null, null, 수정한_프로필_이미지);
+    protected UpdateUserDto 테마_색상만_수정한_dto = new UpdateUserDto(null, 수정한_테마_색상.name(), null, false, null);
+    protected UpdateUserDto 상태_메시지만_수정한_dto = new UpdateUserDto(null, null, 수정한_상태_메시지, false, null);
+    protected UpdateUserDto 프로필_이미지만_수정한_dto = new UpdateUserDto(null, null, null, false, 수정한_프로필_이미지);
+    protected UpdateUserDto 기본_프로필_이미지로_수정한_dto = new UpdateUserDto(null, null, null, true, null);
 
     @BeforeEach
     void setUpFixture() {
@@ -92,8 +93,8 @@ public class UserServiceTestFixture {
         기존_테마_색상 = 사용자.getColor();
         기존_상태_메시지 = 사용자.getStatusMessage();
         기존_프로필_이미지_url = 사용자.getProfileImageUrl();
-        기존_이름으로_수정한_dto = new UpdateUserDto(사용자.getName(), null, null, null);
-        이미_존재하는_이름으로_수정한_dto = new UpdateUserDto(친구인_사용자.getName(), null, null, null);
+        기존_이름으로_수정한_dto = new UpdateUserDto(사용자.getName(), null, null, false, null);
+        이미_존재하는_이름으로_수정한_dto = new UpdateUserDto(친구인_사용자.getName(), null, null, false, null);
 
         final Friend 친구_요청 = new Friend(사용자, 친구인_사용자);
         친구_요청.acceptRequest();

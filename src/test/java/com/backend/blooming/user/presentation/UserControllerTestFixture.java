@@ -79,6 +79,7 @@ public class UserControllerTestFixture {
             "수정한 이름",
             ThemeColor.BLUE.name(),
             "수정한 상태 메시지",
+            false,
             수정한_프로필_이미지
     );
     protected ReadUserDto 모든_정보가_수정된_사용자_정보_dto = new ReadUserDto(
@@ -94,10 +95,11 @@ public class UserControllerTestFixture {
     private UpdateUserRequest 사용자의_모든_정보_수정_요청_내용 = new UpdateUserRequest(
             사용자의_모든_정보_수정_dto.name(),
             사용자의_모든_정보_수정_dto.color(),
-            사용자의_모든_정보_수정_dto.statusMessage()
+            사용자의_모든_정보_수정_dto.statusMessage(),
+            false
     );
     protected MockMultipartFile 사용자의_모든_정보_수정_요청;
-    protected UpdateUserDto 사용자의_테마_색상만_수정_dto = new UpdateUserDto(null, ThemeColor.BLUE.name(), null, 프로필_이미지가_null인_파일);
+    protected UpdateUserDto 사용자의_테마_색상만_수정_dto = new UpdateUserDto(null, ThemeColor.BLUE.name(), null, false, 프로필_이미지가_null인_파일);
     protected ReadUserDto 테마_색상만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
@@ -111,10 +113,11 @@ public class UserControllerTestFixture {
     private UpdateUserRequest 사용자의_테마_색상만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_테마_색상만_수정_dto.name(),
             사용자의_테마_색상만_수정_dto.color(),
-            사용자의_테마_색상만_수정_dto.statusMessage()
+            사용자의_테마_색상만_수정_dto.statusMessage(),
+            false
     );
     protected MockMultipartFile 사용자의_테마_색상만_수정_요청;
-    protected UpdateUserDto 사용자의_상태_메시지만_수정_dto = new UpdateUserDto(null, null, "수정한 상태 메시지", 프로필_이미지가_null인_파일);
+    protected UpdateUserDto 사용자의_상태_메시지만_수정_dto = new UpdateUserDto(null, null, "수정한 상태 메시지", false, 프로필_이미지가_null인_파일);
     protected ReadUserDto 상태_메시지만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
@@ -128,10 +131,11 @@ public class UserControllerTestFixture {
     private UpdateUserRequest 사용자의_상태_메시지만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_상태_메시지만_수정_dto.name(),
             사용자의_상태_메시지만_수정_dto.color(),
-            사용자의_상태_메시지만_수정_dto.statusMessage()
+            사용자의_상태_메시지만_수정_dto.statusMessage(),
+            false
     );
     protected MockMultipartFile 사용자의_상태_메시지만_수정_요청;
-    protected UpdateUserDto 사용자의_이름만_수정_dto = new UpdateUserDto("수정한 이름", null, null, 프로필_이미지가_null인_파일);
+    protected UpdateUserDto 사용자의_이름만_수정_dto = new UpdateUserDto("수정한 이름", null, null, false, 프로필_이미지가_null인_파일);
     protected ReadUserDto 이름만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
@@ -145,11 +149,12 @@ public class UserControllerTestFixture {
     private UpdateUserRequest 사용자의_이름만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_이름만_수정_dto.name(),
             사용자의_이름만_수정_dto.color(),
-            사용자의_이름만_수정_dto.statusMessage()
+            사용자의_이름만_수정_dto.statusMessage(),
+            false
     );
     protected MockMultipartFile 사용자의_이름만_수정_요청;
 
-    protected UpdateUserDto 사용자의_프로필_이미지만_수정_dto = new UpdateUserDto(null, null, null, 수정한_프로필_이미지);
+    protected UpdateUserDto 사용자의_프로필_이미지만_수정_dto = new UpdateUserDto(null, null, null, false, 수정한_프로필_이미지);
     protected ReadUserDto 프로필_이미지만_수정된_사용자_정보_dto = new ReadUserDto(
             사용자_아이디,
             사용자_정보_dto.oAuthId(),
@@ -163,7 +168,8 @@ public class UserControllerTestFixture {
     private UpdateUserRequest 사용자의_프로필_이미지만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_프로필_이미지만_수정_dto.name(),
             사용자의_프로필_이미지만_수정_dto.color(),
-            사용자의_프로필_이미지만_수정_dto.statusMessage()
+            사용자의_프로필_이미지만_수정_dto.statusMessage(),
+            false
     );
     protected MockMultipartFile 사용자의_프로필_이미지만_수정_요청;
 

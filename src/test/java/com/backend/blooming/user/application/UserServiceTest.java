@@ -152,6 +152,20 @@ class UserServiceTest extends UserServiceTestFixture {
     }
 
     @Test
+    void 사용자_정보_수정시_프로필_이미지를_기본_이미지로_수정할_수_있다() {
+        // when
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 기본_프로필_이미지로_수정한_dto);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
+            softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo("");
+        });
+    }
+
+    @Test
     void 사용자_정보_수정시_프로필_이미지만_수정할_수_있다() {
         // when
         final ReadUserDto actual = userService.updateById(사용자_아이디, 프로필_이미지만_수정한_dto);
