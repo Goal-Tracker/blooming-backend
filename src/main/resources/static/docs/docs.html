@@ -490,6 +490,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_현재_로그인한_사용자가_참여한_종료된_모든_골_조회">현재 로그인한 사용자가 참여한 종료된 모든 골 조회</a></li>
 <li><a href="#_골_삭제">골 삭제</a></li>
 <li><a href="#_골_수정">골 수정</a></li>
+<li><a href="#_골_초대_수락">골 초대 수락</a></li>
 </ul>
 </li>
 <li><a href="#_콕_찌르기">콕 찌르기</a>
@@ -3196,25 +3197,42 @@ Content-Type: application/json
 </div>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_콕_찌르기"><a class="link" href="#_콕_찌르기">콕 찌르기</a></h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_콕_찌르기_요청"><a class="link" href="#_콕_찌르기_요청">콕 찌르기 요청</a></h3>
+<h3 id="_골_초대_수락"><a class="link" href="#_골_초대_수락">골 초대 수락</a></h3>
 <div class="sect3">
 <h4 id="_요청_22"><a class="link" href="#_요청_22">요청</a></h4>
 <div class="sect4">
 <h5 id="_요청_22_http_request"><a class="link" href="#_요청_22_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/poke/2 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/accept HTTP/1.1
 X-API-VERSION: 1
 Authorization: Bearer access_token
 Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_요청_22_path_parameters"><a class="link" href="#_요청_22_path_parameters">Path parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. /goals/{goalId}/accept</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">조회할 골 아이디</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sect4">
 <h5 id="_요청_22_request_headers"><a class="link" href="#_요청_22_request_headers">Request headers</a></h5>
@@ -3241,8 +3259,66 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </tbody>
 </table>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_응답_22"><a class="link" href="#_응답_22">응답</a></h4>
 <div class="sect4">
-<h5 id="_요청_22_path_parameters"><a class="link" href="#_요청_22_path_parameters">Path parameters</a></h5>
+<h5 id="_응답_22_http_response"><a class="link" href="#_응답_22_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_콕_찌르기"><a class="link" href="#_콕_찌르기">콕 찌르기</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_콕_찌르기_요청"><a class="link" href="#_콕_찌르기_요청">콕 찌르기 요청</a></h3>
+<div class="sect3">
+<h4 id="_요청_23"><a class="link" href="#_요청_23">요청</a></h4>
+<div class="sect4">
+<h5 id="_요청_23_http_request"><a class="link" href="#_요청_23_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/poke/2 HTTP/1.1
+X-API-VERSION: 1
+Authorization: Bearer access_token
+Content-Type: application/x-www-form-urlencoded</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_23_request_headers"><a class="link" href="#_요청_23_request_headers">Request headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_23_path_parameters"><a class="link" href="#_요청_23_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. /goals/{goalId}/poke/{userId}</caption>
 <colgroup>
@@ -3269,9 +3345,9 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_응답_22"><a class="link" href="#_응답_22">응답</a></h4>
+<h4 id="_응답_23"><a class="link" href="#_응답_23">응답</a></h4>
 <div class="sect4">
-<h5 id="_응답_22_http_response"><a class="link" href="#_응답_22_http_response">HTTP response</a></h5>
+<h5 id="_응답_23_http_response"><a class="link" href="#_응답_23_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
