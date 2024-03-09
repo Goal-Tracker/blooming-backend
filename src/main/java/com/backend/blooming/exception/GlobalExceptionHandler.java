@@ -11,6 +11,7 @@ import com.backend.blooming.friend.application.exception.FriendRequestNotAllowed
 import com.backend.blooming.friend.application.exception.NotFoundFriendRequestException;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.ForbiddenGoalToPokeException;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
 import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
@@ -274,6 +275,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logWarn(exception, request);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(ForbiddenGoalToReadException.class)
+    public ResponseEntity<ExceptionResponse> handleForbiddenGoalToReadException(
+            final ForbiddenGoalToReadException exception,
+            final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 

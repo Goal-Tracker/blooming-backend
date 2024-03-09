@@ -128,4 +128,8 @@ public class Goal extends BaseTimeEntity {
     public void updateAccepted(final Long userId) {
         teams.updateAccepted(userId);
     }
+
+    public boolean isAccepted(final User user) {
+        return teams.isAccepted(user);
+    }
 }
