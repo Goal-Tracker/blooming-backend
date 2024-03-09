@@ -137,4 +137,10 @@ public class GoalService {
         final Goal goal = getGoal(goalId);
         goal.updateDeleted(user.getId());
     }
+
+    public void acceptGoalRequest(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateAccepted(user.getId());
+    }
 }
