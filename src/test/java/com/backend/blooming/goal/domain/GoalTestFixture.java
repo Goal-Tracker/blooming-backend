@@ -19,8 +19,8 @@ public class GoalTestFixture {
     protected LocalDate 골_시작일 = LocalDate.now();
     protected LocalDate 골_종료일 = LocalDate.now().plusDays(10);
     protected LocalDate 수정_요청한_골_종료일 = LocalDate.now().plusDays(5);
-    protected Long 골_관리자_아이디 = 1L;
-    protected Long 골_관리자가_아닌_사용자_아이디 = 2L;
+    protected Long 골_관리자_아이디;
+    protected Long 골_관리자가_아닌_사용자_아이디;
     protected User 기존_골_참여자 = User.builder()
                                   .oAuthId("아이디")
                                   .oAuthType(OAuthType.KAKAO)
@@ -45,6 +45,8 @@ public class GoalTestFixture {
                                       .color(ThemeColor.CORAL)
                                       .statusMessage("상태메시지3")
                                       .build();
+
+    protected User 팀원이_아닌_사용자 = 추가된_골_참여_사용자;
     protected List<User> 골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자2));
     protected List<User> 유효하지_않은_골_참여자_목록 = new ArrayList<>();
     protected List<User> 수정_요청한_골_참여자_목록 = new ArrayList<>();
@@ -52,8 +54,15 @@ public class GoalTestFixture {
 
     @BeforeEach
     void setUp() {
+        ReflectionTestUtils.setField(기존_골_참여자, "id", 1L);
+        ReflectionTestUtils.setField(기존_골_참여자2, "id", 2L);
+        ReflectionTestUtils.setField(추가된_골_참여_사용자, "id", 3L);
+
         유효하지_않은_골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자, 기존_골_참여자));
         수정_요청한_골_참여자_목록 = new ArrayList<>(List.of(기존_골_참여자, 기존_골_참여자2, 추가된_골_참여_사용자));
+
+        골_관리자_아이디 = 기존_골_참여자.getId();
+        골_관리자가_아닌_사용자_아이디 = 기존_골_참여자2.getId();
         유효한_골 = Goal.builder()
                     .name(골_제목)
                     .memo("골 메모")
@@ -62,8 +71,5 @@ public class GoalTestFixture {
                     .managerId(골_관리자_아이디)
                     .users(골_참여자_목록)
                     .build();
-        ReflectionTestUtils.setField(기존_골_참여자, "id", 1L);
-        ReflectionTestUtils.setField(기존_골_참여자2, "id", 2L);
-        ReflectionTestUtils.setField(추가된_골_참여_사용자, "id", 3L);
     }
 }

@@ -44,3 +44,6 @@ include::goal.adoc[]
 
 == 콕 찌르기
 include::poke.adoc[]
+
+== 신고
+include::report.adoc[]

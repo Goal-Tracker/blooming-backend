@@ -60,4 +60,8 @@ public class Stamp extends BaseTimeEntity {
         this.day = day;
         this.message = message;
     }
+
+    public boolean isWriter(final User user) {
+        return this.user.equals(user);
+    }
 }

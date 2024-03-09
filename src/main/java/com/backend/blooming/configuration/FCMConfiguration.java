@@ -22,7 +22,7 @@ import java.util.Optional;
 public class FCMConfiguration {
 
     @Value("${fcm.key.path}")
-    private String FCM_PRIVATE_KEY_PATH;
+    private String fcmPrivateKeyPath;
 
     @Value("${fcm.key.scope}")
     private String fireBaseScope;
@@ -53,7 +53,7 @@ public class FCMConfiguration {
     }
 
     private GoogleCredentials createGoogleCredentials() throws IOException {
-        final Resource resource = new ClassPathResource(FCM_PRIVATE_KEY_PATH);
+        final Resource resource = new ClassPathResource(fcmPrivateKeyPath);
         final List<String> scopes = List.of(fireBaseScope);
 
         return GoogleCredentials.fromStream(resource.getInputStream())

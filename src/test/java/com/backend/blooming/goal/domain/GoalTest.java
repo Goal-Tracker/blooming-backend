@@ -181,4 +181,52 @@ class GoalTest extends GoalTestFixture {
         assertThatThrownBy(() -> goal.updateDeleted(골_관리자가_아닌_사용자_아이디))
                 .isInstanceOf(DeleteGoalForbiddenException.class);
     }
+
+    @Test
+    void 골_팀_목록에_포함된_사용자라면_참을_반환한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        final boolean actual = goal.isTeam(기존_골_참여자);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 골_팀_목록에_포함된_사용자가_아니라면_거짓을_반환한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        final boolean actual = goal.isTeam(팀원이_아닌_사용자);
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
+    void 골_관리자라면_참을_반환한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        final boolean actual = goal.isManager(골_관리자_아이디);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 골_관리자가_아니라면_거짓을_반환한다() {
+        // given
+        final Goal goal = 유효한_골;
+
+        // when
+        final boolean actual = goal.isManager(골_관리자가_아닌_사용자_아이디);
+
+        // then
+        assertThat(actual).isFalse();
+    }
 }
