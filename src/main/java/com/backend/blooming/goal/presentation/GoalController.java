@@ -102,4 +102,15 @@ public class GoalController {
         return ResponseEntity.noContent()
                              .build();
     }
+
+    @PostMapping(value = "/{goalId}/accept", headers = "X-API-VERSION=1")
+    public ResponseEntity<Void> acceptGoal(
+            @PathVariable("goalId") final Long goalId,
+            @Authenticated final AuthenticatedUser authenticatedUser
+    ) {
+        goalService.acceptGoalRequest(authenticatedUser.userId(), goalId);
+
+        return ResponseEntity.noContent()
+                             .build();
+    }
 }

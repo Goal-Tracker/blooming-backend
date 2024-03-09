@@ -9,6 +9,7 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -571,6 +572,28 @@ class GoalControllerTest extends GoalControllerTestFixture {
                         fieldWithPath("teams.[].name").type(JsonFieldType.STRING).description("골 참여자 이름"),
                         fieldWithPath("teams.[].colorCode").type(JsonFieldType.STRING).description("골 참여자 색상"),
                         fieldWithPath("teams.[].statusMessage").type(JsonFieldType.STRING).description("골 참여자 상태메시지")
+                )
+        ));
+    }
+
+    @Test
+    void 골_초대를_수락한다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        willDoNothing().given(goalService).acceptGoalRequest(사용자_토큰_정보.userId(), 유효한_골_아이디);
+
+        // when & then
+        mockMvc.perform(post("/goals/{goalId}/accept", 유효한_골_아이디)
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+        ).andExpectAll(
+                status().isNoContent()
+        ).andDo(print()).andDo(restDocs.document(
+                pathParameters(parameterWithName("goalId").description("조회할 골 아이디")),
+                requestHeaders(
+                        headerWithName("X-API-VERSION").description("요청 버전"),
+                        headerWithName(HttpHeaders.AUTHORIZATION).description("액세스 토큰")
                 )
         ));
     }
