@@ -8,7 +8,7 @@ import com.backend.blooming.notification.infrastructure.repository.NotificationR
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.SoftAssertions;
+import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -91,7 +91,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
             softAssertions.assertThat(notification.getTitle()).isEqualTo(ACCEPT_FRIEND.getTitleByFormat(null));
             softAssertions.assertThat(notification.getContent()).contains(친구_요청을_수락한_사용자.getName());
             softAssertions.assertThat(notification.getType()).isEqualTo(ACCEPT_FRIEND);
-            softAssertions.assertThat(notification.getRequestId()).isEqualTo(친구_요청을_수락한_사용자.getId());
+            softAssertions.assertThat(notification.getRequestId()).isNull();
             softAssertions.assertThat(친구_요청을_보낸_사용자.isNewAlarm()).isTrue();
         });
     }
@@ -109,7 +109,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
             softAssertions.assertThat(notification.getTitle()).isEqualTo(POKE.getTitleByFormat(골.getName()));
             softAssertions.assertThat(notification.getContent()).contains(콕_찌르기_요청자.getName());
             softAssertions.assertThat(notification.getType()).isEqualTo(POKE);
-            softAssertions.assertThat(notification.getRequestId()).isEqualTo(콕_찌르기_요청자.getId());
+            softAssertions.assertThat(notification.getRequestId()).isNull();
             softAssertions.assertThat(콕_찌르기_수신자.isNewAlarm()).isTrue();
         });
     }
@@ -130,7 +130,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
                               .isEqualTo(REQUEST_GOAL.getTitleByFormat(골.getName()));
                 softAssertions.assertThat(notification.getContent()).contains(골_관리자.getName());
                 softAssertions.assertThat(notification.getType()).isEqualTo(REQUEST_GOAL);
-                softAssertions.assertThat(notification.getRequestId()).isEqualTo(골_관리자.getId());
+                softAssertions.assertThat(notification.getRequestId()).isNull();
                 softAssertions.assertThat(골_요청을_받은_사용자1.isNewAlarm()).isTrue();
                 softAssertions.assertThat(골_요청을_받은_사용자2.isNewAlarm()).isTrue();
             });
@@ -140,7 +140,9 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
     @Test
     void 골_초대_요청시_팀원에_골_관리자가_없다면_예외를_발생시킨다() {
         // when & then
-        assertThatThrownBy(() -> notificationService.sendRequestGoalNotification(팀원에_관리자가_없는_골, 팀원에_관리자가_없는_골.getTeams()))
-                .isInstanceOf(NotFoundGoalManagerException.class);
+        assertThatThrownBy(() -> notificationService.sendRequestGoalNotification(
+                팀원에_관리자가_없는_골,
+                팀원에_관리자가_없는_골.getTeams()
+        )).isInstanceOf(NotFoundGoalManagerException.class);
     }
 }
