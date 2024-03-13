@@ -2308,8 +2308,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-03-10",
-  "endDate" : "2024-03-20",
+  "startDate" : "2024-03-14",
+  "endDate" : "2024-03-24",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -2481,8 +2481,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-10",
-  "endDate" : "2024-03-20",
+  "startDate" : "2024-03-14",
+  "endDate" : "2024-03-24",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -2508,8 +2508,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-10",
-  "endDate" : "2024-03-20",
+  "startDate" : "2024-03-14",
+  "endDate" : "2024-03-24",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
@@ -2656,8 +2656,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-10",
-    "endDate" : "2024-03-20",
+    "startDate" : "2024-03-14",
+    "endDate" : "2024-03-24",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -2681,8 +2681,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-10",
-    "endDate" : "2024-03-20",
+    "startDate" : "2024-03-14",
+    "endDate" : "2024-03-24",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -2812,8 +2812,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-10",
-    "endDate" : "2024-03-15",
+    "startDate" : "2024-03-14",
+    "endDate" : "2024-03-19",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -2837,8 +2837,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-10",
-    "endDate" : "2024-03-15",
+    "startDate" : "2024-03-14",
+    "endDate" : "2024-03-19",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -3005,7 +3005,7 @@ Authorization: Bearer access_token
 {
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "endDate" : "2024-03-30",
+  "endDate" : "2024-04-03",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -3072,8 +3072,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-10",
-  "endDate" : "2024-03-30",
+  "startDate" : "2024-03-14",
+  "endDate" : "2024-04-03",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
@@ -3104,8 +3104,8 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-10",
-  "endDate" : "2024-03-30",
+  "startDate" : "2024-03-14",
+  "endDate" : "2024-04-03",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
@@ -3212,10 +3212,9 @@ Content-Type: application/json
 <h5 id="_요청_22_http_request"><a class="link" href="#_요청_22_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/accept HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">PATCH /goals/1/accept HTTP/1.1
 X-API-VERSION: 1
-Authorization: Bearer access_token
-Content-Type: application/x-www-form-urlencoded</code></pre>
+Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 </div>
