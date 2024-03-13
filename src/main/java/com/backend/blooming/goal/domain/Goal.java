@@ -138,8 +138,4 @@ public class Goal extends BaseTimeEntity {
             throw new InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager();
         }
     }
-
-    public boolean isAccepted(final User user) {
-        return teams.isAccepted(user);
-    }
 }

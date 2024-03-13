@@ -86,7 +86,7 @@ public class GoalService {
     }
 
     private void validateUserToRead(final User user, final Goal goal) {
-        if (!goal.isTeam(user) || !goal.isAccepted(user)) {
+        if (!goal.isTeam(user)) {
             throw new ForbiddenGoalToReadException();
         }
     }

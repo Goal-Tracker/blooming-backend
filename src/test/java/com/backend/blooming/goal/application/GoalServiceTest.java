@@ -9,7 +9,9 @@ import com.backend.blooming.goal.application.exception.InvalidGoalAcceptExceptio
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
+import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -32,6 +34,9 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
     @Autowired
     private GoalService goalService;
+
+    @Autowired
+    private GoalRepository goalRepository;
 
     @Test
     void 새로운_골을_생성한다() {
@@ -312,14 +317,15 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
-    @Transactional
     void 골_초대를_수락한다() {
         // when
         goalService.acceptGoalRequest(골_관리자가_아닌_사용자_아이디, 현재_진행중인_골1.getId());
-        final List<GoalTeam> acceptedGoalTeam = 현재_진행중인_골1.getTeams()
-                                                          .stream()
-                                                          .filter(GoalTeam::isAccepted)
-                                                          .toList();
+        final Goal goal = goalRepository.findByIdWithUserAndDeletedIsFalse(현재_진행중인_골1.getId())
+                                        .orElseThrow(NotFoundGoalException::new);
+        final List<GoalTeam> acceptedGoalTeam = goal.getTeams()
+                                                    .stream()
+                                                    .filter(GoalTeam::isAccepted)
+                                                    .toList();
         // then
         assertSoftly(softAssertions -> {
             softAssertions.assertThat(acceptedGoalTeam).hasSize(2);
