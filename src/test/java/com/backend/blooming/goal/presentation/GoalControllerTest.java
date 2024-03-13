@@ -603,7 +603,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
         willDoNothing().given(goalService).acceptGoalRequest(사용자_토큰_정보.userId(), 유효한_골_아이디);
 
         // when & then
-        mockMvc.perform(post("/goals/{goalId}/accept", 유효한_골_아이디)
+        mockMvc.perform(patch("/goals/{goalId}/accept", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -627,7 +627,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .acceptGoalRequest(사용자_토큰_정보.userId(), 유효한_골_아이디);
 
         // when & then
-        mockMvc.perform(post("/goals/{goalId}/accept", 유효한_골_아이디)
+        mockMvc.perform(patch("/goals/{goalId}/accept", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
@@ -646,7 +646,7 @@ class GoalControllerTest extends GoalControllerTestFixture {
                 .acceptGoalRequest(사용자_토큰_정보.userId(), 유효한_골_아이디);
 
         // when & then
-        mockMvc.perform(post("/goals/{goalId}/accept", 유효한_골_아이디)
+        mockMvc.perform(patch("/goals/{goalId}/accept", 유효한_골_아이디)
                 .header("X-API-VERSION", 1)
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(

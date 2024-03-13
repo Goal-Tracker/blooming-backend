@@ -106,7 +106,7 @@ public class GoalController {
                              .build();
     }
 
-    @PostMapping(value = "/{goalId}/accept", headers = "X-API-VERSION=1")
+    @PatchMapping(value = "/{goalId}/accept", headers = "X-API-VERSION=1")
     public ResponseEntity<Void> acceptGoal(
             @PathVariable("goalId") final Long goalId,
             @Authenticated final AuthenticatedUser authenticatedUser
