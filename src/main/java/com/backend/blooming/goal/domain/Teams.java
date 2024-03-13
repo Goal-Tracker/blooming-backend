@@ -63,7 +63,7 @@ public class Teams {
 
     public boolean isTeam(final User user) {
         return goalTeams.stream()
-                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user) && goalTeam.isAccepted());
+                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user));
     }
 
     public void updateAccepted(final Long userId) {
@@ -72,5 +72,10 @@ public class Teams {
                 goalTeam.updateAccepted();
             }
         });
+    }
+
+    public boolean isTeamAndAccepted(final User user) {
+        return goalTeams.stream()
+                        .anyMatch(goalTeam -> goalTeam.getUser().equals(user) && goalTeam.isAccepted());
     }
 }
