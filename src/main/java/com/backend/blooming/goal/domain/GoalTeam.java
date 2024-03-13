@@ -45,16 +45,16 @@ public class GoalTeam extends BaseTimeEntity {
     public GoalTeam(final User user, final Goal goal) {
         this.user = user;
         this.goal = goal;
-        validateUserIsManager(user, goal);
+        processDefaultManager(user, goal);
+    }
+
+    private void processDefaultManager(final User user, final Goal goal) {
+        if (goal.getManagerId().equals(user.getId())) {
+            updateAccepted();
+        }
     }
 
     public void updateAccepted() {
         this.accepted = true;
-    }
-
-    private void validateUserIsManager(final User user, final Goal goal) {
-        if (goal.getManagerId().equals(user.getId())) {
-            updateAccepted();
-        }
     }
 }
