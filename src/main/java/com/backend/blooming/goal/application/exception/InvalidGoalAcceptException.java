@@ -5,7 +5,7 @@ import com.backend.blooming.exception.ExceptionMessage;
 
 public class InvalidGoalAcceptException extends BloomingException {
 
-    public InvalidGoalAcceptException(final ExceptionMessage exceptionMessage) {
+    private InvalidGoalAcceptException(final ExceptionMessage exceptionMessage) {
         super(exceptionMessage);
     }
 
