@@ -9,7 +9,6 @@ import com.backend.blooming.notification.infrastructure.repository.NotificationR
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -42,7 +42,7 @@ class PokeServiceTest extends PokeServiceTestFixture {
         final List<Notification> notifications = notificationRepository.findAllByReceiverId(콕_찌르기를_받은_사용자_아이디);
         final Notification pokeNotification = notifications.get(0);
         final User user = userRepository.findById(콕_찌르기를_받은_사용자_아이디).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(notifications).isNotEmpty();
             softAssertions.assertThat(pokeNotification.getReceiver().getId()).isEqualTo(콕_찌르기를_받은_사용자_아이디);
             softAssertions.assertThat(pokeNotification.getType()).isEqualTo(NotificationType.POKE);

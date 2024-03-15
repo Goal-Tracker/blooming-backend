@@ -8,7 +8,6 @@ import com.backend.blooming.notification.infrastructure.repository.NotificationR
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.*;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -21,6 +20,7 @@ import static com.backend.blooming.notification.domain.NotificationType.POKE;
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_FRIEND;
 import static com.backend.blooming.notification.domain.NotificationType.REQUEST_GOAL;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
@@ -43,7 +43,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
 
         // then
         final User user = userRepository.findById(알림이_있는_사용자.getId()).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             final List<ReadNotificationsDto.ReadNotificationDto> notifications = actual.notifications();
             softAssertions.assertThat(notifications).hasSize(2);
             softAssertions.assertThat(notifications.get(0).id()).isEqualTo(친구_요청_알림1.getId());
@@ -67,7 +67,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
 
         // then
         final Notification notification = notificationRepository.findById(actual).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPositive();
             softAssertions.assertThat(notification.getReceiver().getId()).isEqualTo(친구_요청을_받은_사용자.getId());
             softAssertions.assertThat(notification.getTitle()).isEqualTo(REQUEST_FRIEND.getTitleByFormat(null));
@@ -85,7 +85,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
 
         // then
         final Notification notification = notificationRepository.findById(actual).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPositive();
             softAssertions.assertThat(notification.getReceiver().getId()).isEqualTo(친구_요청을_보낸_사용자.getId());
             softAssertions.assertThat(notification.getTitle()).isEqualTo(ACCEPT_FRIEND.getTitleByFormat(null));
@@ -103,7 +103,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
 
         // then
         final Notification notification = notificationRepository.findById(actual).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(actual).isPositive();
             softAssertions.assertThat(notification.getReceiver().getId()).isEqualTo(콕_찌르기_수신자.getId());
             softAssertions.assertThat(notification.getTitle()).isEqualTo(POKE.getTitleByFormat(골.getName()));
@@ -122,7 +122,7 @@ class NotificationServiceTest extends NotificationServiceTestFixture {
         // then
         actuals.forEach(actual -> {
             final Notification notification = notificationRepository.findById(actual).get();
-            SoftAssertions.assertSoftly(softAssertions -> {
+            assertSoftly(softAssertions -> {
                 softAssertions.assertThat(actual).isPositive();
                 softAssertions.assertThat(notification.getReceiver().getId())
                               .isIn(골_요청을_받은_사용자1.getId(), 골_요청을_받은_사용자2.getId());
