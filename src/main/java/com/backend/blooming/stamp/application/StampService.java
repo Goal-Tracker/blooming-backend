@@ -57,13 +57,6 @@ public class StampService {
         }
     }
 
-    private List<Long> getTeamUserIds(final Goal goal) {
-        return goal.getTeams()
-                   .stream()
-                   .map(goalTeam -> goalTeam.getUser().getId())
-                   .toList();
-    }
-
     private void validateExistStamp(final Long userId, final int day) {
         final boolean isExistsStamp = stampRepository.existsByUserIdAndDayAndDeletedIsFalse(userId, day);
         if (isExistsStamp) {
