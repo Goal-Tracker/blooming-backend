@@ -80,6 +80,13 @@ public enum ExceptionMessage {
     NOT_ALLOWED_REPORT_OWN_STAMP("자신의 스탬프는 신고할 수 없습니다."),
     STAMP_REPORT_FORBIDDEN("해당 스탬프를 신고할 권한이 없습니다."),
 
+    // 이미지
+    EMPTY_IMAGE_FILE("저장할 이미지 파일이 없습니다."),
+    EMPTY_IMAGE_PATH("이미지 저장 경로가 비어있습니다."),
+    UPLOAD_FILE_CONTROL("이미지 업로드 시 파일 처리에서 문제가 발생했습니다."),
+    UPLOAD_SDK("이미지 업로드 시 sdk에서 문제가 발생했습니다."),
+    NOT_SUPPORTED_MEDIA_TYPE("지원하지 않는 이미지 확장자입니다."),
+
     // 관리자 페이지
     INVALID_FRIEND_STATUS("잘못된 친구 상태입니다.");
 

@@ -14,6 +14,7 @@ import com.backend.blooming.goal.application.exception.ForbiddenGoalToPokeExcept
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import com.backend.blooming.notification.application.exception.NotFoundGoalManagerException;
 import com.backend.blooming.report.application.exception.InvalidGoalReportException;
 import com.backend.blooming.report.application.exception.InvalidStampReportException;
@@ -307,6 +308,31 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logWarn(exception, request);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler({
+            UploadImageException.EmptyFileException.class,
+            UploadImageException.EmptyPathException.class,
+            UploadImageException.NotSupportedMediaTypeException.class,
+            UploadImageException.FileControlException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleUploadImageBadRequestException(
+            final UploadImageException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UploadImageException.SdkException.class)
+    public ResponseEntity<ExceptionResponse> handleUploadImageServerException(
+            final UploadImageException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 

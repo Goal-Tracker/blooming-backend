@@ -444,6 +444,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h3 id="_로그인">로그인</h3>
 <div class="sect3">
 <h4 id="_요청">요청</h4>
+<div class="sect4">
+<h5 id="_요청_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /auth/login/oauth/kakao HTTP/1.1
@@ -456,6 +458,9 @@ X-API-VERSION: 1
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_요청_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -474,6 +479,9 @@ X-API-VERSION: 1
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect4">
+<h5 id="_요청_path_parameters">Path parameters</h5>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /auth/login/oauth/{oAuthType}</caption>
 <colgroup>
@@ -493,6 +501,9 @@ X-API-VERSION: 1
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect4">
+<h5 id="_요청_request_fields">Request fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -520,8 +531,11 @@ X-API-VERSION: 1
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect3">
 <h4 id="_응답">응답</h4>
+<div class="sect4">
+<h5 id="_응답_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -536,6 +550,9 @@ Content-Type: application/json
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_응답_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -569,10 +586,13 @@ Content-Type: application/json
 </table>
 </div>
 </div>
+</div>
 <div class="sect2">
 <h3 id="_access_token_재발급">Access Token 재발급</h3>
 <div class="sect3">
 <h4 id="_요청_2">요청</h4>
+<div class="sect4">
+<h5 id="_요청_2_http_request">HTTP request</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /auth/reissue HTTP/1.1
@@ -584,6 +604,9 @@ X-API-VERSION: 1
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_요청_2_request_headers">Request headers</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -602,6 +625,9 @@ X-API-VERSION: 1
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect4">
+<h5 id="_요청_2_request_fields">Request fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -624,8 +650,11 @@ X-API-VERSION: 1
 </tbody>
 </table>
 </div>
+</div>
 <div class="sect3">
 <h4 id="_응답_2">응답</h4>
+<div class="sect4">
+<h5 id="_응답_2_http_response">HTTP response</h5>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -637,6 +666,9 @@ Content-Type: application/json
 }</code></pre>
 </div>
 </div>
+</div>
+<div class="sect4">
+<h5 id="_응답_2_response_fields">Response fields</h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -666,10 +698,11 @@ Content-Type: application/json
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-01-28 21:29:55 +0900
+Last updated 2024-03-16 15:18:43 +0900
 </div>
 </div>
 </body>

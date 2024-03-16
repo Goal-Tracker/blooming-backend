@@ -28,3 +28,11 @@ jwt:
   refresh-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest
   access-token-expire-hour: 12
   refresh-token-expire-hour: 1440
+
+cloud:
+  aws:
+    s3:
+      bucket: test-s3
+      path: test/
+    cloud-front:
+      domain: cloud.front.domain/
