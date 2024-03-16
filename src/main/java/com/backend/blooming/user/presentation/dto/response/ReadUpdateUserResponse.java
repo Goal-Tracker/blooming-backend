@@ -2,7 +2,7 @@ package com.backend.blooming.user.presentation.dto.response;
 
 import com.backend.blooming.user.application.dto.ReadUserDto;
 
-public record ReadUserResponse(
+public record ReadUpdateUserResponse(
         Long id,
         String oAuthId,
         String oAuthType,
@@ -10,12 +10,11 @@ public record ReadUserResponse(
         String name,
         String profileImageUrl,
         String color,
-        String statusMessage,
-        boolean hasNewAlarm
+        String statusMessage
 ) {
 
-    public static ReadUserResponse from(final ReadUserDto readUserDto) {
-        return new ReadUserResponse(
+    public static ReadUpdateUserResponse from(final ReadUserDto readUserDto) {
+        return new ReadUpdateUserResponse(
                 readUserDto.id(),
                 readUserDto.oAuthId(),
                 readUserDto.oAuthType(),
@@ -23,8 +22,7 @@ public record ReadUserResponse(
                 readUserDto.name(),
                 readUserDto.profileImageUrl(),
                 readUserDto.color(),
-                readUserDto.statusMessage(),
-                readUserDto.hasNewAlarm()
+                readUserDto.statusMessage()
         );
     }
 }

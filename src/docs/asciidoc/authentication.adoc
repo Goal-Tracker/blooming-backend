@@ -1,18 +1,11 @@
 === 로그인
 ==== 요청
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-request.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/request-headers.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/path-parameters.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/request-fields.adoc[]
+operation::authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다[snippets='http-request,request-headers,path-parameters,request-fields']
 ==== 응답
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/http-response.adoc[]
-include::{snippets}/authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다/response-fields.adoc[]
+operation::authentication-controller-test/oauth_access_token을_통해_로그인시_첫_로그인이라면_회원가입_여부를_참으로_반환한다[snippets='http-response,response-fields']
 
 === Access Token 재발급
 ==== 요청
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/http-request.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/request-headers.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/request-fields.adoc[]
+operation::authentication-controller-test/refresh_token을_통해_access_token을_재발행한다[snippets='http-request,request-headers,request-fields']
 ==== 응답
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/http-response.adoc[]
-include::{snippets}/authentication-controller-test/refresh_token을_통해_access_token을_재발행한다/response-fields.adoc[]
+operation::authentication-controller-test/refresh_token을_통해_access_token을_재발행한다[snippets='http-response,response-fields']

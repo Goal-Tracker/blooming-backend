@@ -22,6 +22,7 @@ public record ReadUsersWithFriendsStatusDto(List<ReadUserWithFriendsStatusDto> u
             String oAuthType,
             String email,
             String name,
+            String profileImageUrl,
             String color,
             String statusMessage,
             String friendsStatus
@@ -36,6 +37,7 @@ public record ReadUsersWithFriendsStatusDto(List<ReadUserWithFriendsStatusDto> u
                     user.getOAuthType().name(),
                     user.getEmail(),
                     user.getName(),
+                    user.getProfileImageUrl(),
                     user.getColorCode(),
                     user.getStatusMessage(),
                     userWithFriendsStatusDto.friendsStatus().name()
