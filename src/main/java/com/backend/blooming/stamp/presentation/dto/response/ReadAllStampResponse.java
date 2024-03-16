@@ -1,7 +1,6 @@
 package com.backend.blooming.stamp.presentation.dto.response;
 
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
-import com.backend.blooming.themecolor.domain.ThemeColor;
 
 import java.util.List;
 import java.util.Map;

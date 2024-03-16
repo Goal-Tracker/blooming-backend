@@ -4,8 +4,8 @@ import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
-import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
+import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
 import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.stamp.domain.Day;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -35,7 +34,7 @@ public class StampService {
     public ReadStampDto createStamp(final CreateStampDto createStampDto) {
         final Goal goal = getGoal(createStampDto.goalId());
         final User user = getUser(createStampDto.userId());
-        validateUserInGoalTeams(goal, user.getId());
+        validateUserInGoalTeams(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
         final Stamp stamp = persistStamp(createStampDto, goal, user);
 
@@ -52,9 +51,8 @@ public class StampService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private void validateUserInGoalTeams(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = getTeamUserIds(goal);
-        if (!teamUserIds.contains(userId)) {
+    private void validateUserInGoalTeams(final Goal goal, final User user) {
+        if (!goal.isTeam(user)) {
             throw new CreateStampForbiddenException();
         }
     }
@@ -88,16 +86,15 @@ public class StampService {
     public ReadAllStampDto readAllByGoalId(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
         final User user = getUser(userId);
-        validateUserToRead(goal, user.getId());
+        validateUserToRead(goal, user);
 
         final List<Stamp> stamps = stampRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
 
         return ReadAllStampDto.from(stamps);
     }
 
-    private void validateUserToRead(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = getTeamUserIds(goal);
-        if (!teamUserIds.contains(userId)) {
+    private void validateUserToRead(final Goal goal, final User user) {
+        if (!goal.isTeam(user)) {
             throw new ReadStampForbiddenException();
         }
     }

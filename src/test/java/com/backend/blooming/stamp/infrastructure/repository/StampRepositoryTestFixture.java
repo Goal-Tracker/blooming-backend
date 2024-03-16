@@ -81,6 +81,6 @@ public class StampRepositoryTestFixture {
                              .message(new Message("스탬프 메시지2"))
                              .build();
         stampRepository.saveAll(List.of(유효한_스탬프, 유효한_스탬프2));
-        유효한_스탬프_날짜 = 유효한_스탬프.getDay().getValue();
+        유효한_스탬프_날짜 = 유효한_스탬프.getDay();
     }
 }

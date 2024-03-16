@@ -270,9 +270,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ReadGoalForbiddenException.class)
     public ResponseEntity<ExceptionResponse> handleReadGoalForbiddenException(
-            final ReadGoalForbiddenException exception
+            final ReadGoalForbiddenException exception, final HttpServletRequest request
     ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+        logWarn(exception, request);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));
@@ -280,9 +280,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ReadStampForbiddenException.class)
     public ResponseEntity<ExceptionResponse> handleReadStampForbiddenException(
-            final ReadStampForbiddenException exception
+            final ReadStampForbiddenException exception, final HttpServletRequest request
     ) {
-        logger.warn(String.format(LOG_MESSAGE_FORMAT, exception.getClass().getSimpleName(), exception.getMessage()));
+        logWarn(exception, request);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                              .body(new ExceptionResponse(exception.getMessage()));

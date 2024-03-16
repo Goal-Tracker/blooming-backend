@@ -46,6 +46,10 @@ public class GoalService {
         return goal.getId();
     }
 
+    private List<User> getUsers(final List<Long> userIds) {
+        return userRepository.findAllByUserIds(userIds);
+    }
+
     private Goal persistGoal(final CreateGoalDto createGoalDto, final List<User> users) {
         final User user = getUser(createGoalDto.managerId());
         validateIsFriend(user.getId(), createGoalDto.teamUserIds());
@@ -67,10 +71,6 @@ public class GoalService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private List<User> getUsers(final List<Long> userIds) {
-        return userRepository.findAllByUserIds(userIds);
-    }
-
     private void validateIsFriend(final Long userId, final List<Long> teamUserIds) {
         final Long countFriends = friendRepository.countByUserIdAndFriendIdsAndIsFriends(userId, teamUserIds);
 
@@ -83,7 +83,7 @@ public class GoalService {
     public ReadGoalDetailDto readGoalDetailById(final Long goalId, final Long userId) {
         final Goal goal = getGoal(goalId);
         final User user = getUser(userId);
-        validateUserInGoalTeams(goal, user.getId());
+        validateUserInGoalTeams(goal, user);
 
         final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
@@ -95,12 +95,8 @@ public class GoalService {
                              .orElseThrow(NotFoundGoalException::new);
     }
 
-    private void validateUserInGoalTeams(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = goal.getTeams()
-                                           .stream()
-                                           .map(goalTeam -> goalTeam.getUser().getId())
-                                           .toList();
-        if (!teamUserIds.contains(userId)) {
+    private void validateUserInGoalTeams(final Goal goal, final User user) {
+        if (!goal.isTeam(user)) {
             throw new ReadGoalForbiddenException();
         }
     }

@@ -19,10 +19,10 @@ public class Message {
     private static final int STAMP_MESSAGE_MAXIMUM = 30;
 
     @Column(columnDefinition = "text", nullable = false, length = STAMP_MESSAGE_MAXIMUM)
-    private String message;
+    private String value;
 
     public Message(final String message) {
-        this.message = validateMessage(message);
+        this.value = validateMessage(message);
     }
 
     private String validateMessage(final String message) {

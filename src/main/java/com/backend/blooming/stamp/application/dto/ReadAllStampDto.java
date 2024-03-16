@@ -26,8 +26,8 @@ public record ReadAllStampDto(List<StampDto> stamps) {
                     stamp.getUser().getId(),
                     stamp.getUser().getName(),
                     stamp.getUser().getColor(),
-                    stamp.getMessage().getMessage(),
-                    stamp.getDay().getValue()
+                    stamp.getMessage(),
+                    stamp.getDay()
             );
         }
     }
