@@ -13,7 +13,6 @@ import com.backend.blooming.notification.infrastructure.repository.NotificationR
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
@@ -60,7 +59,7 @@ class FriendServiceTest extends FriendServiceTestFixture {
         // then
         final List<Notification> notification = notificationRepository.findAllByReceiverId(아직_친구_요청_전의_사용자_아이디);
         final User user = userRepository.findById(아직_친구_요청_전의_사용자_아이디).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(notification).hasSize(1);
             softAssertions.assertThat(notification.get(0).getId()).isPositive();
             softAssertions.assertThat(notification.get(0).getReceiver().getId()).isEqualTo(아직_친구_요청_전의_사용자_아이디);
@@ -167,11 +166,11 @@ class FriendServiceTest extends FriendServiceTestFixture {
         // then
         final List<Notification> notification = notificationRepository.findAllByReceiverId(친구_요청자의_아이디);
         final User user = userRepository.findById(친구_요청자의_아이디).get();
-        SoftAssertions.assertSoftly(softAssertions -> {
+        assertSoftly(softAssertions -> {
             softAssertions.assertThat(notification).hasSize(1);
             softAssertions.assertThat(notification.get(0).getId()).isPositive();
             softAssertions.assertThat(notification.get(0).getReceiver().getId()).isEqualTo(친구_요청자의_아이디);
-            softAssertions.assertThat(notification.get(0).getRequestId()).isEqualTo(이미_친구_요청을_받은_사용자_아이디);
+            softAssertions.assertThat(notification.get(0).getRequestId()).isNull();
             softAssertions.assertThat(user.isNewAlarm()).isTrue();
         });
     }
