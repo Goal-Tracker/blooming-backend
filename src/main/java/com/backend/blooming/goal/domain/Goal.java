@@ -2,6 +2,7 @@ package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.common.entity.BaseTimeEntity;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.user.domain.User;
 import jakarta.persistence.Column;
@@ -97,7 +98,7 @@ public class Goal extends BaseTimeEntity {
     public void updateEndDate(final LocalDate endDate) {
         this.goalTerm.updateEndDate(endDate);
     }
-    
+
     public List<GoalTeam> updateTeams(final List<User> users) {
         return this.teams.update(users, this);
     }
@@ -108,11 +109,10 @@ public class Goal extends BaseTimeEntity {
     }
 
     private void validUserToDelete(final Long userId) {
-        if (!this.getManagerId().equals(userId)) {
+        if (!isManager(userId)) {
             throw new DeleteGoalForbiddenException();
         }
     }
-
     public boolean isTeam(final User user) {
         return teams.isTeam(user);
     }
@@ -123,5 +123,23 @@ public class Goal extends BaseTimeEntity {
 
     public List<GoalTeam> getTeams() {
         return teams.getGoalTeams();
+    }
+
+    public void updateAccepted(final User user) {
+        validateUserToAccept(user);
+        teams.updateAccepted(user.getId());
+    }
+
+    private void validateUserToAccept(final User user) {
+        if (!this.isTeam(user)) {
+            throw new InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal();
+        }
+        if (this.isManager(user.getId())) {
+            throw new InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager();
+        }
+    }
+
+    public boolean isTeamAndAccepted(final User user) {
+        return teams.isTeamAndAccepted(user);
     }
 }
