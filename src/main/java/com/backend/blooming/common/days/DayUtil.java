@@ -1,4 +1,4 @@
-package com.backend.blooming.utils.days;
+package com.backend.blooming.common.days;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
