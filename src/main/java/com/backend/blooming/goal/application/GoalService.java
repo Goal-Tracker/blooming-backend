@@ -18,7 +18,7 @@ import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import com.backend.blooming.utils.days.DayUtil;
+import com.backend.blooming.common.days.DayUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
