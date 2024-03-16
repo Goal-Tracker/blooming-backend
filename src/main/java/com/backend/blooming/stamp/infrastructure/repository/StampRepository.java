@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StampRepository extends JpaRepository<Stamp, Long> {
 
@@ -31,4 +32,15 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
             WHERE s.day.value = :day AND s.deleted = FALSE
             """)
     List<Stamp> findAllByDayAndDeletedIsFalse(final int day);
+
+    @Query("""
+                SELECT s
+                FROM Stamp s
+                JOIN FETCH s.user
+                JOIN FETCH s.goal g
+                JOIN FETCH g.teams.goalTeams gt
+                JOIN FETCH gt.user
+                WHERE s.id = :stampId
+            """)
+    Optional<Stamp> findByIdAndFetchGoalAndUser(final Long stampId);
 }

@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
@@ -69,5 +70,39 @@ class StampTest extends StampTestFixture {
                                       .message(new Message(emptyMessage))
                                       .build())
                 .isInstanceOf(InvalidStampException.InvalidStampMessage.class);
+    }
+
+    @Test
+    void 스탬프_작성자라면_참을_반환한다() {
+        // given
+        final Stamp stamp = Stamp.builder()
+                                 .goal(유효한_골)
+                                 .user(유효한_사용자)
+                                 .day(new Day(유효한_골.getGoalTerm(), 1))
+                                 .message(new Message("테스트 메시지"))
+                                 .build();
+
+        // when
+        final boolean actual = stamp.isWriter(유효한_사용자);
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    void 스탬프_작성자가_아니라면_거짓을_반환한다() {
+        // given
+        final Stamp stamp = Stamp.builder()
+                                 .goal(유효한_골)
+                                 .user(유효한_사용자)
+                                 .day(new Day(유효한_골.getGoalTerm(), 1))
+                                 .message(new Message("테스트 메시지"))
+                                 .build();
+
+        // when
+        final boolean actual = stamp.isWriter(작성자가_아닌_사용자);
+
+        // then
+        assertThat(actual).isFalse();
     }
 }

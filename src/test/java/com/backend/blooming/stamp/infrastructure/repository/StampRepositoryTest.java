@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
@@ -68,6 +69,21 @@ class StampRepositoryTest extends StampRepositoryTestFixture {
             softAssertions.assertThat(result.get(1).getId()).isEqualTo(유효한_스탬프2.getId());
             softAssertions.assertThat(result.get(0).getDay()).isEqualTo(유효한_스탬프.getDay());
             softAssertions.assertThat(result.get(1).getDay()).isEqualTo(유효한_스탬프2.getDay());
+        });
+    }
+
+    @Test
+    void 특정_아이디에_대한_스탬프_조회시_작성자와_골의_정보를_함께_조회해온다() {
+        // when
+        final Optional<Stamp> actual = stampRepository.findByIdAndFetchGoalAndUser(유효한_스탬프.getId());
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual).isPresent();
+            softAssertions.assertThat(actual.get().getId()).isEqualTo(유효한_스탬프.getId());
+            softAssertions.assertThat(actual.get().getUser()).isEqualTo(유효한_스탬프.getUser());
+            softAssertions.assertThat(actual.get().getGoal()).isEqualTo(유효한_골);
+            softAssertions.assertThat(actual.get().getGoal().getTeams()).isEqualTo(유효한_골.getTeams());
         });
     }
 }

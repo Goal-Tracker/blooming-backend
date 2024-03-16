@@ -15,7 +15,12 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.image.infrastructure.exception.UploadImageException;
 import com.backend.blooming.notification.application.exception.NotFoundGoalManagerException;
+import com.backend.blooming.report.application.exception.InvalidGoalReportException;
+import com.backend.blooming.report.application.exception.InvalidStampReportException;
+import com.backend.blooming.report.application.exception.InvalidUserReportException;
+import com.backend.blooming.report.application.exception.ReportForbiddenException;
 import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
 import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
@@ -285,6 +290,71 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         logWarn(exception, request);
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidUserReportException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidUserReportException(
+            final InvalidUserReportException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidGoalReportException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidGoalReportException(
+            final InvalidGoalReportException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(InvalidStampReportException.class)
+    public ResponseEntity<ExceptionResponse> handleInvalidStampReportException(
+            final InvalidStampReportException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(ReportForbiddenException.class)
+    public ResponseEntity<ExceptionResponse> handleReportForbiddenException(
+            final ReportForbiddenException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler({
+            UploadImageException.EmptyFileException.class,
+            UploadImageException.EmptyPathException.class,
+            UploadImageException.NotSupportedMediaTypeException.class,
+            UploadImageException.FileControlException.class
+    })
+    public ResponseEntity<ExceptionResponse> handleUploadImageBadRequestException(
+            final UploadImageException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                             .body(new ExceptionResponse(exception.getMessage()));
+    }
+
+    @ExceptionHandler(UploadImageException.SdkException.class)
+    public ResponseEntity<ExceptionResponse> handleUploadImageServerException(
+            final UploadImageException exception, final HttpServletRequest request
+    ) {
+        logWarn(exception, request);
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 

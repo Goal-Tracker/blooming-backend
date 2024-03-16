@@ -8,8 +8,10 @@ public record ReadUserResponse(
         String oAuthType,
         String email,
         String name,
+        String profileImageUrl,
         String color,
-        String statusMessage
+        String statusMessage,
+        boolean hasNewAlarm
 ) {
 
     public static ReadUserResponse from(final ReadUserDto readUserDto) {
@@ -19,8 +21,10 @@ public record ReadUserResponse(
                 readUserDto.oAuthType(),
                 readUserDto.email(),
                 readUserDto.name(),
+                readUserDto.profileImageUrl(),
                 readUserDto.color(),
-                readUserDto.statusMessage()
+                readUserDto.statusMessage(),
+                readUserDto.hasNewAlarm()
         );
     }
 }

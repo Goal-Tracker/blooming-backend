@@ -24,7 +24,7 @@ import static org.mockito.Mockito.verify;
 @IsolateDatabase
 @DisplayNameGeneration(DisplayNameGenerator.ReplaceUnderscores.class)
 @SuppressWarnings("NonAsciiCharacters")
-class FCMNotificationServiceTest extends FCMNotificationServiceTestFixture {
+class ProdFCMNotificationServiceTest extends ProdFCMNotificationServiceTestFixture {
 
     @InjectMocks
     private ProdFCMNotificationService fcmNotificationService;

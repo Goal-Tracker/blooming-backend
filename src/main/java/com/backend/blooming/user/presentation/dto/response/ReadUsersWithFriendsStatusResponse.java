@@ -21,6 +21,7 @@ public record ReadUsersWithFriendsStatusResponse(List<ReadUserWithFriendsStatusR
             Long id,
             String email,
             String name,
+            String profileImageUrl,
             String color,
             String statusMessage,
             String friendsStatus
@@ -31,6 +32,7 @@ public record ReadUsersWithFriendsStatusResponse(List<ReadUserWithFriendsStatusR
                     userDto.id(),
                     userDto.email(),
                     userDto.name(),
+                    userDto.profileImageUrl(),
                     userDto.color(),
                     userDto.statusMessage(),
                     userDto.friendsStatus()

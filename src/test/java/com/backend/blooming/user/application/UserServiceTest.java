@@ -34,6 +34,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.oAuthType()).isEqualTo(사용자.getOAuthType().name());
             softAssertions.assertThat(actual.email()).isEqualTo(사용자.getEmail());
             softAssertions.assertThat(actual.name()).isEqualTo(사용자.getName());
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo(사용자.getProfileImageUrl());
             softAssertions.assertThat(actual.color()).isEqualTo(사용자.getColorCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(사용자.getStatusMessage());
         });
@@ -83,6 +84,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
             softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isNotEqualTo(기존_프로필_이미지_url);
         });
     }
 
@@ -96,6 +98,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.name()).isEqualTo(수정한_이름);
             softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo(기존_프로필_이미지_url);
         });
     }
 
@@ -109,6 +112,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
             softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo(기존_프로필_이미지_url);
         });
     }
 
@@ -129,6 +133,7 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
             softAssertions.assertThat(actual.color()).isEqualTo(수정한_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo(기존_프로필_이미지_url);
         });
     }
 
@@ -142,6 +147,35 @@ class UserServiceTest extends UserServiceTestFixture {
             softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
             softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
             softAssertions.assertThat(actual.statusMessage()).isEqualTo(수정한_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo(기존_프로필_이미지_url);
+        });
+    }
+
+    @Test
+    void 사용자_정보_수정시_프로필_이미지를_기본_이미지로_수정할_수_있다() {
+        // when
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 기본_프로필_이미지로_수정한_dto);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
+            softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isEqualTo("");
+        });
+    }
+
+    @Test
+    void 사용자_정보_수정시_프로필_이미지만_수정할_수_있다() {
+        // when
+        final ReadUserDto actual = userService.updateById(사용자_아이디, 프로필_이미지만_수정한_dto);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(actual.name()).isEqualTo(기존_이름);
+            softAssertions.assertThat(actual.color()).isEqualTo(기존_테마_색상.getCode());
+            softAssertions.assertThat(actual.statusMessage()).isEqualTo(기존_상태_메시지);
+            softAssertions.assertThat(actual.profileImageUrl()).isNotEqualTo(기존_프로필_이미지_url);
         });
     }
 
