@@ -10,7 +10,8 @@ public record ReadUserDto(
         String name,
         String profileImageUrl,
         String color,
-        String statusMessage
+        String statusMessage,
+        boolean hasNewAlarm
 ) {
 
     public static ReadUserDto from(final User user) {
@@ -22,7 +23,8 @@ public record ReadUserDto(
                 user.getName(),
                 user.getProfileImageUrl(),
                 user.getColorCode(),
-                user.getStatusMessage()
+                user.getStatusMessage(),
+                user.isNewAlarm()
         );
     }
 }

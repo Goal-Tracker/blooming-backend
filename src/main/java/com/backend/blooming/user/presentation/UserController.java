@@ -7,6 +7,7 @@ import com.backend.blooming.user.application.dto.ReadUserDto;
 import com.backend.blooming.user.application.dto.ReadUsersWithFriendsStatusDto;
 import com.backend.blooming.user.application.dto.UpdateUserDto;
 import com.backend.blooming.user.presentation.dto.request.UpdateUserRequest;
+import com.backend.blooming.user.presentation.dto.response.ReadUpdateUserResponse;
 import com.backend.blooming.user.presentation.dto.response.ReadUserResponse;
 import com.backend.blooming.user.presentation.dto.response.ReadUsersWithFriendsStatusResponse;
 import lombok.RequiredArgsConstructor;
@@ -47,7 +48,7 @@ public class UserController {
     }
 
     @PatchMapping(headers = "X-API-VERSION=1")
-    public ResponseEntity<ReadUserResponse> updateById(
+    public ResponseEntity<ReadUpdateUserResponse> updateById(
             @Authenticated final AuthenticatedUser authenticatedUser,
             @RequestPart final UpdateUserRequest userRequest,
             @RequestPart(required = false) final MultipartFile profileImage
@@ -57,6 +58,6 @@ public class UserController {
                 UpdateUserDto.of(userRequest, profileImage)
         );
 
-        return ResponseEntity.ok(ReadUserResponse.from(readUserDto));
+        return ResponseEntity.ok(ReadUpdateUserResponse.from(readUserDto));
     }
 }

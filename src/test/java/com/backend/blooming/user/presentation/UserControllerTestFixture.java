@@ -38,7 +38,8 @@ public class UserControllerTestFixture {
             "사용자",
             "https://blooming.default.image.png",
             ThemeColor.BLUE.getCode(),
-            "반갑습니다."
+            "반갑습니다.",
+            false
     );
     protected ReadUsersWithFriendsStatusDto.ReadUserWithFriendsStatusDto 사용자_정보_dto1 =
             new ReadUsersWithFriendsStatusDto.ReadUserWithFriendsStatusDto(
@@ -90,7 +91,8 @@ public class UserControllerTestFixture {
             사용자의_모든_정보_수정_dto.name(),
             "https://blooming.update.image.png",
             사용자의_모든_정보_수정_dto.color(),
-            사용자의_모든_정보_수정_dto.statusMessage()
+            사용자의_모든_정보_수정_dto.statusMessage(),
+            false
     );
     private UpdateUserRequest 사용자의_모든_정보_수정_요청_내용 = new UpdateUserRequest(
             사용자의_모든_정보_수정_dto.name(),
@@ -108,7 +110,8 @@ public class UserControllerTestFixture {
             사용자_정보_dto.name(),
             사용자_정보_dto.profileImageUrl(),
             사용자의_테마_색상만_수정_dto.color(),
-            사용자_정보_dto.statusMessage()
+            사용자_정보_dto.statusMessage(),
+            false
     );
     private UpdateUserRequest 사용자의_테마_색상만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_테마_색상만_수정_dto.name(),
@@ -126,7 +129,8 @@ public class UserControllerTestFixture {
             사용자_정보_dto.name(),
             사용자_정보_dto.profileImageUrl(),
             사용자_정보_dto.color(),
-            사용자의_상태_메시지만_수정_dto.statusMessage()
+            사용자의_상태_메시지만_수정_dto.statusMessage(),
+            false
     );
     private UpdateUserRequest 사용자의_상태_메시지만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_상태_메시지만_수정_dto.name(),
@@ -144,7 +148,8 @@ public class UserControllerTestFixture {
             사용자의_모든_정보_수정_dto.name(),
             사용자_정보_dto.profileImageUrl(),
             사용자_정보_dto.color(),
-            사용자_정보_dto.statusMessage()
+            사용자_정보_dto.statusMessage(),
+            false
     );
     private UpdateUserRequest 사용자의_이름만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_이름만_수정_dto.name(),
@@ -163,7 +168,8 @@ public class UserControllerTestFixture {
             사용자_정보_dto.name(),
             "https://blooming.update.image.png",
             사용자_정보_dto.color(),
-            사용자_정보_dto.statusMessage()
+            사용자_정보_dto.statusMessage(),
+            false
     );
     private UpdateUserRequest 사용자의_프로필_이미지만_수정_요청_내용 = new UpdateUserRequest(
             사용자의_프로필_이미지만_수정_dto.name(),

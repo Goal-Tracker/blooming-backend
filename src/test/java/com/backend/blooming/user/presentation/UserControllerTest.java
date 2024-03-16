@@ -84,7 +84,8 @@ class UserControllerTest extends UserControllerTestFixture {
                 jsonPath("$.name", is(사용자_정보_dto.name())),
                 jsonPath("$.profileImageUrl", is(사용자_정보_dto.profileImageUrl())),
                 jsonPath("$.color", is(사용자_정보_dto.color())),
-                jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage()))
+                jsonPath("$.statusMessage", is(사용자_정보_dto.statusMessage())),
+                jsonPath("$.hasNewAlarm", is(사용자_정보_dto.hasNewAlarm()))
         ).andDo(print()).andDo(restDocs.document(
                 requestHeaders(
                         headerWithName("X-API-VERSION").description("요청 버전"),
@@ -98,7 +99,8 @@ class UserControllerTest extends UserControllerTestFixture {
                         fieldWithPath("name").type(JsonFieldType.STRING).description("사용자 이름"),
                         fieldWithPath("profileImageUrl").type(JsonFieldType.STRING).description("사용자 프로필 이미지 url"),
                         fieldWithPath("color").type(JsonFieldType.STRING).description("사용자 테마 색상 코드"),
-                        fieldWithPath("statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지")
+                        fieldWithPath("statusMessage").type(JsonFieldType.STRING).description("사용자 상태 메시지"),
+                        fieldWithPath("hasNewAlarm").type(JsonFieldType.BOOLEAN).description("사용자 새로운 알림 여부")
                 )
         ));
     }
