@@ -65,7 +65,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 골_아이디로_해당_골_정보를_조회한다() {
         // when
-        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디);
+        final ReadGoalDetailDto result = goalService.readGoalDetailById(유효한_골_아이디, 유효한_사용자_아이디);
         
         // then
         assertSoftly(softAssertions -> {
@@ -87,7 +87,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     @Test
     void 존재하지_않는_골_아이디를_조회한_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디))
+        assertThatThrownBy(() -> goalService.readGoalDetailById(존재하지_않는_골_아이디, 유효한_사용자_아이디))
                 .isInstanceOf(NotFoundGoalException.class);
     }
 
