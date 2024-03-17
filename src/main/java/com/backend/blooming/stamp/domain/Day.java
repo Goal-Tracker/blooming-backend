@@ -2,7 +2,7 @@ package com.backend.blooming.stamp.domain;
 
 import com.backend.blooming.goal.domain.GoalTerm;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
-import com.backend.blooming.common.days.DayUtil;
+import com.backend.blooming.common.util.DayUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;

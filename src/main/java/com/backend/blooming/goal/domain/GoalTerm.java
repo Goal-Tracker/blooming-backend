@@ -1,7 +1,7 @@
 package com.backend.blooming.goal.domain;
 
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
-import com.backend.blooming.common.days.DayUtil;
+import com.backend.blooming.common.util.DayUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import lombok.EqualsAndHashCode;

@@ -1,15 +1,15 @@
-package com.backend.blooming.common.days;
+package com.backend.blooming.common.util;
+
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DayUtil {
 
     private static final int COUNT_GOAL_DAYS = 1;
-
-    private DayUtil() {
-
-    }
 
     public static int getDays(final LocalDate startDate, final LocalDate endDate) {
         return (int) ChronoUnit.DAYS.between(startDate, endDate) + COUNT_GOAL_DAYS;
