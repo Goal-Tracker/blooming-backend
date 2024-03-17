@@ -88,4 +88,23 @@ class TeamsTest extends TeamsTestFixture {
         // then
         assertThat(actual).isFalse();
     }
+
+    @Test
+    void 골_팀_목록에_포함된_사용자의_골_초대를_수락한다() {
+        // given
+        final Teams teams = Teams.create(골_참여_사용자_목록, 유효한_골);
+
+        // when
+        teams.updateAccepted(골_참여자2.getId());
+        final List<GoalTeam> acceptedGoalTeam = teams.getGoalTeams()
+                                                     .stream()
+                                                     .filter(GoalTeam::isAccepted)
+                                                     .toList();
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(acceptedGoalTeam).hasSize(2);
+            softAssertions.assertThat(acceptedGoalTeam.get(0).getUser().getId()).isEqualTo(골_참여자.getId());
+            softAssertions.assertThat(acceptedGoalTeam.get(1).getUser().getId()).isEqualTo(골_참여자2.getId());
+        });
+    }
 }
