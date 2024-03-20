@@ -19,7 +19,7 @@ public class InvalidGoalAcceptException extends BloomingException {
     public static class InvalidInvalidGoalAcceptByManager extends InvalidGoalAcceptException {
 
         public InvalidInvalidGoalAcceptByManager() {
-            super(ExceptionMessage.INVALID_GOAL_ACCEPT);
+            super(ExceptionMessage.INVALID_GOAL_ACCEPT_MANAGER);
         }
     }
 }
