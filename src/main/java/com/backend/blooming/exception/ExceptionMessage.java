@@ -53,10 +53,13 @@ public enum ExceptionMessage {
     INVALID_USERS_SIZE("골 참여자 수가 범위 밖입니다.(범위: 1~5명)"),
     INVALID_USER_TO_PARTICIPATE("골에 참여할 수 없는 사용자입니다. 골에는 친구인 사용자만 초대할 수 있습니다."),
     READ_GOAL_FORBIDDEN("골을 조회할 권한이 없습니다."),
+    INVALID_GOAL_ACCEPT("초대받은 골이 아닙니다."),
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
+    MANAGER_GOAL_ACCEPT_INVALID("골 관리자는 골 수락을 할 수 없습니다."),
     NOT_FOUND_MANAGER("골의 관리자를 찾을 수 없습니다."),
+    FORBIDDEN_USER_TO_READ_GOAL("골을 조회할 권한이 없습니다."),
 
     // 콕 찌르기
     SENDER_NOT_IN_GOAL_TEAM("콕 찌르기 요청자가 해당 골의 팀원이 아닙니다."),

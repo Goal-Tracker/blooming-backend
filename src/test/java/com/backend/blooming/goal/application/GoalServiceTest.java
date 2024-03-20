@@ -4,15 +4,21 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
+import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.domain.GoalTeam;
+import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,6 +35,9 @@ class GoalServiceTest extends GoalServiceTestFixture {
 
     @Autowired
     private GoalService goalService;
+
+    @Autowired
+    private GoalRepository goalRepository;
 
     @Test
     void 새로운_골을_생성한다() {
@@ -90,10 +99,19 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
+    void 골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자.getId()))
+                .isInstanceOf(ForbiddenGoalToReadException.class);
+    }
+
+    @Test
     void 현재_로그인한_사용자가_참여한_골_중_현재_진행중인_모든_골_정보를_조회한다() {
         // when
         final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndInProgress(
-                유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+                유효한_사용자_아이디,
+                LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
+        );
 
         // then
         assertSoftly(softAssertions -> {
@@ -109,7 +127,9 @@ class GoalServiceTest extends GoalServiceTestFixture {
     void 현재_로그인한_사용자가_참여한_골_중_종료된_모든_골_정보를_조회한다() {
         // when
         final ReadAllGoalDto result = goalService.readAllGoalByUserIdAndFinished(
-                유효한_사용자_아이디, LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값));
+                유효한_사용자_아이디,
+                LocalDate.now().plusDays(테스트를_위한_시스템_현재_시간_설정값)
+        );
 
         // then
         assertSoftly(softAssertions -> {
@@ -295,5 +315,37 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThatThrownBy(() -> goalService.update(유효한_사용자_아이디, 유효한_골_아이디, 골_참여자_목록_크기가_5보다_큰_수정_요청_골_dto))
                           .isInstanceOf(InvalidGoalException.InvalidInvalidUsersSize.class);
         });
+    }
+
+    @Test
+    void 골_초대를_수락한다() {
+        // when
+        goalService.acceptGoalRequest(골_관리자가_아닌_사용자_아이디, 현재_진행중인_골1.getId());
+        final Goal goal = goalRepository.findByIdWithUserAndDeletedIsFalse(현재_진행중인_골1.getId())
+                                        .orElseThrow(NotFoundGoalException::new);
+        final List<GoalTeam> acceptedGoalTeam = goal.getTeams()
+                                                    .stream()
+                                                    .filter(GoalTeam::isAccepted)
+                                                    .toList();
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(acceptedGoalTeam).hasSize(2);
+            softAssertions.assertThat(acceptedGoalTeam.get(0).getUser().getId()).isEqualTo(유효한_사용자_아이디);
+            softAssertions.assertThat(acceptedGoalTeam.get(1).getUser().getId()).isEqualTo(골_관리자가_아닌_사용자_아이디);
+        });
+    }
+
+    @Test
+    void 골에_초대되지_않은_사람이_골_수락을_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.acceptGoalRequest(친구인_사용자2.getId(), 현재_진행중인_골1.getId()))
+                .isInstanceOf(InvalidGoalAcceptException.InvalidInvalidUserToAcceptGoal.class);
+    }
+
+    @Test
+    void 골_관리자가_골_수락을_요청한_경우_예외를_발생한다() {
+        // when & then
+        assertThatThrownBy(() -> goalService.acceptGoalRequest(유효한_사용자_아이디, 현재_진행중인_골1.getId()))
+                .isInstanceOf(InvalidGoalAcceptException.InvalidInvalidGoalAcceptByManager.class);
     }
 }

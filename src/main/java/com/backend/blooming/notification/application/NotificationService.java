@@ -45,36 +45,28 @@ public class NotificationService {
     public Long sendRequestFriendNotification(final Friend friend) {
         final User sender = friend.getRequestUser();
         final User receiver = friend.getRequestedUser();
-        final Notification notification = persistNotification(REQUEST_FRIEND, null, sender, receiver);
+        final Notification notification = createNotification(REQUEST_FRIEND, null, sender, receiver, sender.getId());
         sendNotification(notification);
 
         return notification.getId();
     }
 
-    private Notification persistNotification(
+    private Notification createNotification(
             final NotificationType notificationType,
             @Nullable final String titleValue,
             final User sender,
-            final User receiver
+            final User receiver,
+            @Nullable final Long requestId
     ) {
-        final Notification notification = createNotification(notificationType, titleValue, sender, receiver);
+        final Notification notification = Notification.builder()
+                                               .receiver(receiver)
+                                               .title(notificationType.getTitleByFormat(titleValue))
+                                               .content(notificationType.getContentByFormat(sender.getName()))
+                                               .type(notificationType)
+                                               .requestId(requestId)
+                                               .build();
 
         return notificationRepository.save(notification);
-    }
-
-    private static Notification createNotification(
-            final NotificationType notificationType,
-            @Nullable final String titleValue,
-            final User sender,
-            final User receiver
-    ) {
-        return Notification.builder()
-                           .receiver(receiver)
-                           .title(notificationType.getTitleByFormat(titleValue))
-                           .content(notificationType.getContentByFormat(sender.getName()))
-                           .type(notificationType)
-                           .requestId(sender.getId())
-                           .build();
     }
 
     private void sendNotification(final Notification notification) {
@@ -84,7 +76,7 @@ public class NotificationService {
     }
 
     public Long sendPokeNotification(final Goal goal, final User sender, final User receiver) {
-        final Notification notification = persistNotification(POKE, goal.getName(), sender, receiver);
+        final Notification notification = createNotification(POKE, goal.getName(), sender, receiver, null);
         sendNotification(notification);
 
         return notification.getId();
@@ -93,7 +85,7 @@ public class NotificationService {
     public Long sendAcceptFriendNotification(final Friend friend) {
         final User sender = friend.getRequestedUser();
         final User receiver = friend.getRequestUser();
-        final Notification notification = persistNotification(ACCEPT_FRIEND, null, sender, receiver);
+        final Notification notification = createNotification(ACCEPT_FRIEND, null, sender, receiver, null);
         sendNotification(notification);
 
         return notification.getId();
@@ -130,7 +122,13 @@ public class NotificationService {
 
     private List<Notification> persistNotifications(final Goal goal, final User sender, final List<User> receivers) {
         final List<Notification> notifications = receivers.stream()
-                                                          .map(receiver -> createNotification(REQUEST_GOAL, goal.getName(), sender, receiver))
+                                                          .map(receiver -> createNotification(
+                                                                  REQUEST_GOAL,
+                                                                  goal.getName(),
+                                                                  sender,
+                                                                  receiver,
+                                                                  null
+                                                          ))
                                                           .toList();
 
         return notificationRepository.saveAll(notifications);

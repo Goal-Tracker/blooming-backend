@@ -5,6 +5,8 @@ import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
+import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
+import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.ReadGoalForbiddenException;
@@ -90,6 +92,12 @@ public class GoalService {
         return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
+    private void validateUserToRead(final User user, final Goal goal) {
+        if (!goal.isTeamAndAccepted(user)) {
+            throw new ForbiddenGoalToReadException();
+        }
+    }
+
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
@@ -161,5 +169,11 @@ public class GoalService {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
         goal.updateDeleted(user.getId());
+    }
+
+    public void acceptGoalRequest(final Long userId, final Long goalId) {
+        final User user = getUser(userId);
+        final Goal goal = getGoal(goalId);
+        goal.updateAccepted(user);
     }
 }
