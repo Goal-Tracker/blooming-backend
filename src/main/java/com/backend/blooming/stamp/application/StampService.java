@@ -6,8 +6,8 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
-import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
+import com.backend.blooming.stamp.application.exception.ForbiddenToReadStamp;
 import com.backend.blooming.stamp.domain.Day;
 import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
@@ -34,7 +34,7 @@ public class StampService {
     public ReadStampDto createStamp(final CreateStampDto createStampDto) {
         final Goal goal = getGoal(createStampDto.goalId());
         final User user = getUser(createStampDto.userId());
-        validateUserInGoalTeams(goal, user);
+        validateUserToCreateStamp(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
         final Stamp stamp = persistStamp(createStampDto, goal, user);
 
@@ -51,9 +51,9 @@ public class StampService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private void validateUserInGoalTeams(final Goal goal, final User user) {
-        if (!goal.isTeam(user)) {
-            throw new CreateStampForbiddenException();
+    private void validateUserToCreateStamp(final Goal goal, final User user) {
+        if (!goal.isTeamAndAccepted(user)) {
+            throw new ForbiddenToCreateStamp();
         }
     }
 
@@ -87,8 +87,8 @@ public class StampService {
     }
 
     private void validateUserToRead(final Goal goal, final User user) {
-        if (!goal.isTeam(user)) {
-            throw new ReadStampForbiddenException();
+        if (!goal.isTeamAndAccepted(user)) {
+            throw new ForbiddenToReadStamp();
         }
     }
 }

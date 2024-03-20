@@ -4,8 +4,8 @@ import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
-import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
+import com.backend.blooming.stamp.application.exception.ForbiddenToReadStamp;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -56,10 +56,14 @@ class StampServiceTest extends StampServiceTestFixture {
     }
 
     @Test
-    void 스탬프를_생성하려는_사용자가_골의_참여자가_아닌_경우_예외를_발생한다() {
+    void 스탬프를_생성하려는_사용자가_골의_참여자가_아니거나_골_초대를_수락하지_않은_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> stampService.createStamp(골_참여자가_아닌_사용자가_생성한_스탬프_dto))
-                .isInstanceOf(CreateStampForbiddenException.class);
+        assertSoftly(softAssertions -> {
+            assertThatThrownBy(() -> stampService.createStamp(골_참여자가_아닌_사용자가_생성한_스탬프_dto))
+                    .isInstanceOf(ForbiddenToCreateStamp.class);
+            assertThatThrownBy(() -> stampService.createStamp(골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto))
+                    .isInstanceOf(ForbiddenToCreateStamp.class);
+        });
     }
 
     @Test
@@ -93,9 +97,13 @@ class StampServiceTest extends StampServiceTestFixture {
     }
 
     @Test
-    void 골_참여자가_아닌_사용자가_스탬프_조회를_요청한_경우_예외를_발생한다() {
+    void 골_참여자가_아니거나_골_초대를_수락하지_않은_사용자가_스탬프_조회를_요청한_경우_예외를_발생한다() {
         // when & then
-        assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
-                .isInstanceOf(ReadStampForbiddenException.class);
+        assertSoftly(softAssertions -> {
+            assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
+                    .isInstanceOf(ForbiddenToReadStamp.class);
+            assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_초대를_수락하지_않은_사용자_아이디))
+                    .isInstanceOf(ForbiddenToReadStamp.class);
+        });
     }
 }

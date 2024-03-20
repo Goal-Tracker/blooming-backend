@@ -35,12 +35,14 @@ public class StampServiceTestFixture {
     protected CreateStampDto 존재하지_않는_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 존재하지_않는_골에서_생성된_스탬프_dto;
     protected CreateStampDto 골_참여자가_아닌_사용자가_생성한_스탬프_dto;
+    protected CreateStampDto 골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 이미_존재하는_스탬프_dto;
     protected Long 유효한_골_아이디;
     protected Long 존재하지_않는_골_아이디 = 999L;
     protected Long 스탬프를_생성한_사용자_아이디1;
     protected Long 스탬프를_생성한_사용자_아이디2;
     protected Long 골_참여자가_아닌_사용자_아이디;
+    protected Long 골_초대를_수락하지_않은_사용자_아이디;
     protected String 스탬프를_생성한_사용자_이름1;
     protected String 스탬프를_생성한_사용자_이름2;
     protected User 스탬프를_생성할_사용자;
@@ -83,6 +85,7 @@ public class StampServiceTestFixture {
         스탬프를_생성한_사용자_아이디1 = 스탬프를_생성한_사용자1.getId();
         스탬프를_생성한_사용자_아이디2 = 스탬프를_생성한_사용자2.getId();
         골_참여자가_아닌_사용자_아이디 = 골_참여자가_아닌_사용자.getId();
+        골_초대를_수락하지_않은_사용자_아이디 = 스탬프를_생성할_사용자.getId();
         스탬프를_생성한_사용자_이름1 = 스탬프를_생성한_사용자1.getName();
         스탬프를_생성한_사용자_이름2 = 스탬프를_생성한_사용자2.getName();
 
@@ -132,6 +135,12 @@ public class StampServiceTestFixture {
         골_참여자가_아닌_사용자가_생성한_스탬프_dto = new CreateStampDto(
                 스탬프를_생성할_골.getId(),
                 골_참여자가_아닌_사용자.getId(),
+                1,
+                "스탬프 메시지"
+        );
+        골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto = new CreateStampDto(
+                스탬프를_생성할_골.getId(),
+                스탬프를_생성할_사용자.getId(),
                 1,
                 "스탬프 메시지"
         );

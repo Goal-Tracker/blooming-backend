@@ -22,8 +22,8 @@ import com.backend.blooming.report.application.exception.InvalidGoalReportExcept
 import com.backend.blooming.report.application.exception.InvalidStampReportException;
 import com.backend.blooming.report.application.exception.InvalidUserReportException;
 import com.backend.blooming.report.application.exception.ReportForbiddenException;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
-import com.backend.blooming.stamp.application.exception.ReadStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
+import com.backend.blooming.stamp.application.exception.ForbiddenToReadStamp;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.themecolor.domain.exception.UnsupportedThemeColorException;
 import com.backend.blooming.user.application.exception.DuplicateUserNameException;
@@ -264,9 +264,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
-    @ExceptionHandler(CreateStampForbiddenException.class)
+    @ExceptionHandler(ForbiddenToCreateStamp.class)
     public ResponseEntity<ExceptionResponse> handleCreateStampForbiddenException(
-            final CreateStampForbiddenException exception, final HttpServletRequest request
+            final ForbiddenToCreateStamp exception, final HttpServletRequest request
     ) {
         logWarn(exception, request);
 
@@ -274,9 +274,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                              .body(new ExceptionResponse(exception.getMessage()));
     }
 
-    @ExceptionHandler(ReadStampForbiddenException.class)
+    @ExceptionHandler(ForbiddenToReadStamp.class)
     public ResponseEntity<ExceptionResponse> handleReadStampForbiddenException(
-            final ReadStampForbiddenException exception, final HttpServletRequest request
+            final ForbiddenToReadStamp exception, final HttpServletRequest request
     ) {
         logWarn(exception, request);
 
