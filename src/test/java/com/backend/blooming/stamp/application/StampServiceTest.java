@@ -2,6 +2,9 @@ package com.backend.blooming.stamp.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
+import com.backend.blooming.goal.domain.Goal;
+import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
@@ -13,6 +16,7 @@ import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -26,8 +30,29 @@ class StampServiceTest extends StampServiceTestFixture {
     @Autowired
     private StampService stampService;
 
+    @Autowired
+    private GoalRepository goalRepository;
+
     @Test
     void 새로운_스탬프를_생성한다() {
+        // given
+        final Goal 골 = Goal.builder()
+                           .name("골 제목")
+                           .memo("골 메모")
+                           .startDate(LocalDate.now())
+                           .endDate(LocalDate.now().plusDays(19))
+                           .managerId(스탬프를_생성할_사용자.getId())
+                           .users(List.of(스탬프를_생성할_사용자))
+                           .build();
+        goalRepository.save(골);
+
+        final CreateStampDto 유효한_스탬프_dto = new CreateStampDto(
+                골.getId(),
+                스탬프를_생성할_사용자.getId(),
+                1,
+                "스탬프 메시지"
+        );
+
         // when
         final ReadStampDto result = stampService.createStamp(유효한_스탬프_dto);
 
