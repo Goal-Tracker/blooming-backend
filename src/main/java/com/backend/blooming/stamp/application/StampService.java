@@ -6,8 +6,8 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
-import com.backend.blooming.stamp.application.exception.ForbiddenToReadStamp;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToCreateException;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToReadException;
 import com.backend.blooming.stamp.domain.Day;
 import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
@@ -53,7 +53,7 @@ public class StampService {
 
     private void validateUserToCreateStamp(final Goal goal, final User user) {
         if (!goal.isTeamAndAccepted(user)) {
-            throw new ForbiddenToCreateStamp();
+            throw new ForbiddenStampToCreateException();
         }
     }
 
@@ -88,7 +88,7 @@ public class StampService {
 
     private void validateUserToRead(final Goal goal, final User user) {
         if (!goal.isTeamAndAccepted(user)) {
-            throw new ForbiddenToReadStamp();
+            throw new ForbiddenStampToReadException();
         }
     }
 }

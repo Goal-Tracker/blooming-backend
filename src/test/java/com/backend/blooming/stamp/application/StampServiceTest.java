@@ -7,8 +7,8 @@ import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.stamp.application.exception.ForbiddenToCreateStamp;
-import com.backend.blooming.stamp.application.exception.ForbiddenToReadStamp;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToCreateException;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToReadException;
 import com.backend.blooming.stamp.domain.exception.InvalidStampException;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -85,9 +85,9 @@ class StampServiceTest extends StampServiceTestFixture {
         // when & then
         assertSoftly(softAssertions -> {
             assertThatThrownBy(() -> stampService.createStamp(골_참여자가_아닌_사용자가_생성한_스탬프_dto))
-                    .isInstanceOf(ForbiddenToCreateStamp.class);
+                    .isInstanceOf(ForbiddenStampToCreateException.class);
             assertThatThrownBy(() -> stampService.createStamp(골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto))
-                    .isInstanceOf(ForbiddenToCreateStamp.class);
+                    .isInstanceOf(ForbiddenStampToCreateException.class);
         });
     }
 
@@ -126,9 +126,9 @@ class StampServiceTest extends StampServiceTestFixture {
         // when & then
         assertSoftly(softAssertions -> {
             assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_참여자가_아닌_사용자_아이디))
-                    .isInstanceOf(ForbiddenToReadStamp.class);
+                    .isInstanceOf(ForbiddenStampToReadException.class);
             assertThatThrownBy(() -> stampService.readAllByGoalId(유효한_골_아이디, 골_초대를_수락하지_않은_사용자_아이디))
-                    .isInstanceOf(ForbiddenToReadStamp.class);
+                    .isInstanceOf(ForbiddenStampToReadException.class);
         });
     }
 }
