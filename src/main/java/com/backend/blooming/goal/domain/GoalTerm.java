@@ -4,13 +4,16 @@ import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.common.util.DayUtil;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDate;
 
 @Embeddable
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @EqualsAndHashCode
 @ToString
@@ -28,9 +31,6 @@ public class GoalTerm {
     
     @Column(nullable = false)
     private long days;
-    
-    public GoalTerm() {
-    }
     
     public GoalTerm(final LocalDate startDate, final LocalDate endDate) {
         validateGoalDatePeriod(startDate, endDate);
@@ -54,7 +54,7 @@ public class GoalTerm {
     }
 
     private long getValidGoalDays(final LocalDate startDate, final LocalDate endDate) {
-        final int goalDays = DayUtil.getDays(startDate, endDate);
+        final long goalDays = DayUtil.getDays(startDate, endDate);
         
         if (goalDays < GOAL_DAYS_MINIMUM || goalDays > GOAL_DAYS_MAXIMUM) {
             throw new InvalidGoalException.InvalidInvalidGoalDays();

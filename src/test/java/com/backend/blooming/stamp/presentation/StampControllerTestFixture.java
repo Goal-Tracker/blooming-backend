@@ -125,8 +125,8 @@ public class StampControllerTestFixture {
     );
     protected ReadAllStampResponse 유효한_스탬프_목록_응답 = new ReadAllStampResponse(
             new HashMap<>(
-                    Map.of(1, List.of(유효한_스탬프_응답_정보1),
-                            2, List.of(유효한_스탬프_응답_정보2, 유효한_스탬프_응답_정보3)
+                    Map.of(1L, List.of(유효한_스탬프_응답_정보1),
+                            2L, List.of(유효한_스탬프_응답_정보2, 유효한_스탬프_응답_정보3)
                     )
             )
     );

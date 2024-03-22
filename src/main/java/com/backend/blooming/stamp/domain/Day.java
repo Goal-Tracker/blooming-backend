@@ -21,14 +21,14 @@ import java.time.LocalDate;
 public class Day {
 
     @Column(name = "stamp_day", nullable = false)
-    private int value;
+    private long value;
 
     public Day(final GoalTerm goalTerm, final int day) {
         this.value = validateDay(goalTerm, day);
     }
 
-    private int validateDay(final GoalTerm goalTerm, final int day) {
-        final int nowStampDay = DayUtil.getNowDay(goalTerm.getStartDate());
+    private long validateDay(final GoalTerm goalTerm, final int day) {
+        final long nowStampDay = DayUtil.getNowDay(goalTerm.getStartDate());
 
         if (day > nowStampDay) {
             throw new InvalidStampException.InvalidStampDayFuture();

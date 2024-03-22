@@ -7,7 +7,7 @@ public record ReadStampDto(
         Long id,
         String userName,
         ThemeColor userColor,
-        int day,
+        long day,
         String message
 ) {
 

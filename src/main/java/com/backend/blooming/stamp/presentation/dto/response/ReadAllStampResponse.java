@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public record ReadAllStampResponse(Map<Integer, List<StampInfoResponse>> stamps) {
+public record ReadAllStampResponse(Map<Long, List<StampInfoResponse>> stamps) {
 
     public static ReadAllStampResponse from(final ReadAllStampDto readAllStampDto) {
-        final Map<Integer, List<StampInfoResponse>> stamps =
+        final Map<Long, List<StampInfoResponse>> stamps =
                 readAllStampDto.stamps()
                                .stream()
                                .map(StampInfoResponse::from)
@@ -23,7 +23,7 @@ public record ReadAllStampResponse(Map<Integer, List<StampInfoResponse>> stamps)
             String name,
             String color,
             String message,
-            int day
+            long day
     ) {
 
         public static StampInfoResponse from(final ReadAllStampDto.StampDto stampDto) {

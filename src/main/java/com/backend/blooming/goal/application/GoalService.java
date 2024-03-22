@@ -102,7 +102,7 @@ public class GoalService {
     }
 
     private List<Long> getUsersUploadedStamp(final Goal goal) {
-        final int nowGoalDay = DayUtil.getNowDay(goal.getGoalTerm().getStartDate());
+        final long nowGoalDay = DayUtil.getNowDay(goal.getGoalTerm().getStartDate());
         final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
 
         return todayStamps.stream()

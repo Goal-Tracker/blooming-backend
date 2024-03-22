@@ -83,7 +83,7 @@ class StampControllerTest extends StampControllerTestFixture {
                 jsonPath("$.id", is(유효한_스탬프_응답_dto.id()), Long.class),
                 jsonPath("$.userName", is(유효한_스탬프_응답_dto.userName()), String.class),
                 jsonPath("$.userColor", is(유효한_스탬프_응답_dto.userColor()), String.class),
-                jsonPath("$.day", is(유효한_스탬프_응답_dto.day()), int.class),
+                jsonPath("$.day", is(유효한_스탬프_응답_dto.day()), long.class),
                 jsonPath("$.message", is(유효한_스탬프_응답_dto.message()), String.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("스탬프를 생성할 골 아이디")),
@@ -176,13 +176,13 @@ class StampControllerTest extends StampControllerTestFixture {
                 .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
         ).andExpectAll(
                 status().isOk(),
-                jsonPath("$.stamps.1.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).userId()), Long.class),
-                jsonPath("$.stamps.1.[0].name", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).name()), String.class),
-                jsonPath("$.stamps.1.[0].color", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).color()), String.class),
-                jsonPath("$.stamps.1.[0].message", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).message()), String.class),
-                jsonPath("$.stamps.1.[0].day", is(유효한_스탬프_목록_응답.stamps().get(1).get(0).day()), Integer.class),
-                jsonPath("$.stamps.2.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(0).userId()), Long.class),
-                jsonPath("$.stamps.2.[1].userId", is(유효한_스탬프_목록_응답.stamps().get(2).get(1).userId()), Long.class)
+                jsonPath("$.stamps.1.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(1L).get(0).userId()), Long.class),
+                jsonPath("$.stamps.1.[0].name", is(유효한_스탬프_목록_응답.stamps().get(1L).get(0).name()), String.class),
+                jsonPath("$.stamps.1.[0].color", is(유효한_스탬프_목록_응답.stamps().get(1L).get(0).color()), String.class),
+                jsonPath("$.stamps.1.[0].message", is(유효한_스탬프_목록_응답.stamps().get(1L).get(0).message()), String.class),
+                jsonPath("$.stamps.1.[0].day", is(유효한_스탬프_목록_응답.stamps().get(1L).get(0).day()), long.class),
+                jsonPath("$.stamps.2.[0].userId", is(유효한_스탬프_목록_응답.stamps().get(2L).get(0).userId()), Long.class),
+                jsonPath("$.stamps.2.[1].userId", is(유효한_스탬프_목록_응답.stamps().get(2L).get(1).userId()), Long.class)
         ).andDo(print()).andDo(restDocs.document(
                 pathParameters(parameterWithName("goalId").description("스탬프를 조회할 골 아이디")),
                 requestHeaders(

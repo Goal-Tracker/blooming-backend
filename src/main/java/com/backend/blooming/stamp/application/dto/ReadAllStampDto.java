@@ -18,7 +18,7 @@ public record ReadAllStampDto(List<StampDto> stamps) {
             String name,
             ThemeColor color,
             String message,
-            int day
+            long day
     ) {
 
         public static StampDto from(final Stamp stamp) {

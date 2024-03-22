@@ -34,7 +34,7 @@ public class StampRepositoryTestFixture {
     protected Long 유효한_골_아이디;
     protected Stamp 유효한_스탬프;
     protected Stamp 유효한_스탬프2;
-    protected int 유효한_스탬프_날짜;
+    protected long 유효한_스탬프_날짜;
     protected Goal 유효한_골;
 
     @BeforeEach

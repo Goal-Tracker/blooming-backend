@@ -6,7 +6,7 @@ public record ReadStampResponse(
         Long id,
         String userName,
         String userColor,
-        int day,
+        long day,
         String message
 ) {
 

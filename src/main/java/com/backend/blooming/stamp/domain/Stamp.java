@@ -61,7 +61,7 @@ public class Stamp extends BaseTimeEntity {
         this.message = message;
     }
 
-    public int getDay() {
+    public long getDay() {
         return day.getValue();
     }
 
