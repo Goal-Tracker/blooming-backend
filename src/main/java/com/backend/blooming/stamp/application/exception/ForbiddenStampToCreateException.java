@@ -3,9 +3,9 @@ package com.backend.blooming.stamp.application.exception;
 import com.backend.blooming.exception.BloomingException;
 import com.backend.blooming.exception.ExceptionMessage;
 
-public class CreateStampForbiddenException extends BloomingException {
+public class ForbiddenStampToCreateException extends BloomingException {
     
-    public CreateStampForbiddenException() {
+    public ForbiddenStampToCreateException() {
         super(ExceptionMessage.CREATE_STAMP_FORBIDDEN);
     }
 }

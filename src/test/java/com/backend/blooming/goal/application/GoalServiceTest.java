@@ -17,7 +17,6 @@ import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -77,8 +76,8 @@ class GoalServiceTest extends GoalServiceTestFixture {
             softAssertions.assertThat(result.teams().get(0).id()).isEqualTo(유효한_골_dto.teams().get(0).id());
             softAssertions.assertThat(result.teams().get(0).name()).isEqualTo(유효한_골_dto.teams().get(0).name());
             softAssertions.assertThat(result.teams().get(0).color()).isEqualTo(유효한_골_dto.teams().get(0).color());
-            softAssertions.assertThat(result.teams().get(0).statusMessage())
-                          .isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
+            softAssertions.assertThat(result.teams().get(0).statusMessage()).isEqualTo(유효한_골_dto.teams().get(0).statusMessage());
+            softAssertions.assertThat(result.teams().get(0).uploadedTodayStamp()).isEqualTo(유효한_골_dto.teams().get(0).uploadedTodayStamp());
             softAssertions.assertThat(result.teams().get(1).id()).isEqualTo(유효한_골_dto.teams().get(1).id());
         });
     }
@@ -91,14 +90,7 @@ class GoalServiceTest extends GoalServiceTestFixture {
     }
 
     @Test
-    void 골_참여자가_아닌_사용자가_조회한_경우_예외를_발생한다() {
-        // when & then
-        assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자2.getId()))
-                .isInstanceOf(ForbiddenGoalToReadException.class);
-    }
-
-    @Test
-    void 골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
+    void 골_참여자가_아니거나_골_초대를_수락하지_않은_사용자가_조회한_경우_예외를_발생한다() {
         // when & then
         assertThatThrownBy(() -> goalService.readGoalDetailById(유효한_골_아이디, 친구인_사용자.getId()))
                 .isInstanceOf(ForbiddenGoalToReadException.class);

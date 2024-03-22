@@ -9,9 +9,9 @@ public record CreateStampDto(
         String message
 ) {
     
-    public static CreateStampDto of(final CreateStampRequest request, final Long userId) {
+    public static CreateStampDto of(final CreateStampRequest request, final Long goalId, final Long userId) {
         return new CreateStampDto(
-                request.goalId(),
+                goalId,
                 userId,
                 request.day(),
                 request.message()

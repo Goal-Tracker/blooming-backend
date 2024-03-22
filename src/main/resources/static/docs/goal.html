@@ -456,8 +456,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -629,20 +629,22 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -656,20 +658,22 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -746,6 +750,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자의 오늘의 스탬프 업로드 여부</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -804,8 +813,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-26",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-04-02",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -829,8 +838,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-26",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-04-02",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -960,8 +969,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-21",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-03-28",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -985,8 +994,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-21",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-03-28",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -1153,7 +1162,7 @@ Authorization: Bearer access_token
 {
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "endDate" : "2024-04-05",
+  "endDate" : "2024-04-12",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -1220,25 +1229,28 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-04-05",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-12",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -1252,25 +1264,28 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-04-05",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-12",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -1345,6 +1360,11 @@ Content-Type: application/json
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].statusMessage</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
 </tr>
 </tbody>
@@ -1430,7 +1450,7 @@ Authorization: Bearer access_token</code></pre>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-03-15 18:05:05 +0900
+Last updated 2024-03-20 21:01:23 +0900
 </div>
 </div>
 </body>

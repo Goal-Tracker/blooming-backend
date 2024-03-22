@@ -6,17 +6,19 @@ import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.application.exception.ForbiddenGoalToReadException;
-import com.backend.blooming.goal.application.exception.InvalidGoalAcceptException;
 import com.backend.blooming.goal.application.exception.InvalidGoalException;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.stamp.domain.Stamp;
+import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
+import com.backend.blooming.common.util.DayUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,7 @@ public class GoalService {
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final FriendRepository friendRepository;
+    private final StampRepository stampRepository;
     private final NotificationService notificationService;
 
     public Long createGoal(final CreateGoalDto createGoalDto) {
@@ -82,7 +85,9 @@ public class GoalService {
         final User user = getUser(userId);
         validateUserToRead(user, goal);
 
-        return ReadGoalDetailDto.from(goal);
+        final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
+
+        return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
     private void validateUserToRead(final User user, final Goal goal) {
@@ -94,6 +99,15 @@ public class GoalService {
     private Goal getGoal(final Long id) {
         return goalRepository.findByIdAndDeletedIsFalse(id)
                              .orElseThrow(NotFoundGoalException::new);
+    }
+
+    private List<Long> getUsersUploadedStamp(final Goal goal) {
+        final long nowGoalDay = DayUtil.getNowDay(goal.getGoalTerm().getStartDate());
+        final List<Stamp> todayStamps = stampRepository.findAllByDayAndDeletedIsFalse(nowGoalDay);
+
+        return todayStamps.stream()
+                          .map(stamp -> stamp.getUser().getId())
+                          .toList();
     }
 
     @Transactional(readOnly = true)
@@ -113,14 +127,15 @@ public class GoalService {
     public ReadGoalDetailDto update(final Long userId, final Long goalId, final UpdateGoalDto updateGoalDto) {
         final User user = getUser(userId);
         final Goal goal = getGoal(goalId);
-        validateUserToUpdate(goal.getManagerId(), user.getId());
+        validateUserToUpdate(goal, user.getId());
         updateGoal(updateGoalDto, goal);
+        final List<Long> usersUploadedStamp = getUsersUploadedStamp(goal);
 
-        return ReadGoalDetailDto.from(goal);
+        return ReadGoalDetailDto.of(goal, usersUploadedStamp);
     }
 
-    private void validateUserToUpdate(final Long managerId, final Long userId) {
-        if (!managerId.equals(userId)) {
+    private void validateUserToUpdate(final Goal goal, final Long userId) {
+        if (!goal.isManager(userId)) {
             throw new UpdateGoalForbiddenException.ForbiddenUserToUpdate();
         }
     }

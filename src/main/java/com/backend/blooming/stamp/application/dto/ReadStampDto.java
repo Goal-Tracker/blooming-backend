@@ -7,7 +7,7 @@ public record ReadStampDto(
         Long id,
         String userName,
         ThemeColor userColor,
-        int day,
+        long day,
         String message
 ) {
 
@@ -16,8 +16,8 @@ public record ReadStampDto(
                 stamp.getGoal().getId(),
                 stamp.getUser().getName(),
                 stamp.getUser().getColor(),
-                stamp.getDay().getDay(),
-                stamp.getMessage().getMessage()
+                stamp.getDay(),
+                stamp.getMessage()
         );
     }
 }

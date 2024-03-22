@@ -23,11 +23,13 @@ public class GoalControllerTestFixture {
     private String 골_메모 = "골 메모";
     private LocalDate 골_시작일 = LocalDate.now();
     private LocalDate 골_종료일 = LocalDate.now().plusDays(10);
-    private Long 골_관리자_아이디 = 1L;
+    protected Long 골_관리자_아이디 = 1L;
+    protected Long 골_참여자가_아닌_사용자_아이디 = 999L;
     private List<Long> 골_팀에_등록된_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L));
     private List<Long> 친구가_아닌_사용자가_있는_사용자_아이디_목록 = new ArrayList<>(List.of(골_관리자_아이디, 2L));
     private List<Long> 유효하지_않은_골_참여_사용자_아이디_목록 = new ArrayList<>(List.of(1L, 2L, 3L, 4L, 5L, 6L));
     protected AuthClaims 사용자_토큰_정보 = new AuthClaims(골_관리자_아이디);
+    protected AuthClaims 골_참여자가_아닌_사용자_토큰_정보 = new AuthClaims(골_참여자가_아닌_사용자_아이디);
     protected TokenType 액세스_토큰_타입 = TokenType.ACCESS;
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
@@ -89,37 +91,43 @@ public class GoalControllerTestFixture {
             1L,
             "테스트 유저1",
             ThemeColor.BABY_PINK,
-            "테스트 상태메시지1"
+            "테스트 상태메시지1",
+            true
     );
     protected ReadGoalDetailDto.GoalTeamDto 골_참여자2 = new ReadGoalDetailDto.GoalTeamDto(
             2L,
             "테스트 유저2",
             ThemeColor.BABY_BLUE,
-            "테스트 상태메시지2"
+            "테스트 상태메시지2",
+            false
     );
     protected ReadGoalDetailDto.GoalTeamDto 골_참여자3 = new ReadGoalDetailDto.GoalTeamDto(
             3L,
             "테스트 유저3",
             ThemeColor.CORAL,
-            "테스트 상태메시지3"
+            "테스트 상태메시지3",
+            true
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답1 = new ReadGoalResponse.GoalTeamResponse(
             1L,
             "테스트 유저1",
             "#f8c8c4",
-            "테스트 상태메시지1"
+            "테스트 상태메시지1",
+            true
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답2 = new ReadGoalResponse.GoalTeamResponse(
             2L,
             "테스트 유저2",
             "#a1b3d7",
-            "테스트 상태메시지2"
+            "테스트 상태메시지2",
+            false
     );
     protected ReadGoalResponse.GoalTeamResponse 골_참여자_응답3 = new ReadGoalResponse.GoalTeamResponse(
             3L,
             "테스트 유저3",
             "f69b94",
-            "테스트 상태메시지3"
+            "테스트 상태메시지3",
+            true
     );
     protected ReadGoalDetailDto 유효한_골_dto = new ReadGoalDetailDto(
             1L,

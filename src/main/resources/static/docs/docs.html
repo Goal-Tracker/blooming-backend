@@ -493,6 +493,12 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_골_초대_수락">골 초대 수락</a></li>
 </ul>
 </li>
+<li><a href="#_스탬프">스탬프</a>
+<ul class="sectlevel2">
+<li><a href="#_새로운_스탬프_추가">새로운 스탬프 추가</a></li>
+<li><a href="#_요청한_골에_대한_모든_스탬프_조회">요청한 골에 대한 모든 스탬프 조회</a></li>
+</ul>
+</li>
 <li><a href="#_콕_찌르기">콕 찌르기</a>
 <ul class="sectlevel2">
 <li><a href="#_콕_찌르기_요청">콕 찌르기 요청</a></li>
@@ -2329,8 +2335,8 @@ Authorization: Bearer access_token
 {
   "name" : "골 제목",
   "memo" : "골 메모",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -2502,20 +2508,22 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -2529,20 +2537,22 @@ Content-Type: application/json
   "id" : 1,
   "name" : "테스트 골1",
   "memo" : "테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-03-26",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-02",
   "days" : 11,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   } ]
 }</code></pre>
 </div>
@@ -2619,6 +2629,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자의 오늘의 스탬프 업로드 여부</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -2677,8 +2692,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-26",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-04-02",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -2702,8 +2717,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 1,
     "name" : "테스트 골1",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-26",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-04-02",
     "days" : 11,
     "teams" : [ {
       "id" : 1,
@@ -2833,8 +2848,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-21",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-03-28",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -2858,8 +2873,8 @@ Content-Type: application/json
   "goals" : [ {
     "id" : 2,
     "name" : "테스트 골2",
-    "startDate" : "2024-03-16",
-    "endDate" : "2024-03-21",
+    "startDate" : "2024-03-23",
+    "endDate" : "2024-03-28",
     "days" : 6,
     "teams" : [ {
       "id" : 1,
@@ -3026,7 +3041,7 @@ Authorization: Bearer access_token
 {
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "endDate" : "2024-04-05",
+  "endDate" : "2024-04-12",
   "teamUserIds" : [ 1, 2, 3 ]
 }</code></pre>
 </div>
@@ -3093,25 +3108,28 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-04-05",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-12",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -3125,25 +3143,28 @@ Content-Type: application/json
   "id" : 1,
   "name" : "수정된 테스트 골1",
   "memo" : "수정된 테스트 골 메모1",
-  "startDate" : "2024-03-16",
-  "endDate" : "2024-04-05",
+  "startDate" : "2024-03-23",
+  "endDate" : "2024-04-12",
   "days" : 20,
   "managerId" : 1,
   "teams" : [ {
     "id" : 1,
     "name" : "테스트 유저1",
     "colorCode" : "#f8c8c4",
-    "statusMessage" : "테스트 상태메시지1"
+    "statusMessage" : "테스트 상태메시지1",
+    "uploadedTodayStamp" : true
   }, {
     "id" : 2,
     "name" : "테스트 유저2",
     "colorCode" : "#a1b3d7",
-    "statusMessage" : "테스트 상태메시지2"
+    "statusMessage" : "테스트 상태메시지2",
+    "uploadedTodayStamp" : false
   }, {
     "id" : 3,
     "name" : "테스트 유저3",
     "colorCode" : "#f69b94",
-    "statusMessage" : "테스트 상태메시지3"
+    "statusMessage" : "테스트 상태메시지3",
+    "uploadedTodayStamp" : true
   } ]
 }</code></pre>
 </div>
@@ -3220,6 +3241,11 @@ Content-Type: application/json
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>teams.[].uploadedTodayStamp</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 참여자 상태메시지</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -3242,7 +3268,7 @@ Authorization: Bearer access_token</code></pre>
 <div class="sect4">
 <h5 id="_요청_22_path_parameters"><a class="link" href="#_요청_22_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. /goals/{goalId}/accept</caption>
+<caption class="title">Table 1. /goals/{goalId}/accept</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3302,20 +3328,25 @@ Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_콕_찌르기"><a class="link" href="#_콕_찌르기">콕 찌르기</a></h2>
+<h2 id="_스탬프"><a class="link" href="#_스탬프">스탬프</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_콕_찌르기_요청"><a class="link" href="#_콕_찌르기_요청">콕 찌르기 요청</a></h3>
+<h3 id="_새로운_스탬프_추가"><a class="link" href="#_새로운_스탬프_추가">새로운 스탬프 추가</a></h3>
 <div class="sect3">
 <h4 id="_요청_23"><a class="link" href="#_요청_23">요청</a></h4>
 <div class="sect4">
 <h5 id="_요청_23_http_request"><a class="link" href="#_요청_23_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/poke/2 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/stamp HTTP/1.1
+Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
-Content-Type: application/x-www-form-urlencoded</code></pre>
+
+{
+  "day" : 1,
+  "message" : "스탬프 메시지"
+}</code></pre>
 </div>
 </div>
 </div>
@@ -3345,27 +3376,30 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 </table>
 </div>
 <div class="sect4">
-<h5 id="_요청_23_path_parameters"><a class="link" href="#_요청_23_path_parameters">Path parameters</a></h5>
+<h5 id="_요청_23_request_fields"><a class="link" href="#_요청_23_request_fields">Request fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /goals/{goalId}/poke/{userId}</caption>
 <colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">골 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 날짜</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">콕 찌를 사용자 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 메시지</p></td>
 </tr>
 </tbody>
 </table>
@@ -3377,33 +3411,76 @@ Content-Type: application/x-www-form-urlencoded</code></pre>
 <h5 id="_응답_23_http_response"><a class="link" href="#_응답_23_http_response">HTTP response</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id" : 1,
+  "userName" : "스탬프 추가한 사용자",
+  "userColor" : "#a1b3d7",
+  "day" : 1,
+  "message" : "스탬프 메시지"
+}</code></pre>
 </div>
 </div>
 </div>
+<div class="sect4">
+<h5 id="_응답_23_response_fields"><a class="link" href="#_응답_23_response_fields">Response fields</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userColor</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 추가한 사용자 테마 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 날짜</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프 메시지</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_신고"><a class="link" href="#_신고">신고</a></h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="_사용자_신고"><a class="link" href="#_사용자_신고">사용자 신고</a></h3>
+<h3 id="_요청한_골에_대한_모든_스탬프_조회"><a class="link" href="#_요청한_골에_대한_모든_스탬프_조회">요청한 골에 대한 모든 스탬프 조회</a></h3>
 <div class="sect3">
 <h4 id="_요청_24"><a class="link" href="#_요청_24">요청</a></h4>
 <div class="sect4">
 <h5 id="_요청_24_http_request"><a class="link" href="#_요청_24_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/users/2 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">GET /goals/1/stamps HTTP/1.1
 X-API-VERSION: 1
-Authorization: Bearer access_token
-
-{
-  "content" : "신고합니다."
-}</code></pre>
+Authorization: Bearer access_token</code></pre>
 </div>
 </div>
 </div>
@@ -3432,30 +3509,45 @@ Authorization: Bearer access_token
 </tbody>
 </table>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_응답_24"><a class="link" href="#_응답_24">응답</a></h4>
 <div class="sect4">
-<h5 id="_요청_24_path_parameters"><a class="link" href="#_요청_24_path_parameters">Path parameters</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /reports/users/{userId}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 사용자 아이디</p></td>
-</tr>
-</tbody>
-</table>
+<h5 id="_응답_24_http_response"><a class="link" href="#_응답_24_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "stamps" : {
+    "1" : [ {
+      "userId" : 1,
+      "name" : "스탬프 추가한 사용자",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지1",
+      "day" : 1
+    } ],
+    "2" : [ {
+      "userId" : 1,
+      "name" : "스탬프 추가한 사용자",
+      "color" : "#a1b3d7",
+      "message" : "스탬프 메시지2",
+      "day" : 2
+    }, {
+      "userId" : 2,
+      "name" : "스탬프 추가한 사용자2",
+      "color" : "#7175a5",
+      "message" : "스탬프 메시지3",
+      "day" : 2
+    } ]
+  }
+}</code></pre>
+</div>
+</div>
 </div>
 <div class="sect4">
-<h5 id="_요청_24_request_fields"><a class="link" href="#_요청_24_request_fields">Request fields</a></h5>
+<h5 id="_응답_24_response_fields"><a class="link" href="#_응답_24_response_fields">Response fields</a></h5>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3471,42 +3563,52 @@ Authorization: Bearer access_token
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.*.[].userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.*.[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신고 내용</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.*.[].color</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.*.[].message</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 사용자 프로필 색상코드</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stamps.*.[].day</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">스탬프를 찍은 날짜</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_응답_24"><a class="link" href="#_응답_24">응답</a></h4>
-<div class="sect4">
-<h5 id="_응답_24_http_response"><a class="link" href="#_응답_24_http_response">HTTP response</a></h5>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
 </div>
 </div>
 </div>
-</div>
-</div>
+<div class="sect1">
+<h2 id="_콕_찌르기"><a class="link" href="#_콕_찌르기">콕 찌르기</a></h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="_골_신고"><a class="link" href="#_골_신고">골 신고</a></h3>
+<h3 id="_콕_찌르기_요청"><a class="link" href="#_콕_찌르기_요청">콕 찌르기 요청</a></h3>
 <div class="sect3">
 <h4 id="_요청_25"><a class="link" href="#_요청_25">요청</a></h4>
 <div class="sect4">
 <h5 id="_요청_25_http_request"><a class="link" href="#_요청_25_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/goals/2 HTTP/1.1
-Content-Type: application/json;charset=UTF-8
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /goals/1/poke/2 HTTP/1.1
 X-API-VERSION: 1
 Authorization: Bearer access_token
-
-{
-  "content" : "신고합니다."
-}</code></pre>
+Content-Type: application/x-www-form-urlencoded</code></pre>
 </div>
 </div>
 </div>
@@ -3538,7 +3640,7 @@ Authorization: Bearer access_token
 <div class="sect4">
 <h5 id="_요청_25_path_parameters"><a class="link" href="#_요청_25_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /reports/goals/{goalId}</caption>
+<caption class="title">Table 1. /goals/{goalId}/poke/{userId}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3552,31 +3654,11 @@ Authorization: Bearer access_token
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 골 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">골 아이디</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-<div class="sect4">
-<h5 id="_요청_25_request_fields"><a class="link" href="#_요청_25_request_fields">Request fields</a></h5>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신고 내용</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">콕 찌를 사용자 아이디</p></td>
 </tr>
 </tbody>
 </table>
@@ -3594,15 +3676,20 @@ Authorization: Bearer access_token
 </div>
 </div>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_신고"><a class="link" href="#_신고">신고</a></h2>
+<div class="sectionbody">
 <div class="sect2">
-<h3 id="_스탬프_신고"><a class="link" href="#_스탬프_신고">스탬프 신고</a></h3>
+<h3 id="_사용자_신고"><a class="link" href="#_사용자_신고">사용자 신고</a></h3>
 <div class="sect3">
 <h4 id="_요청_26"><a class="link" href="#_요청_26">요청</a></h4>
 <div class="sect4">
 <h5 id="_요청_26_http_request"><a class="link" href="#_요청_26_http_request">HTTP request</a></h5>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/stamps/2 HTTP/1.1
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/users/2 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
 X-API-VERSION: 1
 Authorization: Bearer access_token
@@ -3641,7 +3728,7 @@ Authorization: Bearer access_token
 <div class="sect4">
 <h5 id="_요청_26_path_parameters"><a class="link" href="#_요청_26_path_parameters">Path parameters</a></h5>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /reports/stamps/{stampId}</caption>
+<caption class="title">Table 1. /reports/users/{userId}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -3654,8 +3741,8 @@ Authorization: Bearer access_token
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stampId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 스탬프 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>userId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 사용자 아이디</p></td>
 </tr>
 </tbody>
 </table>
@@ -3697,13 +3784,219 @@ Authorization: Bearer access_token
 </div>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_골_신고"><a class="link" href="#_골_신고">골 신고</a></h3>
+<div class="sect3">
+<h4 id="_요청_27"><a class="link" href="#_요청_27">요청</a></h4>
+<div class="sect4">
+<h5 id="_요청_27_http_request"><a class="link" href="#_요청_27_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/goals/2 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+X-API-VERSION: 1
+Authorization: Bearer access_token
+
+{
+  "content" : "신고합니다."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_27_request_headers"><a class="link" href="#_요청_27_request_headers">Request headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_27_path_parameters"><a class="link" href="#_요청_27_path_parameters">Path parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /reports/goals/{goalId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>goalId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 골 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_27_request_fields"><a class="link" href="#_요청_27_request_fields">Request fields</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신고 내용</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_27"><a class="link" href="#_응답_27">응답</a></h4>
+<div class="sect4">
+<h5 id="_응답_27_http_response"><a class="link" href="#_응답_27_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_스탬프_신고"><a class="link" href="#_스탬프_신고">스탬프 신고</a></h3>
+<div class="sect3">
+<h4 id="_요청_28"><a class="link" href="#_요청_28">요청</a></h4>
+<div class="sect4">
+<h5 id="_요청_28_http_request"><a class="link" href="#_요청_28_http_request">HTTP request</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /reports/stamps/2 HTTP/1.1
+Content-Type: application/json;charset=UTF-8
+X-API-VERSION: 1
+Authorization: Bearer access_token
+
+{
+  "content" : "신고합니다."
+}</code></pre>
+</div>
+</div>
+</div>
+<div class="sect4">
+<h5 id="_요청_28_request_headers"><a class="link" href="#_요청_28_request_headers">Request headers</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>X-API-VERSION</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">요청 버전</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">액세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_28_path_parameters"><a class="link" href="#_요청_28_path_parameters">Path parameters</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /reports/stamps/{stampId}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>stampId</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신고할 스탬프 아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect4">
+<h5 id="_요청_28_request_fields"><a class="link" href="#_요청_28_request_fields">Request fields</a></h5>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">신고 내용</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_응답_28"><a class="link" href="#_응답_28">응답</a></h4>
+<div class="sect4">
+<h5 id="_응답_28_http_response"><a class="link" href="#_응답_28_http_response">HTTP response</a></h5>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 204 No Content</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2024-03-09 19:05:16 +0900
+Last updated 2024-03-22 20:05:41 +0900
 </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.3/highlight.min.js"></script>

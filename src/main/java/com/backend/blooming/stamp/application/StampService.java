@@ -4,8 +4,10 @@ import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
+import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
-import com.backend.blooming.stamp.application.exception.CreateStampForbiddenException;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToCreateException;
+import com.backend.blooming.stamp.application.exception.ForbiddenStampToReadException;
 import com.backend.blooming.stamp.domain.Day;
 import com.backend.blooming.stamp.domain.Message;
 import com.backend.blooming.stamp.domain.Stamp;
@@ -32,7 +34,7 @@ public class StampService {
     public ReadStampDto createStamp(final CreateStampDto createStampDto) {
         final Goal goal = getGoal(createStampDto.goalId());
         final User user = getUser(createStampDto.userId());
-        validateUserInGoalTeams(goal, user.getId());
+        validateUserToCreateStamp(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
         final Stamp stamp = persistStamp(createStampDto, goal, user);
 
@@ -49,13 +51,9 @@ public class StampService {
                              .orElseThrow(NotFoundUserException::new);
     }
 
-    private void validateUserInGoalTeams(final Goal goal, final Long userId) {
-        final List<Long> teamUserIds = goal.getTeams()
-                                           .stream()
-                                           .map(goalTeam -> goalTeam.getUser().getId())
-                                           .toList();
-        if (!teamUserIds.contains(userId)) {
-            throw new CreateStampForbiddenException();
+    private void validateUserToCreateStamp(final Goal goal, final User user) {
+        if (!goal.isTeamAndAccepted(user)) {
+            throw new ForbiddenStampToCreateException();
         }
     }
 
@@ -75,5 +73,22 @@ public class StampService {
                                  .build();
 
         return stampRepository.save(stamp);
+    }
+
+    @Transactional(readOnly = true)
+    public ReadAllStampDto readAllByGoalId(final Long goalId, final Long userId) {
+        final Goal goal = getGoal(goalId);
+        final User user = getUser(userId);
+        validateUserToRead(goal, user);
+
+        final List<Stamp> stamps = stampRepository.findAllByGoalIdAndDeletedIsFalse(goal.getId());
+
+        return ReadAllStampDto.from(stamps);
+    }
+
+    private void validateUserToRead(final Goal goal, final User user) {
+        if (!goal.isTeamAndAccepted(user)) {
+            throw new ForbiddenStampToReadException();
+        }
     }
 }

@@ -10,6 +10,10 @@ import com.backend.blooming.goal.application.dto.UpdateGoalDto;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
 import com.backend.blooming.goal.presentation.dto.request.CreateGoalRequest;
+import com.backend.blooming.stamp.domain.Day;
+import com.backend.blooming.stamp.domain.Message;
+import com.backend.blooming.stamp.domain.Stamp;
+import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.user.domain.Email;
 import com.backend.blooming.user.domain.Name;
@@ -25,20 +29,24 @@ import java.util.List;
 
 @SuppressWarnings("NonAsciiCharacters")
 public class GoalServiceTestFixture {
-    
+
     @Autowired
     private UserRepository userRepository;
-    
+
     @Autowired
     private GoalRepository goalRepository;
-    
+
     @Autowired
     private FriendRepository friendRepository;
-    
+
+    @Autowired
+    private StampRepository stampRepository;
+
     protected final long 테스트를_위한_시스템_현재_시간_설정값 = 10L;
     protected Long 유효한_사용자_아이디;
     protected Long 골_관리자가_아닌_사용자_아이디;
     protected Long 존재하지_않는_사용자_아이디 = 999L;
+    protected Long 골_참여자가_아닌_사용자_아이디;
     protected String 골_제목 = "골 제목";
     protected String 골_메모 = "골 메모";
     protected LocalDate 골_시작일 = LocalDate.now();
@@ -82,13 +90,13 @@ public class GoalServiceTestFixture {
     protected User 친구인_사용자;
     protected User 친구가_아닌_사용자;
     protected User 친구인_사용자2;
-    
+
     @BeforeEach
     void setUp() {
         Long 존재하지_않는_사용자_아이디 = 998L;
         CreateGoalRequest 유효한_골_생성_요청_dto;
         CreateGoalRequest 존재하지_않는_사용자가_관리자인_골_생성_요청_dto;
-        
+
         현재_로그인한_사용자 = User.builder()
                           .oAuthId("아이디")
                           .oAuthType(OAuthType.KAKAO)
@@ -121,20 +129,21 @@ public class GoalServiceTestFixture {
                        .color(ThemeColor.INDIGO)
                        .statusMessage("상태메시지4")
                        .build();
-        
+
         userRepository.saveAll(List.of(현재_로그인한_사용자, 친구인_사용자, 친구가_아닌_사용자, 친구인_사용자2));
         유효한_사용자_아이디 = 현재_로그인한_사용자.getId();
         골_관리자가_아닌_사용자_아이디 = 친구인_사용자.getId();
+        골_참여자가_아닌_사용자_아이디 = 친구가_아닌_사용자.getId();
         수정_요청한_골_참여자_아이디_목록.addAll(List.of(유효한_사용자_아이디, 골_관리자가_아닌_사용자_아이디, 친구인_사용자2.getId()));
-        
+
         final Friend 유효한_친구 = new Friend(현재_로그인한_사용자, 친구인_사용자);
         final Friend 유효한_친구2 = new Friend(현재_로그인한_사용자, 친구인_사용자2);
         friendRepository.saveAll(List.of(유효한_친구, 유효한_친구2));
         유효한_친구.acceptRequest();
         유효한_친구2.acceptRequest();
-        
+
         골_참여_사용자_목록.addAll(List.of(현재_로그인한_사용자, 친구인_사용자));
-        
+
         현재_진행중인_골1 = Goal.builder()
                          .name(골_제목)
                          .memo(골_메모)
@@ -167,14 +176,22 @@ public class GoalServiceTestFixture {
                         .managerId(유효한_사용자_아이디)
                         .users(골_참여_사용자_목록)
                         .build();
-        
+
         goalRepository.saveAll(List.of(현재_진행중인_골1, 현재_진행중인_골2, 이미_종료된_골1, 이미_종료된_골2));
         유효한_골_아이디 = 현재_진행중인_골1.getId();
-        
+
         골_팀에_등록된_사용자_아이디_목록.addAll(List.of(현재_로그인한_사용자.getId(), 친구인_사용자.getId()));
         List<Long> 친구가_아닌_사용자가_포함된_사용자_아이디_목록 = new ArrayList<>(List.of(현재_로그인한_사용자.getId(), 친구가_아닌_사용자.getId()));
         참여한_골_목록.addAll(List.of(현재_진행중인_골1, 현재_진행중인_골2, 이미_종료된_골1, 이미_종료된_골2));
-        
+
+        Stamp 유효한_스탬프1 = Stamp.builder()
+                              .goal(현재_진행중인_골1)
+                              .user(현재_로그인한_사용자)
+                              .day(new Day(현재_진행중인_골1.getGoalTerm(), 1))
+                              .message(new Message("스탬프 메시지"))
+                              .build();
+        stampRepository.saveAll(List.of(유효한_스탬프1));
+
         유효한_골_생성_요청_dto = new CreateGoalRequest(
                 골_제목,
                 골_메모,
@@ -234,10 +251,10 @@ public class GoalServiceTestFixture {
                 유효한_사용자_아이디,
                 골_팀에_등록된_사용자_아이디_목록
         );
-        
-        유효한_골_dto = ReadGoalDetailDto.from(현재_진행중인_골1);
+
+        유효한_골_dto = ReadGoalDetailDto.of(현재_진행중인_골1, List.of(현재_로그인한_사용자.getId()));
         사용자가_참여한_골_목록 = ReadAllGoalDto.from(참여한_골_목록);
-        
+
         수정_요청한_골_dto = new UpdateGoalDto(
                 수정한_제목,
                 수정한_메모,

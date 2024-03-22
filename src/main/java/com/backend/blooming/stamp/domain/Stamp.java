@@ -61,6 +61,14 @@ public class Stamp extends BaseTimeEntity {
         this.message = message;
     }
 
+    public long getDay() {
+        return day.getValue();
+    }
+
+    public String getMessage() {
+        return message.getValue();
+    }
+
     public boolean isWriter(final User user) {
         return this.user.equals(user);
     }

@@ -31,8 +31,11 @@ public class StampRepositoryTestFixture {
     private StampRepository stampRepository;
 
     protected User 골_관리자_사용자;
-    protected Goal 유효한_골;
+    protected Long 유효한_골_아이디;
     protected Stamp 유효한_스탬프;
+    protected Stamp 유효한_스탬프2;
+    protected long 유효한_스탬프_날짜;
+    protected Goal 유효한_골;
 
     @BeforeEach
     void setUp() {
@@ -44,7 +47,15 @@ public class StampRepositoryTestFixture {
                         .color(ThemeColor.BABY_BLUE)
                         .statusMessage("상태메시지")
                         .build();
-        userRepository.saveAll(List.of(골_관리자_사용자));
+        User 골_참여_사용자1 = User.builder()
+                             .oAuthId("아이디2")
+                             .oAuthType(OAuthType.KAKAO)
+                             .email(new Email("test2@gmail.com"))
+                             .name(new Name("테스트2"))
+                             .color(ThemeColor.INDIGO)
+                             .statusMessage("상태메시지2")
+                             .build();
+        userRepository.saveAll(List.of(골_관리자_사용자, 골_참여_사용자1));
         List<User> 골에_참여한_사용자_목록 = new ArrayList<>(List.of(골_관리자_사용자));
 
         유효한_골 = Goal.builder()
@@ -56,6 +67,7 @@ public class StampRepositoryTestFixture {
                          .users(골에_참여한_사용자_목록)
                          .build();
         goalRepository.saveAll(List.of(유효한_골));
+        유효한_골_아이디 = 유효한_골.getId();
 
         유효한_스탬프 = Stamp.builder()
                              .goal(유효한_골)
@@ -63,6 +75,13 @@ public class StampRepositoryTestFixture {
                              .day(new Day(유효한_골.getGoalTerm(), 1))
                              .message(new Message("스탬프 메시지"))
                              .build();
-        stampRepository.saveAll(List.of(유효한_스탬프));
+        유효한_스탬프2 = Stamp.builder()
+                             .goal(유효한_골)
+                             .user(골_참여_사용자1)
+                             .day(new Day(유효한_골.getGoalTerm(), 1))
+                             .message(new Message("스탬프 메시지2"))
+                             .build();
+        stampRepository.saveAll(List.of(유효한_스탬프, 유효한_스탬프2));
+        유효한_스탬프_날짜 = 유효한_스탬프.getDay();
     }
 }

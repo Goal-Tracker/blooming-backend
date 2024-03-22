@@ -52,7 +52,9 @@ public enum ExceptionMessage {
     INVALID_GOAL_DAYS("골 날짜 수가 범위 밖입니다.(범위: 1~100)"),
     INVALID_USERS_SIZE("골 참여자 수가 범위 밖입니다.(범위: 1~5명)"),
     INVALID_USER_TO_PARTICIPATE("골에 참여할 수 없는 사용자입니다. 골에는 친구인 사용자만 초대할 수 있습니다."),
+    READ_GOAL_FORBIDDEN("골을 조회할 권한이 없습니다."),
     INVALID_GOAL_ACCEPT("초대받은 골이 아닙니다."),
+    INVALID_GOAL_ACCEPT_MANAGER("골 관리자는 골 초대 수락을 할 수 없습니다."),
     DELETE_GOAL_FORBIDDEN("골을 삭제할 권한이 없습니다."),
     UPDATE_GOAL_FORBIDDEN("골을 수정할 권한이 없습니다."),
     UPDATE_TEAMS_FORBIDDEN("골 참여자 목록은 비어있을 수 없습니다."),
@@ -69,6 +71,7 @@ public enum ExceptionMessage {
     INVALID_STAMP_DAY_FUTURE("오늘보다 이후의 스탬프는 추가할 수 없습니다."),
     INVALID_STAMP_TO_CREATE("이미 해당 날짜의 스탬프가 존재합니다."),
     CREATE_STAMP_FORBIDDEN("스탬프를 추가할 권한이 없습니다."),
+    READ_STAMP_FORBIDDEN("스탬프를 조회할 권한이 없습니다."),
     INVALID_STAMP_MESSAGE("스탬프 인증 메시지는 비어있거나 50자 초과일 수 없습니다."),
     NOT_FOUND_STAMP("스탬프를 찾을 수 없습니다."),
 
