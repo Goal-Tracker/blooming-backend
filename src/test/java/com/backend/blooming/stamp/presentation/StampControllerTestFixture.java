@@ -3,12 +3,11 @@ package com.backend.blooming.stamp.presentation;
 import com.backend.blooming.authentication.infrastructure.jwt.TokenType;
 import com.backend.blooming.authentication.infrastructure.jwt.dto.AuthClaims;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
-import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
+import com.backend.blooming.stamp.application.dto.ReadStampDto;
 import com.backend.blooming.stamp.presentation.dto.request.CreateStampRequest;
-import com.backend.blooming.stamp.presentation.dto.response.ReadStampResponse;
-import com.backend.blooming.themecolor.domain.ThemeColor;
 import com.backend.blooming.stamp.presentation.dto.response.ReadAllStampResponse;
+import com.backend.blooming.stamp.presentation.dto.response.ReadStampResponse;
 import com.backend.blooming.themecolor.domain.ThemeColor;
 
 import java.util.HashMap;
