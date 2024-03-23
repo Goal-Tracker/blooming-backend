@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +27,8 @@ import lombok.ToString;
 @EqualsAndHashCode(of = "id", callSuper = false)
 @ToString(exclude = {"goal", "user"})
 public class Stamp extends BaseTimeEntity {
+
+    private static final String DEFAULT_STAMP_IMAGE_URL = "";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +48,9 @@ public class Stamp extends BaseTimeEntity {
     @Embedded
     private Message message;
 
+    @Column(nullable = false)
+    private String stampImageUrl;
+
     @Column(name = "is_deleted", nullable = false)
     private boolean deleted = false;
 
@@ -53,12 +59,14 @@ public class Stamp extends BaseTimeEntity {
             final Goal goal,
             final User user,
             final Day day,
-            final Message message
+            final Message message,
+            final String stampImageUrl
     ) {
         this.goal = goal;
         this.user = user;
         this.day = day;
         this.message = message;
+        this.stampImageUrl = processDefaultStampImageUrl(stampImageUrl);
     }
 
     public long getDay() {
@@ -71,5 +79,13 @@ public class Stamp extends BaseTimeEntity {
 
     public boolean isWriter(final User user) {
         return this.user.equals(user);
+    }
+
+    private String processDefaultStampImageUrl(final String stampImageUrl) {
+        if (stampImageUrl == null || stampImageUrl.isBlank()) {
+            return DEFAULT_STAMP_IMAGE_URL;
+        }
+
+        return stampImageUrl;
     }
 }
