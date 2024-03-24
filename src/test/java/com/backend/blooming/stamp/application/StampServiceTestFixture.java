@@ -15,6 +15,8 @@ import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mock.web.MockMultipartFile;
+import org.testcontainers.shaded.com.google.common.net.MediaType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,6 +48,14 @@ public class StampServiceTestFixture {
     protected String 스탬프를_생성한_사용자_이름2;
     protected User 스탬프를_생성할_사용자;
     protected Goal 스탬프를_생성할_골;
+    protected MockMultipartFile 추가할_스탬프_이미지 = new MockMultipartFile(
+            "stampImage",
+            "image.png",
+            MediaType.PNG.toString(),
+            "image".getBytes()
+    );
+    protected String 스탬프_이미지_url = "https://blooming.default.image.png";
+    protected String 비어있는_스탬프_이미지 = "";
 
     @BeforeEach
     void setUp() {
@@ -113,12 +123,14 @@ public class StampServiceTestFixture {
                               .user(스탬프를_생성한_사용자1)
                               .day(new Day(스탬프를_생성할_골.getGoalTerm(), 1))
                               .message(new Message("스탬프 메시지"))
+                              .stampImageUrl(스탬프_이미지_url)
                               .build();
         Stamp 유효한_스탬프2 = Stamp.builder()
                               .goal(스탬프를_생성할_골)
                               .user(스탬프를_생성한_사용자2)
                               .day(new Day(스탬프를_생성할_골.getGoalTerm(), 1))
                               .message(new Message("스탬프 메시지2"))
+                              .stampImageUrl(비어있는_스탬프_이미지)
                               .build();
         stampRepository.saveAll(List.of(유효한_스탬프1, 유효한_스탬프2));
 
@@ -126,31 +138,36 @@ public class StampServiceTestFixture {
                 스탬프를_생성할_골.getId(),
                 999L,
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
         존재하지_않는_골에서_생성된_스탬프_dto = new CreateStampDto(
                 999L,
                 스탬프를_생성한_사용자1.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
         골_참여자가_아닌_사용자가_생성한_스탬프_dto = new CreateStampDto(
                 스탬프를_생성할_골.getId(),
                 골_참여자가_아닌_사용자.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
         골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto = new CreateStampDto(
                 스탬프를_생성할_골.getId(),
                 골_초대를_수락하지_않은_사용자.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
         이미_존재하는_스탬프_dto = new CreateStampDto(
                 스탬프를_생성할_골.getId(),
                 스탬프를_생성한_사용자1.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
     }
 }

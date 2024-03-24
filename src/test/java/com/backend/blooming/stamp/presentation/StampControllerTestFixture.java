@@ -9,6 +9,8 @@ import com.backend.blooming.stamp.presentation.dto.request.CreateStampRequest;
 import com.backend.blooming.stamp.presentation.dto.response.ReadAllStampResponse;
 import com.backend.blooming.stamp.presentation.dto.response.ReadStampResponse;
 import com.backend.blooming.themecolor.domain.ThemeColor;
+import org.springframework.mock.web.MockMultipartFile;
+import org.testcontainers.shaded.com.google.common.net.MediaType;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,46 +27,60 @@ public class StampControllerTestFixture {
     protected String 액세스_토큰 = "Bearer access_token";
     protected Long 유효한_골_아이디 = 1L;
     protected Long 존재하지_않는_골_아이디 = 999L;
+    protected MockMultipartFile 추가할_스탬프_이미지 = new MockMultipartFile(
+            "stampImage",
+            "image.png",
+            MediaType.PNG.toString(),
+            "image".getBytes()
+    );
 
     protected CreateStampDto 유효한_스탬프_생성_dto = new CreateStampDto(
             1L,
             골_관리자_아이디,
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampRequest 유효한_스탬프_생성_요청_dto = new CreateStampRequest(
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampDto 존재하지_않는_골에서_생성한_스탬프_dto = new CreateStampDto(
             999L,
             사용자_토큰_정보.userId(),
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampRequest 존재하지_않는_골에서_요청한_스탬프_생성_dto = new CreateStampRequest(
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampDto 권한이_없는_사용자가_생성한_스탬프_dto = new CreateStampDto(
             1L,
             사용자_토큰_정보.userId(),
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampRequest 권한이_없는_사용자가_생성_요청한_스탬프_dto = new CreateStampRequest(
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampDto 이미_존재하는_스탬프_생성_dto = new CreateStampDto(
             1L,
             사용자_토큰_정보.userId(),
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected CreateStampRequest 이미_존재하는_스탬프_생성_요청_dto = new CreateStampRequest(
             1,
-            "스탬프 메시지"
+            "스탬프 메시지",
+            추가할_스탬프_이미지
     );
     protected ReadStampDto 추가한_스탬프_dto = new ReadStampDto(
             1L,
@@ -78,21 +94,24 @@ public class StampControllerTestFixture {
             "스탬프 추가한 사용자",
             ThemeColor.BABY_BLUE,
             "스탬프 메시지1",
-            1
+            1,
+            "https://blooming.default.image.png"
     );
     private ReadAllStampDto.StampDto 유효한_스탬프_dto2 = new ReadAllStampDto.StampDto(
             1L,
             "스탬프 추가한 사용자",
             ThemeColor.BABY_BLUE,
             "스탬프 메시지2",
-            2
+            2,
+            "https://blooming.default.image.png"
     );
     private ReadAllStampDto.StampDto 유효한_스탬프_dto3 = new ReadAllStampDto.StampDto(
             2L,
             "스탬프 추가한 사용자2",
             ThemeColor.INDIGO,
             "스탬프 메시지3",
-            2
+            2,
+            "https://blooming.default.image.png"
     );
     protected ReadStampResponse 유효한_스탬프_응답_dto = new ReadStampResponse(
             1L,

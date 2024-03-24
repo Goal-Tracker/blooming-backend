@@ -50,7 +50,8 @@ class StampServiceTest extends StampServiceTestFixture {
                 골.getId(),
                 스탬프를_생성할_사용자.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
 
         // when
@@ -111,6 +112,8 @@ class StampServiceTest extends StampServiceTestFixture {
             softAssertions.assertThat(stamps.get(1).userId()).isEqualTo(스탬프를_생성한_사용자_아이디2);
             softAssertions.assertThat(stamps.get(0).name()).isEqualTo(스탬프를_생성한_사용자_이름1);
             softAssertions.assertThat(stamps.get(1).name()).isEqualTo(스탬프를_생성한_사용자_이름2);
+            softAssertions.assertThat(stamps.get(0).stampImageUrl()).isEqualTo(스탬프_이미지_url);
+            softAssertions.assertThat(stamps.get(1).stampImageUrl()).isEqualTo(비어있는_스탬프_이미지);
         });
     }
 
