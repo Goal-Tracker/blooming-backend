@@ -21,6 +21,7 @@ import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -28,6 +29,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class StampService {
+
+    private static final String DEFAULT_STAMP_IMAGE_URL = "";
 
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
@@ -39,10 +42,7 @@ public class StampService {
         final User user = getUser(createStampDto.userId());
         validateUserToCreateStamp(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
-        final String stampImageUrl = imageStorageManager.upload(
-                createStampDto.stampImage(),
-                ImageStoragePath.STAMP
-        );
+        final String stampImageUrl = getStampImageUrl(createStampDto.stampImage());
         final Stamp stamp = persistStamp(createStampDto, goal, user, stampImageUrl);
 
         return ReadStampDto.from(stamp);
@@ -69,6 +69,17 @@ public class StampService {
         if (isExistsStamp) {
             throw new InvalidStampException.InvalidStampToCreate();
         }
+    }
+
+    private String getStampImageUrl(final MultipartFile stampImage) {
+        if (stampImage!=null && !stampImage.isEmpty()){
+            return imageStorageManager.upload(
+                    stampImage,
+                    ImageStoragePath.STAMP
+            );
+        }
+
+        return DEFAULT_STAMP_IMAGE_URL;
     }
 
     private Stamp persistStamp(
