@@ -64,7 +64,7 @@ public class StampService {
         }
     }
 
-    private void validateExistStamp(final Long userId, final int day) {
+    private void validateExistStamp(final Long userId, final long day) {
         final boolean isExistsStamp = stampRepository.existsByUserIdAndDayAndDeletedIsFalse(userId, day);
         if (isExistsStamp) {
             throw new InvalidStampException.InvalidStampToCreate();

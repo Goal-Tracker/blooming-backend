@@ -16,7 +16,7 @@ public interface StampRepository extends JpaRepository<Stamp, Long> {
                     WHERE (s.user.id = :userId AND s.day.value = :day) AND s.deleted = FALSE
                 ) as exist
             """)
-    boolean existsByUserIdAndDayAndDeletedIsFalse(final Long userId, final int day);
+    boolean existsByUserIdAndDayAndDeletedIsFalse(final Long userId, final long day);
 
     @Query("""
             SELECT s

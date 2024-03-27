@@ -6,18 +6,23 @@ import org.springframework.web.multipart.MultipartFile;
 public record CreateStampDto(
         Long goalId,
         Long userId,
-        int day,
+        long day,
         String message,
         MultipartFile stampImage
 ) {
     
-    public static CreateStampDto of(final CreateStampRequest request, final Long goalId, final Long userId) {
+    public static CreateStampDto of(
+            final CreateStampRequest request,
+            final Long goalId,
+            final Long userId,
+            final MultipartFile stampImage
+    ) {
         return new CreateStampDto(
                 goalId,
                 userId,
                 request.day(),
                 request.message(),
-                request.stampImage()
+                stampImage
         );
     }
 }
