@@ -1,6 +1,7 @@
 package com.backend.blooming.goal.application;
 
 import com.backend.blooming.configuration.IsolateDatabase;
+import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
 import com.backend.blooming.goal.application.dto.ReadGoalDetailDto;
 import com.backend.blooming.goal.application.exception.DeleteGoalForbiddenException;
@@ -16,6 +17,8 @@ import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -46,16 +49,34 @@ class GoalServiceTest extends GoalServiceTestFixture {
         assertThat(goalId).isPositive();
     }
 
+    @ParameterizedTest
+    @NullAndEmptySource
+    void 골_생성시_골_참여자_목록이_null이거나_비어있는_경우_예외를_발생한다(final List<Long> teamUserIds) {
+        // given
+        final CreateGoalDto 골_참여자_목록이_비어있는_골_생성_dto = new CreateGoalDto(
+                골_제목,
+                골_메모,
+                골_시작일,
+                골_종료일,
+                유효한_사용자_아이디,
+                teamUserIds
+        );
+
+        // when & then
+        assertThatThrownBy(() -> goalService.createGoal(골_참여자_목록이_비어있는_골_생성_dto))
+                .isInstanceOf(InvalidGoalException.InvalidInvalidUsersSize.class);
+    }
+
     @Test
     void 골_생성시_존재하지_않는_사용자가_관리자인_경우_예외를_발생한다() {
-        // when
+        // when & then
         assertThatThrownBy(() -> goalService.createGoal(존재하지_않는_사용자가_관리자인_골_생성_dto))
                 .isInstanceOf(NotFoundUserException.class);
     }
 
     @Test
     void 골_생성시_친구가_아닌_사용자가_참여자로_있는_경우_예외를_발생한다() {
-        // when
+        // when & then
         assertThatThrownBy(() -> goalService.createGoal(친구가_아닌_사용자가_참여자로_있는_골_생성_dto))
                 .isInstanceOf(InvalidGoalException.InvalidInvalidUserToParticipate.class);
     }

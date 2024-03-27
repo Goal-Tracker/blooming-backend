@@ -1,5 +1,6 @@
 package com.backend.blooming.goal.application;
 
+import com.backend.blooming.common.util.DayUtil;
 import com.backend.blooming.friend.infrastructure.repository.FriendRepository;
 import com.backend.blooming.goal.application.dto.CreateGoalDto;
 import com.backend.blooming.goal.application.dto.ReadAllGoalDto;
@@ -12,13 +13,12 @@ import com.backend.blooming.goal.application.exception.UpdateGoalForbiddenExcept
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.domain.GoalTeam;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.stamp.domain.Stamp;
 import com.backend.blooming.stamp.infrastructure.repository.StampRepository;
-import com.backend.blooming.notification.application.NotificationService;
 import com.backend.blooming.user.application.exception.NotFoundUserException;
 import com.backend.blooming.user.domain.User;
 import com.backend.blooming.user.infrastructure.repository.UserRepository;
-import com.backend.blooming.common.util.DayUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,6 +47,9 @@ public class GoalService {
     }
 
     private List<User> getUsers(final List<Long> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            throw new InvalidGoalException.InvalidInvalidUsersSize();
+        }
         return userRepository.findAllByUserIds(userIds);
     }
 

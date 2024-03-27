@@ -105,6 +105,26 @@ class GoalControllerTest extends GoalControllerTestFixture {
     }
 
     @Test
+    void 골_생성시_골_참여자_목록이_null이거나_비어있는_경우_400_예외를_발생시킨다() throws Exception {
+        // given
+        given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
+        given(userRepository.existsByIdAndDeletedIsFalse(사용자_토큰_정보.userId())).willReturn(true);
+        given(goalService.createGoal(유효한_골_생성_dto))
+                .willThrow(new InvalidGoalException.InvalidInvalidUsersSize());
+
+        // when & then
+        mockMvc.perform(post("/goals")
+                .header("X-API-VERSION", 1)
+                .header(HttpHeaders.AUTHORIZATION, 액세스_토큰)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(요청한_골_dto))
+        ).andExpectAll(
+                status().isBadRequest(),
+                jsonPath("$.message").exists()
+        ).andDo(print());
+    }
+
+    @Test
     void 골_생성시_관리자와_친구가_아닌_사용자가_참여자로_있는_경우_400_예외를_발생시킨다() throws Exception {
         // given
         given(tokenProvider.parseToken(액세스_토큰_타입, 액세스_토큰)).willReturn(사용자_토큰_정보);
