@@ -23,6 +23,7 @@ class StampTest extends StampTestFixture {
                                   .user(유효한_사용자)
                                   .day(new Day(유효한_골.getGoalTerm(), 1))
                                   .message(new Message("테스트 메시지"))
+                                  .stampImageUrl(스탬프_이미지_url)
                                   .build();
 
         // then
@@ -32,6 +33,28 @@ class StampTest extends StampTestFixture {
             softAssertions.assertThat(result.getUser().getName()).isEqualTo(유효한_사용자.getName());
             softAssertions.assertThat(result.getDay()).isEqualTo(1);
             softAssertions.assertThat(result.getMessage()).isEqualTo("테스트 메시지");
+            softAssertions.assertThat(result.getStampImageUrl()).isEqualTo(스탬프_이미지_url);
+        });
+    }
+
+    @Test
+    void 스탬프_생성시_이미지가_null이거나_빈값이면_빈_문자열로_주소를_저장한다() {
+        // when
+        final Stamp result = Stamp.builder()
+                                  .goal(유효한_골)
+                                  .user(유효한_사용자)
+                                  .day(new Day(유효한_골.getGoalTerm(), 1))
+                                  .message(new Message("테스트 메시지"))
+                                  .build();
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result).isNotNull();
+            softAssertions.assertThat(result.getGoal().getName()).isEqualTo(유효한_골.getName());
+            softAssertions.assertThat(result.getUser().getName()).isEqualTo(유효한_사용자.getName());
+            softAssertions.assertThat(result.getDay()).isEqualTo(1);
+            softAssertions.assertThat(result.getMessage()).isEqualTo("테스트 메시지");
+            softAssertions.assertThat(result.getStampImageUrl()).isEqualTo("");
         });
     }
 

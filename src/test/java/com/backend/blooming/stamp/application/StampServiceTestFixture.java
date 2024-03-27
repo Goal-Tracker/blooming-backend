@@ -38,6 +38,7 @@ public class StampServiceTestFixture {
     protected CreateStampDto 골_참여자가_아닌_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 골_초대를_수락하지_않은_사용자가_생성한_스탬프_dto;
     protected CreateStampDto 이미_존재하는_스탬프_dto;
+    protected CreateStampDto 스탬프_이미지가_null인_스탬프_dto;
     protected Long 유효한_골_아이디;
     protected Long 존재하지_않는_골_아이디 = 999L;
     protected Long 스탬프를_생성한_사용자_아이디1;
@@ -56,17 +57,18 @@ public class StampServiceTestFixture {
     );
     protected String 스탬프_이미지_url = "https://blooming.default.image.png";
     protected String 비어있는_스탬프_이미지 = "";
+    protected User 스탬프를_생성한_사용자1;
 
     @BeforeEach
     void setUp() {
-        User 스탬프를_생성한_사용자1 = User.builder()
-                                 .oAuthId("아이디")
-                                 .oAuthType(OAuthType.KAKAO)
-                                 .email(new Email("test@gmail.com"))
-                                 .name(new Name("테스트"))
-                                 .color(ThemeColor.BABY_BLUE)
-                                 .statusMessage("상태메시지")
-                                 .build();
+        스탬프를_생성한_사용자1 = User.builder()
+                            .oAuthId("아이디")
+                            .oAuthType(OAuthType.KAKAO)
+                            .email(new Email("test@gmail.com"))
+                            .name(new Name("테스트"))
+                            .color(ThemeColor.BABY_BLUE)
+                            .statusMessage("상태메시지")
+                            .build();
         User 스탬프를_생성한_사용자2 = User.builder()
                                  .oAuthId("아이디2")
                                  .oAuthType(OAuthType.KAKAO)
