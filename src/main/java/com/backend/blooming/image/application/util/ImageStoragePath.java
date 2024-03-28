@@ -9,7 +9,8 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public enum ImageStoragePath {
 
-    PROFILE("profile/");
+    PROFILE("profile/"),
+    STAMP("stamp/");
 
     private final String path;
 }

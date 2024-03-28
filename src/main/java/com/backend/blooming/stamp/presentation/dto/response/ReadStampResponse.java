@@ -7,7 +7,8 @@ public record ReadStampResponse(
         String userName,
         String userColor,
         long day,
-        String message
+        String message,
+        String stampImageUrl
 ) {
 
     public static ReadStampResponse from(final ReadStampDto stamp) {
@@ -16,7 +17,8 @@ public record ReadStampResponse(
                 stamp.userName(),
                 stamp.userColor().getCode(),
                 stamp.day(),
-                stamp.message()
+                stamp.message(),
+                stamp.stampImageUrl()
         );
     }
 }

@@ -3,6 +3,8 @@ package com.backend.blooming.stamp.application;
 import com.backend.blooming.goal.application.exception.NotFoundGoalException;
 import com.backend.blooming.goal.domain.Goal;
 import com.backend.blooming.goal.infrastructure.repository.GoalRepository;
+import com.backend.blooming.image.application.ImageStorageManager;
+import com.backend.blooming.image.application.util.ImageStoragePath;
 import com.backend.blooming.stamp.application.dto.CreateStampDto;
 import com.backend.blooming.stamp.application.dto.ReadAllStampDto;
 import com.backend.blooming.stamp.application.dto.ReadStampDto;
@@ -19,6 +21,7 @@ import com.backend.blooming.user.infrastructure.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -27,16 +30,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StampService {
 
+    private static final String DEFAULT_STAMP_IMAGE_URL = "";
+
     private final GoalRepository goalRepository;
     private final UserRepository userRepository;
     private final StampRepository stampRepository;
+    private final ImageStorageManager imageStorageManager;
 
     public ReadStampDto createStamp(final CreateStampDto createStampDto) {
         final Goal goal = getGoal(createStampDto.goalId());
         final User user = getUser(createStampDto.userId());
         validateUserToCreateStamp(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
-        final Stamp stamp = persistStamp(createStampDto, goal, user);
+        final String stampImageUrl = saveStampImageUrl(createStampDto.stampImage());
+        final Stamp stamp = persistStamp(createStampDto, goal, user, stampImageUrl);
 
         return ReadStampDto.from(stamp);
     }
@@ -57,19 +64,33 @@ public class StampService {
         }
     }
 
-    private void validateExistStamp(final Long userId, final int day) {
+    private void validateExistStamp(final Long userId, final long day) {
         final boolean isExistsStamp = stampRepository.existsByUserIdAndDayAndDeletedIsFalse(userId, day);
         if (isExistsStamp) {
             throw new InvalidStampException.InvalidStampToCreate();
         }
     }
 
-    private Stamp persistStamp(final CreateStampDto createStampDto, final Goal goal, final User user) {
+    private String saveStampImageUrl(final MultipartFile stampImage) {
+        if (stampImage != null && !stampImage.isEmpty()) {
+            return imageStorageManager.upload(stampImage, ImageStoragePath.STAMP);
+        }
+
+        return DEFAULT_STAMP_IMAGE_URL;
+    }
+
+    private Stamp persistStamp(
+            final CreateStampDto createStampDto,
+            final Goal goal,
+            final User user,
+            final String stampImageUrl
+    ) {
         final Stamp stamp = Stamp.builder()
                                  .goal(goal)
                                  .user(user)
                                  .day(new Day(goal.getGoalTerm(), createStampDto.day()))
                                  .message(new Message(createStampDto.message()))
+                                 .stampImageUrl(stampImageUrl)
                                  .build();
 
         return stampRepository.save(stamp);

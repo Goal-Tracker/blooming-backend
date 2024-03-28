@@ -53,6 +53,7 @@ public class StampTestFixture {
                                                   .build();
     protected static int 스탬프_날짜가_골_시작일_이전인_경우 = 0;
     protected static int 스탬프_날짜가_현재_기준_스탬프_날짜보다_큰_경우 = 2;
+    protected String 스탬프_이미지_url = "https://blooming.default.image.png";
 
     @BeforeEach
     void setUpFixture() {

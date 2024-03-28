@@ -23,7 +23,8 @@ public record ReadAllStampResponse(Map<Long, List<StampInfoResponse>> stamps) {
             String name,
             String color,
             String message,
-            long day
+            long day,
+            String stampImageUrl
     ) {
 
         public static StampInfoResponse from(final ReadAllStampDto.StampDto stampDto) {
@@ -32,7 +33,8 @@ public record ReadAllStampResponse(Map<Long, List<StampInfoResponse>> stamps) {
                     stampDto.name(),
                     stampDto.color().getCode(),
                     stampDto.message(),
-                    stampDto.day()
+                    stampDto.day(),
+                    stampDto.stampImageUrl()
             );
         }
     }
