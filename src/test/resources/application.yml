@@ -22,6 +22,8 @@ oauth:
   client:
     kakao:
       user-info-uri: https://kapi.kakao.com/v2/user/me
+      user-unlink-uri: https://kapi.kakao.com/v1/user/unlink
+      admin-key: admin-key
 
 jwt:
   access-token-key: testtesttesttesttesttesttesttesttesttestesttesttesttesttest

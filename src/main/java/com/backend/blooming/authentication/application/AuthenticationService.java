@@ -54,9 +54,9 @@ public class AuthenticationService {
         final AtomicBoolean isSignUp = new AtomicBoolean(false);
         final User user = userRepository.findByOAuthIdAndOAuthType(userInformationDto.oAuthId(), oAuthType)
                                         .orElseGet(() -> {
-                                                    isSignUp.set(true);
-                                                    return persistUser(userInformationDto, oAuthType);
-                                                }
+                                                       isSignUp.set(true);
+                                                       return persistUser(userInformationDto, oAuthType);
+                                                   }
                                         );
 
         return new LoginUserInformationDto(user, isSignUp.get());
@@ -131,9 +131,12 @@ public class AuthenticationService {
     public void withdraw(final Long userId, final String refreshToken) {
         final AuthClaims authClaims = tokenProvider.parseToken(TokenType.REFRESH, refreshToken);
         final User user = validateAndGetUser(userId, authClaims);
+        final OAuthClient oAuthClient = oAuthClientComposite.findOAuthClient(user.getOAuthType());
 
         user.delete();
         blackListTokenService.register(refreshToken);
         deviceTokenService.deactivateAllByUserId(user.getId());
+        oAuthClient.unlink(user.getOAuthId())
+                   .subscribe();
     }
 }
