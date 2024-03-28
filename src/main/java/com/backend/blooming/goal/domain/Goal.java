@@ -29,10 +29,7 @@ import java.util.List;
 public class Goal extends BaseTimeEntity {
 
     private static final String MEMO_DEFAULT = "";
-    private static final int TEAMS_MAXIMUM_LENGTH = 5;
     private static final int MAX_LENGTH_OF_NAME = 50;
-    private static final int START_INDEX_OF_NAME = 0;
-    private static final int END_INDEX_OF_NAME = 50;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
