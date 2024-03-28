@@ -14,6 +14,8 @@ import com.backend.blooming.user.application.exception.NotFoundUserException;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDate;
@@ -50,7 +52,8 @@ class StampServiceTest extends StampServiceTestFixture {
                 골.getId(),
                 스탬프를_생성할_사용자.getId(),
                 1,
-                "스탬프 메시지"
+                "스탬프 메시지",
+                추가할_스탬프_이미지
         );
 
         // when
@@ -63,6 +66,40 @@ class StampServiceTest extends StampServiceTestFixture {
             softAssertions.assertThat(result.userColor()).isEqualTo(스탬프를_생성할_사용자.getColor());
             softAssertions.assertThat(result.day()).isEqualTo(유효한_스탬프_dto.day());
             softAssertions.assertThat(result.message()).isEqualTo(유효한_스탬프_dto.message());
+        });
+    }
+
+    @Test
+    void 스탬프_이미지가_null이거나_빈값인_경우_빈_문자열을_주소로_저장한다() {
+        // given
+        final Goal 골 = Goal.builder()
+                           .name("골 제목")
+                           .memo("골 메모")
+                           .startDate(LocalDate.now())
+                           .endDate(LocalDate.now().plusDays(19))
+                           .managerId(스탬프를_생성할_사용자.getId())
+                           .users(List.of(스탬프를_생성할_사용자))
+                           .build();
+        goalRepository.save(골);
+
+        final CreateStampDto 스탬프_이미지가_null인_스탬프_dto = new CreateStampDto(
+                골.getId(),
+                스탬프를_생성할_사용자.getId(),
+                1,
+                "스탬프 메시지",
+                null
+        );
+
+        // when
+        final ReadStampDto result = stampService.createStamp(스탬프_이미지가_null인_스탬프_dto);
+
+        // then
+        assertSoftly(softAssertions -> {
+            softAssertions.assertThat(result.id()).isPositive();
+            softAssertions.assertThat(result.userName()).isEqualTo(스탬프를_생성할_사용자.getName());
+            softAssertions.assertThat(result.userColor()).isEqualTo(스탬프를_생성할_사용자.getColor());
+            softAssertions.assertThat(result.day()).isEqualTo(스탬프_이미지가_null인_스탬프_dto.day());
+            softAssertions.assertThat(result.message()).isEqualTo(스탬프_이미지가_null인_스탬프_dto.message());
         });
     }
 
@@ -111,6 +148,8 @@ class StampServiceTest extends StampServiceTestFixture {
             softAssertions.assertThat(stamps.get(1).userId()).isEqualTo(스탬프를_생성한_사용자_아이디2);
             softAssertions.assertThat(stamps.get(0).name()).isEqualTo(스탬프를_생성한_사용자_이름1);
             softAssertions.assertThat(stamps.get(1).name()).isEqualTo(스탬프를_생성한_사용자_이름2);
+            softAssertions.assertThat(stamps.get(0).stampImageUrl()).isEqualTo(스탬프_이미지_url);
+            softAssertions.assertThat(stamps.get(1).stampImageUrl()).isEqualTo(비어있는_스탬프_이미지);
         });
     }
 

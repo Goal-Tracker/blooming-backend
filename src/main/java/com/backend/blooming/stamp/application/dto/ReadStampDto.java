@@ -8,7 +8,8 @@ public record ReadStampDto(
         String userName,
         ThemeColor userColor,
         long day,
-        String message
+        String message,
+        String stampImageUrl
 ) {
 
     public static ReadStampDto from(final Stamp stamp) {
@@ -17,7 +18,8 @@ public record ReadStampDto(
                 stamp.getUser().getName(),
                 stamp.getUser().getColor(),
                 stamp.getDay(),
-                stamp.getMessage()
+                stamp.getMessage(),
+                stamp.getStampImageUrl()
         );
     }
 }

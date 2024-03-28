@@ -23,11 +23,11 @@ public class Day {
     @Column(name = "stamp_day", nullable = false)
     private long value;
 
-    public Day(final GoalTerm goalTerm, final int day) {
+    public Day(final GoalTerm goalTerm, final long day) {
         this.value = validateDay(goalTerm, day);
     }
 
-    private long validateDay(final GoalTerm goalTerm, final int day) {
+    private long validateDay(final GoalTerm goalTerm, final long day) {
         final long nowStampDay = DayUtil.getNowDay(goalTerm.getStartDate());
 
         if (day > nowStampDay) {

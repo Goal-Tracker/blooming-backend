@@ -18,7 +18,8 @@ public record ReadAllStampDto(List<StampDto> stamps) {
             String name,
             ThemeColor color,
             String message,
-            long day
+            long day,
+            String stampImageUrl
     ) {
 
         public static StampDto from(final Stamp stamp) {
@@ -27,7 +28,8 @@ public record ReadAllStampDto(List<StampDto> stamps) {
                     stamp.getUser().getName(),
                     stamp.getUser().getColor(),
                     stamp.getMessage(),
-                    stamp.getDay()
+                    stamp.getDay(),
+                    stamp.getStampImageUrl()
             );
         }
     }
