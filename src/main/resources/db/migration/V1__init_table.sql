@@ -89,6 +89,7 @@ create table stamp
     user_id                 bigint       not null,
     stamp_day               bigint       not null,
     message                 text         not null,
+    stamp_image_url         varchar(255) not null,
     is_deleted              boolean      not null,
     created_date_time       timestamp(6) not null,
     last_modified_date_time timestamp(6) not null,
@@ -128,16 +129,29 @@ create table stamp_report
     primary key (id)
 );
 
-alter table friend add constraint fk_friend_request_user foreign key (request_user_id) references users (id);
-alter table friend add constraint fk_friend_requested_user foreign key (requested_user_id) references users (id);
-alter table goal_report add constraint fk_goal_report_goal foreign key (goal_id) references goal (id);
-alter table goal_report add constraint fk_goal_report_reporter foreign key (reporter_id) references users (id);
-alter table goal_team add constraint fk_goal_team_user foreign key (goal_id) references goal (id);
-alter table goal_team add constraint fk_goal_team_goal foreign key (user_id) references users (id);
-alter table notification add constraint fk_notification_receiver foreign key (receiver_id) references users (id);
-alter table stamp add constraint fk_stamp_goal foreign key (goal_id) references goal (id);
-alter table stamp add constraint fk_stamp_user foreign key (user_id) references users (id);
-alter table stamp_report add constraint fk_stamp_report_reporter foreign key (reporter_id) references users (id);
-alter table stamp_report add constraint fk_stamp_report_stamp foreign key (stamp_id) references stamp (id);
-alter table user_report add constraint fk_user_report_reportee foreign key (reportee_id) references users (id);
-alter table user_report add constraint fk_user_report_reporter foreign key (reporter_id) references users (id);
+alter table friend
+    add constraint fk_friend_request_user foreign key (request_user_id) references users (id);
+alter table friend
+    add constraint fk_friend_requested_user foreign key (requested_user_id) references users (id);
+alter table goal_report
+    add constraint fk_goal_report_goal foreign key (goal_id) references goal (id);
+alter table goal_report
+    add constraint fk_goal_report_reporter foreign key (reporter_id) references users (id);
+alter table goal_team
+    add constraint fk_goal_team_user foreign key (goal_id) references goal (id);
+alter table goal_team
+    add constraint fk_goal_team_goal foreign key (user_id) references users (id);
+alter table notification
+    add constraint fk_notification_receiver foreign key (receiver_id) references users (id);
+alter table stamp
+    add constraint fk_stamp_goal foreign key (goal_id) references goal (id);
+alter table stamp
+    add constraint fk_stamp_user foreign key (user_id) references users (id);
+alter table stamp_report
+    add constraint fk_stamp_report_reporter foreign key (reporter_id) references users (id);
+alter table stamp_report
+    add constraint fk_stamp_report_stamp foreign key (stamp_id) references stamp (id);
+alter table user_report
+    add constraint fk_user_report_reportee foreign key (reportee_id) references users (id);
+alter table user_report
+    add constraint fk_user_report_reporter foreign key (reporter_id) references users (id);
