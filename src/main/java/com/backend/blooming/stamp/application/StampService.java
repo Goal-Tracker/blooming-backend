@@ -42,7 +42,7 @@ public class StampService {
         final User user = getUser(createStampDto.userId());
         validateUserToCreateStamp(goal, user);
         validateExistStamp(user.getId(), createStampDto.day());
-        final String stampImageUrl = getStampImageUrl(createStampDto.stampImage());
+        final String stampImageUrl = saveStampImageUrl(createStampDto.stampImage());
         final Stamp stamp = persistStamp(createStampDto, goal, user, stampImageUrl);
 
         return ReadStampDto.from(stamp);
@@ -71,12 +71,9 @@ public class StampService {
         }
     }
 
-    private String getStampImageUrl(final MultipartFile stampImage) {
-        if (stampImage!=null && !stampImage.isEmpty()){
-            return imageStorageManager.upload(
-                    stampImage,
-                    ImageStoragePath.STAMP
-            );
+    private String saveStampImageUrl(final MultipartFile stampImage) {
+        if (stampImage != null && !stampImage.isEmpty()) {
+            return imageStorageManager.upload(stampImage, ImageStoragePath.STAMP);
         }
 
         return DEFAULT_STAMP_IMAGE_URL;

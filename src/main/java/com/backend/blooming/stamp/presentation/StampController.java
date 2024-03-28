@@ -35,7 +35,10 @@ public class StampController {
             @Authenticated final AuthenticatedUser authenticatedUser
     ) {
         final CreateStampDto createStampDto = CreateStampDto.of(
-                request, goalId, authenticatedUser.userId(), stampImage
+                request,
+                goalId,
+                authenticatedUser.userId(),
+                stampImage
         );
         final ReadStampDto stamp = stampService.createStamp(createStampDto);
         final ReadStampResponse response = ReadStampResponse.from(stamp);
